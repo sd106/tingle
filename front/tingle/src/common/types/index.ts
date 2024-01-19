@@ -10,6 +10,7 @@ interface LogIn {
 }
 
 interface Star {
+    username: string;
     name: string;
     image: string;
 }

@@ -1,13 +1,16 @@
 [
     {
+        "username": "yoo",
         "name": "유형민",
         "image": "/image/yoo.png"
     },
     {
+        "username": "jun",
         "name": "황찬준",
         "image": "/image/jun.png"
     },
     {
+        "username": "bin",
         "name": "정수빈",
         "image": "/image/bin.png"
     }

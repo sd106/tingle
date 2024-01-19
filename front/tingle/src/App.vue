@@ -1,9 +1,9 @@
 <template>
-  <!-- 사이드바 -->
+  <!-- Nav바 -->
   <nav class="navbar bg-body-white">
     <div class="container-fluid">
 
-      <!-- 여는 버튼 -->
+      <!-- 사이드바 여는 버튼 -->
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
         aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -19,7 +19,7 @@
       <RouterLink to="/logIn">Login</RouterLink> |
       <span @click="logOut">Logout</span>
 
-
+      <!-- 사이드바 -->
       <div class="offcanvas offcanvas-start w-25" tabindex="-1" id="offcanvasNavbar"
         aria-labelledby="offcanvasNavbarLabel">
         <div class="offcanvas-header p-2">
