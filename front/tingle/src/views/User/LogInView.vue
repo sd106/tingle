@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="container">
     <h1>로그인</h1>
     <form @submit.prevent="logIn">
       <label for="username" class="form-label">아이디 : </label>

@@ -13,5 +13,20 @@
         "username": "bin",
         "name": "정수빈",
         "image": "/image/bin.png"
+    },
+    {
+        "username": "mo",
+        "name": "이성모",
+        "image": "/image/mo.png"
+    },
+    {
+        "username": "yoon",
+        "name": "윤정영",
+        "image": "/image/yoon.png"
+    },
+    {
+        "username": "oh",
+        "name": "오은아",
+        "image": "/image/oh.png"
     }
 ]

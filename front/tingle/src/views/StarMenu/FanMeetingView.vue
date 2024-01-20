@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="container">
     <h1>팬미팅</h1>
     <div>
       <RouterLink :to="`/profile/${username}/home`">Home</RouterLink> |

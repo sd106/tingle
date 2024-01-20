@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="container">
     <h1>프로필</h1>
 
     <!-- 메뉴 버튼 -->
@@ -18,15 +18,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import { RouterLink, RouterView, useRouter } from 'vue-router'
+import { ref } from 'vue';
+import { RouterLink, RouterView } from 'vue-router'
 
-const router = useRouter()
+
+
 const props = defineProps(['username']);
+const name = ref('')
+name.value = props.username
 
-onMounted(() => {
-  console.log(router.currentRoute.value.params.username)
-  console.log(props)
-})
+
 
 </script>
