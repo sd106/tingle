@@ -17,7 +17,7 @@
       <RouterLink to="/">Home</RouterLink> |
       <RouterLink to="/signUp">Signup</RouterLink> |
       <RouterLink to="/logIn">Login</RouterLink> |
-      <span @click="logOut">Logout</span>
+      <button @click="logOut">Logout</button>
 
 
       <div class="offcanvas offcanvas-start w-25" tabindex="-1" id="offcanvasNavbar"
@@ -60,8 +60,7 @@ const store = useUserStore()
 
 
 function logOut(): void {
-  router.push({ name: 'home' })
-
+  store.logOut()
 }
 </script>
 

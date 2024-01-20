@@ -9,7 +9,7 @@ import hotstar from '@/static/data/hotstar.json'
 
 export const useUserStore = defineStore('user', () => {
 
-  const API_URL = 'http://localhost:9000'
+  const API_URL = 'http://localhost:8080'
 
   const starinfo = ref<Star[]>([])
 
@@ -56,12 +56,22 @@ export const useUserStore = defineStore('user', () => {
     } catch (error) {
       console.error(error);
     }
+  };
 
-
-  }
+  const logOut = async function (): Promise<void>{
+    try {
+      const response = await axios.post(`${API_URL}/users/logout`, {
+      });
+      console.log(response);
+      window.alert('로그아웃!');
+      router.push({ name: 'home' })
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return {
     API_URL,
-    signUp, logIn,
+    signUp, logIn, logOut,
     starinfo, getStarInfo,
   }
 })
