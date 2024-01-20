@@ -19,9 +19,13 @@
       <!-- 로그인 유무로 보이기 -->
       <RouterLink to="/signUp">Signup</RouterLink> |
       <RouterLink to="/logIn">Login</RouterLink> |
+<<<<<<< HEAD
       <span @click="logOut">Logout</span>
       <!-- 사용자 프로필 사진 > 모달로 메뉴 -->
       <img class="" src="/image/nav_logo.webp" alt="" style="height: 50px;">
+=======
+      <button @click="logOut">Logout</button>
+>>>>>>> bc66e294088c69f5dd6d604705f19afbf054cf29
 
       <!-- 사이드바 -->
       <div class="offcanvas offcanvas-start show" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
@@ -74,8 +78,14 @@ import { useUserStore } from './stores/user';
 const router = useRouter()
 const store = useUserStore()
 
+<<<<<<< HEAD
 const logOut = function (): void {
   router.push({ name: 'home' })
+=======
+
+function logOut(): void {
+  store.logOut()
+>>>>>>> bc66e294088c69f5dd6d604705f19afbf054cf29
 }
 
 
