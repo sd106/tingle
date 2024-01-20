@@ -17,7 +17,6 @@ export const useUserStore = defineStore('user', () => {
 
   const getStarInfo = function (): void {
     starinfo.value = hotstar
-    console.log(starinfo)
   }
 
 
@@ -39,7 +38,7 @@ export const useUserStore = defineStore('user', () => {
     }
   };
 
-
+  // 로그인 인터셉터??
   const logIn = async function (payload: LogIn): Promise<void> {
     const { username, password } = payload;
 
