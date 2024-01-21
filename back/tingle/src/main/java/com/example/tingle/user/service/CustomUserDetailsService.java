@@ -1,15 +1,13 @@
-package com.example.tingle.service;
+package com.example.tingle.user.service;
 
-import com.example.tingle.dto.CustomUserDetails;
-import com.example.tingle.dto.LoginDto;
-import com.example.tingle.entity.UserEntity;
-import com.example.tingle.repository.UserRepository;
+import com.example.tingle.user.dto.CustomUserDetails;
+import com.example.tingle.user.entity.UserEntity;
+import com.example.tingle.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

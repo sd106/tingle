@@ -1,4 +1,4 @@
-package com.example.tingle.entity;
+package com.example.tingle.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
