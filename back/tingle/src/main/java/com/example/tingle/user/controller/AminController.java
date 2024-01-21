@@ -1,4 +1,4 @@
-package com.example.tingle.controller;
+package com.example.tingle.user.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

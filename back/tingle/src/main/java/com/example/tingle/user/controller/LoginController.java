@@ -1,6 +1,6 @@
-package com.example.tingle.controller;
+package com.example.tingle.user.controller;
 
-import com.example.tingle.dto.LoginDto;
+import com.example.tingle.user.dto.LoginDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
