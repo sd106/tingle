@@ -34,7 +34,7 @@
                     style="background: none; border: none; cursor: pointer;">
                     <div class="star-card">
                         <div class="star-image">
-                            <img src="/public/image/downarrow.png" alt="">
+                            <img src="/image/downarrow.png" alt="">
                         </div>
                         <span>더보기</span>
                     </div>
@@ -44,7 +44,7 @@
                     style="background: none; border: none; cursor: pointer;">
                     <div class="star-card">
                         <div class="star-image">
-                            <img src="/public/image/uparrow.png" alt="">
+                            <img src="/image/uparrow.png" alt="">
                         </div>
                         <span>간략히 보기</span>
                     </div>
