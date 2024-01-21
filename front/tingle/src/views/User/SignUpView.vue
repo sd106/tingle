@@ -6,10 +6,15 @@
       <input class="form-control" type="text" id="username" v-model.trim="username" autocomplete="off"><br>
 
       <label for="password" class="form-label">비밀번호 : </label>
-      <input class="form-control" type="text" id="password" v-model.trim="password"><br>
+      <input class="form-control" type="password" id="password" v-model.trim="password"
+        aria-describedby="passwordHelpBlock">
+      <div id="passwordHelpBlock" class="form-text">
+        패스워드 길이는 최소 8글자 이상, 영문자와 숫자가 각각 하나 이상 포함되어야 합니다.
+      </div>
+      <br>
 
       <label for="email" class="form-label">이메일 : </label>
-      <input class="form-control" type="text" id="email" v-model.trim="email" autocomplete="off">
+      <input class="form-control" type="email" id="email" v-model.trim="email" autocomplete="off">
 
       <button type="submit" class="btn btn-outline-secondary mt-3 w-100">Signup</button>
     </form>
@@ -41,6 +46,5 @@ const signUp = function () {
     email: email.value,
   }
   store.signUp(payload)
-  console.log(payload)
 }
 </script>

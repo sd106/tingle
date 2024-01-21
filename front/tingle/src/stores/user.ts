@@ -5,32 +5,38 @@ import axios from 'axios'
 
 import type { SignUp, LogIn, Star } from '@/common/types/index'
 
+// 
 import hotstar from '@/static/data/hotstar.json'
+import allstar from '@/static/data/allstar.json'
+// 
 
 export const useUserStore = defineStore('user', () => {
 
-  const API_URL = 'http://localhost:8080'
-
-  const starinfo = ref<Star[]>([])
-
   const router = useRouter()
 
+  const API_URL = 'http://localhost:8080'
+
+  // 바꿔야할 것
+  const hotstarinfo = ref<Star[]>([])
+  const allstarinfo = ref<Star[]>([])
+
   const getStarInfo = function (): void {
-    starinfo.value = hotstar
+    hotstarinfo.value = hotstar
+    allstarinfo.value = allstar
   }
+  // 
+  const isSidebarOpen = ref(true)
 
 
   const signUp = async function (payload: SignUp): Promise<void> {
     const { username, password, email } = payload;
 
     try {
-      const response = await axios.post(`${API_URL}/users/new`, {
+      await axios.post(`${API_URL}/users/new`, {
         username,
         password,
         email
       });
-      console.log(response);
-      console.log(payload);
       window.alert('회원가입완료');
       // username, password 받아서 바로 로그인 하기
     } catch (error) {
@@ -48,7 +54,6 @@ export const useUserStore = defineStore('user', () => {
         password
       });
       console.log(response);
-      console.log(payload);
       window.alert('로그인성공!');
       router.push({ name: 'home' }) // 무조건 홈으로 돌아가는 게 아니라 이전 창으로 돌아가기?
       // 토큰이라든가 뭔가 받아서 뭘 해야 하지 않을까
@@ -57,7 +62,7 @@ export const useUserStore = defineStore('user', () => {
     }
   };
 
-  const logOut = async function (): Promise<void>{
+  const logOut = async function (): Promise<void> {
     try {
       const response = await axios.post(`${API_URL}/users/logout`, {
       });
@@ -71,6 +76,10 @@ export const useUserStore = defineStore('user', () => {
   return {
     API_URL,
     signUp, logIn, logOut,
-    starinfo, getStarInfo,
+    //
+    hotstarinfo, getStarInfo,
+    allstarinfo,
+    //
+    isSidebarOpen
   }
 })
