@@ -1,4 +1,4 @@
-package com.example.tingle.config;
+package com.example.tingle.user.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

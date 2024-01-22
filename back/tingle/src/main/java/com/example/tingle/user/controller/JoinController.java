@@ -1,10 +1,8 @@
-package com.example.tingle.controller;
+package com.example.tingle.user.controller;
 
-import com.example.tingle.dto.joinDto;
-import com.example.tingle.service.JoinService;
+import com.example.tingle.user.dto.joinDto;
+import com.example.tingle.user.service.JoinService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

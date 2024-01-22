@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="container">
     <h1>스토어</h1>
     <div>
       <RouterLink :to="`/profile/${username}/home`">Home</RouterLink> |
