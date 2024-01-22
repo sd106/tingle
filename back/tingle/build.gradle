@@ -44,6 +44,8 @@ dependencies {
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
+    //Swagger 설정
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
 }
 
