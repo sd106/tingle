@@ -21,7 +21,19 @@
             <RouterLink to="/logIn">Login</RouterLink> |
             <span @click="logOut">Logout</span>
             <!-- 사용자 프로필 사진 > 모달로 메뉴 -->
-            <img class="" src="/image/nav_logo.webp" alt="" style="height: 50px;">
+            <div class="dropdown dropstart">
+                <button class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <!-- 사용자 프로필 사진으로 대체 -->
+                    <img class="" src="/image/nav_logo.webp" alt="" style="height: 50px;">
+                </button>
+                <ul class="dropdown-menu">
+                    <!-- 간편 메뉴 넣기 -->
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
+
         </div>
     </nav>
 </template>
@@ -30,7 +42,6 @@
 import { watch } from 'vue'
 import { useUserStore } from '@/stores/user';
 import { RouterLink, useRouter } from 'vue-router'
-
 
 const store = useUserStore()
 const router = useRouter()

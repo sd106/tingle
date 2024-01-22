@@ -50,12 +50,14 @@
                     </div>
                 </button>
                 <hr>
-                <button class="" type="button" style="height: 50px; width: 50px;">
+                <button class="" type="button" data-bs-toggle="modal" data-bs-target="#chatModal"
+                    style="height: 50px; width: 50px;">
                     <img src="/image/chat.jpg" alt="" style="height: 30px; width: 30px;">
                 </button>
             </ul>
         </div>
     </div>
+    <ChatModal />
 </template>
 
 <script setup lang="ts">
@@ -63,15 +65,22 @@ import { ref, computed, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/stores/user';
 
+import ChatModal from '../ChatModal.vue';
 
 const store = useUserStore()
 
-// 사이드바 열었을 때 메인화면 밀어내기
-// const isSidebarOpen = ref(true);
+// onMounted(() => {
+//     console.log(store.isModalOpen)
+// })
 
-// const toggleSidebar = () => {
-//     isSidebarOpen.value = !isSidebarOpen.value;
+
+// const openModal = function (): void {
+//     store.isModalOpen = true;
+//     console.log(store.isModalOpen)
 // };
+
+
+// 사이드바 밀어내기
 watch(() => store.isSidebarOpen, (newValue) => {
     if (newValue) {
         document.body.classList.add('is-sidebar-open');
