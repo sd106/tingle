@@ -10,6 +10,7 @@ import hotstar from '@/static/data/hotstar.json'
 import allstar from '@/static/data/allstar.json'
 // 
 
+
 // 세트로 id 이름 사진 그정도 저장 해두기?
 // const usernameState = ref(null)
 
@@ -22,6 +23,7 @@ import allstar from '@/static/data/allstar.json'
 // })
 
 const isLogin = ref(false)
+
 
 
 export const useUserStore = defineStore('user', () => {
