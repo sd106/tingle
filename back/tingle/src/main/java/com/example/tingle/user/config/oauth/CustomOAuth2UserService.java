@@ -1,12 +1,11 @@
 package com.example.tingle.user.config.oauth;
-
-import com.example.tingle.config.oauth.provider.GoogleUserInfo;
-import com.example.tingle.config.oauth.provider.NaverUserInfo;
-import com.example.tingle.config.oauth.provider.OAuth2UserInfo;
-import com.example.tingle.dto.CustomUserDetails;
-import com.example.tingle.entity.Role;
-import com.example.tingle.entity.UserEntity;
-import com.example.tingle.repository.UserRepository;
+import com.example.tingle.user.config.oauth.provider.GoogleUserInfo;
+import com.example.tingle.user.config.oauth.provider.NaverUserInfo;
+import com.example.tingle.user.config.oauth.provider.OAuth2UserInfo;
+import com.example.tingle.user.dto.CustomUserDetails;
+import com.example.tingle.user.entity.Role;
+import com.example.tingle.user.entity.UserEntity;
+import com.example.tingle.user.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

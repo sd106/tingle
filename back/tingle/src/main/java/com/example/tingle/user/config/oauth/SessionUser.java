@@ -1,6 +1,6 @@
 package com.example.tingle.user.config.oauth;
 
-import com.example.tingle.entity.UserEntity;
+import com.example.tingle.user.entity.UserEntity;
 import lombok.Getter;
 
 @Getter

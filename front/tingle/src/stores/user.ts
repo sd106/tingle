@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
@@ -10,16 +10,18 @@ import hotstar from '@/static/data/hotstar.json'
 import allstar from '@/static/data/allstar.json'
 // 
 
-// 이것보단 세트로 id 이름 사진 그정도 저장 해두는 게 낫나
-const usernameState = ref(null)
+// 세트로 id 이름 사진 그정도 저장 해두기?
+// const usernameState = ref(null)
 
-const isLogin = computed(() => {
-  if (usernameState.value === null) {
-    return false
-  } else {
-    return true
-  }
-})
+// const isLogin = computed(() => {
+//   if (usernameState.value === null) {
+//     return false
+//   } else {
+//     return true
+//   }
+// })
+
+const isLogin = ref(false)
 
 
 export const useUserStore = defineStore('user', () => {
@@ -57,36 +59,36 @@ export const useUserStore = defineStore('user', () => {
     }
   };
 
-  // 로그인 인터셉터??
+
   const logIn = async function (payload: LogIn): Promise<void> {
     const { username, password } = payload;
 
     try {
       const response = await axios
-      
-      .post(`${API_URL}/users/login`, {
-        username,
-        password
-      },{
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json', // 'Context-Type'을 'Content-Type'으로 수정
-        }
-      })
-      .then((res) => {
-        const { data } = res
-        console.log(res.status)
-        if (res.status === 200) {
+
+        .post(`${API_URL}/users/login`, {
+          username,
+          password
+        }, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json', // 'Context-Type'을 'Content-Type'으로 수정
+          }
+        })
+        .then((res) => {
+          const { data } = res
+          console.log(res.status)
+          if (res.status === 200) {
             const name = data.username
             const role = data.role
             const mail = data.email
             console.log(name)
             console.log(role)
             console.log(mail)
+          }
         }
-      }
 
-      )
+        )
       console.log(response);
       console.log(payload);
       window.alert('로그인성공!');
