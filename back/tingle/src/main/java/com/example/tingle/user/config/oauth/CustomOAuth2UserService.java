@@ -1,12 +1,13 @@
 package com.example.tingle.user.config.oauth;
 
-import com.example.tingle.config.oauth.provider.GoogleUserInfo;
-import com.example.tingle.config.oauth.provider.NaverUserInfo;
-import com.example.tingle.config.oauth.provider.OAuth2UserInfo;
-import com.example.tingle.dto.CustomUserDetails;
-import com.example.tingle.entity.Role;
-import com.example.tingle.entity.UserEntity;
-import com.example.tingle.repository.UserRepository;
+
+import com.example.tingle.user.config.oauth.provider.GoogleUserInfo;
+import com.example.tingle.user.config.oauth.provider.NaverUserInfo;
+import com.example.tingle.user.config.oauth.provider.OAuth2UserInfo;
+import com.example.tingle.user.dto.CustomUserDetails;
+import com.example.tingle.user.entity.Role;
+import com.example.tingle.user.entity.UserEntity;
+import com.example.tingle.user.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -77,19 +78,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         }
         // Authentication 안에 들어감
         return new CustomUserDetails(userEntity, oAuth2User.getAttributes());
-
-//        String registrationId = userRequest.getClientRegistration().getRegistrationId();
-//        String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
-//
-//        OAuthAttribute attributes = OAuthAttribute.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
-//
-//        UserEntity user = saveOrUpdate(attributes);
-//
-//        httpSession.setAttribute("user", new SessionUser(user));
-//
-//        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
-//                attributes.getAttributes(),
-//                attributes.getNameAttributeKey());
     }
 
     private UserEntity saveOrUpdate(OAuthAttribute attributes) {

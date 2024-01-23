@@ -19,7 +19,7 @@
             <!-- 로그인 유무로 보이기 -->
             <RouterLink to="/signUp">Signup</RouterLink> |
             <RouterLink to="/logIn">Login</RouterLink> |
-            <span @click="logOut">Logout</span>
+            <a @click="logOut">Logout</a>
             <!-- 사용자 프로필 사진 > 모달로 메뉴 -->
             <div class="dropdown dropstart">
                 <button class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -47,7 +47,8 @@ const store = useUserStore()
 const router = useRouter()
 
 const logOut = function (): void {
-    router.push({ name: 'home' })
+    window.location.href = 'http://localhost:8080/logout'
+    // router.push({ name: 'home' })
 }
 
 watch(() => store.isSidebarOpen, (newValue) => {

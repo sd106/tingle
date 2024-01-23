@@ -12,7 +12,7 @@ import { RouterView } from 'vue-router'
 import { useUserStore } from '@/stores/user';
 
 import AppHeader from '@/components/Layouts/AppHeader.vue';
-import AppSidebar from './components/Layouts/AppSidebar.vue';
+import AppSidebar from '@/components/Layouts/AppSidebar.vue';
 
 const store = useUserStore()
 

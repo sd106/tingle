@@ -65,7 +65,7 @@ import { ref, computed, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/stores/user';
 
-import ChatModal from '../ChatModal.vue';
+import ChatModal from '@/components/ChatModal.vue';
 
 const store = useUserStore()
 
