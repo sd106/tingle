@@ -1,6 +1,6 @@
 package com.example.tingle.user.controller;
 
-import com.example.tingle.user.dto.joinDto;
+import com.example.tingle.user.dto.JoinDto;
 import com.example.tingle.user.service.JoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +20,7 @@ public class JoinController {
 //    }
     
     @PostMapping("/users/new")
-    public String joinProcess(@RequestBody joinDto joinDTO) {
+    public String joinProcess(@RequestBody JoinDto joinDTO) {
 
         System.out.println("joinDTO.toString() = " + joinDTO.toString());
         System.out.println("joinDTO.getUsername() = " + joinDTO.getUsername());

@@ -1,17 +1,20 @@
 package com.example.tingle.user.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Entity(name = "users")
+@Entity(name = "stars")
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity {
+public class StarEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(unique = true)
     private String username;
@@ -29,7 +32,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String email;
 
-    public UserEntity update(String name, String picture) {
+    public StarEntity update(String name, String picture) {
         this.username = name;
         this.picture = picture;
         return this;

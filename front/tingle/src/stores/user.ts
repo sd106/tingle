@@ -50,11 +50,33 @@ export const useUserStore = defineStore('user', () => {
     const { username, password } = payload;
 
     try {
-      const response = await axios.post(`${API_URL}/users/login`, {
+      const response = await axios
+      
+      .post(`${API_URL}/users/login`, {
         username,
         password
-      });
+      },{
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json', // 'Context-Type'을 'Content-Type'으로 수정
+        }
+      })
+      .then((res) => {
+        const { data } = res
+        console.log(res.status)
+        if (res.status === 200) {
+            const name = data.username
+            const role = data.role
+            const mail = data.email
+            console.log(name)
+            console.log(role)
+            console.log(mail)
+        }
+      }
+
+      )
       console.log(response);
+      console.log(payload);
       window.alert('로그인성공!');
       router.push({ name: 'home' }) // 무조건 홈으로 돌아가는 게 아니라 이전 창으로 돌아가기?
       // 토큰이라든가 뭔가 받아서 뭘 해야 하지 않을까
@@ -62,7 +84,6 @@ export const useUserStore = defineStore('user', () => {
       console.error(error);
     }
   };
-
   const logOut = async function (): Promise<void> {
     try {
       const response = await axios.post(`${API_URL}/users/logout`, {

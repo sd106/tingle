@@ -1,8 +1,14 @@
 package com.example.tingle.user.controller;
 
+import com.example.tingle.user.dto.CustomStarDetails;
 import com.example.tingle.user.dto.LoginDto;
+import com.example.tingle.user.entity.StarEntity;
+import com.example.tingle.user.repository.StarRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -10,30 +16,53 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @CrossOrigin(origins = "*",allowedHeaders = "*")
 @Slf4j
 public class LoginController {
+
+    private final AuthenticationManager authenticationManager;
+    private final StarRepository starRepository;
+
+    // 생성자를 통해 주입받도록 설정
     @Autowired
-    private AuthenticationManager authenticationManager;
+    public LoginController(AuthenticationManager authenticationManager, StarRepository starRepository) {
+        this.authenticationManager = authenticationManager;
+        this.starRepository = starRepository;
+    }
 
     @PostMapping("/users/login")
-    public String login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+
+        HttpStatus status = HttpStatus.ACCEPTED;
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+
         try {
-            System.out.println("loginDto.getEmail() = " + loginDto.getEmail());
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+            System.out.println("loginDto.getUsername() = " + loginDto.getUsername());
+            System.out.println("loginDto.getPassword() = " + loginDto.getPassword());
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            System.out.println("authentication.getPrincipal().getClass() = " + authentication.getPrincipal().getClass());
-            // 여기서 토큰을 생성하거나 다른 작업을 수행할 수 있음
-            return "ok";
+            if (starRepository.existsByUsername(loginDto.getUsername())) {
+                StarEntity star = starRepository.findByUsername(loginDto.getUsername());
+                resultMap.put("username", star.getUsername());
+                resultMap.put("email", star.getEmail());
+                resultMap.put("role", star.getRole());
+                status = HttpStatus.OK;
+
+                new CustomStarDetails(star);
+            } else {
+                resultMap.put("message", "아이디 또는 패스워드를 확인해주세요 !");
+                status = HttpStatus.UNAUTHORIZED;
+            }
+
         } catch (AuthenticationException e) {
-//            System.out.println("loginDto.getEmail() = " + loginDto.getEmail());
-
-            // 인증 실패 시 예외 처리
-            return "error";
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
+
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
     @PostMapping("/users/logout")
