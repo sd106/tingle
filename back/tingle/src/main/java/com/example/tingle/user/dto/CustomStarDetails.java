@@ -1,32 +1,22 @@
 package com.example.tingle.user.dto;
 
-import com.example.tingle.user.entity.UserEntity;
+import com.example.tingle.user.entity.StarEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
-public class CustomUserDetails implements UserDetails, OAuth2User {
+public class CustomStarDetails implements UserDetails {
 
-    private UserEntity userEntity;
-    private Map<String, Object> attributes;
+    private StarEntity starEntity;
 
-    // 일반 로그인에 사용
-    public CustomUserDetails(UserEntity userEntity){
-        this.userEntity = userEntity;
-    }
-    // OAuth 로그인에 사용
-    public CustomUserDetails(UserEntity userEntity, Map<String, Object> attributes){
-        this.userEntity = userEntity;
-        this.attributes = attributes;
+    public CustomStarDetails(StarEntity starEntity){
+        this.starEntity = starEntity;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
         Collection<GrantedAuthority> collection = new ArrayList<>();
 
         collection.add(new GrantedAuthority() {
@@ -34,7 +24,7 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
             @Override
             public String getAuthority() {
 
-                return userEntity.getRoleKey();
+                return starEntity.getRoleKey();
             }
         });
 
@@ -43,12 +33,12 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
 
     @Override
     public String getPassword() {
-        return userEntity.getPassword();
+        return starEntity.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return userEntity.getUsername();
+        return starEntity.getUsername();
     }
 
     @Override
@@ -69,15 +59,5 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    @Override   // OAuth2User에서 override
-    public Map<String, Object> getAttributes() {
-        return attributes;
-    }
-
-    @Override
-    public String getName() {
-        return null;
     }
 }

@@ -1,11 +1,14 @@
 package com.example.tingle.user.config;
 
+import com.example.tingle.user.config.oauth.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -15,6 +18,11 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    private final CustomOAuth2UserService customOAuth2UserService;
+
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService) {
+        this.customOAuth2UserService = customOAuth2UserService;
+    }
 
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws  Exception {
@@ -31,45 +39,38 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+                .formLogin(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
+                .rememberMe(AbstractHttpConfigurer::disable)
+//                .cors((auth) -> auth.configure(http))
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/","/users/logout","/login","/users/login", "/signUp", "/users/new").permitAll()
+                        .requestMatchers("/","/logout","/login","/users/login", "/signUp", "/users/new", "/oauth").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
-                        .requestMatchers("/my/**").hasAnyRole("ADMIN", "USER")
-                        .anyRequest().authenticated()
-                );
-
-        http
-                .formLogin((auth)-> auth.disable());
-        http
-                .logout((auth) -> auth.disable());
-
-
-        //        http
-//                .logout((auth)->auth
-////                        .logoutSuccessUrl("/login")
-//                        .deleteCookies("JSESSIONID"));
-
-
-        http
-                .csrf((auth) -> auth.disable());
-
-        http
-                .cors((auth) -> auth.disable());
-
-
-        // 다중 로그인
-        http
-                .sessionManagement((auth) -> auth
+                        .requestMatchers("/my/**").hasAnyRole("ADMIN", "FAN", "STAR")
+                        .anyRequest().authenticated())
+                .logout(logout -> logout
+                        .invalidateHttpSession(true) // 세션 무효화
+                        .deleteCookies("JSESSIONID") // 세션 쿠키 삭제
+                        .logoutSuccessUrl("/")
+                        .logoutSuccessHandler(((request, response, authentication) -> {
+                            response.sendRedirect("http://localhost:5173/");
+                        }))
+                )
+                .oauth2Login(oauth2Login ->
+                        oauth2Login.userInfoEndpoint(userInfoEndpointConfig ->
+                                        userInfoEndpointConfig.userService(customOAuth2UserService))
+                                .successHandler((request, response, authentication) -> {
+                                    // 로그인 성공 시 호출되는 핸들러
+                                    response.sendRedirect("http://localhost:5173/"); // 리다이렉트할 URL
+                                })
+                )
+                .sessionManagement((auth) -> auth   // 다중 로그인
                         .maximumSessions(1) //다중 로그인 갯수
-                        .maxSessionsPreventsLogin(true)); //true = 로그인 안됨, false = 기존 로그인 로그아웃 시키고 로그인 함
-
-
-        http
+                        .maxSessionsPreventsLogin(true)) //true = 로그인 안됨, false = 기존 로그인 로그아웃 시키고 로그인 함;
                 .sessionManagement((auth) -> auth
-                        .sessionFixation().changeSessionId());
-
-        http.addFilterBefore(corsFilter(), CorsFilter.class);
-
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                        .sessionFixation().changeSessionId())
+                .addFilterBefore(corsFilter(), CorsFilter.class);
 
         return http.build();
     }
@@ -84,6 +85,7 @@ public class SecurityConfig {
         config.addAllowedMethod("POST");
         config.addAllowedMethod("PUT");
         config.addAllowedMethod("DELETE");
+        config.setAllowCredentials(true);
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
