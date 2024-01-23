@@ -8,6 +8,7 @@
       <RouterLink :to="`/profile/${username}/store`">Store</RouterLink> |
       <RouterLink :to="`/profile/${username}/fanmeeting`">Fanmeeting</RouterLink>
     </div>
+    <SnapShotMain />
   </main>
   <RouterView />
 </template>
@@ -15,6 +16,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
+
+import SnapShotMain from '@/components/StarMenu/SnapShot/SnapShotMain.vue';
 
 const props = defineProps(['username']);
 const name = ref('')

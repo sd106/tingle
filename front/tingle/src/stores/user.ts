@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
@@ -9,6 +9,18 @@ import type { SignUp, LogIn, Star } from '@/common/types/index'
 import hotstar from '@/static/data/hotstar.json'
 import allstar from '@/static/data/allstar.json'
 // 
+
+// 이것보단 세트로 id 이름 사진 그정도 저장 해두는 게 낫나
+const usernameState = ref(null)
+
+const isLogin = computed(() => {
+  if (usernameState.value === null) {
+    return false
+  } else {
+    return true
+  }
+})
+
 
 export const useUserStore = defineStore('user', () => {
 
@@ -79,7 +91,7 @@ export const useUserStore = defineStore('user', () => {
     signUp, logIn, logOut,
     //
     hotstarinfo, getStarInfo,
-    allstarinfo,
+    allstarinfo, isLogin,
     //
     isSidebarOpen,
   }
