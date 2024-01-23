@@ -60,6 +60,11 @@ const router = createRouter({
       component: FanMeetingView,
       props: (route) => ({ username: route.params.username }),
     },
+    {
+      path: '/test/meeting/CreateMeetingView',
+      name: 'CreateMeetingView',
+      component: () => import('@/views/Meeting/CreateMeetingView.vue'),
+    }
   ]
 })
 
