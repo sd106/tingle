@@ -10,6 +10,22 @@ import hotstar from '@/static/data/hotstar.json'
 import allstar from '@/static/data/allstar.json'
 // 
 
+
+// 세트로 id 이름 사진 그정도 저장 해두기?
+// const usernameState = ref(null)
+
+// const isLogin = computed(() => {
+//   if (usernameState.value === null) {
+//     return false
+//   } else {
+//     return true
+//   }
+// })
+
+const isLogin = ref(false)
+
+
+
 export const useUserStore = defineStore('user', () => {
 
   const router = useRouter()
@@ -45,36 +61,36 @@ export const useUserStore = defineStore('user', () => {
     }
   };
 
-  // 로그인 인터셉터??
+
   const logIn = async function (payload: LogIn): Promise<void> {
     const { username, password } = payload;
 
     try {
       const response = await axios
-      
-      .post(`${API_URL}/users/login`, {
-        username,
-        password
-      },{
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json', // 'Context-Type'을 'Content-Type'으로 수정
-        }
-      })
-      .then((res) => {
-        const { data } = res
-        console.log(res.status)
-        if (res.status === 200) {
+
+        .post(`${API_URL}/users/login`, {
+          username,
+          password
+        }, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json', // 'Context-Type'을 'Content-Type'으로 수정
+          }
+        })
+        .then((res) => {
+          const { data } = res
+          console.log(res.status)
+          if (res.status === 200) {
             const name = data.username
             const role = data.role
             const mail = data.email
             console.log(name)
             console.log(role)
             console.log(mail)
+          }
         }
-      }
 
-      )
+        )
       console.log(response);
       console.log(payload);
       window.alert('로그인성공!');
@@ -100,7 +116,7 @@ export const useUserStore = defineStore('user', () => {
     signUp, logIn, logOut,
     //
     hotstarinfo, getStarInfo,
-    allstarinfo,
+    allstarinfo, isLogin,
     //
     isSidebarOpen,
   }
