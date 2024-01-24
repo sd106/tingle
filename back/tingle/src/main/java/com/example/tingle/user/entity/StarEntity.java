@@ -1,18 +1,17 @@
 package com.example.tingle.user.entity;
 
-import com.example.tingle.follow.entity.Follow;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-
-@Entity(name = "users")
+@Entity(name = "stars")
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity {
+public class StarEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,7 +19,6 @@ public class UserEntity {
     @Column(unique = true)
     private String username;
     private String password;
-
     private String picture;
 
     @Enumerated(EnumType.STRING)
@@ -33,7 +31,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String email;
 
-    public UserEntity update(String name, String picture) {
+    public StarEntity update(String name, String picture) {
         this.username = name;
         this.picture = picture;
         return this;
@@ -42,9 +40,4 @@ public class UserEntity {
     public String getRoleKey() {
         return this.role.getKey();
     }
-
-    @OneToMany(mappedBy = "userEntity")
-    private Set<Follow> followingStars = new HashSet<>();
-
-
 }
