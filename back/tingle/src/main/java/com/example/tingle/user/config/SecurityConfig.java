@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .rememberMe(AbstractHttpConfigurer::disable)
 //                .cors((auth) -> auth.configure(http))
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/","/logout","/login","/users/login", "/signUp", "/users/new", "/oauth").permitAll()
+                        .requestMatchers("/**","/logout","/login","/users/login", "/signUp", "/users/new", "/oauth").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/my/**").hasAnyRole("ADMIN", "FAN", "STAR")
                         .anyRequest().authenticated())

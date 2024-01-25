@@ -1,7 +1,8 @@
 package com.example.tingle.user.config.oauth;
 
-import com.example.tingle.entity.Role;
-import com.example.tingle.entity.UserEntity;
+
+import com.example.tingle.user.entity.Role;
+import com.example.tingle.user.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
