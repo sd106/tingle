@@ -1,18 +1,23 @@
 package com.example.tingle.store.controller;
 
+import com.example.tingle.common.ResultDTO;
+import com.example.tingle.store.dto.OrderDto;
 import com.example.tingle.store.dto.ProductDto;
 import com.example.tingle.store.entity.ProductEntity;
 import com.example.tingle.store.repository.OrderRepository;
 import com.example.tingle.store.repository.ProductRepository;
-import com.example.tingle.store.service.OrderProcess;
+import com.example.tingle.store.service.OrderService;
 import com.example.tingle.store.service.ProductService;
+import com.example.tingle.store.service.impl.ProductServiceImpl;
 import com.example.tingle.user.entity.StarEntity;
 import com.example.tingle.user.repository.StarRepository;
 import com.example.tingle.user.repository.UserRepository;
+import com.example.tingle.user.service.impl.StarServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,28 +25,24 @@ import java.util.stream.Collectors;
 @RestController
 public class StarProductController {
 
-    private final ProductRepository productRepository;
-    private final StarRepository starRepository;
-    private final ProductService productService;
+    private final ProductServiceImpl productService;
+    private final StarServiceImpl starService;
 
     @Autowired
-    public StarProductController(ProductRepository productRepository,
-                                 OrderRepository orderRepository,
-                                 OrderProcess orderProcess,
-                                 StarRepository starRepository,
-                                 UserRepository userRepository,
-                                 ProductService productService) {
-        this.productRepository = productRepository;
-        this.starRepository = starRepository;
+    public StarProductController(ProductServiceImpl productService,
+                                 StarServiceImpl starService) {
         this.productService = productService;
+        this.starService = starService;
     }
+
+
 
 
     //  http://localhost:8080/createProduct
     @PostMapping("/createProduct")
     public String createProduct(@RequestBody ProductDto productDto) { //(@RequestBody http json으로 받음
 
-        StarEntity starEntity = starRepository.findByUsername(productDto.getStarName());
+        StarEntity starEntity = starService.findByUsername(productDto.getStarName());
         if (starEntity != null) {
             System.out.println("productDto.getName() = " + productDto.getName());
             ProductEntity productEntity = ProductEntity.builder()
@@ -54,7 +55,7 @@ public class StarProductController {
                     .content(productDto.getContent())
                     .available(true)
                     .build();
-            productRepository.save(productEntity);
+            productService.save(productEntity);
             return "create!!!!!!@@@@";
         } else {
             // starEntity가 null인 경우에 대한 예외를 던짐
@@ -67,9 +68,9 @@ public class StarProductController {
     @PostMapping("/deleteProduct/{productId}")
     public String deleteProduct(@PathVariable Long productId) {
         // 해당 ID에 해당하는 Product를 삭제
-        Optional<ProductEntity> product = productRepository.findById(productId);
+        Optional<ProductEntity> product = productService.findById(productId);
         if (product.isPresent()) {
-            productRepository.deleteById(productId);
+            productService.deleteById(productId);
             return "delete!!!!";
         }
 //        productRepository.deleteById(productId);
@@ -83,7 +84,7 @@ public class StarProductController {
     public String updateProduct(@PathVariable Long productId, @RequestBody ProductDto updatedProductDto) {
         // 특정 ID에 해당하는 Product 조회
         System.out.println("productId = " + productId);
-        Optional<ProductEntity> optionalProductEntity = productRepository.findById(productId);
+        Optional<ProductEntity> optionalProductEntity = productService.findById(productId);
 
         if (optionalProductEntity.isPresent()) {
             // 기존 Product 엔터티를 가져옴
@@ -98,7 +99,7 @@ public class StarProductController {
             existingProductEntity.setAvailable(updatedProductDto.isAvailable());
 
             // 수정된 내용을 저장
-            productRepository.save(existingProductEntity);
+            productService.save(existingProductEntity);
 
             return "update!!!!!!!!!!";
         } else {
@@ -107,33 +108,34 @@ public class StarProductController {
     }
 
 
-    // 특정 상품 조회
-    // http://localhost:8080/getProductsByStar?productId=상품 Id
-//    @GetMapping("/getProductById")
-//    public ResponseEntity<ProductEntity> getProductById(@RequestParam Long productId) {
-//        Optional<ProductEntity> productEntity = productRepository.findById(productId);
-//        return productEntity.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-//    }
     @GetMapping("/getProductById/{productId}")
-    public ResponseEntity<ProductDto> getProductById(@PathVariable Long productId) {
-        Optional<ProductEntity> productEntity = productRepository.findById(productId);
+    public ResultDTO<ProductDto> getProductById(@PathVariable Long productId) {
+        Optional<ProductEntity> productEntity = productService.findById(productId);
         if (productEntity.isPresent()) {
             ProductDto productDto = ProductDto.convertToDto(productEntity.get());
-            return ResponseEntity.ok(productDto);
+            return ResultDTO.of("SUCCESS", "상품 상세 조회 성공",productDto);
         } else {
-            return ResponseEntity.notFound().build();
+            return ResultDTO.of("NOT_FOUND", "상품을 찾을 수 없음", new ProductDto());
         }
     }
 
-    // 스타의 모든 상품 조회 ->
-    // http://localhost:8080/getProductsByStarName/{}  =스타이름
     @GetMapping("/getProductsByStarName/{starName}")
-    public List<ProductDto> getProductsByStarName(@PathVariable String starName) {
-        List<ProductEntity> products = productRepository.findByStarName(starName);
+    public ResultDTO<List<ProductDto>> getProductsByStarName(@PathVariable String starName) {
+        List<ProductEntity> products = productService.findByStarName(starName);
 
-        return products.stream()
-                .map(productService::mapToDTO)
-                .collect(Collectors.toList());
+        if (!products.isEmpty()) {
+            // ProductEntity 리스트를 ProductDto 리스트로 변환
+            List<ProductDto> productDtos = products.stream()
+                    .map(productService::mapToDTO)
+                    .collect(Collectors.toList());
+
+            // 성공적인 결과를 ResultDTO로 래핑하여 반환
+            return ResultDTO.of("SUCCESS", "스타의 상품 목록 조회 성공", productDtos);
+        } else {
+            // 스타의 상품이 없는 경우 빈 리스트를 ResultDTO로 반환
+            return ResultDTO.of("NOT_FOUND", "스타의 상품이 없음", new ArrayList<>());
+        }
     }
+
 
 }

@@ -4,19 +4,21 @@ import com.example.tingle.store.dto.ProductDto;
 import com.example.tingle.store.entity.ProductEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
-public class ProductService {
+public interface ProductService {
 
 
-    public ProductDto mapToDTO(ProductEntity productEntity) {
-        ProductDto productDTO = new ProductDto();
-        productDTO.setName(productEntity.getName());
-        productDTO.setAmount(productEntity.getAmount());
-        productDTO.setPrice(productEntity.getPrice());
-        productDTO.setImageUrl(productEntity.getImageUrl());
-        productDTO.setContent(productEntity.getContent());
-        productDTO.setAvailable(productEntity.isAvailable());
-        return productDTO;
-    }
+
+    ProductDto mapToDTO(ProductEntity productEntity);
+    Optional<ProductEntity> findById(Long productId);
+
+    void save(ProductEntity productEntity);
+
+    void deleteById(Long productId);
+
+    List<ProductEntity> findByStarName(String starName);
 
 }
