@@ -1,6 +1,7 @@
 package com.example.tingle.fanMeeting.controller;
 
 import com.example.tingle.fanMeeting.dto.request.CreateFanMeetingRequest;
+import com.example.tingle.fanMeeting.dto.response.GetFanMeetingInfoResponse;
 import com.example.tingle.fanMeeting.entity.FanMeeting;
 import com.example.tingle.fanMeeting.entity.FanMeetingType;
 import com.example.tingle.fanMeeting.service.FanMeetingService;
@@ -28,5 +29,10 @@ public class FanMeetingController {
         return fanMeetingService.createFanMeeting(request);
     }
 
+    @GetMapping("/info/{starName}")
+    public GetFanMeetingInfoResponse getFanMeetingInfo(@PathVariable String starName) {
+        System.out.println("getFanMeetingInfo");
+        return fanMeetingService.getFanMeetingInfo(starName);
+    }
 
 }

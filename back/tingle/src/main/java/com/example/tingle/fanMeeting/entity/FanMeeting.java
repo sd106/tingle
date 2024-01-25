@@ -24,9 +24,11 @@ public class FanMeeting {
     private String description;
     private Integer capacity;
     private Integer price;
+    private String imgURL;
     private LocalDateTime ticketingStartAt;
     private LocalDateTime ticketingEndAt;
     private LocalDateTime fanMeetingStartAt;
+    private Boolean isFinished;
 
     @OneToMany
     private List<FanMeetingType> availableFanMeetingTypes;
