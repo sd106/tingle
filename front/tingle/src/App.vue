@@ -62,10 +62,10 @@ onMounted(() => {
 }
 
 main {
-  margin-top: 66px;
 }
 
 .content {
+  margin-top: 66px;
   margin-left: 64px;
   margin-right: 64px;
   transition: none;

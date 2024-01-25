@@ -1,0 +1,70 @@
+<template>
+  <main class="container">
+    <h1>팬미팅</h1>
+    <div>
+      <RouterLink :to="`/profile/${username}/home`">Home</RouterLink> |
+      <RouterLink :to="`/profile/${username}/snapshot`">Snapshot</RouterLink> |
+      <RouterLink :to="`/profile/${username}/wish`">Wish</RouterLink> |
+      <RouterLink :to="`/profile/${username}/store`">Store</RouterLink> |
+      <RouterLink :to="`/profile/${username}/fanmeeting`">Fanmeeting</RouterLink>
+    </div>
+    
+    <section v-if="fanMeetingInfo && fanMeetingInfo.status === 'ticketing'" class="pt-5">
+      <TicketingVue :fanMeetingInfo="fanMeetingInfo"></TicketingVue>
+    </section>
+
+    <section v-else-if="fanMeetingInfo && fanMeetingInfo.status === 'open'" class="pt-5">
+      <OpenVue :fanMeetingInfo="fanMeetingInfo"></OpenVue>
+    </section>
+
+    <section v-else class="pt-5 text-center">
+      <ClosedVue></ClosedVue>
+    </section>
+
+  </main>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { RouterLink, RouterView } from 'vue-router'
+import axios from 'axios'
+import type { FanMeetingInfo } from '@/common/types/index'
+import TicketingVue from '@/components/StarMenu/FanMeeting/Ticketing.vue'
+import OpenVue from '@/components/StarMenu/FanMeeting/Open.vue'
+import ClosedVue from '@/components/StarMenu/FanMeeting/Closed.vue'
+
+const props = defineProps(['username'])
+const name = ref('')
+name.value = props.username
+
+const fanMeetingInfo = ref<FanMeetingInfo>()
+
+fanMeetingInfo.value = 
+{
+  "id": 1,
+  "status": "ticketing",
+  "name": "제 1회 르브론 팬미팅",
+  "description": "모두 모여라!",
+  "ticketingStartAt": "2024-01-25 14:41:00",
+  "ticketingEndAt": "2024-01-26 14:41:00",
+  "fanMeetingStartAt": "2024-01-27 02:41:00",
+  "price": 10000,
+  "imgURL": '/image/fan-meeting-img.webp',
+}
+
+
+const getFanMeetingInfo =async () => {
+  try {
+    const response = await axios.get(`http://localhost:8080/fanMeeting/info/${props.username}`)
+    fanMeetingInfo.value = response.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+
+onMounted(() => {
+  // getFanMeetingInfo()
+})
+</script>

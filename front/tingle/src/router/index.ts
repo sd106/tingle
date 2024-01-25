@@ -8,7 +8,7 @@ import ProfileView from '@/views/User/ProfileView.vue'
 import SnapshotView from '@/views/StarMenu/SnapshotView.vue'
 import WishView from '@/views/StarMenu/WishView.vue'
 import StoreView from '@/views/StarMenu/StoreView.vue'
-import FanMeetingView from '@/views/StarMenu/FanMeetingView.vue'
+import FanMeetingView from '@/views/StarMenu/FanMeeting/FanMeetingEntranceView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,7 +63,7 @@ const router = createRouter({
     {
       path: '/test/meeting/CreateMeetingView',
       name: 'CreateMeetingView',
-      component: () => import('@/views/Meeting/CreateMeetingView.vue'),
+      component: () => import('@/views/StarMenu/FanMeeting/CreateFanMeetingView.vue'),
     }
   ]
 })

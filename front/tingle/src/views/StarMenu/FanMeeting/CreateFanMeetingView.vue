@@ -37,7 +37,7 @@
                         <label class="form-label">입장권 구매 시작</label>
                     </div>
                     <div class="col-md-8 d-flex">
-                        <VueDatePicker v-model="meeting.ticketStartDate" :locale="locale" :time-picker-inline="true" :is-24="false"></VueDatePicker>
+                        <VueDatePicker v-model="meeting.ticketStartDate" locale="ko" :time-picker-inline="true" :is-24="false"></VueDatePicker>
                     </div>
                 </div>
                 <div class="row mb-2">
@@ -45,7 +45,7 @@
                         <label class="form-label">입장권 구매 종료</label>
                     </div>
                     <div class="col-md-8 d-flex">
-                        <VueDatePicker v-model="meeting.ticketEndDate" :locale="locale" :time-picker-inline="true" :is-24="false"></VueDatePicker>
+                        <VueDatePicker v-model="meeting.ticketEndDate" locale="ko" :time-picker-inline="true" :is-24="false"></VueDatePicker>
                     </div>
                 </div>
                 <div class="row">
@@ -53,7 +53,7 @@
                         <label class="form-label">팬미팅 시작</label>
                     </div>
                     <div class="col-md-8 d-flex mb-4">
-                        <VueDatePicker v-model="meeting.startDate" :locale="locale" :time-picker-inline="true" :is-24="false"></VueDatePicker>
+                        <VueDatePicker v-model="meeting.startDate" locale="ko" :time-picker-inline="true" :is-24="false"></VueDatePicker>
                     </div>
                 </div>
             </div>
@@ -80,32 +80,20 @@
         </div>
     </main>
 
+    <button @click="c">ddd</button>
+
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, onMounted } from 'vue'
 import VueDatePicker from '@vuepic/vue-datepicker'  // https://vuepic.github.io/vue-datepicker/
 import '@vuepic/vue-datepicker/dist/main.css'  // https://vue3datepicker.com/
-import { ko } from 'date-fns/locale'
+import axios from 'axios'
+import type { Meeting, Content } from '@/common/types/index'
 
-
-interface Content {
-    name: string
-}   
-
-interface Meeting {
-    name: string;
-    ticketStartDate: Date | null 
-    ticketEndDate: Date | null
-    startDate: Date | null
-    participants: number
-    price: number
-    contents: string[]
-}
 
 const props = defineProps(['username']);
 const name = ref('')
-const locale = reactive(ko)
 name.value = props.username
 
 let meeting = ref<Meeting>({
@@ -134,13 +122,7 @@ const toggleContent = (content: Content) => {
 }
 
 
-const allContents = ref([
-    { name: '인생네컷' },
-    { name: '테트리스' },
-    { name: '자유대화' },
-    { name: '컨텐츠4' },
-    { name: '컨텐츠5' }
-])
+const allContents = ref<Content[]>([])
 
 const isSelected = (content: Content) => {
         return meeting.value.contents.includes(content.name);
@@ -148,8 +130,30 @@ const isSelected = (content: Content) => {
 
 const submit = () => {
     // Submit the meeting
+    axios.post('http://localhost:8080/fanMeeting', meeting.value)
     console.log(meeting.value)
 }
+
+const loadContents = async () => {
+    // Load contents from server
+    const { data }  = await axios.get('http://localhost:8080/fanMeeting/types')
+    
+    console.log(data)
+    allContents.value = data
+
+
+
+
+}
+
+
+const c = () => {
+    console.log(meeting.value.startDate)
+}
+
+onMounted(() => {
+    loadContents()
+})
 </script>
 
 <style scoped>
