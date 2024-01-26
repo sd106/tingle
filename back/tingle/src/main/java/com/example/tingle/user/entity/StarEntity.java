@@ -52,6 +52,7 @@ public class StarEntity {
         this.picture = picture;
         return this;
     }
+
     public String getRoleKey() {
         return this.role.getKey();
     }

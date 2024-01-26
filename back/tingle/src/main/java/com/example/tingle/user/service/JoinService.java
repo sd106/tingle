@@ -4,17 +4,20 @@ import com.example.tingle.user.dto.JoinDto;
 import com.example.tingle.user.entity.Role;
 import com.example.tingle.user.entity.StarEntity;
 import com.example.tingle.user.repository.StarRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JoinService {
 
-    @Autowired
-    private StarRepository starRepository;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final StarRepository starRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public JoinService(StarRepository starRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.starRepository = starRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
     public void joinProcess(JoinDto joinDTO) {
 
         //db에 이미 동일한 이름을 가진 회원이 존재하는가?

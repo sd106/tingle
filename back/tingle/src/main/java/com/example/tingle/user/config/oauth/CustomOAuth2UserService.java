@@ -1,4 +1,5 @@
 package com.example.tingle.user.config.oauth;
+
 import com.example.tingle.user.config.oauth.provider.GoogleUserInfo;
 import com.example.tingle.user.config.oauth.provider.NaverUserInfo;
 import com.example.tingle.user.config.oauth.provider.OAuth2UserInfo;
