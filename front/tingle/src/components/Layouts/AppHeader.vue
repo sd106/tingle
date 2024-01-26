@@ -19,9 +19,8 @@
                 </button>
             </form>
             <!-- 로그인 유무로 보이기 -->
-            <RouterLink v-if="!store.isLogin" @click="loginTemp" to="/signUp" class="router-link-custom">Signup</RouterLink>
-            |
-            <RouterLink v-if="!store.isLogin" to="/logIn" class="router-link-custom">Login</RouterLink>|
+            <RouterLink v-if="!store.isLogin" to="/signUp" class="router-link-custom">Signup</RouterLink>
+            <RouterLink v-if="!store.isLogin" @click="loginTemp" to="/logIn" class="router-link-custom">Login</RouterLink>
             <span v-if="store.isLogin" @click="logOut" style="cursor: pointer;">Logout</span>
 
 
@@ -118,10 +117,6 @@ watch(() => store.isSidebarOpen, (newValue) => {
 .router-link-custom {
     color: inherit;
     text-decoration: none;
-}
-
-.router-link-custom:hover {
-    background-color: #dddddd;
 }
 
 .search-box {
