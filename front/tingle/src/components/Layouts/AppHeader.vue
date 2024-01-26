@@ -19,32 +19,24 @@
                 </button>
             </form>
             <!-- 로그인 유무로 보이기 -->
-            <<<<<<< HEAD <RouterLink v-if="!store.isLogin" to="/signUp" class="router-link-custom">Signup</RouterLink>
-                <RouterLink v-if="!store.isLogin" @click="loginTemp" to="/logIn" class="router-link-custom">Login
-                </RouterLink>
-                <span v-if="store.isLogin" @click="logOut" style="cursor: pointer;">Logout</span>
-                =======
-                <RouterLink v-if="!store.isLogin" @click="loginTemp" to="/signUp" class="router-link-custom">Signup
-                </RouterLink>
-                |
-                <RouterLink v-if="!store.isLogin" to="/logIn" class="router-link-custom">Login</RouterLink>|
-                <span v-if="store.isLogin" @click="logOut" style="cursor: pointer;">Logout</span>
-
-                >>>>>>> ffb8c375270e5539807d5992784995d156a2ced5
-                <!-- 사용자 프로필 사진 > 모달로 메뉴 -->
-                <div class="dropdown dropstart">
-                    <div class="dropdown-toggle user-image" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <!-- 사용자 프로필 사진으로 대체 -->
-                        <img class="" src="/image/titan.webp" alt="" style="height: 50px;">
-                    </div>
-                    <ul class="dropdown-menu">
-                        <!-- 간편 메뉴 넣기 -->
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
+            <RouterLink v-if="!store.isLogin" to="/signUp" class="router-link-custom">Signup</RouterLink>
+            <RouterLink v-if="!store.isLogin" @click="loginTemp" to="/logIn" class="router-link-custom">Login
+            </RouterLink>
+            <span v-if="store.isLogin" @click="logOut" style="cursor: pointer;">Logout</span>
+            <!-- 사용자 프로필 사진 > 모달로 메뉴 -->
+            <div class="dropdown dropstart">
+                <div class="dropdown-toggle user-image" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <!-- 사용자 프로필 사진으로 대체 -->
+                    <img class="" src="/image/titan.webp" alt="" style="height: 50px;">
                 </div>
+                <ul class="dropdown-menu">
+                    <!-- 간편 메뉴 넣기 -->
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
 
         </div>
     </nav>
