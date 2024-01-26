@@ -76,19 +76,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         }
         // Authentication 안에 들어감
         return new CustomUserDetails(userEntity, oAuth2User.getAttributes());
-
-//        String registrationId = userRequest.getClientRegistration().getRegistrationId();
-//        String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
-//
-//        OAuthAttribute attributes = OAuthAttribute.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
-//
-//        UserEntity user = saveOrUpdate(attributes);
-//
-//        httpSession.setAttribute("user", new SessionUser(user));
-//
-//        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
-//                attributes.getAttributes(),
-//                attributes.getNameAttributeKey());
     }
 
     private UserEntity saveOrUpdate(OAuthAttribute attributes) {
