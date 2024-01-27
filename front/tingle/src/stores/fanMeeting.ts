@@ -18,8 +18,12 @@ export const useFanMeetingStore = defineStore('fanMeeting', () => {
         }
         return new Date(dateTimeStr).toLocaleString('ko-KR', options)
     }
-
+    
+    const goPage = (pageName: string) => {
+        router.push({ name: pageName })
+    }
   return {
     formatDateTime,
+    goPage
   }
 })

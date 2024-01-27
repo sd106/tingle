@@ -1,3 +1,5 @@
+import type { StringDecoder } from "string_decoder";
+
 interface SignUp {
     username: string;
     password: string;
@@ -41,8 +43,16 @@ interface FanMeetingInfo {
     imgURL: string
 }
 
+interface FanMeetingTicket {
+    id: number
+    image: string
+    name: string
+    description: string
+    price: number
+}
+
 export type {
     SignUp, LogIn,
     Star, 
-    FanMeetingContent, FanMeeting, FanMeetingInfo
+    FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket
 }

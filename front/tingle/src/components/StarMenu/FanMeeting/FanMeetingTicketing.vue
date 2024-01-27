@@ -13,7 +13,7 @@
 
                 <div class="text-center mt-4">
                     <div class="d-grid gap-2 col-6 mx-auto">
-                        <button class="btn btn-secondary btn-lg">
+                        <button class="btn btn-secondary btn-lg" @click="goTicketBox">
                             팬미팅 입장권 구매
                         </button>
                     </div>
@@ -38,6 +38,9 @@ const props = defineProps({
 
 const store = useFanMeetingStore()
 
+const goTicketBox = () => {
+    store.goPage('FanMeetingTicketBoxView')
+} 
 
 </script>
 

@@ -10,15 +10,15 @@
     </div>
     
     <section v-if="fanMeetingInfo && fanMeetingInfo.status === 'ticketing'" class="pt-5">
-      <TicketingVue :fanMeetingInfo="fanMeetingInfo"></TicketingVue>
+      <FanMeetingTicketing :fanMeetingInfo="fanMeetingInfo"></FanMeetingTicketing>
     </section>
 
     <section v-else-if="fanMeetingInfo && fanMeetingInfo.status === 'open'" class="pt-5">
-      <OpenVue :fanMeetingInfo="fanMeetingInfo"></OpenVue>
+      <FanMeetingOpen :fanMeetingInfo="fanMeetingInfo"></FanMeetingOpen>
     </section>
 
     <section v-else class="pt-5 text-center">
-      <ClosedVue></ClosedVue>
+      <FanMeetingClosed></FanMeetingClosed>
     </section>
 
   </main>
@@ -26,12 +26,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import axios from 'axios'
 import type { FanMeetingInfo } from '@/common/types/index'
-import TicketingVue from '@/components/StarMenu/FanMeeting/Ticketing.vue'
-import OpenVue from '@/components/StarMenu/FanMeeting/Open.vue'
-import ClosedVue from '@/components/StarMenu/FanMeeting/Closed.vue'
+import FanMeetingOpen from '@/components/StarMenu/FanMeeting/FanMeetingOpen.vue';
+import FanMeetingTicketing from '@/components/StarMenu/FanMeeting/FanMeetingTicketing.vue';
+import FanMeetingClosed from '@/components/StarMenu/FanMeeting/FanMeetingClosed.vue';
 
 const props = defineProps(['username'])
 const name = ref('')
@@ -53,7 +53,7 @@ fanMeetingInfo.value =
 }
 
 
-const getFanMeetingInfo =async () => {
+const getFanMeetingInfo = async () => {
   try {
     const response = await axios.get(`http://localhost:8080/fanMeeting/info/${props.username}`)
     fanMeetingInfo.value = response.data
@@ -61,7 +61,6 @@ const getFanMeetingInfo =async () => {
     console.log(error)
   }
 }
-
 
 
 onMounted(() => {
