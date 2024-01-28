@@ -20,10 +20,7 @@ import com.example.tingle.user.service.impl.StarServiceImpl;
 import com.example.tingle.user.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +28,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/order")
 public class StarOrderController {
     private final ProductServiceImpl productService;
     private final OrderServiceImpl orderService;
@@ -53,26 +51,31 @@ public class StarOrderController {
 
     // 주문 생성, 상품의 수량이 0일시 주문 불가능.
     // http://localhost:8080/createOrder/2/7
-    @PostMapping("/createOrder/{userId}/{productId}/{starName}")
+    @PostMapping("/create/{userId}/{productId}/{starName}")
     public String createOrder(@PathVariable Integer userId, @PathVariable Long productId, @PathVariable String starName) {
         // 주문한 사용자와 상품을 조회
         Optional<UserEntity> optionalUserEntity = userService.findById(userId);
         Optional<ProductEntity> optionalProductEntity = productService.findById(productId);
         StarEntity starEntity = starService.findByUsername(starName);
 
-        if (optionalUserEntity.isPresent() && optionalProductEntity.isPresent()) {
-            // 주문 엔터티 생성
-            if (orderService.processOrder(optionalProductEntity.get().getId(),
-                    optionalUserEntity.get().getId(), starEntity.getUsername())) {
-                return "Order create@!@!@!@!";
+        if (optionalProductEntity.isPresent()) {
+            int amount = optionalProductEntity.get().getAmount();
+            if (amount > 0) {
+                if (optionalUserEntity.isPresent()) {
+                    // 주문 엔터티 생성
+                    if (orderService.processOrder(optionalProductEntity.get().getId(),
+                            optionalUserEntity.get().getId(), starEntity.getUsername())) {
+                        return "SUCCESS";
+                    }
+                }
             }
         }
-        return "Order Faild TTTTTT";
+        return "FAIL";
     }
 
 
     //http://localhost:8080/deleteOrder/6
-    @PostMapping("/deleteOrder/{orderId}")
+    @PostMapping("/delete/{orderId}")
     public String deleteOrder(@PathVariable Long orderId) {
         Optional<OrderEntity> order = orderService.findById(orderId);
         Long starId = order.get().getGoods().getStarId().getId();
@@ -81,14 +84,14 @@ public class StarOrderController {
         if (order.isPresent()) {
             orderService.deleteById(orderId);
             orderService.deleteOrderFromStar(starId, orderId);
-            return "delete complete!!!!!!!@@@@@";
+            return "SUCCESS";
         }
 
-        return "없는데 어떻게 지워요;;";
+        return "FAIL";
     }
 
     //http://localhost:8080/getOrderByStarName/test02
-    @GetMapping("getOrderByStarName/{starName}")
+    @GetMapping("/getByStarName/{starName}")
     public ResultDTO<List<OrderDto>> getOrderByStarName(@PathVariable String starName) {
         StarEntity star = starService.findByUsername(starName);
 
@@ -118,7 +121,7 @@ public class StarOrderController {
     }
 
 
-    @GetMapping("/getOrderInfo/{orderId}")
+    @GetMapping("/getById/{orderId}")
     public ResultDTO<OrderDto> getOrderInfo(@PathVariable Long orderId) {
         Optional<OrderEntity> orderEntityOptional = orderService.findById(orderId);
 

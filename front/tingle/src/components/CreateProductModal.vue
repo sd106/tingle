@@ -51,11 +51,22 @@
             </div>
         </div>
     </div>
+
+  <div>
+    <input type="file" @change="handleFileUpload" />
+    <button @click="submitFile">Upload File</button>
+    <br>
+    <input type="text" v-model="fileName" placeholder="삭제할 파일 이름을 입력하세요" />
+    <button @click="deleteFile">Delete File</button>
+  </div>
+
 </template>
 
 <script setup lang="ts">
 
 import { ref } from 'vue';
+import axios from 'axios';
+
 
 const imagePreview = ref(""); // 이미지 미리보기를 위한 변수
 
@@ -76,6 +87,63 @@ const previewImage = (event) => {
     }
 }
 
+
+// 파일 업로드 POST
+
+const selectedFile = ref<File | null>(null);
+
+function handleFileUpload(event: Event) {
+  const input = event.target as HTMLInputElement;
+  if (input.files) {
+    selectedFile.value = input.files[0];
+  }
+}
+
+async function submitFile() {
+  if (!selectedFile.value) {
+    alert('파일을 선택해주세요.');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('file', selectedFile.value);
+
+  try {
+    const response = await axios.post('http://localhost:8080/s3/upload', formData);
+    alert('업로드 성공: ' + response.data);
+  } catch (error) {
+    console.error(error);
+    alert('업로드 실패');
+  }
+}
+
+//파일 삭제 DELETE
+
+const fileName = ref('');
+
+const deleteFile = async () => {
+  if (!fileName.value) {
+    alert('파일 이름을 입력해주세요.');
+    return;
+  }
+
+  try {
+    const encodedFileName = encodeURIComponent(fileName.value);
+    const response = await axios.delete(`http://localhost:8080/s3/delete/${encodedFileName}`);
+    alert('삭제 성공: ' + response.data);
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      // 서버로부터의 응답 메시지가 있는 경우
+      alert('삭제 실패: ' + error.response.data);
+    } else {
+      // 서버로부터의 응답이 없는 경우 (네트워크 오류 등)
+      alert('삭제 실패');
+    }
+    console.error(error);
+  }
+};
+
+
 </script>
 
 <style scoped>
@@ -83,6 +151,5 @@ const previewImage = (event) => {
     width: 200px; /* 원하는 가로 크기로 설정 */
     height: auto; /* 자동으로 세로 크기 계산 */
 }
-
 
 </style>
