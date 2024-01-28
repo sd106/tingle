@@ -30,7 +30,7 @@ onMounted(() => {
 <style>
 .star-card {
   display: flex;
-  height: 60px;
+  height: 50px;
   align-items: center;
   margin: 1px;
   border-radius: 10px;
@@ -56,6 +56,23 @@ onMounted(() => {
   object-fit: cover;
 }
 
+.arrow-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 7px;
+  margin-bottom: 3px;
+}
+
+.arrow-image img {
+  width: 55%;
+  height: 55%;
+  object-fit: cover;
+}
+
 .offcanvas {
   transition: none;
   /* 애니메이션을 없애는 스타일 */
@@ -65,7 +82,7 @@ main {
 }
 
 .content {
-  margin-top: 66px;
+  margin-top: 71px;
   margin-left: 64px;
   margin-right: 64px;
   transition: none;
@@ -76,3 +93,4 @@ main {
   margin-right: 64px;
 }
 </style>
+ 
