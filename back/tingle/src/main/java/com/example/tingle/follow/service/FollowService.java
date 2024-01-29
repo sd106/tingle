@@ -10,7 +10,8 @@ public interface FollowService {
 
     ArrayList<FollowReadRequest> getFollowList(Long userId) throws Exception;
 
-    FollowDto insertFollow(Long userId, Long starId) throws Exception;
+    Follow insertFollow(Long userId, Long starId) throws Exception;
 
+    boolean deleteFollow(Long userId, Long starId) throws Exception;
 
 }

@@ -18,7 +18,7 @@ public class FollowReadRequest {
 
     public static FollowReadRequest toDto(Follow follow) {
         return new FollowReadRequest(
-                follow.getId(),
+                follow.getStarEntity().getId(),
                 follow.getStarEntity().getPicture(),
                 follow.getStarEntity().getUsername()
         );
