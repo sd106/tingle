@@ -1,18 +1,15 @@
-package com.example.tingle.snapshot.dto;
+package com.example.tingle.snapshot.dto.response;
 
 import com.example.tingle.user.entity.StarEntity;
 import com.example.tingle.user.entity.UserEntity;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Setter
-public class SnapShotDto {
+public class SnapShotResponse {
 
     private String imageUrl;
 

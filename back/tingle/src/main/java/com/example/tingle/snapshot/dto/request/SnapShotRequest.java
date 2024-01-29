@@ -1,7 +1,5 @@
-package com.example.tingle.snapshot.dto;
+package com.example.tingle.snapshot.dto.request;
 
-import com.example.tingle.user.entity.StarEntity;
-import com.example.tingle.user.entity.UserEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,12 +7,16 @@ import java.util.List;
 
 @Getter
 @Setter
-public class SnapShotCreateDto {
+public class SnapShotRequest {
 
     private String imageUrl;
 
     private String content;
 
     private List<String> tags;
+
+    private String username;
+
+    private String starname;
 
 }

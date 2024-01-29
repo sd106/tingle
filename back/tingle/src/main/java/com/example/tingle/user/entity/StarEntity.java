@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "stars")
+@Entity(name = "star")
 @Getter
 @Builder
 @AllArgsConstructor

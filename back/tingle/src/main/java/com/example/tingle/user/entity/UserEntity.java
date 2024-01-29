@@ -3,7 +3,7 @@ package com.example.tingle.user.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity(name = "users")
+@Entity(name = "user")
 @Getter
 @Builder
 @AllArgsConstructor
