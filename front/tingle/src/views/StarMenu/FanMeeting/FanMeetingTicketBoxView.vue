@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import type { FanMeetingTicket } from '@/common/types/index'
-import { useRoute } from 'vue-router'
+import { useRoute } from 'vue-router' 
 import axios from 'axios'
 import TicketFormat from '@/components/StarMenu/FanMeeting/TicketFormat.vue'
 

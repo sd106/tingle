@@ -9,6 +9,8 @@ import SnapshotView from '@/views/StarMenu/SnapshotView.vue'
 import WishView from '@/views/StarMenu/WishView.vue'
 import StoreView from '@/views/StarMenu/StoreView.vue'
 import FanMeetingEntranceView from '@/views/StarMenu/FanMeeting/FanMeetingEntranceView.vue'
+import WaitingRoomView from '@/views/StarMenu/FanMeeting/WaitingRoomView.vue'
+import MeetingRoomView from '@/views/StarMenu/FanMeeting/MeetingRoomView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -69,6 +71,16 @@ const router = createRouter({
       path: '/profile/:username/fanmeeting/ticketbox',
       name: 'FanMeetingTicketBoxView',
       component: () => import('@/views/StarMenu/FanMeeting/FanMeetingTicketBoxView.vue'),
+    },
+    {
+      path: '/fanmeeting/:username/waitingroom',
+      name: 'WaitingRoomView',
+      component: WaitingRoomView
+    },
+    {
+      path: '/fanmeeting/:username/meetingroom',
+      name: 'MeetingRoomView',
+      component: MeetingRoomView
     }
   ]
 })

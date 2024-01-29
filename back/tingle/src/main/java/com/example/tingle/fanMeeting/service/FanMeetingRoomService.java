@@ -1,5 +1,7 @@
 package com.example.tingle.webRTC;
 
+import com.example.tingle.fanMeeting.model.MeetingRoom;
+import com.example.tingle.fanMeeting.utils.MeetingRoomMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;

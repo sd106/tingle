@@ -1,13 +1,7 @@
 <template>
   <main class="container">
     <h1>팬미팅</h1>
-    <div>
-      <RouterLink :to="`/profile/${username}/home`">Home</RouterLink> |
-      <RouterLink :to="`/profile/${username}/snapshot`">Snapshot</RouterLink> |
-      <RouterLink :to="`/profile/${username}/wish`">Wish</RouterLink> |
-      <RouterLink :to="`/profile/${username}/store`">Store</RouterLink> |
-      <RouterLink :to="`/profile/${username}/fanmeeting`">Fanmeeting</RouterLink>
-    </div>
+    <StarMenu :name="name" />
     
     <section v-if="fanMeetingInfo && fanMeetingInfo.status === 'ticketing'" class="pt-5">
       <FanMeetingTicketing :fanMeetingInfo="fanMeetingInfo"></FanMeetingTicketing>
@@ -26,12 +20,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { RouterLink } from 'vue-router'
 import axios from 'axios'
 import type { FanMeetingInfo } from '@/common/types/index'
 import FanMeetingOpen from '@/components/StarMenu/FanMeeting/FanMeetingOpen.vue';
 import FanMeetingTicketing from '@/components/StarMenu/FanMeeting/FanMeetingTicketing.vue';
 import FanMeetingClosed from '@/components/StarMenu/FanMeeting/FanMeetingClosed.vue';
+import StarMenu from '@/components/StarMenu/StarMenu.vue';
 
 const props = defineProps(['username'])
 const name = ref('')
@@ -42,7 +36,7 @@ const fanMeetingInfo = ref<FanMeetingInfo>()
 fanMeetingInfo.value = 
 {
   "id": 1,
-  "status": "ticketing",
+  "status": "open",
   "name": "제 1회 르브론 팬미팅",
   "description": "모두 모여라!",
   "ticketingStartAt": "2024-01-25 14:41:00",

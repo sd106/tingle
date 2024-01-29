@@ -60,8 +60,6 @@
 
         </div>
         
-            
-        
         <hr>
         
         <div class="text-center">컨텐츠 선택</div>
@@ -79,9 +77,6 @@
             <button @click="submit" class="btn btn-primary btn-lg">Submit</button>
         </div>
     </main>
-
-    <button @click="c">ddd</button>
-
 </template>
 
 <script setup lang="ts">
@@ -89,14 +84,14 @@ import { ref, onMounted } from 'vue'
 import VueDatePicker from '@vuepic/vue-datepicker'  // https://vuepic.github.io/vue-datepicker/
 import '@vuepic/vue-datepicker/dist/main.css'  // https://vue3datepicker.com/
 import axios from 'axios'
-import type { Meeting, Content } from '@/common/types/index'
+import type { FanMeeting, FanMeetingContent } from '@/common/types/index'
 
 
 const props = defineProps(['username']);
 const name = ref('')
 name.value = props.username
 
-let meeting = ref<Meeting>({
+let meeting = ref<FanMeeting>({
     name: '',
     ticketStartDate: null,
     ticketEndDate: null,
@@ -108,7 +103,7 @@ let meeting = ref<Meeting>({
 
 
 
-const toggleContent = (content: Content) => {
+const toggleContent = (content: FanMeetingContent) => {
     const indexInMeeting = meeting.value.contents.findIndex(c => c === content.name)
     const indexInAllContents = allContents.value.findIndex(c => c.name === content.name)
 
@@ -122,9 +117,9 @@ const toggleContent = (content: Content) => {
 }
 
 
-const allContents = ref<Content[]>([])
+const allContents = ref<FanMeeting[]>([])
 
-const isSelected = (content: Content) => {
+const isSelected = (content: FanMeetingContent) => {
         return meeting.value.contents.includes(content.name);
     };
 

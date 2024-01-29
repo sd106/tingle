@@ -12,7 +12,7 @@
                 <p>{{ store.formatDateTime(fanMeetingInfo.fanMeetingStartAt) }} ~</p>
                 <div class="text-center mt-4">
                     <div class="d-grid gap-2 col-6 mx-auto">
-                        <button class="btn btn-success btn-lg">
+                        <button @click="enterWaitingRoom" class="btn btn-success btn-lg">
                             팬미팅 입장
                         </button>
                     </div>
@@ -37,6 +37,9 @@ const props = defineProps({
 
 const store = useFanMeetingStore()
 
+const enterWaitingRoom = () => {
+    store.goPage('WaitingRoomView')
+}
 </script>
 
 <style scoped>

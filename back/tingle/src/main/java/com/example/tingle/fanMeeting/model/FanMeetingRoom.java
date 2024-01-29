@@ -1,4 +1,4 @@
-package com.example.tingle.webRTC;
+package com.example.tingle.fanMeeting.model;
 
 import lombok.*;
 import org.springframework.web.socket.WebSocketSession;
@@ -14,7 +14,6 @@ public class MeetingRoom {
 
     private Long roomId;
     private String roomName;
-    private String roomPwd;
     private int userCount;
     private int maxUserCnt;
 
