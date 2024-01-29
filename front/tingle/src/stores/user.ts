@@ -8,6 +8,12 @@ import type { SignUp, LogIn, Star } from '@/common/types/index'
 // 
 import hotstar from '@/static/data/hotstar.json'
 import allstar from '@/static/data/allstar.json'
+import yoo from '@/static/data/category/yoo.json'
+import bin from '@/static/data/category/bin.json'
+import jun from '@/static/data/category/jun.json'
+import mo from '@/static/data/category/mo.json'
+import yoon from '@/static/data/category/yoon.json'
+import oh from '@/static/data/category/oh.json'
 // 
 
 
@@ -41,9 +47,18 @@ export const useUserStore = defineStore('user', () => {
     hotstarinfo.value = hotstar
     allstarinfo.value = allstar
   }
-  // 
-  const isSidebarOpen = ref(true)
 
+  const categories: Record<string, Star[]> = {
+    '유형민': yoo,
+    '황찬준': jun,
+    '정수빈': bin,
+    '이성모': mo,
+    '윤정영': yoon,
+    '오은아': oh,
+  };
+  // 
+
+  const isSidebarOpen = ref(true)
 
   const signUp = async function (payload: SignUp): Promise<void> {
     const { username, password, email } = payload;
@@ -116,7 +131,7 @@ export const useUserStore = defineStore('user', () => {
     signUp, logIn, logOut,
     //
     hotstarinfo, getStarInfo,
-    allstarinfo, isLogin,
+    allstarinfo, isLogin, categories,
     //
     isSidebarOpen,
   }

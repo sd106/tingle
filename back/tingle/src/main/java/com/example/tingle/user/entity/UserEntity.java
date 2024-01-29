@@ -1,7 +1,13 @@
 package com.example.tingle.user.entity;
 
+import com.example.tingle.store.entity.OrderEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity(name = "user")
 @Getter
@@ -22,6 +28,12 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    //gpt
+//    @JsonManagedReference
+    @OneToMany(mappedBy = "fan")
+    private List<OrderEntity> orders;
+    //
 
     // OAuth2 로그인 때 구분한 Provider
     private String provider;

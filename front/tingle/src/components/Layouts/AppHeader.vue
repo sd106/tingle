@@ -38,7 +38,6 @@
                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                 </ul>
             </div>
-
         </div>
     </nav>
 </template>
@@ -57,10 +56,9 @@ const loginTemp = function (): void {
 
 
 const logOut = function (): void {
-    window.location.href = 'http://localhost:8080/logout'
-
     store.isLogin = false
-    // router.push({ name: 'home' })
+    window.location.href = 'http://localhost:8080/logout'
+    router.push({ name: 'home' })
 }
 
 watch(() => store.isSidebarOpen, (newValue) => {
@@ -119,10 +117,6 @@ watch(() => store.isSidebarOpen, (newValue) => {
 .router-link-custom {
     color: inherit;
     text-decoration: none;
-}
-
-.router-link-custom:hover {
-    background-color: #dddddd;
 }
 
 .search-box {

@@ -1,10 +1,14 @@
 package com.example.tingle.user.entity;
 
+import com.example.tingle.store.entity.OrderEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "star")
 @Getter
@@ -32,6 +36,15 @@ public class StarEntity {
     @Column(nullable = false)
     private String email;
 
+    // Order된 목록 추가
+//    이건 필요 없지 않을까??
+//    @JsonManagedReference
+    @OneToMany
+//    @JsonIgnore
+    @JoinColumn(name = "orders", nullable = true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private List<OrderEntity> orderEntities;
+
+
     public StarEntity update(String name, String picture) {
         this.username = name;
         this.picture = picture;
@@ -41,4 +54,13 @@ public class StarEntity {
     public String getRoleKey() {
         return this.role.getKey();
     }
+
+    public void addOrderEntity(OrderEntity orderEntity) {
+        if (orderEntities == null) {
+            orderEntities = new ArrayList<>();
+        }
+        
+        orderEntities.add(orderEntity);
+    }
+
 }
