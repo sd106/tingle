@@ -1,7 +1,6 @@
 package com.example.tingle.snapshot.service;
 
 import com.example.tingle.snapshot.dto.request.CommentRequest;
-import com.example.tingle.snapshot.dto.request.SnapShotUpdateRequest;
 import com.example.tingle.snapshot.entity.CommentEntity;
 import com.example.tingle.snapshot.entity.SnapShotEntity;
 import com.example.tingle.snapshot.repository.CommentRepository;
@@ -9,6 +8,7 @@ import com.example.tingle.snapshot.repository.SnapShotRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,6 +16,12 @@ import java.util.Optional;
 public class CommentServiceImpl implements CommentService {
     private final SnapShotRepository snapShotRepository;
     private final CommentRepository commentRepository;
+
+
+    @Override
+    public List<CommentEntity> getComment() {
+        return commentRepository.findAll();
+    }
 
     @Override
     public void createComment(CommentRequest commentRequest) {

@@ -7,11 +7,15 @@ import com.example.tingle.snapshot.entity.SnapShotEntity;
 import com.example.tingle.snapshot.entity.SnapShotTag;
 import com.example.tingle.snapshot.repository.HashTagRepository;
 import com.example.tingle.snapshot.repository.SnapShotRepository;
+import com.example.tingle.snapshot.repository.SnapShotTagRepository;
 import com.example.tingle.user.entity.StarEntity;
 import com.example.tingle.user.entity.UserEntity;
 import com.example.tingle.user.repository.StarRepository;
 import com.example.tingle.user.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,12 +23,19 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional
 public class SnapShotServiceImpl implements SnapShotService {
 
     private final SnapShotRepository snapshotRepository;
     private final HashTagRepository hashTagRepository;
+    private final SnapShotTagRepository snapShotTagRepository;
     private final UserRepository userRepository;
     private final StarRepository starRepository;
+
+    public List<SnapShotEntity> getAllSnapShot() {
+        return snapshotRepository.findAll();
+    }
 
     /**
      * @param snapshotRequest : imageUrl, content, tags
@@ -51,20 +62,17 @@ public class SnapShotServiceImpl implements SnapShotService {
                 .star(star)
                 .build();
 
+        snapshotRepository.save(snapshotEntity);
+
         // 해시태그 처리
         for (String tag : tags) {
-            boolean existedTag = hashTagRepository.existsByTag(tag);
-
             HashTagEntity hashTagEntity;
 
-            // 이미 태그가 db에 존재한다면
-            if (existedTag) {
+            if (hashTagRepository.existsByTag(tag)) {
                 hashTagEntity = hashTagRepository.findByTag(tag);
-
             } else {
-                hashTagEntity = HashTagEntity.builder()
-                        .tag(tag)
-                        .build();
+                hashTagEntity = HashTagEntity.builder().tag(tag).build();
+                hashTagRepository.save(hashTagEntity); // 새로운 HashTagEntity 저장
             }
 
             SnapShotTag snapShotTag = SnapShotTag.builder()
@@ -72,14 +80,8 @@ public class SnapShotServiceImpl implements SnapShotService {
                     .hashTagEntity(hashTagEntity)
                     .build();
 
-
-            snapshotEntity.getSnapShotTags().add(snapShotTag);
-            hashTagEntity.getSnapShotTags().add(snapShotTag);
-
-            hashTagRepository.save(hashTagEntity);
+            snapShotTagRepository.save(snapShotTag); // SnapShotTag 저장
         }
-        // SnapshotRepository에 다시 저장하여 연관 관계 업데이트
-        snapshotRepository.save(snapshotEntity);
     }
 
     @Override
@@ -89,29 +91,22 @@ public class SnapShotServiceImpl implements SnapShotService {
 
     @Override
     public Long updateSnapShot(Long snapshotId, SnapShotUpdateRequest snapShotUpdateRequest) {
-        Optional<SnapShotEntity> optSnapShot = snapshotRepository.findById(snapshotId);
-
-        if (optSnapShot.isEmpty()) {
-            System.out.println("스냅샷이 없습니다만? 오류 났어요~~");
-            return null;
-        }
-
-        SnapShotEntity snapShotEntity = optSnapShot.get();
+        SnapShotEntity snapShotEntity = snapshotRepository.findById(snapshotId)
+                .orElseThrow(() -> new EntityNotFoundException("스냅샷이 존재하지 않습니다: " + snapshotId));
 
         snapShotEntity.update(snapShotUpdateRequest);
-
         return snapShotEntity.getId();
     }
 
     // 추천수별 정렬된 게시글 목록 조회
     @Override
-    public List<SnapShotEntity> getSnapShotsByLikes(SnapShotEntity snapShot) {
-        return snapshotRepository.findAllByLikesOrderByLikesDesc(snapShot);
+    public List<SnapShotEntity> getSnapShotsByLikes() {
+        return snapshotRepository.findAllByOrderByLikesDesc();
     }
 
     // 최신순 정렬된 게시글 목록 조회
     @Override
-    public List<SnapShotEntity> getSnapShotsByCreatedTime(SnapShotEntity snapShot) {
-        return snapshotRepository.findAllByCreatedTimeOrderByCreatedTimeDesc(snapShot);
+    public List<SnapShotEntity> getSnapShotsByCreatedTime() {
+        return snapshotRepository.findAllByOrderByCreatedTimeDesc();
     }
 }

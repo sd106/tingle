@@ -17,7 +17,7 @@ public class SnapShotResponse {
 
     private List<String> tags;
 
-    private UserEntity user;
+    private Long userId;
 
-    private StarEntity star;
+    private Long starId;
 }

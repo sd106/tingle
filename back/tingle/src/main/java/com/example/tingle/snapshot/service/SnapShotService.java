@@ -15,7 +15,9 @@ public interface SnapShotService {
 
     Long updateSnapShot(Long snapshotId, SnapShotUpdateRequest snapShotUpdateRequest);
 
-    List<SnapShotEntity> getSnapShotsByLikes(SnapShotEntity snapShot);
+    List<SnapShotEntity> getAllSnapShot();
 
-    List<SnapShotEntity> getSnapShotsByCreatedTime(SnapShotEntity snapShot);
+    List<SnapShotEntity> getSnapShotsByLikes();
+
+    List<SnapShotEntity> getSnapShotsByCreatedTime();
 }

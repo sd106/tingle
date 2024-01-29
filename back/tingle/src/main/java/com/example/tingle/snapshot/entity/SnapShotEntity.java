@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
 
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Builder
 @NoArgsConstructor
@@ -36,6 +38,7 @@ public class SnapShotEntity {
     /**
      * 중간 테이블과의 연결 속성
      */
+    @Builder.Default
     @OneToMany(mappedBy = "snapShotEntity", cascade = CascadeType.ALL)
     private List<SnapShotTag> snapShotTags = new ArrayList<>();
 
@@ -58,11 +61,9 @@ public class SnapShotEntity {
      * 스타와 팬
      */
     @ManyToOne(targetEntity = UserEntity.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @ManyToOne(targetEntity = StarEntity.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "star_id")
     private StarEntity star;
 
     /**

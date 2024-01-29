@@ -24,6 +24,7 @@ public class HashTagEntity {
     @Column(name = "tag")
     private String tag;
 
+    @Builder.Default
     @OneToMany(mappedBy = "hashTagEntity", cascade = CascadeType.ALL)
     private List<SnapShotTag> snapShotTags = new ArrayList<>();
 }

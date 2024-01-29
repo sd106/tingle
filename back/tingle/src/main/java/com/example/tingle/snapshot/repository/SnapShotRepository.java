@@ -10,9 +10,9 @@ public interface SnapShotRepository extends JpaRepository<SnapShotEntity, Long> 
 
     Optional<SnapShotEntity> findById(Long snapshotId);
     // 추천수별 정렬
-    List<SnapShotEntity> findAllByLikesOrderByLikesDesc(SnapShotEntity snapShot);
+    List<SnapShotEntity> findAllByOrderByLikesDesc();
 
     // 최신순 정렬
-    List<SnapShotEntity> findAllByCreatedTimeOrderByCreatedTimeDesc(SnapShotEntity snapShot);
+    List<SnapShotEntity> findAllByOrderByCreatedTimeDesc();
 
 }

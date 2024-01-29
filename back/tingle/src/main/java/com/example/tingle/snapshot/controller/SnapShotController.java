@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,13 +27,14 @@ public class SnapShotController {
     private final SnapShotRepository snapShotRepository;
 
     @GetMapping("/")
-    public ResponseEntity<Map<String, Object>> getSnapShot(@RequestBody SnapShotRequest snapShotRequest, HttpServletResponse response) {
+    public ResponseEntity<Map<String, Object>> getSnapShot(@PathVariable HttpServletResponse response) {
 
         HttpStatus status = HttpStatus.ACCEPTED;
         Map<String, Object> resultMap = new HashMap<String, Object>();
 
-//        SnapShotEntity snapShotEntity = snapShotRepository.
+        List<SnapShotEntity> allSnapShot = snapShotServiceImpl.getAllSnapShot();
 
+        resultMap.put("AllSnapShot", allSnapShot);
 
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
@@ -41,19 +43,21 @@ public class SnapShotController {
     // getSnapShotsByCreatedTime
 
     @PostMapping("/new")
-    public ResponseEntity<Map<String, Object>> newSnapShot(@RequestBody SnapShotRequest snapShotRequest, HttpServletResponse response) {
+    public ResponseEntity<Map<String, Object>> newSnapShot(@RequestBody SnapShotRequest snapShotRequest) {
 
         HttpStatus status = HttpStatus.ACCEPTED;
         Map<String, Object> resultMap = new HashMap<String, Object>();
 
         snapShotServiceImpl.uploadSnapshot(snapShotRequest);
 
+        resultMap.put("result", "성공해쓰!!");
+
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
 
     @PostMapping("/{snapshotId}/update")
-    public ResponseEntity<Map<String, Object>> updateSnapShot(@RequestBody Long snapshotId,SnapShotUpdateRequest snapShotUpdateRequest, HttpServletResponse response) {
+    public ResponseEntity<Map<String, Object>> updateSnapShot(@PathVariable Long snapshotId, @RequestBody SnapShotUpdateRequest snapShotUpdateRequest, HttpServletResponse response) {
 
         HttpStatus status = HttpStatus.ACCEPTED;
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -64,7 +68,7 @@ public class SnapShotController {
     }
 
     @GetMapping("/{snapshotId}/delete")
-    public ResponseEntity<Map<String, Object>> newSnapShot(@RequestBody Long snapshotId, HttpServletResponse response) {
+    public ResponseEntity<Map<String, Object>> deleteSnapShot(@PathVariable Long snapshotId, HttpServletResponse response) {
 
         HttpStatus status = HttpStatus.ACCEPTED;
         Map<String, Object> resultMap = new HashMap<String, Object>();
