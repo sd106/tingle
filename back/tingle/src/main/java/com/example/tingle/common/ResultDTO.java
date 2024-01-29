@@ -12,5 +12,4 @@ public class ResultDTO<D> {
     private final String resultCode;
     private final String message;
     private final D data;
-
 }

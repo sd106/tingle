@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/product")
 public class StarProductController {
 
     private final ProductServiceImpl productService;
@@ -39,7 +40,7 @@ public class StarProductController {
 
 
     //  http://localhost:8080/createProduct
-    @PostMapping("/createProduct")
+    @PostMapping("/create")
     public String createProduct(@RequestBody ProductDto productDto) { //(@RequestBody http json으로 받음
 
         StarEntity starEntity = starService.findByUsername(productDto.getStarName());
@@ -56,31 +57,29 @@ public class StarProductController {
                     .available(true)
                     .build();
             productService.save(productEntity);
-            return "create!!!!!!@@@@";
+            return "SUCCESS";
         } else {
             // starEntity가 null인 경우에 대한 예외를 던짐
-            throw new NullPointerException("StarEntity를 찾을 수 없습니다.");
+            throw new NullPointerException("FAIL");
         }
     }
 
 
     //http://localhost:8080/deleteProduct, body에 productId=?
-    @PostMapping("/deleteProduct/{productId}")
+    @PostMapping("/delete/{productId}")
     public String deleteProduct(@PathVariable Long productId) {
         // 해당 ID에 해당하는 Product를 삭제
         Optional<ProductEntity> product = productService.findById(productId);
         if (product.isPresent()) {
             productService.deleteById(productId);
-            return "delete!!!!";
+            return "SUCCESS";
         }
-//        productRepository.deleteById(productId);
-
-        return "없어요 ㅜㅜ 어케지워요";
+        return "FAIL";
     }
 
 
     //http://localhost:8080/{productId}
-    @PostMapping("/updateProduct")
+    @PostMapping("/update/{productId}")
     public String updateProduct(@PathVariable Long productId, @RequestBody ProductDto updatedProductDto) {
         // 특정 ID에 해당하는 Product 조회
         System.out.println("productId = " + productId);
@@ -101,14 +100,14 @@ public class StarProductController {
             // 수정된 내용을 저장
             productService.save(existingProductEntity);
 
-            return "update!!!!!!!!!!";
+            return "SUCCESS";
         } else {
-            return "don't have product";
+            return "FAIL";
         }
     }
 
 
-    @GetMapping("/getProductById/{productId}")
+    @GetMapping("/getById/{productId}")
     public ResultDTO<ProductDto> getProductById(@PathVariable Long productId) {
         Optional<ProductEntity> productEntity = productService.findById(productId);
         if (productEntity.isPresent()) {
@@ -119,7 +118,7 @@ public class StarProductController {
         }
     }
 
-    @GetMapping("/getProductsByStarName/{starName}")
+    @GetMapping("/getByStarName/{starName}")
     public ResultDTO<List<ProductDto>> getProductsByStarName(@PathVariable String starName) {
         List<ProductEntity> products = productService.findByStarName(starName);
 
