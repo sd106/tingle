@@ -33,8 +33,8 @@ public class ProductEntity {
 
     private double price;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImageEntity> imageUrl;
 
     private String content;
 
@@ -69,7 +69,7 @@ public class ProductEntity {
         this.price = price;
     }
 
-    public void setImageUrl(String imageUrl) {
+    public void setImageUrl(List<ProductImageEntity> imageUrl) {
         this.imageUrl = imageUrl;
     }
 
