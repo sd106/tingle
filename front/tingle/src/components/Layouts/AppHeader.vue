@@ -19,11 +19,10 @@
                 </button>
             </form>
             <!-- 로그인 유무로 보이기 -->
-            <RouterLink v-if="!store.isLogin" @click="loginTemp" to="/signUp" class="router-link-custom">Signup</RouterLink>
-            |
-            <RouterLink v-if="!store.isLogin" to="/logIn" class="router-link-custom">Login</RouterLink>|
+            <RouterLink v-if="!store.isLogin" to="/signUp" class="router-link-custom">Signup</RouterLink>
+            <RouterLink v-if="!store.isLogin" @click="loginTemp" to="/logIn" class="router-link-custom">Login
+            </RouterLink>
             <span v-if="store.isLogin" @click="logOut" style="cursor: pointer;">Logout</span>
-
             <!-- 사용자 프로필 사진 > 모달로 메뉴 -->
             <div class="dropdown dropstart">
                 <div class="dropdown-toggle user-image" href="#" role="button" data-bs-toggle="dropdown"
@@ -38,6 +37,7 @@
                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                 </ul>
             </div>
+
         </div>
     </nav>
 </template>
