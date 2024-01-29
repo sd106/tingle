@@ -35,4 +35,5 @@ public class FanMeetingController {
         return fanMeetingService.getFanMeetingInfo(starName);
     }
 
+
 }

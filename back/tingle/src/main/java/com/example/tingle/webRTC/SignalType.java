@@ -1,10 +1,12 @@
 package com.example.tingle.webRTC;
 
 public enum SignalType {
-    Chat,
+    Text,
     Join,
     Leave,
     Offer,
     Answer,
     Ice,
+    NextFan,
+    FinishFan,
 }

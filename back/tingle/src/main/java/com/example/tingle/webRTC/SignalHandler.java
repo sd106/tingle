@@ -1,5 +1,10 @@
 package com.example.tingle.webRTC;
 
+import com.example.tingle.fanMeeting.model.FanMeetingRoom;
+import com.example.tingle.fanMeeting.service.FanMeetingRoomService;
+import com.example.tingle.fanMeeting.utils.MeetingRoomMap;
+import com.example.tingle.user.entity.StarEntity;
+import com.example.tingle.user.repository.StarRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,33 +22,25 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SignalHandler extends TextWebSocketHandler {
 
-    private final MeetingService meetingService;
-    private final Map<Long, MeetingRoom> chatRooms = MeetingRoomMap.getInstance().getMeetingRooms();
+    private final FanMeetingRoomService fanMeetingRoomService;
+    private final StarRepository starRepository;
+    private final Map<Long, FanMeetingRoom> chatRooms = MeetingRoomMap.getInstance().getMeetingRooms();
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private Map<String, MeetingRoom> sessionIdToRoomMap = new HashMap<>();
+    private Map<String, FanMeetingRoom> sessionIdToRoomMap = new HashMap<>();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        if (chatRooms.isEmpty()) {
-            MeetingRoom room = MeetingRoom.builder()
-                    .roomId(1L)
-                    .roomName("1번방")
-                    .roomPwd("password") // 채팅방 패스워드
-                    .userCount(0) // 채팅방 참여 인원수
-                    .maxUserCnt(2) // 최대 인원수 제한
-                    .clients(new HashMap<String, WebSocketSession>())
-                    .build();
-
-            chatRooms.put(room.getRoomId(), room);
-
+        // 대기방, 미팅방 각각의 현재 구성원 여부를 data에 담는다.
+        if (data.equals("waiting")){
+            data = Boolean.toString(!fanMeetingRoom.getWaitingRoomclients().isEmpty());
+        } else if (data.equals("meeting")) {
+            data = Boolean.toString(!fanMeetingRoom.getMeetingRoomclients().isEmpty());
         }
-
-        System.out.println("들어왔따~~");
 
         SignalData sd = SignalData.builder()
                 .sender("Server")
                 .signalType("Join")
-                .data(Boolean.toString(!sessionIdToRoomMap.isEmpty()))
+                .data(data)
                 .iceCandidate(null)
                 .sdp(null)
                 .build();
@@ -52,25 +49,14 @@ public class SignalHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        MeetingRoom meetingRoom = sessionIdToRoomMap.get(session.getId());
-
-        Optional<String> client = meetingService.getClients(meetingRoom).entrySet().stream()
+        System.out.println("afterConnectionClosed: " + session);
+        FanMeetingRoom fanMeetingRoom = sessionIdToRoomMap.get(session.getId());
+        Optional<String> client = fanMeetingRoomService.getClients(fanMeetingRoom).entrySet().stream()
                 .filter(entry -> Objects.equals(entry.getValue().getId(), session.getId()))
                 .map(Map.Entry::getKey)
                 .findAny();
-        client.ifPresent(c -> meetingService.removeClientByName(meetingRoom, c));
+        client.ifPresent(c -> fanMeetingRoomService.removeClientByName(fanMeetingRoom, c));
         sessionIdToRoomMap.remove(session.getId());
-
-        System.out.println("나갔다~~");
-        System.out.println("현재 존재하는 방 ID들:");
-        for (Long roomId : chatRooms.keySet()) {
-            System.out.println("방 ID: " + roomId);
-            Map<String, WebSocketSession> clients = meetingService.getClients(chatRooms.get(roomId));
-            for (String d : clients.keySet()) {
-                System.out.println("멤버: " + d);
-            }
-        }
-        super.afterConnectionClosed(session, status);
     }
 
     @Override
@@ -80,11 +66,7 @@ public class SignalHandler extends TextWebSocketHandler {
 
         String sender = signalData.getSender();
         String data = signalData.getData();
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
-        System.out.println(sender + " 로 부터 " + signalData.getSignalType());
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
-
-        MeetingRoom meetingRoom;
+        FanMeetingRoom fanMeetingRoom;
 
         switch (signalData.getSignalType()) {
             case "Offer":
@@ -92,11 +74,10 @@ public class SignalHandler extends TextWebSocketHandler {
             case "Ice":
                 Object iceCandidate = signalData.getIceCandidate();
                 Object sdp = signalData.getSdp();
-                System.out.println("[ws] offer offer");
-                MeetingRoom room = sessionIdToRoomMap.get(session.getId());
+                FanMeetingRoom room = sessionIdToRoomMap.get(session.getId());
 
                 if (room != null) {
-                    Map<String, WebSocketSession> clients = meetingService.getClients(room);
+                    Map<String, WebSocketSession> clients = fanMeetingRoomService.getClients(room);
 
                     for (Map.Entry<String, WebSocketSession> client : clients.entrySet()) {
                         if (!client.getKey().equals(sender)) {
@@ -113,36 +94,54 @@ public class SignalHandler extends TextWebSocketHandler {
 
                 }
                 break;
-            case "Chat":
-                break;
             case "Join":
-                System.out.println("[ws] " + sender + " has joined Room: #" + data);
+                // star의 id와 room id는 같게 생성되었으므로 찾을 때도 똑같이 찾을 수 있다.
+                StarEntity star = starRepository.findByUsername(data);
 
-                meetingRoom = meetingService.findRoomById(Long.parseLong(data));
+                fanMeetingRoom = fanMeetingRoomService.findRoomById(star.getId());
 
-                meetingService.addClient(meetingRoom, sender, session);
-                sessionIdToRoomMap.put(session.getId(), meetingRoom);
+                fanMeetingRoomService.addClient(fanMeetingRoom, sender, session);
+                sessionIdToRoomMap.put(session.getId(), fanMeetingRoom);
 
-                System.out.println("현재 존재하는 방 ID들:");
-                for (Long roomId : chatRooms.keySet()) {
-                    System.out.println("방 ID: " + roomId);
-                    Map<String, WebSocketSession> clients = meetingService.getClients(chatRooms.get(roomId));
-                    for (String d : clients.keySet()) {
-                        System.out.println("멤버: " + d);
-                    }
-                }
                 break;
             case "Leave":
-                System.out.println("[ws] {} is going to leave Room: #{}" + sender + data);
+                fanMeetingRoom = sessionIdToRoomMap.get(session.getId());
 
-                meetingRoom = sessionIdToRoomMap.get(session.getId());
-
-                Optional<String> client = meetingService.getClients(meetingRoom).entrySet().stream()
+                Optional<String> client = fanMeetingRoomService.getClients(fanMeetingRoom).entrySet().stream()
                         .filter(entry -> Objects.equals(entry.getValue().getId(), session.getId()))
                         .map(Map.Entry::getKey)
                         .findAny();
-                client.ifPresent(c -> meetingService.removeClientByName(meetingRoom, c));
+                client.ifPresent(c -> fanMeetingRoomService.removeClientByName(fanMeetingRoom, c));
                 sessionIdToRoomMap.remove(session.getId());
+                break;
+            case "Text":
+                fanMeetingRoom = sessionIdToRoomMap.get(session.getId());
+
+                Map<String, WebSocketSession> clients = fanMeetingRoomService.getClients(fanMeetingRoom);
+
+                for (Map.Entry<String, WebSocketSession> c : clients.entrySet()) {
+                    if (!c.getKey().equals(sender)) {
+                        SignalData sd2 = SignalData.builder()
+                                .data(data)
+                                .iceCandidate(null)
+                                .sdp(null)
+                                .sender(sender)
+                                .signalType(signalData.getSignalType())
+                                .build();
+                        c.getValue().sendMessage(new TextMessage(objectMapper.writeValueAsString(sd2)));
+                    }
+                }
+                break;
+            case "NextFan":
+                fanMeetingRoom = sessionIdToRoomMap.get(session.getId());
+
+                fanMeetingRoom.getWaitingRoomclients().remove(sender);
+                fanMeetingRoom.getWaitingRoomclients().put(sender, session);
+                break;
+            case "FinishFan":
+                fanMeetingRoom = sessionIdToRoomMap.get(session.getId());
+
+                fanMeetingRoom.getMeetingRoomclients().remove(sender);
                 break;
         }
     }

@@ -1,5 +1,6 @@
-package com.example.tingle.webRTC;
+package com.example.tingle.fanMeeting.utils;
 
+import com.example.tingle.fanMeeting.model.FanMeetingRoom;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +11,7 @@ import java.util.Map;
 @Setter
 public class MeetingRoomMap {
     private static final MeetingRoomMap meetingRoomMap = new MeetingRoomMap();
-    private Map<Long, MeetingRoom> meetingRooms = new LinkedHashMap<>();
+    private Map<Long, FanMeetingRoom> meetingRooms = new LinkedHashMap<>();
 
     private MeetingRoomMap(){}
 
