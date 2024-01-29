@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FollowRequest {
+public class FollowReadRequest {
 
     private Long starId;
 
@@ -16,8 +16,8 @@ public class FollowRequest {
 
     private String userName;
 
-    public static FollowRequest toDto(Follow follow) {
-        return new FollowRequest(
+    public static FollowReadRequest toDto(Follow follow) {
+        return new FollowReadRequest(
                 follow.getId(),
                 follow.getStarEntity().getPicture(),
                 follow.getStarEntity().getUsername()
