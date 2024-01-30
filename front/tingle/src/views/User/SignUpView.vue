@@ -78,11 +78,11 @@ const signUp = function () {
   font-family: 'Montserrat', sans-serif;
   box-shadow: 0 15px 30px rgba(#e91e63, .36);
   transition: .2s linear;
-
-  &:hover {
+}
+.signin__btn:hover {
     box-shadow: 0 0 0 rgba(#e91e63, .0);
   }
-}
+
 
 .signin__btn:hover {
   background: #cb4ae2;
@@ -108,9 +108,8 @@ const signUp = function () {
   font-family: 'Montserrat', sans-serif;
   box-shadow: 0 15px 30px rgba(#e91e63, .36);
   transition: .2s linear;
-
-  &:hover {
+}
+  .signin__btn2 :hover {
     box-shadow: 0 0 0 rgba(#e91e63, .0);
-  }
 }
 </style>
