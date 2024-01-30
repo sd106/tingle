@@ -15,7 +15,7 @@ import java.util.List;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(unique = true)
     private String username;
@@ -48,4 +48,9 @@ public class UserEntity {
     public String getRoleKey() {
         return this.role.getKey();
     }
+
+    @OneToMany(mappedBy = "userEntity")
+    private Set<FollowEntity> followingStars = new HashSet<>();
+
+
 }
