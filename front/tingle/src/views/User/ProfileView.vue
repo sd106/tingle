@@ -1,17 +1,11 @@
 <template>
   <main class="container">
-    <h1>프로필</h1>
-    <StarMenu :name="name" />
+    <h1>유저 프로필 페이지</h1>
+
   </main>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-
-import StarMenu from '@/components/StarMenu/StarMenu.vue';
-
-const props = defineProps(['username']);
-const name = ref(props.username);
 
 
 </script>

@@ -1,32 +1,32 @@
 [
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "미동생맥스",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "준찬황",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "양의정수기",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "삼성모르가나",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤황시진",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "우금어",
         "image": "/image/oh.png"
     }
 ]

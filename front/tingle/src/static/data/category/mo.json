@@ -1,52 +1,52 @@
 [
     {
-        "username": "mo1",
-        "name": "이성모",
+        "id": "mo1",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "mo2",
-        "name": "이성모",
+        "id": "mo2",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "mo3",
-        "name": "이성모",
+        "id": "mo3",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "mo4",
-        "name": "이성모",
+        "id": "mo4",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "mo5",
-        "name": "이성모",
+        "id": "mo5",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "mo6",
-        "name": "이성모",
+        "id": "mo6",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "mo7",
-        "name": "이성모",
+        "id": "mo7",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "mo8",
-        "name": "이성모",
+        "id": "mo8",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "mo9",
-        "name": "이성모",
+        "id": "mo9",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "mo10",
-        "name": "이성모",
+        "id": "mo10",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     }
 ]

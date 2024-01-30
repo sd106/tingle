@@ -1,52 +1,52 @@
 [
     {
-        "username": "yoo1",
-        "name": "유형민",
+        "id": "yoo1",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "yoo2",
-        "name": "유형민",
+        "id": "yoo2",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "yoo3",
-        "name": "유형민",
+        "id": "yoo3",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "yoo4",
-        "name": "유형민",
+        "id": "yoo4",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "yoo5",
-        "name": "유형민",
+        "id": "yoo5",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "yoo6",
-        "name": "유형민",
+        "id": "yoo6",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "yoo7",
-        "name": "유형민",
+        "id": "yoo7",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "yoo8",
-        "name": "유형민",
+        "id": "yoo8",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "yoo9",
-        "name": "유형민",
+        "id": "yoo9",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "yoo10",
-        "name": "유형민",
+        "id": "yoo10",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     }
 ]
