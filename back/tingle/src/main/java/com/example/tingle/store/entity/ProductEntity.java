@@ -31,7 +31,7 @@ public class ProductEntity {
 
     private int amount;
 
-    private double price;
+    private int price;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImageEntity> imageUrl;
@@ -65,7 +65,7 @@ public class ProductEntity {
         this.amount = amount;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

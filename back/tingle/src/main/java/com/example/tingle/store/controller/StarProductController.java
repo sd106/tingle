@@ -45,7 +45,7 @@ public class StarProductController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createProduct(@RequestParam("productDto") String productDtoJson,
-                                           @RequestParam("file") MultipartFile[] files) {
+                                           @RequestParam("files") MultipartFile[] files) {
         try {
             // JSON 문자열을 ProductDto 객체로 변환
             ProductDto productDto = objectMapper.readValue(productDtoJson, ProductDto.class);

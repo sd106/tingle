@@ -17,7 +17,7 @@ public class ProductDto {
     private String starName;
     private String name;
     private int amount;
-    private double price;
+    private int price;
     private List<String> imageUrl;
     private String content;
     private boolean available;

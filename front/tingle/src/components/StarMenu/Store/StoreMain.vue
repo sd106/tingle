@@ -1,5 +1,6 @@
 <template>
     <main>
+        
         <div class="m-2 d-flex justify-content-between">
 
             <div class="border col-1 center-element">
