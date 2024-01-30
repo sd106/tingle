@@ -6,6 +6,8 @@ import com.example.tingle.snapshot.entity.HashTagEntity;
 import com.example.tingle.snapshot.entity.SnapShotEntity;
 import com.example.tingle.snapshot.entity.SnapShotTag;
 import com.example.tingle.snapshot.service.SnapShotServiceImpl;
+import com.example.tingle.user.entity.StarEntity;
+import com.example.tingle.user.entity.UserEntity;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,9 +41,28 @@ public class SnapShotController {
 
         List<SnapShotEntity> allSnapShot = snapShotServiceImpl.getAllSnapShot();
 
-        System.out.println(allSnapShot);
+        List<Map<String, Object>> snapShotList = allSnapShot.stream().map(snapShot -> {
+            Map<String, Object> snapShotMap = new HashMap<>();
+            snapShotMap.put("id", snapShot.getId());
+//            snapShotMap.put("content", snapShot.getContent());
+            snapShotMap.put("imageUrl", snapShot.getImageUrl());
 
-        resultMap.put("AllSnapShot", allSnapShot);
+            UserEntity user = snapShot.getUser();
+            snapShotMap.put("username", user != null ? user.getUsername() : "Unknown");
+
+//            List<String> tags = snapShot.getSnapShotTags().stream()
+//                    .map(SnapShotTag::getHashTagEntity)
+//                    .map(HashTagEntity::getTag)
+//                    .collect(Collectors.toList());
+//            snapShotMap.put("tags", tags);
+
+//            StarEntity star = snapShot.getStar();
+//            snapShotMap.put("star", star != null ? star.getUsername() : "Unknown");
+
+            return snapShotMap;
+        }).collect(Collectors.toList());
+
+        resultMap.put("AllSnapShot", snapShotList);
 
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
@@ -52,8 +73,26 @@ public class SnapShotController {
         HttpStatus status = HttpStatus.ACCEPTED;
         Map<String, Object> resultMap = new HashMap<String, Object>();
 
+        Optional<SnapShotEntity> optSnapShotEntity = snapShotServiceImpl.getSnapShotById(snapshotId);
 
-        resultMap.put("result", "성공해쓰!!");
+        if (optSnapShotEntity.isPresent()) {
+
+            SnapShotEntity snapShot = optSnapShotEntity.get();
+
+            resultMap.put("snapshotId", snapShot.getId());
+            resultMap.put("imageUrl", snapShot.getImageUrl());
+            resultMap.put("username", snapShot.getUser() != null ? snapShot.getUser().getUsername() : "Unknown User");
+            resultMap.put("starname", snapShot.getStar() != null ? snapShot.getStar().getUsername() : "Unknown Star");
+            resultMap.put("content", snapShot.getContent());
+            resultMap.put("comments", snapShot.getComments());
+            resultMap.put("likes", snapShot.getLikes());
+            resultMap.put("createdAt", snapShot.getCreatedAt());
+            resultMap.put("updatedAt", snapShot.getUpdatedAt());
+
+
+        } else {
+            System.out.println("스냅샷을 찾을 수 없습니다.");
+        }
 
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
 
@@ -107,14 +146,39 @@ public class SnapShotController {
             // 필요한 데이터 추출
             String previousImageUrl = snapShot.getImageUrl();
 
+            /**
+             *  스냅샷 수정
+             */
             snapShotServiceImpl.updateSnapShot(snapshotId, snapShotUpdateRequest, file, previousImageUrl);
 
+
+            /**
+             *  스냅샷 수정 후, 수정된 스냅샷의 정보를 반환
+             */
+            Optional<SnapShotEntity> newOptSnapShot = snapShotServiceImpl.getSnapShotById(snapshotId);
+
+            if (newOptSnapShot.isPresent()) {
+
+                SnapShotEntity newSnapShot = newOptSnapShot.get();
+
+                resultMap.put("snapshotId", newSnapShot.getId());
+                resultMap.put("imageUrl", newSnapShot.getImageUrl());
+                resultMap.put("username", newSnapShot.getUser() != null ? newSnapShot.getUser().getUsername() : "Unknown User");
+                resultMap.put("starname", newSnapShot.getStar() != null ? newSnapShot.getStar().getUsername() : "Unknown Star");
+                resultMap.put("content", newSnapShot.getContent());
+                resultMap.put("comments", newSnapShot.getComments());
+                resultMap.put("likes", newSnapShot.getLikes());
+                resultMap.put("createdAt", newSnapShot.getCreatedAt());
+                resultMap.put("updatedAt", newSnapShot.getUpdatedAt());
+
+            } else {
+                System.out.println("스냅샷을 찾을 수 없습니다.");
+            }
         } else {
             // 스냅샷 엔티티가 존재하지 않는 경우의 처리
             System.out.println("스냅샷을 찾을 수 없습니다.");
         }
-
-
+        
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
