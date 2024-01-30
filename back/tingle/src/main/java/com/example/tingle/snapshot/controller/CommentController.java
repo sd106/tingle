@@ -65,7 +65,7 @@ public class CommentController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
-    @GetMapping("/comment/{commentId}/delete")
+    @PostMapping("/comment/{commentId}/delete")
     public ResponseEntity<Map<String, Object>> deleteSnapShot(@PathVariable Long commentId, HttpServletResponse response) {
 
         HttpStatus status = HttpStatus.ACCEPTED;

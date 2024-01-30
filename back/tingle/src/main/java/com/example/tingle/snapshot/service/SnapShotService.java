@@ -15,7 +15,7 @@ public interface SnapShotService {
 
     void deleteSnapShot(Long snapshotId);
 
-    Long updateSnapShot(Long snapshotId, SnapShotUpdateRequest snapShotUpdateRequest);
+    Long updateSnapShot(Long snapshotId, SnapShotUpdateRequest snapShotUpdateRequest, MultipartFile file, String previousImageUrl) throws IOException;
 
     List<SnapShotEntity> getAllSnapShot();
 

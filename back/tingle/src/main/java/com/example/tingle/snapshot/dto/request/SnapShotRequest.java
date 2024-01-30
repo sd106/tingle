@@ -1,15 +1,15 @@
 package com.example.tingle.snapshot.dto.request;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SnapShotRequest {
-
-    private String imageUrl;
 
     private String content;
 

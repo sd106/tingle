@@ -1,5 +1,6 @@
 package com.example.tingle.snapshot.entity;
 
+import com.example.tingle.snapshot.S3.S3Service;
 import com.example.tingle.snapshot.dto.request.SnapShotRequest;
 import com.example.tingle.snapshot.dto.request.SnapShotUpdateRequest;
 import com.example.tingle.snapshot.repository.HashTagRepository;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ public class SnapShotEntity {
      * 스냅샷 생성 시간과 수정 시간
      */
     @CreatedDate
-    private LocalDateTime createdTime;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
@@ -78,8 +80,9 @@ public class SnapShotEntity {
         this.likes = likes;
     }
 
-    public void update(SnapShotUpdateRequest dto, HashTagRepository hashTagRepository) {
-        this.imageUrl = dto.getImageUrl();
+    public void update(String image, SnapShotUpdateRequest dto, HashTagRepository hashTagRepository) {
+
+        this.imageUrl = image;
         this.content = dto.getContent();
 
         // 기존 태그 리스트를 클리어하고 새 태그를 추가

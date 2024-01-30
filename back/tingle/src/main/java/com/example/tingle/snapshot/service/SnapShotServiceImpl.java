@@ -21,8 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +50,8 @@ public class SnapShotServiceImpl implements SnapShotService {
     @Override
     public void uploadSnapshot(SnapShotRequest snapshotRequest, MultipartFile file) throws IOException {
         // SnapshotCreateDto에서 필요한 정보 추출
-        String imageUrl = s3Service.saveFile(file);
+        String modifiedFilename = appendCurrentTimestampToFilename(file.getOriginalFilename());
+        String imageUrl = s3Service.saveFile(file, modifiedFilename);
         String content = snapshotRequest.getContent();
         List<String> tags = snapshotRequest.getTags();
         String username = snapshotRequest.getUsername();
@@ -105,9 +109,12 @@ public class SnapShotServiceImpl implements SnapShotService {
     }
 
     @Override
-    public Long updateSnapShot(Long snapshotId, SnapShotUpdateRequest snapShotUpdateRequest) {
+    public Long updateSnapShot(Long snapshotId, SnapShotUpdateRequest snapShotUpdateRequest, MultipartFile file, String previousImageUrl) throws IOException {
         SnapShotEntity snapShotEntity = snapshotRepository.findById(snapshotId)
                 .orElseThrow(() -> new EntityNotFoundException("스냅샷이 존재하지 않습니다: " + snapshotId));
+
+        String modifiedFilename = appendCurrentTimestampToFilename(file.getOriginalFilename());
+        String imageUrl = s3Service.saveFile(file, modifiedFilename);
 
         // 태그 처리
         List<SnapShotTag> updatedTags = new ArrayList<>();
@@ -134,8 +141,9 @@ public class SnapShotServiceImpl implements SnapShotService {
         // 업데이트된 각 SnapShotTag 엔티티를 저장
         updatedTags.forEach(snapShotTagRepository::save);
 
+        s3Service.deleteImage(previousImageUrl);
         // 나머지 필드 업데이트
-        snapShotEntity.update(snapShotUpdateRequest, hashTagRepository); // 이미지 URL, 콘텐츠 등 업데이트
+        snapShotEntity.update(imageUrl, snapShotUpdateRequest, hashTagRepository); // 이미지 URL, 콘텐츠 등 업데이트
 
         snapshotRepository.save(snapShotEntity); // 변경사항 저장
         return snapShotEntity.getId();
@@ -150,6 +158,22 @@ public class SnapShotServiceImpl implements SnapShotService {
     // 최신순 정렬된 게시글 목록 조회
     @Override
     public List<SnapShotEntity> getSnapShotsByCreatedTime() {
-        return snapshotRepository.findAllByOrderByCreatedTimeDesc();
+        return snapshotRepository.findAllByOrderByCreatedAtDesc();
+    }
+
+    public Optional<SnapShotEntity> getSnapShotById(Long snapshotId) {
+        return snapshotRepository.findById(snapshotId);
+    }
+
+    public String appendCurrentTimestampToFilename(String originalFilename) {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        int dotIndex = originalFilename.lastIndexOf(".");
+        if (dotIndex > 0) {
+            String nameWithoutExtension = originalFilename.substring(0, dotIndex);
+            String extension = originalFilename.substring(dotIndex);
+            return nameWithoutExtension + "_" + timestamp + extension;
+        } else {
+            return originalFilename + "_" + timestamp;
+        }
     }
 }

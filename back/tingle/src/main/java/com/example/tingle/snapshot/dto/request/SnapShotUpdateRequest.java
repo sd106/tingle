@@ -1,16 +1,15 @@
 package com.example.tingle.snapshot.dto.request;
 
 import com.example.tingle.snapshot.entity.SnapShotTag;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
-@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SnapShotUpdateRequest {
-
-    private String imageUrl;
 
     private String content;
 
