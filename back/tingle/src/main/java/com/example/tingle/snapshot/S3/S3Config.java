@@ -1,4 +1,4 @@
-package com.example.tingle.store.config;
+package com.example.tingle.snapshot.S3;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

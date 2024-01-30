@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class SnapShotController {
 
 
     @PostMapping("/new")
-    public ResponseEntity<Map<String, Object>> newSnapShot(@RequestBody SnapShotRequest snapShotRequest, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Map<String, Object>> newSnapShot(@RequestBody SnapShotRequest snapShotRequest, @RequestParam("file") MultipartFile file) throws IOException {
 
         HttpStatus status = HttpStatus.ACCEPTED;
         Map<String, Object> resultMap = new HashMap<String, Object>();

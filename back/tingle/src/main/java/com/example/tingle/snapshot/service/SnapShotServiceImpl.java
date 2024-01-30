@@ -1,6 +1,6 @@
 package com.example.tingle.snapshot.service;
 
-import com.example.tingle.snapshot.config.S3Service;
+import com.example.tingle.snapshot.S3.S3Service;
 import com.example.tingle.snapshot.dto.request.SnapShotRequest;
 import com.example.tingle.snapshot.dto.request.SnapShotUpdateRequest;
 import com.example.tingle.snapshot.entity.HashTagEntity;
@@ -20,9 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,9 +45,9 @@ public class SnapShotServiceImpl implements SnapShotService {
      * @param snapshotRequest : imageUrl, content, tags
      */
     @Override
-    public void uploadSnapshot(SnapShotRequest snapshotRequest, MultipartFile file) {
+    public void uploadSnapshot(SnapShotRequest snapshotRequest, MultipartFile file) throws IOException {
         // SnapshotCreateDto에서 필요한 정보 추출
-        String imageUrl = s3Service.uploadFile(file);
+        String imageUrl = s3Service.saveFile(file);
         String content = snapshotRequest.getContent();
         List<String> tags = snapshotRequest.getTags();
         String username = snapshotRequest.getUsername();
@@ -98,7 +98,7 @@ public class SnapShotServiceImpl implements SnapShotService {
 
         // S3에서 이미지 삭제
         if (snapShotEntity.getImageUrl() != null) {
-            s3Service.deleteFile(snapShotEntity.getImageUrl());
+            s3Service.deleteImage(snapShotEntity.getImageUrl());
         }
 
         snapshotRepository.deleteById(snapshotId);

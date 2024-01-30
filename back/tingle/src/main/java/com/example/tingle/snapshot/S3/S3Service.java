@@ -1,4 +1,4 @@
-package com.example.tingle.store.service;
+package com.example.tingle.snapshot.S3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
-public class S3UploadService {
+public class S3Service {
 
     private final AmazonS3 amazonS3;
 
