@@ -1,8 +1,8 @@
 package com.example.tingle.star.service;
 
+import com.example.tingle.star.dto.response.ReadStarByCategory;
 import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.star.repository.StarRepository;
-import com.example.tingle.star.service.StarService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class StarServiceImpl implements StarService {
     }
 
     @Override
-    public List<StarEntity> findStarsByCategory(int category) {
+    public List<ReadStarByCategory> findStarsByCategory(int category) {
         return starRepository.findStarsByCategory(category);
     }
 

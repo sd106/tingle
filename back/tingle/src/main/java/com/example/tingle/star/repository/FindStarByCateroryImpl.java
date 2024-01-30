@@ -1,12 +1,11 @@
 package com.example.tingle.star.repository;
 
-import com.example.tingle.star.entity.StarEntity;
-import com.querydsl.core.types.dsl.Expressions;
+import com.example.tingle.star.dto.response.ReadStarByCategory;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.tingle.follow.entity.QFollowEntity.followEntity;
@@ -21,10 +20,17 @@ public class FindStarByCateroryImpl implements FindStarByCaterory{
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<StarEntity> findStarsByCategory(int category) {
+    public List<ReadStarByCategory> findStarsByCategory(int category) {
 
         return jpaQueryFactory
-                .selectFrom(starEntity)
+                .select(
+                        Projections.constructor(ReadStarByCategory.class,
+                                starEntity.id,
+                                starEntity.username,
+                                starEntity.picture
+                                )
+                )
+                .from(starEntity)
                 .innerJoin(starEntity.followerUsers, followEntity)
                 .on(followEntity.starEntity.eq(starEntity))
                 .where(starEntity.category.eq(category))
