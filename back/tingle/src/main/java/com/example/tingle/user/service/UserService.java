@@ -13,7 +13,7 @@ public interface UserService {
     // 다른 필드 및 메서드...
     UserDto mapToDTO(UserEntity userEntity);
 
-    Optional<UserEntity> findById(int userId);
+    Optional<UserEntity> findById(Long userId);
 
     UserEntity findByUsername(String username);
 }

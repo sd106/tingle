@@ -25,7 +25,7 @@ public class OrderDto {
     }
 
 
-    private Integer fanId;
+    private Long fanId;
     private UserDto fan;
     private ProductDto goods;
 
