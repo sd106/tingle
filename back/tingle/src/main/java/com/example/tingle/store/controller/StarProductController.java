@@ -106,7 +106,6 @@ public class StarProductController {
     @PostMapping("/update/{productId}")
     public String updateProduct(@PathVariable Long productId, @RequestBody ProductDto updatedProductDto) {
         // 특정 ID에 해당하는 Product 조회
-        System.out.println("productId = " + productId);
         Optional<ProductEntity> optionalProductEntity = productService.findById(productId);
 
         if (optionalProductEntity.isPresent()) {

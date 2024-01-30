@@ -125,6 +125,6 @@ public class OrderServiceImpl implements OrderService {
     public double processOrderById(Long orderId) {
         Optional<OrderEntity> order = orderRepository.findById(orderId);
 
-        return order.map(orderEntity -> orderEntity.getGoods().getPrice()).orElse(0.0);
+        return order.map(orderEntity -> orderEntity.getGoods().getPrice()).orElse(0);
     }
 }

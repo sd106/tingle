@@ -44,12 +44,11 @@ public class FanOrderController {
         }
     }
     
-    @PostMapping("/processOrders")
+    @GetMapping("/processOrders")
     public int processOrders(@RequestBody List<Long> orderIds) {
         int price = 0;
         for (Long orderId : orderIds) {
             price += (int)orderService.processOrderById(orderId);
-            System.out.println("orderId = " + orderId);
         }
         return price;
     }
