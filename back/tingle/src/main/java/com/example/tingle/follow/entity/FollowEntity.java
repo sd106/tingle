@@ -3,21 +3,25 @@ package com.example.tingle.follow.entity;
 import com.example.tingle.user.entity.StarEntity;
 import com.example.tingle.user.entity.UserEntity;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "follow")
-public class Follow {
+public class FollowEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_entity_id")
     private UserEntity userEntity;
 
     @ManyToOne
+    @JoinColumn(name = "star_entity_id")
     private StarEntity starEntity;
 
 }
