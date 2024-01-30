@@ -1,6 +1,6 @@
 package com.example.tingle.follow.dto.request;
 
-import com.example.tingle.follow.entity.Follow;
+import com.example.tingle.follow.entity.FollowEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,11 +16,11 @@ public class FollowReadRequest {
 
     private String userName;
 
-    public static FollowReadRequest toDto(Follow follow) {
+    public static FollowReadRequest toDto(FollowEntity followEntity) {
         return new FollowReadRequest(
-                follow.getStarEntity().getId(),
-                follow.getStarEntity().getPicture(),
-                follow.getStarEntity().getUsername()
+                followEntity.getStarEntity().getId(),
+                followEntity.getStarEntity().getPicture(),
+                followEntity.getStarEntity().getUsername()
         );
     }
 }

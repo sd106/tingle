@@ -1,6 +1,6 @@
 package com.example.tingle.user.entity;
 
-import com.example.tingle.follow.entity.Follow;
+import com.example.tingle.follow.entity.FollowEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -44,7 +44,7 @@ public class UserEntity {
     }
 
     @OneToMany(mappedBy = "userEntity")
-    private Set<Follow> followingStars = new HashSet<>();
+    private Set<FollowEntity> followingStars = new HashSet<>();
 
 
 }
