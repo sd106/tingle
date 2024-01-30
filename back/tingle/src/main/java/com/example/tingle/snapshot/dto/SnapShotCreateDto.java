@@ -1,7 +1,5 @@
 package com.example.tingle.snapshot.dto;
 
-import com.example.tingle.user.entity.StarEntity;
-import com.example.tingle.user.entity.UserEntity;
 import lombok.Getter;
 import lombok.Setter;
 

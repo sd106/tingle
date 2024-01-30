@@ -4,7 +4,7 @@ package com.example.tingle.follow.service;
 import com.example.tingle.follow.dto.request.FollowReadRequest;
 import com.example.tingle.follow.entity.FollowEntity;
 import com.example.tingle.follow.repository.FollowRepository;
-import com.example.tingle.user.repository.StarRepository;
+import com.example.tingle.star.repository.StarRepository;
 import com.example.tingle.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

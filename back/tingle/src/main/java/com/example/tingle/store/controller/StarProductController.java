@@ -1,20 +1,12 @@
 package com.example.tingle.store.controller;
 
 import com.example.tingle.common.ResultDTO;
-import com.example.tingle.store.dto.OrderDto;
 import com.example.tingle.store.dto.ProductDto;
 import com.example.tingle.store.entity.ProductEntity;
-import com.example.tingle.store.repository.OrderRepository;
-import com.example.tingle.store.repository.ProductRepository;
-import com.example.tingle.store.service.OrderService;
-import com.example.tingle.store.service.ProductService;
 import com.example.tingle.store.service.impl.ProductServiceImpl;
-import com.example.tingle.user.entity.StarEntity;
-import com.example.tingle.user.repository.StarRepository;
-import com.example.tingle.user.repository.UserRepository;
-import com.example.tingle.user.service.impl.StarServiceImpl;
+import com.example.tingle.star.entity.StarEntity;
+import com.example.tingle.star.service.StarServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;

@@ -22,9 +22,11 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     public final StringPath email = createString("email");
 
-    public final SetPath<com.example.tingle.follow.entity.Follow, com.example.tingle.follow.entity.QFollow> followingStars = this.<com.example.tingle.follow.entity.Follow, com.example.tingle.follow.entity.QFollow>createSet("followingStars", com.example.tingle.follow.entity.Follow.class, com.example.tingle.follow.entity.QFollow.class, PathInits.DIRECT2);
+    public final SetPath<com.example.tingle.follow.entity.FollowEntity, com.example.tingle.follow.entity.QFollowEntity> followingStars = this.<com.example.tingle.follow.entity.FollowEntity, com.example.tingle.follow.entity.QFollowEntity>createSet("followingStars", com.example.tingle.follow.entity.FollowEntity.class, com.example.tingle.follow.entity.QFollowEntity.class, PathInits.DIRECT2);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final ListPath<com.example.tingle.store.entity.OrderEntity, com.example.tingle.store.entity.QOrderEntity> orders = this.<com.example.tingle.store.entity.OrderEntity, com.example.tingle.store.entity.QOrderEntity>createList("orders", com.example.tingle.store.entity.OrderEntity.class, com.example.tingle.store.entity.QOrderEntity.class, PathInits.DIRECT2);
 
     public final StringPath password = createString("password");
 

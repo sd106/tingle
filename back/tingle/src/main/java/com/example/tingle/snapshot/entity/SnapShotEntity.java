@@ -1,6 +1,6 @@
 package com.example.tingle.snapshot.entity;
 
-import com.example.tingle.user.entity.StarEntity;
+import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,9 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 @Entity
