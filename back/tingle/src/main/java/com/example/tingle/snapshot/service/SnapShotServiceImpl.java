@@ -1,5 +1,6 @@
 package com.example.tingle.snapshot.service;
 
+import com.example.tingle.snapshot.config.S3Service;
 import com.example.tingle.snapshot.dto.request.SnapShotRequest;
 import com.example.tingle.snapshot.dto.request.SnapShotUpdateRequest;
 import com.example.tingle.snapshot.entity.HashTagEntity;
@@ -13,11 +14,13 @@ import com.example.tingle.user.entity.UserEntity;
 import com.example.tingle.user.repository.StarRepository;
 import com.example.tingle.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +30,7 @@ import java.util.Optional;
 @Transactional
 public class SnapShotServiceImpl implements SnapShotService {
 
+    private final S3Service s3Service;
     private final SnapShotRepository snapshotRepository;
     private final HashTagRepository hashTagRepository;
     private final SnapShotTagRepository snapShotTagRepository;
@@ -41,9 +45,9 @@ public class SnapShotServiceImpl implements SnapShotService {
      * @param snapshotRequest : imageUrl, content, tags
      */
     @Override
-    public void uploadSnapshot(SnapShotRequest snapshotRequest) {
+    public void uploadSnapshot(SnapShotRequest snapshotRequest, MultipartFile file) {
         // SnapshotCreateDto에서 필요한 정보 추출
-        String imageUrl = snapshotRequest.getImageUrl();
+        String imageUrl = s3Service.uploadFile(file);
         String content = snapshotRequest.getContent();
         List<String> tags = snapshotRequest.getTags();
         String username = snapshotRequest.getUsername();
@@ -66,14 +70,16 @@ public class SnapShotServiceImpl implements SnapShotService {
 
         // 해시태그 처리
         for (String tag : tags) {
-            HashTagEntity hashTagEntity;
 
-            if (hashTagRepository.existsByTag(tag)) {
-                hashTagEntity = hashTagRepository.findByTag(tag);
-            } else {
-                hashTagEntity = HashTagEntity.builder().tag(tag).build();
-                hashTagRepository.save(hashTagEntity); // 새로운 HashTagEntity 저장
-            }
+            HashTagEntity hashTagEntity = hashTagRepository.findByTag(tag)
+                    .orElseGet(() -> {
+                        // 여기서 Optional이 비어 있을 때 실행될 로직을 정의합니다.
+                        // 새로운 HashTagEntity를 생성하고 저장합니다.
+                        HashTagEntity newTag = HashTagEntity.builder()
+                                .tag(tag)
+                                .build();
+                        return hashTagRepository.save(newTag);
+                    });
 
             SnapShotTag snapShotTag = SnapShotTag.builder()
                     .snapShotEntity(snapshotEntity)
@@ -86,6 +92,15 @@ public class SnapShotServiceImpl implements SnapShotService {
 
     @Override
     public void deleteSnapShot(Long snapshotId) {
+
+        SnapShotEntity snapShotEntity = snapshotRepository.findById(snapshotId)
+                .orElseThrow(() -> new EntityNotFoundException("스냅샷이 존재하지 않습니다: " + snapshotId));
+
+        // S3에서 이미지 삭제
+        if (snapShotEntity.getImageUrl() != null) {
+            s3Service.deleteFile(snapShotEntity.getImageUrl());
+        }
+
         snapshotRepository.deleteById(snapshotId);
     }
 
@@ -94,7 +109,35 @@ public class SnapShotServiceImpl implements SnapShotService {
         SnapShotEntity snapShotEntity = snapshotRepository.findById(snapshotId)
                 .orElseThrow(() -> new EntityNotFoundException("스냅샷이 존재하지 않습니다: " + snapshotId));
 
-        snapShotEntity.update(snapShotUpdateRequest);
+        // 태그 처리
+        List<SnapShotTag> updatedTags = new ArrayList<>();
+        for (String tagName : snapShotUpdateRequest.getTags()) {
+            HashTagEntity hashTagEntity = hashTagRepository.findByTag(tagName)
+                    .orElseGet(() -> {
+                        HashTagEntity newTag = HashTagEntity.builder()
+                                .tag(tagName)
+                                .build();
+
+                        return hashTagRepository.save(newTag); // 새로운 태그 저장
+                    });
+            SnapShotTag snapShotTag = SnapShotTag.builder()
+                    .snapShotEntity(snapShotEntity)
+                    .hashTagEntity(hashTagEntity)
+                    .build();
+
+            updatedTags.add(snapShotTag);
+        }
+
+        // 기존 태그 리스트를 업데이트된 리스트로 교체
+        snapShotEntity.changeSnapShotTags(updatedTags);
+
+        // 업데이트된 각 SnapShotTag 엔티티를 저장
+        updatedTags.forEach(snapShotTagRepository::save);
+
+        // 나머지 필드 업데이트
+        snapShotEntity.update(snapShotUpdateRequest, hashTagRepository); // 이미지 URL, 콘텐츠 등 업데이트
+
+        snapshotRepository.save(snapShotEntity); // 변경사항 저장
         return snapShotEntity.getId();
     }
 

@@ -2,6 +2,7 @@ package com.example.tingle.snapshot.entity;
 
 import com.example.tingle.snapshot.dto.request.SnapShotRequest;
 import com.example.tingle.snapshot.dto.request.SnapShotUpdateRequest;
+import com.example.tingle.snapshot.repository.HashTagRepository;
 import com.example.tingle.user.entity.StarEntity;
 import com.example.tingle.user.entity.UserEntity;
 import jakarta.persistence.*;
@@ -39,7 +40,7 @@ public class SnapShotEntity {
      * 중간 테이블과의 연결 속성
      */
     @Builder.Default
-    @OneToMany(mappedBy = "snapShotEntity", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "snapShotEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SnapShotTag> snapShotTags = new ArrayList<>();
 
     /**
@@ -77,9 +78,26 @@ public class SnapShotEntity {
         this.likes = likes;
     }
 
-    public void update(SnapShotUpdateRequest dto) {
+    public void update(SnapShotUpdateRequest dto, HashTagRepository hashTagRepository) {
         this.imageUrl = dto.getImageUrl();
         this.content = dto.getContent();
-        this.snapShotTags = dto.getTags();
+
+        // 기존 태그 리스트를 클리어하고 새 태그를 추가
+        this.snapShotTags.clear();
+        for (String tagName : dto.getTags()) {
+            HashTagEntity hashTagEntity = hashTagRepository.findByTag(tagName)
+                    .orElseGet(() -> {
+                        HashTagEntity newTag = HashTagEntity.builder()
+                                .tag(tagName)
+                                .build();
+
+                        return hashTagRepository.save(newTag); // 새로운 태그 저장
+                    });
+        }
+    }
+
+    public void changeSnapShotTags(List<SnapShotTag> snapShotTags) {
+        this.snapShotTags.clear();
+        this.snapShotTags.addAll(snapShotTags);
     }
 }

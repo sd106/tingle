@@ -7,6 +7,7 @@ import com.example.tingle.snapshot.repository.CommentRepository;
 import com.example.tingle.snapshot.repository.SnapShotRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,17 +44,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public Long updateComment(Long commentId, CommentRequest commentRequest) {
         Optional<CommentEntity> optComment = commentRepository.findById(commentId);
-
-        if (optComment.isEmpty()) {
-            System.out.println("코멘트가 없습니다만? 오류 났어요~~");
-            return null;
-        }
 
         CommentEntity commentEntity = optComment.get();
 
         commentEntity.update(commentRequest.getContext());
+
+        commentRepository.save(commentEntity);
 
         return commentEntity.getId();
     }

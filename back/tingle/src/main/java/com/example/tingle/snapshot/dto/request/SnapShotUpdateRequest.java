@@ -14,5 +14,5 @@ public class SnapShotUpdateRequest {
 
     private String content;
 
-    private List<SnapShotTag> tags;
+    private List<String> tags;
 }

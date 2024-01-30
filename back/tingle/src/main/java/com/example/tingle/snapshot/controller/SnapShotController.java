@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +28,7 @@ public class SnapShotController {
     private final SnapShotRepository snapShotRepository;
 
     @GetMapping("/")
-    public ResponseEntity<Map<String, Object>> getSnapShot(@PathVariable HttpServletResponse response) {
+    public ResponseEntity<Map<String, Object>> getSnapShot() {
 
         HttpStatus status = HttpStatus.ACCEPTED;
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -40,15 +41,13 @@ public class SnapShotController {
     }
 
 
-    // getSnapShotsByCreatedTime
-
     @PostMapping("/new")
-    public ResponseEntity<Map<String, Object>> newSnapShot(@RequestBody SnapShotRequest snapShotRequest) {
+    public ResponseEntity<Map<String, Object>> newSnapShot(@RequestBody SnapShotRequest snapShotRequest, @RequestParam("file") MultipartFile file) {
 
         HttpStatus status = HttpStatus.ACCEPTED;
         Map<String, Object> resultMap = new HashMap<String, Object>();
 
-        snapShotServiceImpl.uploadSnapshot(snapShotRequest);
+        snapShotServiceImpl.uploadSnapshot(snapShotRequest, file);
 
         resultMap.put("result", "성공해쓰!!");
 
