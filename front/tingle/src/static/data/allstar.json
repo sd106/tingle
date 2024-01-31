@@ -1,1667 +1,1637 @@
 [
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "bin",
+        "nickName": "정수빈",
+        "image": "/image/bin.png"
+    },
+    {
+        "id": "mo",
+        "nickName": "이성모",
+        "image": "/image/mo.png"
+    },
+    {
+        "id": "yoon",
+        "nickName": "윤정영",
+        "image": "/image/yoon.png"
+    },
+    {
+        "id": "oh",
+        "nickName": "오은아",
+        "image": "/image/oh.png"
+    },
+    {
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
-        "image": "/image/bin.png"
-    },
-    {
-        "username": "mo",
-        "name": "이성모",
-        "image": "/image/mo.png"
-    },
-    {
-        "username": "yoon",
-        "name": "윤정영",
-        "image": "/image/yoon.png"
-    },
-    {
-        "username": "oh",
-        "name": "오은아",
-        "image": "/image/oh.png"
-    },
-    {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "bin",
+        "nickName": "정수빈",
+        "image": "/image/bin.png"
+    },
+    {
+        "id": "mo",
+        "nickName": "이성모",
+        "image": "/image/mo.png"
+    },
+    {
+        "id": "yoon",
+        "nickName": "윤정영",
+        "image": "/image/yoon.png"
+    },
+    {
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
-        "image": "/image/bin.png"
-    },
-    {
-        "username": "mo",
-        "name": "이성모",
-        "image": "/image/mo.png"
-    },
-    {
-        "username": "yoon",
-        "name": "윤정영",
-        "image": "/image/yoon.png"
-    },
-    {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "bin",
+        "nickName": "정수빈",
+        "image": "/image/bin.png"
+    },
+    {
+        "id": "mo",
+        "nickName": "이성모",
+        "image": "/image/mo.png"
+    },
+    {
+        "id": "yoon",
+        "nickName": "윤정영",
+        "image": "/image/yoon.png"
+    },
+    {
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
-        "image": "/image/bin.png"
-    },
-    {
-        "username": "mo",
-        "name": "이성모",
-        "image": "/image/mo.png"
-    },
-    {
-        "username": "yoon",
-        "name": "윤정영",
-        "image": "/image/yoon.png"
-    },
-    {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "bin",
+        "nickName": "정수빈",
+        "image": "/image/bin.png"
+    },
+    {
+        "id": "mo",
+        "nickName": "이성모",
+        "image": "/image/mo.png"
+    },
+    {
+        "id": "yoon",
+        "nickName": "윤정영",
+        "image": "/image/yoon.png"
+    },
+    {
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
-        "image": "/image/bin.png"
-    },
-    {
-        "username": "mo",
-        "name": "이성모",
-        "image": "/image/mo.png"
-    },
-    {
-        "username": "yoon",
-        "name": "윤정영",
-        "image": "/image/yoon.png"
-    },
-    {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "bin",
+        "nickName": "정수빈",
+        "image": "/image/bin.png"
+    },
+    {
+        "id": "mo",
+        "nickName": "이성모",
+        "image": "/image/mo.png"
+    },
+    {
+        "id": "yoon",
+        "nickName": "윤정영",
+        "image": "/image/yoon.png"
+    },
+    {
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
-        "image": "/image/bin.png"
-    },
-    {
-        "username": "mo",
-        "name": "이성모",
-        "image": "/image/mo.png"
-    },
-    {
-        "username": "yoon",
-        "name": "윤정영",
-        "image": "/image/yoon.png"
-    },
-    {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "bin",
+        "nickName": "정수빈",
+        "image": "/image/bin.png"
+    },
+    {
+        "id": "mo",
+        "nickName": "이성모",
+        "image": "/image/mo.png"
+    },
+    {
+        "id": "yoon",
+        "nickName": "윤정영",
+        "image": "/image/yoon.png"
+    },
+    {
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
-        "image": "/image/bin.png"
-    },
-    {
-        "username": "mo",
-        "name": "이성모",
-        "image": "/image/mo.png"
-    },
-    {
-        "username": "yoon",
-        "name": "윤정영",
-        "image": "/image/yoon.png"
-    },
-    {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "bin",
+        "nickName": "정수빈",
+        "image": "/image/bin.png"
+    },
+    {
+        "id": "mo",
+        "nickName": "이성모",
+        "image": "/image/mo.png"
+    },
+    {
+        "id": "yoon",
+        "nickName": "윤정영",
+        "image": "/image/yoon.png"
+    },
+    {
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
-        "image": "/image/bin.png"
-    },
-    {
-        "username": "mo",
-        "name": "이성모",
-        "image": "/image/mo.png"
-    },
-    {
-        "username": "yoon",
-        "name": "윤정영",
-        "image": "/image/yoon.png"
-    },
-    {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "bin",
+        "nickName": "정수빈",
+        "image": "/image/bin.png"
+    },
+    {
+        "id": "mo",
+        "nickName": "이성모",
+        "image": "/image/mo.png"
+    },
+    {
+        "id": "yoon",
+        "nickName": "윤정영",
+        "image": "/image/yoon.png"
+    },
+    {
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
-        "image": "/image/bin.png"
-    },
-    {
-        "username": "mo",
-        "name": "이성모",
-        "image": "/image/mo.png"
-    },
-    {
-        "username": "yoon",
-        "name": "윤정영",
-        "image": "/image/yoon.png"
-    },
-    {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "bin",
+        "nickName": "정수빈",
+        "image": "/image/bin.png"
+    },
+    {
+        "id": "mo",
+        "nickName": "이성모",
+        "image": "/image/mo.png"
+    },
+    {
+        "id": "yoon",
+        "nickName": "윤정영",
+        "image": "/image/yoon.png"
+    },
+    {
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
-        "image": "/image/bin.png"
-    },
-    {
-        "username": "mo",
-        "name": "이성모",
-        "image": "/image/mo.png"
-    },
-    {
-        "username": "yoon",
-        "name": "윤정영",
-        "image": "/image/yoon.png"
-    },
-    {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "oh",
-        "name": "오은아",
+        "id": "oh",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "yoo",
-        "name": "유형민",
+        "id": "yoo",
+        "nickName": "유형민",
         "image": "/image/yoo.png"
     },
     {
-        "username": "jun",
-        "name": "황찬준",
+        "id": "jun",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "bin",
-        "name": "정수빈",
+        "id": "bin",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "mo",
-        "name": "이성모",
+        "id": "mo",
+        "nickName": "이성모",
         "image": "/image/mo.png"
     },
     {
-        "username": "yoon",
-        "name": "윤정영",
-        "image": "/image/yoon.png"
-    },
-    {
-        "username": "oh",
-        "name": "오은아",
-        "image": "/image/oh.png"
-    },
-    {
-        "username": "yoo",
-        "name": "유형민",
-        "image": "/image/yoo.png"
-    },
-    {
-        "username": "jun",
-        "name": "황찬준",
-        "image": "/image/jun.png"
-    },
-    {
-        "username": "bin",
-        "name": "정수빈",
-        "image": "/image/bin.png"
-    },
-    {
-        "username": "mo",
-        "name": "이성모",
-        "image": "/image/mo.png"
-    },
-    {
-        "username": "yoon",
-        "name": "윤정영",
+        "id": "yoon",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     }
 ]

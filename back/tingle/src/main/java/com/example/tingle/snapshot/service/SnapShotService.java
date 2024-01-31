@@ -1,22 +1,25 @@
 package com.example.tingle.snapshot.service;
 
+import com.example.tingle.snapshot.dto.request.SnapShotRequest;
+import com.example.tingle.snapshot.dto.request.SnapShotUpdateRequest;
 import com.example.tingle.snapshot.entity.SnapShotEntity;
-import com.example.tingle.snapshot.repository.SnapShotRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
-public class SnapShotService {
+public interface SnapShotService {
+    void uploadSnapshot(SnapShotRequest snapshotRequest, MultipartFile file) throws IOException;
 
-    private SnapShotRepository snapShotRepository;
-    // 추천수별 정렬된 게시글 목록 조회
-    public List<SnapShotEntity> getSnapShotsByLikes(SnapShotEntity snapShot) {
-        return snapShotRepository.findAllByLikesOrderByLikesDesc(snapShot);
-    }
+    void deleteSnapShot(Long snapshotId);
 
-    // 최신순 정렬된 게시글 목록 조회
-    public List<SnapShotEntity> getSnapShotsByCreatedTime(SnapShotEntity snapShot) {
-        return snapShotRepository.findAllByCreatedTimeOrderByCreatedTimeDesc(snapShot);
-    }
+    Long updateSnapShot(Long snapshotId, SnapShotUpdateRequest snapShotUpdateRequest, MultipartFile file, String previousImageUrl) throws IOException;
+
+    List<SnapShotEntity> getAllSnapShot();
+
+    List<SnapShotEntity> getSnapShotsByLikes();
+
+    List<SnapShotEntity> getSnapShotsByCreatedTime();
 }

@@ -1,52 +1,52 @@
 [
     {
-        "username": "jun1",
-        "name": "황찬준",
+        "id": "jun1",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "jun2",
-        "name": "황찬준",
+        "id": "jun2",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "jun3",
-        "name": "황찬준",
+        "id": "jun3",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "jun4",
-        "name": "황찬준",
+        "id": "jun4",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "jun5",
-        "name": "황찬준",
+        "id": "jun5",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "jun6",
-        "name": "황찬준",
+        "id": "jun6",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "jun7",
-        "name": "황찬준",
+        "id": "jun7",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "jun8",
-        "name": "황찬준",
+        "id": "jun8",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "jun9",
-        "name": "황찬준",
+        "id": "jun9",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     },
     {
-        "username": "jun10",
-        "name": "황찬준",
+        "id": "jun10",
+        "nickName": "황찬준",
         "image": "/image/jun.png"
     }
 ]

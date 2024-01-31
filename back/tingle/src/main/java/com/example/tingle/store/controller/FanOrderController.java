@@ -9,15 +9,14 @@ import com.example.tingle.user.entity.UserEntity;
 import com.example.tingle.user.service.UserService;
 import com.example.tingle.user.service.impl.UserServiceImpl;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("order")
 public class FanOrderController {
     private final UserService userService;
     private final OrderServiceImpl orderService;
@@ -44,5 +43,16 @@ public class FanOrderController {
             return ResultDTO.of("NOT_FOUND", "사용자를 찾을 수 없음", new ArrayList<>());
         }
     }
+    
+    @GetMapping("/processOrders")
+    public int processOrders(@RequestBody List<Long> orderIds) {
+        int price = 0;
+        for (Long orderId : orderIds) {
+            price += (int)orderService.processOrderById(orderId);
+        }
+        return price;
+    }
+
+
 
 }
