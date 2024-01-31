@@ -3,8 +3,8 @@ package com.example.tingle.fanMeeting.service;
 import com.example.tingle.fanMeeting.dto.request.CreateFanMeetingRoomRequest;
 import com.example.tingle.fanMeeting.model.FanMeetingRoom;
 import com.example.tingle.fanMeeting.utils.MeetingRoomMap;
-import com.example.tingle.user.entity.StarEntity;
-import com.example.tingle.user.repository.StarRepository;
+import com.example.tingle.star.entity.StarEntity;
+import com.example.tingle.star.repository.StarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
@@ -27,8 +27,8 @@ public class FanMeetingRoomService {
         StarEntity star = starRepository.findByUsername(request.getStarName());
         System.out.println(star);
         // 대기방, 미팅방 id는 star의 id * 10 + (1 or 2)
-        Long waitingRoomId = star.getId()*10 + 1;
-        Long meetingRoomId = star.getId()*10 + 2;
+        Long waitingRoomId = star.getId() * 10 + 1;
+        Long meetingRoomId = star.getId() * 10 + 2;
         Map<String, WebSocketSession> clients1 = new HashMap<>();
         Map<String, WebSocketSession> clients2 = new HashMap<>();
 
@@ -50,8 +50,8 @@ public class FanMeetingRoomService {
                 .maxUserCnt(2)
                 .build();
 
-        System.out.println("대기방 :"+fanwaitingRoom);
-        System.out.println("미팅방 :"+fanMeetingRoom);
+        System.out.println("대기방 :" + fanwaitingRoom);
+        System.out.println("미팅방 :" + fanMeetingRoom);
         addRoom(fanwaitingRoom);
         addRoom(fanMeetingRoom);
         System.out.println("완성!!");
@@ -63,7 +63,7 @@ public class FanMeetingRoomService {
                 .map(r -> Collections.unmodifiableMap(r.getClients()))
                 .orElse(Collections.emptyMap());
     }
-    
+
     public void addClient(FanMeetingRoom room, String name, WebSocketSession session) {
         System.out.println(room);
         System.out.println(name);

@@ -1,10 +1,8 @@
 package com.example.tingle.snapshot.entity;
 
-import com.example.tingle.snapshot.S3.S3Service;
-import com.example.tingle.snapshot.dto.request.SnapShotRequest;
 import com.example.tingle.snapshot.dto.request.SnapShotUpdateRequest;
 import com.example.tingle.snapshot.repository.HashTagRepository;
-import com.example.tingle.user.entity.StarEntity;
+import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +12,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -73,7 +70,7 @@ public class SnapShotEntity {
      * 코멘트
      */
     @OneToMany(mappedBy = "snapShotEntity")
-    private List<CommentEntity> comments= new ArrayList<>();
+    private List<CommentEntity> comments = new ArrayList<>();
 
 
     public void likeChange(Integer likes) {

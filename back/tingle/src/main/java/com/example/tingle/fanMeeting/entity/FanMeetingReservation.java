@@ -1,9 +1,12 @@
 package com.example.tingle.fanMeeting.entity;
 
-import com.example.tingle.user.entity.StarEntity;
+import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.user.entity.UserEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 

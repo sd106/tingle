@@ -24,7 +24,7 @@ public class QFollowEntity extends EntityPathBase<FollowEntity> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.example.tingle.user.entity.QStarEntity starEntity;
+    public final com.example.tingle.star.entity.QStarEntity starEntity;
 
     public final com.example.tingle.user.entity.QUserEntity userEntity;
 
@@ -46,7 +46,7 @@ public class QFollowEntity extends EntityPathBase<FollowEntity> {
 
     public QFollowEntity(Class<? extends FollowEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.starEntity = inits.isInitialized("starEntity") ? new com.example.tingle.user.entity.QStarEntity(forProperty("starEntity")) : null;
+        this.starEntity = inits.isInitialized("starEntity") ? new com.example.tingle.star.entity.QStarEntity(forProperty("starEntity")) : null;
         this.userEntity = inits.isInitialized("userEntity") ? new com.example.tingle.user.entity.QUserEntity(forProperty("userEntity")) : null;
     }
 
