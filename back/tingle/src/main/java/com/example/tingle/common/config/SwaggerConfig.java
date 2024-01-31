@@ -1,4 +1,4 @@
-package com.example.tingle.cofing;
+package com.example.tingle.common.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
