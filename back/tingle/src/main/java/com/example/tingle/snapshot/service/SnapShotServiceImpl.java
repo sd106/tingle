@@ -41,6 +41,7 @@ public class SnapShotServiceImpl implements SnapShotService {
     private final StarRepository starRepository;
 
     public List<SnapShotEntity> getAllSnapShot() {
+        System.out.println("getAllSnapShot 메서드 실행");
         return snapshotRepository.findAll();
     }
 

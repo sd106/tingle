@@ -27,7 +27,14 @@ interface Starinfo {
     nickName: string;
     image: string;
 }
-
+interface StarLogininfo {
+    starId?: number;
+    username: string;
+    picture?: string;
+    email?: string;
+    role?: string;
+    provider?: string;
+}
 
 // 스토어
 interface Product {
@@ -46,5 +53,5 @@ interface ProductCreationPayload {
 export type {
     SignUp, LogIn,
     User, Star, Starinfo,
-    Product, ProductCreationPayload
+    Product, ProductCreationPayload, StarLogininfo
 }

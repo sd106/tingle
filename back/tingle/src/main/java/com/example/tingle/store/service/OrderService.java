@@ -8,7 +8,7 @@ import java.util.Optional;
 @Service
 public interface OrderService {
 
-    boolean processOrder(Long productId, Integer fanId, String starName);
+    boolean processOrder(Long productId, Long fanId, String starName);
 
     void deleteOrderFromStar(Long starId, Long orderId);
     Optional<OrderEntity> findById(Long orderId);

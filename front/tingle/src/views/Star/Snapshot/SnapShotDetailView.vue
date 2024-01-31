@@ -35,7 +35,7 @@
   
   onMounted(async () => {
     try {
-      const response = await axios.get(`/snapshot/${snapshotId}`);
+      const response = await axios.get(`/snapshot/${snapshotId}/`);
       snapshot.value = response.data;
       console.log(snapshot.value)
     } catch (error) {

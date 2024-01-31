@@ -52,7 +52,7 @@ public class StarOrderController {
     // 주문 생성, 상품의 수량이 0일시 주문 불가능.
     // http://localhost:8080/createOrder/2/7
     @PostMapping("/create/{userId}/{productId}/{starName}")
-    public String createOrder(@PathVariable Integer userId, @PathVariable Long productId, @PathVariable String starName) {
+    public String createOrder(@PathVariable Long userId, @PathVariable Long productId, @PathVariable String starName) {
         // 주문한 사용자와 상품을 조회
         Optional<UserEntity> optionalUserEntity = userService.findById(userId);
         Optional<ProductEntity> optionalProductEntity = productService.findById(productId);

@@ -46,9 +46,12 @@ public class LoginController {
 
             if (starRepository.existsByUsername(loginDto.getUsername())) {
                 StarEntity star = starRepository.findByUsername(loginDto.getUsername());
+                resultMap.put("starId", star.getId());
                 resultMap.put("username", star.getUsername());
+                resultMap.put("picture", star.getPicture());
                 resultMap.put("email", star.getEmail());
                 resultMap.put("role", star.getRole());
+                resultMap.put("provider", star.getProvider());
                 status = HttpStatus.OK;
 
                 new CustomStarDetails(star);
