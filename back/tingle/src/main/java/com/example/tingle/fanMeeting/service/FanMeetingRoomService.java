@@ -1,5 +1,6 @@
 package com.example.tingle.fanMeeting.service;
 
+import com.example.tingle.fanMeeting.dto.request.CreateFanMeetingRoomRequest;
 import com.example.tingle.fanMeeting.model.FanMeetingRoom;
 import com.example.tingle.fanMeeting.utils.MeetingRoomMap;
 import com.example.tingle.user.entity.StarEntity;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -19,18 +21,41 @@ public class FanMeetingRoomService {
     private final Map<Long, FanMeetingRoom> meetingRooms = MeetingRoomMap.getInstance().getMeetingRooms();
     private final StarRepository starRepository;
 
-    // 팬미팅 이름, star의 id를 roomId로 채팅방 생
-    public FanMeetingRoom createChatRoom(String roomName, Integer maxUserCnt, String starName) {
-        StarEntity star = starRepository.findByUsername(starName);
-        Long roomId = star.getId();
+    // 팬미팅 이름, star의 id를 roomId로 채팅방 생성
+    public FanMeetingRoom createRoom(CreateFanMeetingRoomRequest request) {
+        System.out.println("??");
+        StarEntity star = starRepository.findByUsername(request.getStarName());
+        System.out.println(star);
+        // 대기방, 미팅방 id는 star의 id * 10 + (1 or 2)
+        Long waitingRoomId = star.getId()*10 + 1;
+        Long meetingRoomId = star.getId()*10 + 2;
+        Map<String, WebSocketSession> clients1 = new HashMap<>();
+        Map<String, WebSocketSession> clients2 = new HashMap<>();
 
-        return FanMeetingRoom.builder()
-                .roomId(roomId)
-                .roomName(roomName)
+        FanMeetingRoom fanwaitingRoom = FanMeetingRoom.builder()
+                .roomId(waitingRoomId)
+                .roomName(request.getRoomName())
+                .roomType("waiting")
                 .userCount(0)
-                .maxUserCnt(maxUserCnt)
+                .clients(clients1)
+                .maxUserCnt(request.getMaxUserCnt())
                 .build();
 
+        FanMeetingRoom fanMeetingRoom = FanMeetingRoom.builder()
+                .roomId(meetingRoomId)
+                .roomName(request.getRoomName())
+                .roomType("meeting")
+                .userCount(0)
+                .clients(clients2)
+                .maxUserCnt(2)
+                .build();
+
+        System.out.println("대기방 :"+fanwaitingRoom);
+        System.out.println("미팅방 :"+fanMeetingRoom);
+        addRoom(fanwaitingRoom);
+        addRoom(fanMeetingRoom);
+        System.out.println("완성!!");
+        return fanMeetingRoom;
     }
 
     public Map<String, WebSocketSession> getClients(final FanMeetingRoom room) {
@@ -38,8 +63,11 @@ public class FanMeetingRoomService {
                 .map(r -> Collections.unmodifiableMap(r.getClients()))
                 .orElse(Collections.emptyMap());
     }
-
+    
     public void addClient(FanMeetingRoom room, String name, WebSocketSession session) {
+        System.out.println(room);
+        System.out.println(name);
+        System.out.println(session);
         room.getClients().put(name, session);
     }
 
@@ -47,15 +75,9 @@ public class FanMeetingRoomService {
         room.getClients().remove(name);
     }
 
-
     public void addRoom(FanMeetingRoom room) {
         meetingRooms.put(room.getRoomId(), room);
     }
-
-    public Long getRoomId(FanMeetingRoom room) {
-        return room.getRoomId();
-    }
-
 
     public FanMeetingRoom findRoomById(Long roomId) {
         return MeetingRoomMap.getInstance().getMeetingRooms().get(roomId);

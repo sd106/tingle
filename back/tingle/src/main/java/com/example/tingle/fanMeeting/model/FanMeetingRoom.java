@@ -16,7 +16,7 @@ public class FanMeetingRoom {
     private String roomName;
     private int userCount;
     private int maxUserCnt;
+    private String roomType;
 
-    private Map<String, WebSocketSession> WaitingRoomclients;
-    private Map<String, WebSocketSession> MeetingRoomclients;
+    private Map<String, WebSocketSession> clients;
 }

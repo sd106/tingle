@@ -1,8 +1,6 @@
 package com.example.tingle.fanMeeting.dto.request;
 
 import com.example.tingle.fanMeeting.entity.FanMeetingType;
-import com.example.tingle.user.entity.StarEntity;
-import com.example.tingle.user.entity.UserEntity;
 import lombok.Getter;
 
 import java.util.List;
