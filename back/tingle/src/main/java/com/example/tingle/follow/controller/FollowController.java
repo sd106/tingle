@@ -63,7 +63,7 @@ public class FollowController {
 
     }
 
-    @Operation(summary = "1시간마다 가장 팔로워가 많이 증가한 스타 10명 조회")
+    @Operation(summary = "가장 팔로워가 많이 증가한 스타 10명 조회")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/hotStars")
     public Response getHotStars() {
@@ -71,7 +71,7 @@ public class FollowController {
         for(Map.Entry<Long, Integer> x: list){
             System.out.println(x.getKey()+" "+x.getValue());
         }
-        return new Response("성공","최근 팔로워가 많이 증가한 스타들", followService.getHotStars());
+        return new Response("성공","최근 팔로워가 많이 증가한 스타들", list);
 
     }
 

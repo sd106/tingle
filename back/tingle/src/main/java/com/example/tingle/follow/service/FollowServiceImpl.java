@@ -1,6 +1,7 @@
 package com.example.tingle.follow.service;
 
 
+import com.amazonaws.transform.MapEntry;
 import com.example.tingle.follow.dto.event.FollowerAddedEvent;
 import com.example.tingle.follow.dto.request.FollowReadRequest;
 import com.example.tingle.follow.entity.FollowEntity;
@@ -15,10 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
@@ -81,21 +79,27 @@ public class FollowServiceImpl implements FollowService{
     }
 
     public void incrementFollowerCount(Long starId) {
-        followerCountMap.put(starId, followerCountMap.getOrDefault(starId, 0) + 1);
+        log.info("증가함");
+        followerCountMap.put(starId, followerCountMap.getOrDefault(starId, 1) + 1);
     }
 
     public void decrementFollowerCount(Long starId) {
+        log.info("감소함");
         followerCountMap.put(starId, followerCountMap.getOrDefault(starId, 0) - 1);
     }
 
-
-    @Scheduled(fixedRate = 3600000)
     public List<Map.Entry<Long, Integer>> getHotStars() {
-        return followerCountMap.entrySet().stream()
+        // 팔로워 수 정보를 복사합니다.
+        Map<Long, Integer> followerCountCopy = new HashMap(followerCountMap);
+
+        List<Map.Entry<Long, Integer>> hotStars = followerCountCopy.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .limit(10)
+                .limit(2)
                 .collect(Collectors.toList());
+
+        // 원본 팔로워 수 정보를 초기화합니다.
+        followerCountMap.clear();
+
+        return hotStars;
     }
-
-
 }
