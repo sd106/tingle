@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+@Data //푸시용
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReadStarByCategory {
