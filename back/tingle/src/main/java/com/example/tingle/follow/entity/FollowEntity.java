@@ -1,6 +1,6 @@
 package com.example.tingle.follow.entity;
 
-import com.example.tingle.user.entity.StarEntity;
+import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;

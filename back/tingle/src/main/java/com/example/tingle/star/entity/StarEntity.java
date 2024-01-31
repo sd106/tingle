@@ -1,6 +1,8 @@
-package com.example.tingle.user.entity;
+package com.example.tingle.star.entity;
 
+import com.example.tingle.follow.entity.FollowEntity;
 import com.example.tingle.store.entity.OrderEntity;
+import com.example.tingle.user.entity.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,9 +10,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Entity(name = "star")
+@Entity(name = "stars")
 @Getter
 @Builder
 @AllArgsConstructor
@@ -35,6 +39,9 @@ public class StarEntity {
 
     @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
+    private int category;
 
     // Order된 목록 추가
 //    이건 필요 없지 않을까??
@@ -62,5 +69,8 @@ public class StarEntity {
         
         orderEntities.add(orderEntity);
     }
+
+    @OneToMany(mappedBy = "starEntity")
+    private Set<FollowEntity> followerUsers= new HashSet<>();
 
 }

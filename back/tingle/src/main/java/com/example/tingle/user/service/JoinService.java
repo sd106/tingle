@@ -2,8 +2,8 @@ package com.example.tingle.user.service;
 
 import com.example.tingle.user.dto.JoinDto;
 import com.example.tingle.user.entity.Role;
-import com.example.tingle.user.entity.StarEntity;
-import com.example.tingle.user.repository.StarRepository;
+import com.example.tingle.star.entity.StarEntity;
+import com.example.tingle.star.repository.StarRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

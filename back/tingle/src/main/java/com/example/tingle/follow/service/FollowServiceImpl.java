@@ -1,19 +1,26 @@
 package com.example.tingle.follow.service;
 
 
+import com.amazonaws.transform.MapEntry;
+import com.example.tingle.follow.dto.event.FollowerAddedEvent;
+import com.example.tingle.follow.dto.event.FollowerRemovedEvent;
 import com.example.tingle.follow.dto.request.FollowReadRequest;
 import com.example.tingle.follow.entity.FollowEntity;
 import com.example.tingle.follow.repository.FollowRepository;
-import com.example.tingle.user.repository.StarRepository;
+import com.example.tingle.star.repository.StarRepository;
 import com.example.tingle.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +31,7 @@ public class FollowServiceImpl implements FollowService{
     private final UserRepository userRepository;
     private final StarRepository starRepository;
 
+    private Map<Long, Integer> followerCountMap= new ConcurrentHashMap<Long, Integer>();
 
     @Transactional(readOnly = true)
     @Override
@@ -59,5 +67,40 @@ public class FollowServiceImpl implements FollowService{
 
         followRepository.delete(followEntity);
         return true;
+    }
+
+    @EventListener
+    public void handleFollowerAddedEvent(FollowerAddedEvent event) {
+        incrementFollowerCount(event.getStarId());
+    }
+
+    @EventListener
+    public void handleFollowerRemovedEvent(FollowerRemovedEvent event) {
+        decrementFollowerCount(event.getStarId());
+    }
+
+    public void incrementFollowerCount(Long starId) {
+        log.info("증가함");
+        followerCountMap.put(starId, followerCountMap.getOrDefault(starId, 0) + 1);
+    }
+
+    public void decrementFollowerCount(Long starId) {
+        log.info("감소함");
+        followerCountMap.put(starId, followerCountMap.get(starId) - 1);
+    }
+
+    public List<Map.Entry<Long, Integer>> getHotStars() {
+        // 팔로워 수 정보를 복사합니다.
+        Map<Long, Integer> followerCountCopy = new HashMap(followerCountMap);
+
+        List<Map.Entry<Long, Integer>> hotStars = followerCountCopy.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(10)
+                .collect(Collectors.toList());
+
+        // 원본 팔로워 수 정보를 초기화합니다.
+        followerCountMap.clear();
+
+        return hotStars;
     }
 }
