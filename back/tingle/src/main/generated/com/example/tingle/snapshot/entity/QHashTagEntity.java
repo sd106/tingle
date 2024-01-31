@@ -18,35 +18,24 @@ public class QHashTagEntity extends EntityPathBase<HashTagEntity> {
 
     private static final long serialVersionUID = 1277423672L;
 
-    private static final PathInits INITS = PathInits.DIRECT2;
-
     public static final QHashTagEntity hashTagEntity = new QHashTagEntity("hashTagEntity");
 
-    public final NumberPath<Integer> id = createNumber("id", Integer.class);
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final QSnapShotEntity snapshot;
+    public final ListPath<SnapShotTag, QSnapShotTag> snapShotTags = this.<SnapShotTag, QSnapShotTag>createList("snapShotTags", SnapShotTag.class, QSnapShotTag.class, PathInits.DIRECT2);
 
     public final StringPath tag = createString("tag");
 
     public QHashTagEntity(String variable) {
-        this(HashTagEntity.class, forVariable(variable), INITS);
+        super(HashTagEntity.class, forVariable(variable));
     }
 
     public QHashTagEntity(Path<? extends HashTagEntity> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QHashTagEntity(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QHashTagEntity(PathMetadata metadata, PathInits inits) {
-        this(HashTagEntity.class, metadata, inits);
-    }
-
-    public QHashTagEntity(Class<? extends HashTagEntity> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.snapshot = inits.isInitialized("snapshot") ? new QSnapShotEntity(forProperty("snapshot"), inits.get("snapshot")) : null;
+        super(HashTagEntity.class, metadata);
     }
 
 }

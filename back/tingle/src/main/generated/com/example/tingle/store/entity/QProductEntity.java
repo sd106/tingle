@@ -30,13 +30,13 @@ public class QProductEntity extends EntityPathBase<ProductEntity> {
 
     public final NumberPath<Long> Id = createNumber("Id", Long.class);
 
-    public final StringPath imageUrl = createString("imageUrl");
+    public final ListPath<ProductImageEntity, QProductImageEntity> imageUrl = this.<ProductImageEntity, QProductImageEntity>createList("imageUrl", ProductImageEntity.class, QProductImageEntity.class, PathInits.DIRECT2);
 
     public final StringPath name = createString("name");
 
     public final ListPath<OrderEntity, QOrderEntity> orders = this.<OrderEntity, QOrderEntity>createList("orders", OrderEntity.class, QOrderEntity.class, PathInits.DIRECT2);
 
-    public final NumberPath<Double> price = createNumber("price", Double.class);
+    public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
     public final com.example.tingle.user.entity.QStarEntity starId;
 

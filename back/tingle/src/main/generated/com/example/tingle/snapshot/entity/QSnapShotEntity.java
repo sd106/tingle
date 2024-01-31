@@ -22,19 +22,23 @@ public class QSnapShotEntity extends EntityPathBase<SnapShotEntity> {
 
     public static final QSnapShotEntity snapShotEntity = new QSnapShotEntity("snapShotEntity");
 
+    public final ListPath<CommentEntity, QCommentEntity> comments = this.<CommentEntity, QCommentEntity>createList("comments", CommentEntity.class, QCommentEntity.class, PathInits.DIRECT2);
+
     public final StringPath content = createString("content");
 
-    public final DateTimePath<java.time.LocalDateTime> createdTime = createDateTime("createdTime", java.time.LocalDateTime.class);
+    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
 
-    public final NumberPath<Integer> id = createNumber("id", Integer.class);
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath imageUrl = createString("imageUrl");
 
     public final NumberPath<Integer> likes = createNumber("likes", Integer.class);
 
+    public final ListPath<SnapShotTag, QSnapShotTag> snapShotTags = this.<SnapShotTag, QSnapShotTag>createList("snapShotTags", SnapShotTag.class, QSnapShotTag.class, PathInits.DIRECT2);
+
     public final com.example.tingle.user.entity.QStarEntity star;
 
-    public final SetPath<HashTagEntity, QHashTagEntity> tags = this.<HashTagEntity, QHashTagEntity>createSet("tags", HashTagEntity.class, QHashTagEntity.class, PathInits.DIRECT2);
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
 
     public final com.example.tingle.user.entity.QUserEntity user;
 

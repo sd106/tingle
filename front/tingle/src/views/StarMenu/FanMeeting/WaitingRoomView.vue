@@ -53,7 +53,7 @@ localUserName.value = '나나나'
 
 
 // 메시지 관련
-const invited = ref(false)
+const invited = ref(true)
 
 const messages = ref([{
     sender: '가가가',
