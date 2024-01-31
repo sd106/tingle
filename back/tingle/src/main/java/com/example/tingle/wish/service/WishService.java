@@ -1,20 +1,25 @@
 package com.example.tingle.wish.service;
 
-import com.example.tingle.wish.entity.WishEntity;
-import com.example.tingle.wish.repository.WishRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.tingle.wish.dto.request.WishRequest;
+import com.example.tingle.wish.dto.response.WishResponse;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface WishService {
-    public List<WishEntity> getAllWishes();
 
-    public Optional<WishEntity> getWishById(Long id);
+    // 해당 스타의 위시 조회
+    public List<WishResponse> read(Long starId);
 
-    public WishEntity createWish(WishEntity wishEntity);
+    // 해당 위시 등록
+    public void saveWish(WishRequest wishRequest);
 
-    public WishEntity updateWish(Long id, WishEntity newWish);
+    // 해당 위시 수정
+    public void updateWish(WishRequest wishRequest);
 
+    // 해당 위시 삭제
     public void deleteWish(Long id);
+
+    // 해당 위시에 미션금 추가
+
+    // 해당 위시에 미션금 취소
 }
