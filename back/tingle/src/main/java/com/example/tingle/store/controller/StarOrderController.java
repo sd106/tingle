@@ -5,21 +5,13 @@ import com.example.tingle.common.ResultDTO;
 import com.example.tingle.store.dto.OrderDto;
 import com.example.tingle.store.entity.OrderEntity;
 import com.example.tingle.store.entity.ProductEntity;
-import com.example.tingle.store.repository.OrderRepository;
-import com.example.tingle.store.repository.ProductRepository;
-import com.example.tingle.store.service.OrderService;
-import com.example.tingle.store.service.ProductService;
 import com.example.tingle.store.service.impl.OrderServiceImpl;
 import com.example.tingle.store.service.impl.ProductServiceImpl;
-import com.example.tingle.user.entity.StarEntity;
+import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.user.entity.UserEntity;
-import com.example.tingle.user.repository.StarRepository;
-import com.example.tingle.user.repository.UserRepository;
-import com.example.tingle.user.service.UserService;
-import com.example.tingle.user.service.impl.StarServiceImpl;
+import com.example.tingle.star.service.StarServiceImpl;
 import com.example.tingle.user.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -52,7 +44,7 @@ public class StarOrderController {
     // 주문 생성, 상품의 수량이 0일시 주문 불가능.
     // http://localhost:8080/createOrder/2/7
     @PostMapping("/create/{userId}/{productId}/{starName}")
-    public String createOrder(@PathVariable Integer userId, @PathVariable Long productId, @PathVariable String starName) {
+    public String createOrder(@PathVariable Long userId, @PathVariable Long productId, @PathVariable String starName) {
         // 주문한 사용자와 상품을 조회
         Optional<UserEntity> optionalUserEntity = userService.findById(userId);
         Optional<ProductEntity> optionalProductEntity = productService.findById(productId);

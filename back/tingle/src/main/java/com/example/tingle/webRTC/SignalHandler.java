@@ -3,8 +3,8 @@ package com.example.tingle.webRTC;
 import com.example.tingle.fanMeeting.model.FanMeetingRoom;
 import com.example.tingle.fanMeeting.service.FanMeetingRoomService;
 import com.example.tingle.fanMeeting.utils.MeetingRoomMap;
-import com.example.tingle.user.entity.StarEntity;
-import com.example.tingle.user.repository.StarRepository;
+import com.example.tingle.star.entity.StarEntity;
+import com.example.tingle.star.repository.StarRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -89,10 +89,10 @@ public class SignalHandler extends TextWebSocketHandler {
                 System.out.println("roomType: " + roomType);
                 // roomType에 따라 roomId를 다르게 찾는다 (대기방 => *10 +1, 미팅방 => *10 + 2)
                 if (roomType.equals("Waiting")) {
-                    roomId = star.getId()*10 + 1;
+                    roomId = star.getId() * 10 + 1;
                     System.out.println("대기방이군");
                 } else if (roomType.equals("Meeting")) {
-                    roomId = star.getId()*10 + 2;
+                    roomId = star.getId() * 10 + 2;
                     System.out.println("미팅방이군");
                 } else {
                     return;
@@ -147,7 +147,7 @@ public class SignalHandler extends TextWebSocketHandler {
                 }
                 break;
 
-                // 다음 팬에게 초대장 보내는 신호
+            // 다음 팬에게 초대장 보내는 신호
             case "Invite":
                 star = starRepository.findByUsername(data);
 

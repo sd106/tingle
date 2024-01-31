@@ -1,4 +1,4 @@
-package com.example.tingle.user.entity;
+package com.example.tingle.star.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,11 +16,15 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QStarEntity extends EntityPathBase<StarEntity> {
 
-    private static final long serialVersionUID = -2024102605L;
+    private static final long serialVersionUID = -396309510L;
 
     public static final QStarEntity starEntity = new QStarEntity("starEntity");
 
+    public final NumberPath<Integer> category = createNumber("category", Integer.class);
+
     public final StringPath email = createString("email");
+
+    public final SetPath<com.example.tingle.follow.entity.FollowEntity, com.example.tingle.follow.entity.QFollowEntity> followerUsers = this.<com.example.tingle.follow.entity.FollowEntity, com.example.tingle.follow.entity.QFollowEntity>createSet("followerUsers", com.example.tingle.follow.entity.FollowEntity.class, com.example.tingle.follow.entity.QFollowEntity.class, PathInits.DIRECT2);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -32,7 +36,7 @@ public class QStarEntity extends EntityPathBase<StarEntity> {
 
     public final StringPath provider = createString("provider");
 
-    public final EnumPath<Role> role = createEnum("role", Role.class);
+    public final EnumPath<com.example.tingle.user.entity.Role> role = createEnum("role", com.example.tingle.user.entity.Role.class);
 
     public final StringPath username = createString("username");
 

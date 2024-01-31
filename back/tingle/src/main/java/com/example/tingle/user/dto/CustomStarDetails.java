@@ -1,6 +1,6 @@
 package com.example.tingle.user.dto;
 
-import com.example.tingle.user.entity.StarEntity;
+import com.example.tingle.star.entity.StarEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

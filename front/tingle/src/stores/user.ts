@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
-import type { SignUp, LogIn, Starinfo } from '@/common/types/index'
+import type { SignUp, LogIn, Starinfo, StarLogininfo } from '@/common/types/index'
 
 // 
 import hotstar from '@/static/data/hotstar.json'
@@ -60,6 +60,10 @@ export const useUserStore = defineStore('user', () => {
 
   const isSidebarOpen = ref(true)
 
+  const starInfo = ref<StarLogininfo | null>(null);
+
+
+
   const signUp = async function (payload: SignUp): Promise<void> {
     const { username, password, email } = payload;
 
@@ -96,18 +100,19 @@ export const useUserStore = defineStore('user', () => {
           const { data } = res
           console.log(res.status)
           if (res.status === 200) {
-            const name = data.username
-            const role = data.role
-            const mail = data.email
-            console.log(name)
-            console.log(role)
-            console.log(mail)
+
+            isLogin.value = true;
+            // 여기에서 로그인한 사용자의 정보를 갱신하기
+            starInfo.value = data;
+            console.log(starInfo.value?.starId)
+            console.log(starInfo.value?.username)
+            console.log(starInfo.value?.email)
+            console.log(starInfo.value?.picture)
+            console.log(starInfo.value?.role)
+            console.log(starInfo.value?.provider)
           }
         }
-
-        )
-      console.log(response);
-      console.log(payload);
+      )
       window.alert('로그인성공!');
       router.push({ name: 'home' }) // 무조건 홈으로 돌아가는 게 아니라 이전 창으로 돌아가기?
       // 토큰이라든가 뭔가 받아서 뭘 해야 하지 않을까
@@ -115,6 +120,8 @@ export const useUserStore = defineStore('user', () => {
       console.error(error);
     }
   };
+
+
   const logOut = async function (): Promise<void> {
     try {
       const response = await axios.post(`${API_URL}/users/logout`, {
@@ -130,7 +137,7 @@ export const useUserStore = defineStore('user', () => {
     API_URL,
     signUp, logIn, logOut,
     //
-    hotstarinfo, getStarInfo,
+    hotstarinfo, getStarInfo, starInfo,
     allstarinfo, isLogin, categories,
     //
     isSidebarOpen,

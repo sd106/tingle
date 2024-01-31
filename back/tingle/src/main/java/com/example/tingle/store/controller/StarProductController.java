@@ -1,14 +1,13 @@
 package com.example.tingle.store.controller;
 
 import com.example.tingle.common.ResultDTO;
+import com.example.tingle.star.entity.StarEntity;
+import com.example.tingle.star.service.StarServiceImpl;
 import com.example.tingle.store.dto.ProductDto;
 import com.example.tingle.store.entity.ProductEntity;
 import com.example.tingle.store.entity.ProductImageEntity;
 import com.example.tingle.store.service.S3UploadService;
 import com.example.tingle.store.service.impl.ProductServiceImpl;
-import com.example.tingle.user.entity.StarEntity;
-import com.example.tingle.user.service.impl.StarServiceImpl;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -130,7 +129,7 @@ public class StarProductController {
         }
     }
 
-    @PostMapping(path="/updateImg/{productId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/updateImg/{productId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> updateProductImage(@PathVariable Long productId,
                                                      @RequestParam("existingImageUrl") String existingImageUrl,
                                                      @RequestParam("file") MultipartFile file) {

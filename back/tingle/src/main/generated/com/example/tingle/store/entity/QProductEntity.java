@@ -38,7 +38,7 @@ public class QProductEntity extends EntityPathBase<ProductEntity> {
 
     public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
-    public final com.example.tingle.user.entity.QStarEntity starId;
+    public final com.example.tingle.star.entity.QStarEntity starId;
 
     public final StringPath starName = createString("starName");
 
@@ -60,7 +60,7 @@ public class QProductEntity extends EntityPathBase<ProductEntity> {
 
     public QProductEntity(Class<? extends ProductEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.starId = inits.isInitialized("starId") ? new com.example.tingle.user.entity.QStarEntity(forProperty("starId")) : null;
+        this.starId = inits.isInitialized("starId") ? new com.example.tingle.star.entity.QStarEntity(forProperty("starId")) : null;
     }
 
 }

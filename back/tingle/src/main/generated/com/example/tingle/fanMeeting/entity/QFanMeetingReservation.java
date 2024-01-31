@@ -28,7 +28,7 @@ public class QFanMeetingReservation extends EntityPathBase<FanMeetingReservation
 
     public final DateTimePath<java.time.LocalDateTime> orderAt = createDateTime("orderAt", java.time.LocalDateTime.class);
 
-    public final com.example.tingle.user.entity.QStarEntity star;
+    public final com.example.tingle.star.entity.QStarEntity star;
 
     public final com.example.tingle.user.entity.QUserEntity user;
 
@@ -51,7 +51,7 @@ public class QFanMeetingReservation extends EntityPathBase<FanMeetingReservation
     public QFanMeetingReservation(Class<? extends FanMeetingReservation> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.fanMeeting = inits.isInitialized("fanMeeting") ? new QFanMeeting(forProperty("fanMeeting"), inits.get("fanMeeting")) : null;
-        this.star = inits.isInitialized("star") ? new com.example.tingle.user.entity.QStarEntity(forProperty("star")) : null;
+        this.star = inits.isInitialized("star") ? new com.example.tingle.star.entity.QStarEntity(forProperty("star")) : null;
         this.user = inits.isInitialized("user") ? new com.example.tingle.user.entity.QUserEntity(forProperty("user")) : null;
     }
 

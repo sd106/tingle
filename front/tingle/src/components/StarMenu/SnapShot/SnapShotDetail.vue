@@ -1,37 +1,58 @@
 <template>
-    <main>
-        <div class="왼쪽 전부">
-            <!-- 사진 -->
-            <img src="" alt="">
-            <!-- 클릭하면 확대 -->
-        </div>
-        <div class="오른쪽">
-            <div class="오른쪽 상단">
-                <!-- 본인이라면 수정으로 이동 -->
-                <!-- <RouterLink :to="`/${id}/home`">
-                        수정
-                    </RouterLink> -->
-                <!-- 제목 -->
-                <h1>제목</h1>
-                <!-- 태그 -->
-                <!-- 작성자, 작성 시간 -->
-                <h4>작성자 , 작성 시간</h4>
-            </div>
-            <div class="오른쪽 중단">
-                <!-- 댓글 총 개수-->
-                <p>댓글 && 개</p>
-                <!-- v-for 작성자, 댓글 내용 -->
-            </div>
-            <div class="오른쪽 하단">
-                <input type="text">
-                <!-- 댓글 입력창 -->
-            </div>
-        </div>
-    </main>
-</template>
-<script setup lang="ts">
-// import { RouterLink } from 'vue-router'
-
-
-</script>
+    <div v-if="snapshot">
+      <img :src="snapshot.imageUrl" alt="Snapshot Image">
+      <h3>{{ snapshot.username }}</h3>
+      <p>{{ snapshot.content }}</p>
+      <ul>
+        <li v-for="tag in snapshot.tags" :key="tag">{{ tag }}</li>
+      </ul>
+      <!-- 댓글 관련 내용 -->
+      <button @click="goToUpdate(snapshot.snapshotId)">Edit</button>
+      <button @click="deleteSnapshot(snapshot.snapshotId)">Delete</button>
+    </div>
+  </template>
   
+  <script lang="ts" setup>
+  import { ref, onMounted } from 'vue';
+  import axios from 'axios';
+  import { useRouter, useRoute } from 'vue-router';
+  
+
+  type SnapshotType = {
+    imageUrl: string;
+    username: string;
+    content: string;
+    tags: string[];
+    snapshotId: number;
+  };
+
+
+
+  const snapshot = ref<SnapshotType | null>(null);
+  const router = useRouter();
+  const route = useRoute();
+  const snapshotId = route.params.snapshotId;
+  
+  onMounted(async () => {
+    try {
+      const response = await axios.get(`/snapshot/${snapshotId}`);
+      snapshot.value = response.data;
+      console.log(snapshot.value)
+    } catch (error) {
+      console.error(error);
+    }
+  });
+  
+  const goToUpdate = (id: number) => {
+    router.push(`/snapshot/${id}/update`);
+  };
+
+  const deleteSnapshot = async (id: number) => {
+    try {
+        await axios.post(`/snapshot/${id}/delete`);
+        router.push('/');
+    } catch (error) {
+        console.error(error);
+    }
+  };
+  </script>

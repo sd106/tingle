@@ -63,7 +63,14 @@ interface Starinfo {
     nickName: string;
     image: string;
 }
-
+interface StarLogininfo {
+    starId?: number;
+    username: string;
+    picture?: string;
+    email?: string;
+    role?: string;
+    provider?: string;
+}
 
 // 스토어
 interface Product {
@@ -83,5 +90,5 @@ export type {
     SignUp, LogIn,
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
     User, Star, Starinfo,
-    Product, ProductCreationPayload
+    Product, ProductCreationPayload, StarLogininfo
 }

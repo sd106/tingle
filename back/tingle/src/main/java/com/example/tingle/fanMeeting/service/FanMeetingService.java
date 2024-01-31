@@ -7,9 +7,9 @@ import com.example.tingle.fanMeeting.entity.FanMeetingType;
 import com.example.tingle.fanMeeting.repository.FanMeetingRepository;
 import com.example.tingle.fanMeeting.repository.FanMeetingTypeRepository;
 import com.example.tingle.fanMeeting.utils.DateTimeParser;
-import com.example.tingle.user.entity.StarEntity;
+import com.example.tingle.star.entity.StarEntity;
+import com.example.tingle.star.repository.StarRepository;
 import com.example.tingle.user.entity.UserEntity;
-import com.example.tingle.user.repository.StarRepository;
 import com.example.tingle.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -63,7 +63,7 @@ public class FanMeetingService {
         return fanMeetingRepository.findRecentFanMeetingByStar(star);
     }
 
-//     star의 이름으로 fanMeeting의 정보를 가져온다.
+    //     star의 이름으로 fanMeeting의 정보를 가져온다.
     public GetFanMeetingInfoResponse getFanMeetingInfo(String starName) {
 
         FanMeeting fanMeeting = recentFanMeeting(starName);

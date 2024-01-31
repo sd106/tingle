@@ -36,7 +36,9 @@ public class QSnapShotEntity extends EntityPathBase<SnapShotEntity> {
 
     public final ListPath<SnapShotTag, QSnapShotTag> snapShotTags = this.<SnapShotTag, QSnapShotTag>createList("snapShotTags", SnapShotTag.class, QSnapShotTag.class, PathInits.DIRECT2);
 
-    public final com.example.tingle.user.entity.QStarEntity star;
+    public final ListPath<SnapShotTag, QSnapShotTag> snapShotTags = this.<SnapShotTag, QSnapShotTag>createList("snapShotTags", SnapShotTag.class, QSnapShotTag.class, PathInits.DIRECT2);
+
+    public final com.example.tingle.star.entity.QStarEntity star;
 
     public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
 
@@ -60,7 +62,7 @@ public class QSnapShotEntity extends EntityPathBase<SnapShotEntity> {
 
     public QSnapShotEntity(Class<? extends SnapShotEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.star = inits.isInitialized("star") ? new com.example.tingle.user.entity.QStarEntity(forProperty("star")) : null;
+        this.star = inits.isInitialized("star") ? new com.example.tingle.star.entity.QStarEntity(forProperty("star")) : null;
         this.user = inits.isInitialized("user") ? new com.example.tingle.user.entity.QUserEntity(forProperty("user")) : null;
     }
 
