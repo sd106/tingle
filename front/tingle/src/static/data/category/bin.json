@@ -1,52 +1,52 @@
 [
     {
-        "username": "bin1",
-        "name": "정수빈",
+        "id": "bin1",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "bin2",
-        "name": "정수빈",
+        "id": "bin2",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "bin3",
-        "name": "정수빈",
+        "id": "bin3",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "bin4",
-        "name": "정수빈",
+        "id": "bin4",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "bin5",
-        "name": "정수빈",
+        "id": "bin5",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "bin6",
-        "name": "정수빈",
+        "id": "bin6",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "bin7",
-        "name": "정수빈",
+        "id": "bin7",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "bin8",
-        "name": "정수빈",
+        "id": "bin8",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "bin9",
-        "name": "정수빈",
+        "id": "bin9",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     },
     {
-        "username": "bin10",
-        "name": "정수빈",
+        "id": "bin10",
+        "nickName": "정수빈",
         "image": "/image/bin.png"
     }
 ]

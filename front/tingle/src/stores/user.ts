@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
-import type { SignUp, LogIn, Star } from '@/common/types/index'
+import type { SignUp, LogIn, Starinfo } from '@/common/types/index'
 
 // 
 import hotstar from '@/static/data/hotstar.json'
@@ -40,15 +40,15 @@ export const useUserStore = defineStore('user', () => {
 
 
   // 바꿔야할 것
-  const hotstarinfo = ref<Star[]>([])
-  const allstarinfo = ref<Star[]>([])
+  const hotstarinfo = ref<Starinfo[]>([])
+  const allstarinfo = ref<Starinfo[]>([])
 
   const getStarInfo = function (): void {
     hotstarinfo.value = hotstar
     allstarinfo.value = allstar
   }
 
-  const categories: Record<string, Star[]> = {
+  const categories: Record<string, Starinfo[]> = {
     '유형민': yoo,
     '황찬준': jun,
     '정수빈': bin,

@@ -1,13 +1,15 @@
 package com.example.tingle.user.entity;
 
 import com.example.tingle.store.entity.OrderEntity;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Entity(name = "users")
+@Entity(name = "user")
 @Getter
 @Builder
 @AllArgsConstructor

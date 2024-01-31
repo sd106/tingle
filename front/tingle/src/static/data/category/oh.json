@@ -1,52 +1,52 @@
 [
     {
-        "username": "oh1",
-        "name": "오은아",
+        "id": "oh1",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "oh2",
-        "name": "오은아",
+        "id": "oh2",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "oh3",
-        "name": "오은아",
+        "id": "oh3",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "oh4",
-        "name": "오은아",
+        "id": "oh4",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "oh5",
-        "name": "오은아",
+        "id": "oh5",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "oh6",
-        "name": "오은아",
+        "id": "oh6",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "oh7",
-        "name": "오은아",
+        "id": "oh7",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "oh8",
-        "name": "오은아",
+        "id": "oh8",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "oh9",
-        "name": "오은아",
+        "id": "oh9",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     },
     {
-        "username": "oh10",
-        "name": "오은아",
+        "id": "oh10",
+        "nickName": "오은아",
         "image": "/image/oh.png"
     }
 ]

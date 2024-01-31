@@ -13,6 +13,7 @@ public interface ProductService {
 
 
     ProductDto mapToDTO(ProductEntity productEntity);
+    ProductEntity convertDtoToEntity(ProductDto productDto);
     Optional<ProductEntity> findById(Long productId);
 
     void save(ProductEntity productEntity);

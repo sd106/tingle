@@ -1,52 +1,52 @@
 [
     {
-        "username": "yoon1",
-        "name": "윤정영",
+        "id": "yoon1",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "yoon2",
-        "name": "윤정영",
+        "id": "yoon2",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "yoon3",
-        "name": "윤정영",
+        "id": "yoon3",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "yoon4",
-        "name": "윤정영",
+        "id": "yoon4",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "yoon5",
-        "name": "윤정영",
+        "id": "yoon5",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "yoon6",
-        "name": "윤정영",
+        "id": "yoon6",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "yoon7",
-        "name": "윤정영",
+        "id": "yoon7",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "yoon8",
-        "name": "윤정영",
+        "id": "yoon8",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "yoon9",
-        "name": "윤정영",
+        "id": "yoon9",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     },
     {
-        "username": "yoon10",
-        "name": "윤정영",
+        "id": "yoon10",
+        "nickName": "윤정영",
         "image": "/image/yoon.png"
     }
 ]
