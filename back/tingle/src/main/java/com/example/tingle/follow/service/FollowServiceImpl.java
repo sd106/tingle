@@ -3,6 +3,7 @@ package com.example.tingle.follow.service;
 
 import com.amazonaws.transform.MapEntry;
 import com.example.tingle.follow.dto.event.FollowerAddedEvent;
+import com.example.tingle.follow.dto.event.FollowerRemovedEvent;
 import com.example.tingle.follow.dto.request.FollowReadRequest;
 import com.example.tingle.follow.entity.FollowEntity;
 import com.example.tingle.follow.repository.FollowRepository;
@@ -74,18 +75,18 @@ public class FollowServiceImpl implements FollowService{
     }
 
     @EventListener
-    public void handleFollowerRemovedEvent(FollowerAddedEvent event) {
+    public void handleFollowerRemovedEvent(FollowerRemovedEvent event) {
         decrementFollowerCount(event.getStarId());
     }
 
     public void incrementFollowerCount(Long starId) {
         log.info("증가함");
-        followerCountMap.put(starId, followerCountMap.getOrDefault(starId, 1) + 1);
+        followerCountMap.put(starId, followerCountMap.getOrDefault(starId, 0) + 1);
     }
 
     public void decrementFollowerCount(Long starId) {
         log.info("감소함");
-        followerCountMap.put(starId, followerCountMap.getOrDefault(starId, 0) - 1);
+        followerCountMap.put(starId, followerCountMap.get(starId) - 1);
     }
 
     public List<Map.Entry<Long, Integer>> getHotStars() {
@@ -94,7 +95,7 @@ public class FollowServiceImpl implements FollowService{
 
         List<Map.Entry<Long, Integer>> hotStars = followerCountCopy.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .limit(2)
+                .limit(10)
                 .collect(Collectors.toList());
 
         // 원본 팔로워 수 정보를 초기화합니다.
