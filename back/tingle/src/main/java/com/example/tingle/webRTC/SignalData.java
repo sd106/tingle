@@ -13,4 +13,5 @@ public class SignalData {
     private String signalType;
     private Object iceCandidate;
     private Object sdp;
+    private String roomType;
 }

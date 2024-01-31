@@ -18,14 +18,14 @@
                 <hr>
                 <span>&nbsp;구독</span>
                 <!-- n명까지만 표기하고 나머지 더보기 버튼 -->
-                <li calss="nav-item" v-for="star in visibleStarInfo" :key="star.name">
-                    <RouterLink :to="`/profile/${star.username}/home`" class="text-decoration-none text-dark">
+                <li calss="nav-item" v-for="star in visibleStarInfo" :key="star.id">
+                    <RouterLink :to="`/${star.id}/home`" class="text-decoration-none text-dark">
                         <div class="star-card">
                             <div class="star-image">
                                 <img :src="star.image" alt="not">
                             </div>
                             <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            {{ star.name }}
+                            {{ star.nickName }}
                         </div>
                         <!-- 최근 활동 있으면 점으로 표시 -->
                     </RouterLink>

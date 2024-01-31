@@ -10,12 +10,12 @@
     <!-- 슬라이더 좀 더 자연스럽고 부드럽게 회전초밥마냥 라이브러리 쓰든가-->
     <div class="container slider-container">
       <div class="justify-content-between slider-track" ref="sliderTrack">
-        <div v-for="star in store.hotstarinfo" :key="star.name" class="p-2 star-card" style="width: 18%;">
-          <RouterLink class="router-link-custom" :to="`/profile/${star.username}/home`">
+        <div v-for="star in store.hotstarinfo" :key="star.nickName" class="p-2 star-card" style="width: 18%;">
+          <RouterLink class="router-link-custom" :to="`/${star.id}/home`">
             <div class="star-image">
               <img :src="star.image" alt="not">
             </div>
-            <div class="star-name">{{ star.name }}</div>
+            <div class="star-nickName">{{ star.nickName }}</div>
           </RouterLink>
         </div>
       </div>
@@ -33,12 +33,12 @@
     </div>
     <div class="container d-flex flex-wrap"
       style="height: 360px; background-color: lightgoldenrodyellow; border-radius: 20px;">
-      <div v-for="star in displayedStarInfo" :key="star.username" class="p-2 star-card" style="width: 18%;">
-        <RouterLink class="router-link-custom" :to="`/profile/${star.username}/home`">
+      <div v-for="star in displayedStarInfo" :key="star.id" class="p-2 star-card" style="width: 18%;">
+        <RouterLink class="router-link-custom" :to="`/${star.id}/home`">
           <div class="star-image">
             <img :src="star.image" alt="not">
           </div>
-          <div class="star-name">{{ star.name }}</div>
+          <div class="star-nickName">{{ star.nickName }}</div>
         </RouterLink>
       </div>
     </div>
@@ -51,7 +51,7 @@ import { ref, onMounted } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import { useUserStore } from '@/stores/user';
 
-import type { Star } from '@/common/types/index'
+import type { Starinfo } from '@/common/types/index'
 
 
 const store = useUserStore()
@@ -71,7 +71,7 @@ const moveSlider = () => {
 
 // 카테고리 디스플레이
 const selectedCategory = ref<string>('유형민'); // 기본값은 첫 번째 카테고리로 설정
-const displayedStarInfo = ref<Star[]>([]);
+const displayedStarInfo = ref<Starinfo[]>([]);
 
 const loadInitialData = () => {
   displayedStarInfo.value = store.categories[selectedCategory.value];
@@ -127,7 +127,7 @@ onMounted(() => {
   object-fit: cover;
 }
 
-.star-name {
+.star-nickName {
   font-weight: bold;
   text-align: center;
 }

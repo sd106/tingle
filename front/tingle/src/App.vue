@@ -34,6 +34,7 @@ onMounted(() => {
   align-items: center;
   margin: 1px;
   border-radius: 10px;
+  /* background-color: blueviolet; */
 }
 
 .star-card:hover {
@@ -77,6 +78,9 @@ onMounted(() => {
   /* 애니메이션을 없애는 스타일 */
 }
 
+main {
+}
+
 .content {
   margin-top: 71px;
   margin-left: 64px;
@@ -89,3 +93,4 @@ onMounted(() => {
   margin-right: 64px;
 }
 </style>
+ 

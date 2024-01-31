@@ -2,15 +2,17 @@ package com.example.tingle.user.entity;
 
 import com.example.tingle.follow.entity.FollowEntity;
 import com.example.tingle.store.entity.OrderEntity;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Entity(name = "users")
+@Entity(name = "user")
 @Getter
 @Builder
 @AllArgsConstructor
