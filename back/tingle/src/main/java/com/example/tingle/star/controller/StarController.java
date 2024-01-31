@@ -24,10 +24,9 @@ public class StarController {
 
         return new Response("성공", "카테고리별 스타 조회",starService.findStarsByCategory(category));
 
-
     }
 
-
+    
 
 
 

@@ -5,7 +5,10 @@ import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.star.repository.StarRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class StarServiceImpl implements StarService {
@@ -25,6 +28,4 @@ public class StarServiceImpl implements StarService {
     public List<ReadStarByCategory> findStarsByCategory(int category) {
         return starRepository.findStarsByCategory(category);
     }
-
-
 }
