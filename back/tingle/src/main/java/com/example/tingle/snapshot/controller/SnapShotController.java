@@ -2,7 +2,9 @@ package com.example.tingle.snapshot.controller;
 
 import com.example.tingle.snapshot.dto.request.SnapShotRequest;
 import com.example.tingle.snapshot.dto.request.SnapShotUpdateRequest;
+import com.example.tingle.snapshot.entity.HashTagEntity;
 import com.example.tingle.snapshot.entity.SnapShotEntity;
+import com.example.tingle.snapshot.entity.SnapShotTag;
 import com.example.tingle.snapshot.service.SnapShotServiceImpl;
 import com.example.tingle.user.entity.UserEntity;
 import jakarta.servlet.http.HttpServletResponse;
