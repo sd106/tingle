@@ -21,7 +21,9 @@ import StoreMainView from '@/views/Star/Store/StoreMainView.vue'
 import StoreManageView from '@/views/Star/Store/StoreManageView.vue'
 
 
-import FanMeetingView from '@/views/Star/FanMeetingView.vue'
+import FanMeetingEntranceView from '@/views/StarMenu/FanMeeting/FanMeetingEntranceView.vue'
+import WaitingRoomView from '@/views/StarMenu/FanMeeting/WaitingRoomView.vue'
+import MeetingRoomView from '@/views/StarMenu/FanMeeting/MeetingRoomView.vue'
 
 
 const router = createRouter({
@@ -129,9 +131,29 @@ const router = createRouter({
     {
       path: '/:starid/fanmeeting',
       name: 'fanmeeting',
-      component: FanMeetingView,
-      props: (route) => ({ id: route.params.starid }),
+      component: FanMeetingEntranceView,
+      props: (route) => ({ username: route.params.username }),
     },
+    {
+      path: '/fanmeeting/create',
+      name: 'CreateMeetingView',
+      component: () => import('@/views/StarMenu/FanMeeting/CreateFanMeetingView.vue'),
+    },
+    {
+      path: '/profile/:username/fanmeeting/ticketbox',
+      name: 'FanMeetingTicketBoxView',
+      component: () => import('@/views/StarMenu/FanMeeting/FanMeetingTicketBoxView.vue'),
+    },
+    {
+      path: '/fanmeeting/:username/waitingroom',
+      name: 'WaitingRoomView',
+      component: WaitingRoomView
+    },
+    {
+      path: '/fanmeeting/:username/meetingroom',
+      name: 'MeetingRoomView',
+      component: MeetingRoomView
+    }
   ]
 })
 

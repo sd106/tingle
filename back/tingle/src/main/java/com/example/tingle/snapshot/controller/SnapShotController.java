@@ -2,11 +2,8 @@ package com.example.tingle.snapshot.controller;
 
 import com.example.tingle.snapshot.dto.request.SnapShotRequest;
 import com.example.tingle.snapshot.dto.request.SnapShotUpdateRequest;
-import com.example.tingle.snapshot.entity.HashTagEntity;
 import com.example.tingle.snapshot.entity.SnapShotEntity;
-import com.example.tingle.snapshot.entity.SnapShotTag;
 import com.example.tingle.snapshot.service.SnapShotServiceImpl;
-import com.example.tingle.user.entity.StarEntity;
 import com.example.tingle.user.entity.UserEntity;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "*",allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 @RequestMapping("/snapshot")
 @RequiredArgsConstructor
@@ -180,7 +177,7 @@ public class SnapShotController {
             // 스냅샷 엔티티가 존재하지 않는 경우의 처리
             System.out.println("스냅샷을 찾을 수 없습니다.");
         }
-        
+
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 

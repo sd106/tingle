@@ -1,5 +1,6 @@
 package com.example.tingle.user.entity;
 
+import com.example.tingle.follow.entity.FollowEntity;
 import com.example.tingle.store.entity.OrderEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,7 +8,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "user")
 @Getter
@@ -50,4 +53,9 @@ public class UserEntity {
     public String getRoleKey() {
         return this.role.getKey();
     }
+
+    @OneToMany(mappedBy = "userEntity")
+    private Set<FollowEntity> followingStars = new HashSet<>();
+
+
 }

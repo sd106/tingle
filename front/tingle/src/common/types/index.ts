@@ -1,3 +1,5 @@
+import type { StringDecoder } from "string_decoder";
+
 interface SignUp {
     username: string;
     password: string;
@@ -13,6 +15,40 @@ interface User {
     id: string;
     nickName: string;
     image: string;
+}
+
+interface FanMeetingContent {
+    name: string
+}   
+
+interface FanMeeting {
+    name: string;
+    ticketStartDate: Date | null 
+    ticketEndDate: Date | null
+    startDate: Date | null
+    participants: number
+    price: number
+    contents: string[]
+}
+
+interface FanMeetingInfo {
+    id: number
+    status: string
+    name: string
+    description: string
+    ticketingStartAt: string
+    ticketingEndAt: string
+    fanMeetingStartAt: string
+    price: number
+    imgURL: string
+}
+
+interface FanMeetingTicket {
+    id: number
+    image: string
+    name: string
+    description: string
+    price: number
 }
 
 interface Star {
@@ -52,6 +88,7 @@ interface ProductCreationPayload {
 
 export type {
     SignUp, LogIn,
+    FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
     User, Star, Starinfo,
     Product, ProductCreationPayload, StarLogininfo
 }
