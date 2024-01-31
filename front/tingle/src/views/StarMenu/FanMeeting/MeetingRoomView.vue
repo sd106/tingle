@@ -44,7 +44,11 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useUserStore } from '@/stores/user'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
+
+const starName = ref(route.params.username.toString())
 const store = useUserStore()
 
 // 화면 구성 관련
@@ -156,7 +160,7 @@ const initializeWebSocket = () => {
             default:
                 handleErrorMessage('Wrong type message received from server')
         }
-    };
+    }
 
     // 소켓이 열리면 이벤트 함수
     socket.onopen = () => {
@@ -164,21 +168,20 @@ const initializeWebSocket = () => {
         sendToServer({
             sender: localUserName.value,
             signalType: 'Join',
-            data: localRoom.value
-
-        });
-    };
+            data: starName.value,
+        })
+    }
 
     // 소켓이 닫히면 이벤트 함수
     socket.onclose = () => {
         console.log('소켓 닫혔는디요')
-    };
+    }
 
     
     // 소켓에 에러나면 이벤트 함수
     socket.onerror = (error) => {
         console.errorr(error)
-    };
+    }
 }
 
 // WebRTC

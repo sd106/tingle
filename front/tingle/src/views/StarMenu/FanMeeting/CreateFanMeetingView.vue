@@ -76,6 +76,8 @@
         <div class="col-12 text-center mt-4">
             <button @click="submit" class="btn btn-primary btn-lg">Submit</button>
         </div>
+
+        <button @click="temp1">임시로 팬미팅 만들기 이름: jun으로 접속</button>
     </main>
 </template>
 
@@ -86,6 +88,19 @@ import '@vuepic/vue-datepicker/dist/main.css'  // https://vue3datepicker.com/
 import axios from 'axios'
 import type { FanMeeting, FanMeetingContent } from '@/common/types/index'
 
+const temp1 = async () => {
+    try {
+        const { data } = await axios.post('http://localhost:8080/fanMeetingRoom/create', 
+                            {
+                                roomName: '환영환영',
+                                starName: 'jun',
+                                maxUserCnt: 8,
+                            })
+        console.log(data)
+    } catch (e) {
+        console.log(e)
+    }
+}
 
 const props = defineProps(['username']);
 const name = ref('')
@@ -135,16 +150,8 @@ const loadContents = async () => {
     
     console.log(data)
     allContents.value = data
-
-
-
-
 }
 
-
-const c = () => {
-    console.log(meeting.value.startDate)
-}
 
 onMounted(() => {
     loadContents()

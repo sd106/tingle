@@ -1,5 +1,5 @@
 <template>
-  <main class="container">
+  <main>
     <h1>팬미팅</h1>
     <StarMenu :name="name" />
     

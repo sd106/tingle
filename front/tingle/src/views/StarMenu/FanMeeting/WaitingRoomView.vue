@@ -48,11 +48,12 @@ const store = useUserStore()
 
 const starName = ref(route.params.username.toString())
 const localUserName = ref(store.userName)
+const roomType = 'Waiting'
 localUserName.value = '나나나'
 
 
-// 화면 구성 관련
-const invited = ref(true)
+// 메시지 관련
+const invited = ref(false)
 
 const messages = ref([{
     sender: '가가가',
@@ -73,42 +74,158 @@ const messages = ref([{
 ])
 const newMessage = ref('')
 
-
-
-// 소켓 관련
-const socket = ref(null)
-
-const initializeWebSocket = () => {
-    socket.value = new WebSocket("ws://localhost:8080/signal")
-    
-    socket.value.onmessage = (msg) => {
-        const message = JSON.parse(msg.data)
-        messages.value.push(message)
-    };
-    
-    socket.value.onopen = () => {
-        console.log('채팅방에 연결되었습니다.')
-    };
-    
-    socket.value.onclose = () => {
-        console.log('채팅방 연결이 종료되었습니다.')
-    };
-    
-    socket.value.onerror = (error) => {
-        console.error('WebSocket 에러: ', error)
-    };
-}
-
 const sendMessage = () => {
     if (newMessage.value.trim() !== '') {
-        const message = {
+        sendToServer({
             sender: localUserName.value,
-            text: newMessage.value
-        }
-        socket.value.send(JSON.stringify(message))
+            signalType: 'Text',
+            data: newMessage.value,
+            roomType: roomType
+        });
         newMessage.value = ''
     }
 }
+
+// 소켓 관련
+let socket
+
+// 서버에게 메시지 전송 메서드
+const sendToServer = (msg) => {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify(msg))
+    }
+}
+
+const initializeWebSocket = () => {
+    socket = new WebSocket("ws://localhost:8080/signal")
+    
+    socket.onmessage = (msg) => {
+        let message = JSON.parse(msg.data)
+        console.log("서버로부터 메시지가 도착했습니다!")
+        console.log(message)
+        // data type별 처리 메서드가 있음
+        switch (message.signalType) {
+            case "Text":
+                handleTextMessage(message)
+                break
+
+            case "Offer":
+                console.log('Signal OFFER received')
+                handleOfferMessage(message)
+                break
+
+            case "Answer":
+                console.log('Signal ANSWER received')
+                handleAnswerMessage(message)
+                break
+
+            case "Ice":
+                console.log('Signal ICE Candidate received')
+                handleICEMessage(message)
+                break
+
+            case "Join":
+                console.log('Client is starting to ' + (message.data === "true)" ? 'negotiate' : 'wait for a peer'))
+                handleJoinMessage(message)
+                break
+
+            case 'Invite':
+                console.log('Invite message received')
+                handleInviteMessage(message)
+                break
+
+            default:
+                handleErrorMessage('Wrong type message received from server')
+        }
+    }
+    
+    socket.onopen = () => {
+        console.log('소켓 열렸는디요.')
+        sendToServer({
+            sender: localUserName.value,
+            signalType: 'Join',
+            data: starName.value,
+            roomType: roomType
+        });
+    };
+    
+    socket.onclose = () => {
+        console.log('소켓 닫혔는디요.')
+    };
+    
+    socket.onerror = (error) => {
+        console.error(error)
+    };
+}
+
+const handleTextMessage = (message) => {
+    messages.value.push({
+                            sender: message.sender,
+                            text: message.data
+                        })
+    console.log('Text message from ' + message.sender + ' received: ' + message.data)
+}
+
+const handleOfferMessage = async (message) => {
+    try {
+        const remoteDescription = new RTCSessionDescription(message.sdp)
+        await myPeerConnection.setRemoteDescription(remoteDescription)
+
+        const answer = await myPeerConnection.createAnswer()
+        await myPeerConnection.setLocalDescription(answer)
+        sendToServer({
+            sender: localUserName.value,
+            signalType: 'Answer',
+            sdp: myPeerConnection.localDescription,
+            roomType: roomType
+        })
+    } catch (error) {
+        console.error('Error handling offer message: ', error)
+    }
+}
+
+const handleAnswerMessage = (message) => {
+    const remoteDescription = new RTCSessionDescription(message.sdp)
+    myPeerConnection.setRemoteDescription(remoteDescription)
+}
+
+const handleICEMessage = (message) => {
+    const candidate = new RTCIceCandidate(message.iceCandidate)
+    myPeerConnection.addIceCandidate(candidate)
+}
+
+const handleJoinMessage = async (message) => {
+    if (message.data === "true") {
+        console.log("11")
+        myPeerConnection.onnegotiationneeded = async () => {
+            try {   
+                console.log("22")
+
+                const offer = await myPeerConnection.createOffer()
+                await myPeerConnection.setLocalDescription(offer)
+                sendToServer({
+                    sender: localUserName.value,
+                    signalType: 'Offer',
+                    sdp: myPeerConnection.localDescription,
+                    roomType: roomType
+                })
+                console.log('Negotiation Needed Event: SDP offer sent')
+            } catch (reason) {
+                // 연결 실패 시 오류 처리
+                console.error('failure to connect error: ', reason)
+            }
+        }
+    }
+}
+
+const handleInviteMessage = (message) => {
+    invited.value = true
+    console.log("초대왔땅")
+}
+const handleErrorMessage = (message) => {
+    console.error("에러발생!: ", message)
+}
+
 
 onMounted(initializeWebSocket)
 onUnmounted(() => {

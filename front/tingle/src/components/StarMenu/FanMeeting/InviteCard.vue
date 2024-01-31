@@ -8,7 +8,7 @@
             </div>
             <br>
             <div class="d-flex justify-content-center">
-                <button @click="store.goPage('MeetingRoomView')">입장하기</button>
+                <button class="enter-btn" @click="store.goPage('MeetingRoomView')">입장하기</button>
             </div>
         </div>
     </div>
@@ -19,7 +19,6 @@ import { defineProps } from 'vue'
 import { useFanMeetingStore } from '@/stores/fanMeeting'
 
 const store = useFanMeetingStore()
-
 
 const props = defineProps({
     starName: {
@@ -38,16 +37,35 @@ const props = defineProps({
   position: fixed; 
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.5); 
-  transition: opacity 0.3s ease; 
+  transition: opacity 0.3s ease;
+  z-index: 9999;
 }
+
 
 .invite-card-container {
   padding: 20px;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.enter-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none; 
+  border-radius: 5px;
+  font-size: 16px; 
+  cursor: pointer; 
+  transition: background-color 0.3s; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+  text-transform: uppercase; 
+}
+
+.enter-btn:hover {
+  background-color: #45a049; 
 }
 </style>
