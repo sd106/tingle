@@ -16,32 +16,31 @@
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <!-- 추가 기능 -->
                 <hr>
-                <span>&nbsp;구독</span>
                 <!-- n명까지만 표기하고 나머지 더보기 버튼 -->
-                <li calss="nav-item" v-for="star in visibleStarInfo" :key="star.id">
+                <li calss="nav-item" v-for="star in folloingInfo.slice(0,displayCount)" :key="star.id">
                     <RouterLink :to="`/${star.id}/home`" class="text-decoration-none text-dark">
                         <div class="star-card">
                             <div class="star-image">
-                                <img :src="star.image" alt="not">
+                                <img :src="star.picture" alt="not">
                             </div>
                             <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            {{ star.nickName }}
+                            {{ star.userName }}
                         </div>
                         <!-- 최근 활동 있으면 점으로 표시 -->
                     </RouterLink>
                 </li>
                 <!-- 더보기 -->
-                <button v-if="displayCount < store.hotstarinfo.length" @click="showMore" class="p-0"
+                <button v-if="displayCount < folloingInfo.length" @click="showMore" class="p-0"
                     style="background: none; border: none; cursor: pointer;">
                     <div class="star-card">
                         <div class="arrow-image">
                             <img src="/image/downarrow.png" alt="">
                         </div>
-                        <span>&nbsp;&nbsp;&nbsp;&nbsp;{{ store.hotstarinfo.length - 5 }}명 더보기</span>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;{{ folloingInfo.length - displayCount }}명 더보기</span>
                     </div>
                 </button>
                 <!-- 간략히 보기 -->
-                <button v-if="displayCount > 5" @click="showBrief" class="p-0"
+                <button v-if="displayCount  > 7" @click="showBrief" class="p-0"
                     style="background: none; border: none; cursor: pointer;">
                     <div class="star-card">
                         <div class="arrow-image">
@@ -65,23 +64,34 @@
 import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/stores/user';
+import axios from 'axios';
 
 import ChatModal from '@/components/ChatModal.vue';
 
 const store = useUserStore()
 
-
 // 사이드바 더보기
-const displayCount = ref(5);
-const visibleStarInfo = computed(() => store.hotstarinfo.slice(0, displayCount.value));
+const displayCount = ref(7);
 
 const showMore = function (): void {
-    displayCount.value = store.hotstarinfo.length;
+    displayCount.value = folloingInfo.value.length;
 }
 
 const showBrief = function (): void {
-    displayCount.value = 5;
+    displayCount.value = 7;
 }
+
+const folloingInfo= ref<{id: number, picture: string, userName: string}[]>([]);
+const hotStarInfo= ref<{id: number, picture: string, userName: string}[]>([]);
+
+//구독한 스타 가져오기
+const getFolloings = async () => {
+  const response = await axios.get('http://localhost:8080/follow/1');
+  folloingInfo.value = response.data.data;  
+  console.log(response);
+}
+
+getFolloings();
 
 
 </script>

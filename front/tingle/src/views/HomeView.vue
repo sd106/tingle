@@ -2,6 +2,7 @@
   <main>
     <!-- 배경색을 두고 다른걸 다 흰색으로 두는 것도 괜찮을듯 -->
     <!-- 배너사진 -->
+    <div v-if="hotStarsInfo"></div>
     <div class="container p-0" style="height: 250px;">
       <img class="img-fluid w-100 h-100" src="/image/logo.webp" alt="">
     </div>
@@ -10,12 +11,12 @@
     <!-- 슬라이더 좀 더 자연스럽고 부드럽게 회전초밥마냥 라이브러리 쓰든가-->
     <div class="container slider-container">
       <div class="justify-content-between slider-track" ref="sliderTrack">
-        <div v-for="star in store.hotstarinfo" :key="star.nickName" class="p-2 star-card" style="width: 18%;">
-          <RouterLink class="router-link-custom" :to="`/${star.id}/home`">
-            <div class="star-image">
-              <img :src="star.image" alt="not">
+        <div v-for="hotstar in hotStarsInfo" :key="hotstar.userName" class="p-2 star-card" style="width: 18%;">
+          <RouterLink class="router-link-custom" :to="`/${hotstar.id}/home`">
+            <div class="hotstar-image">
+              <img :src="hotstar.picture" alt="not" class="hotpic">
             </div>
-            <div class="star-nickName">{{ star.nickName }}</div>
+            <div class="hotstar-nickName">{{ hotstar.userName }}</div>
           </RouterLink>
         </div>
       </div>
@@ -50,8 +51,9 @@
 import { ref, onMounted } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import { useUserStore } from '@/stores/user';
+import axios from 'axios';
 
-import type { Starinfo } from '@/common/types/index'
+import type { Starinfo, hotstarInfo } from '@/common/types/index'
 
 
 const store = useUserStore()
@@ -85,6 +87,17 @@ const selectCategory = (category: string): void => {
   // }
   displayedStarInfo.value = store.categories[category];
 };
+
+const hotStarsInfo= ref<hotstarInfo[]>([]);
+
+//최근 인기상승 핫스타 가져오기
+const getHotStars = async () => {
+  const response = await axios.get('http://localhost:8080/follow/hotStars');
+  hotStarsInfo.value = response.data.data;  
+  console.log(response);
+}
+
+getHotStars();
 
 
 onMounted(() => {
@@ -160,5 +173,23 @@ onMounted(() => {
   font-size: 1.5em;
   font-weight: bold;
   margin: 10px 0;
+}
+
+.hotpic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+.hotpic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hotstar-nickName{
+  width: 100%;
+  height: 100%;
 }
 </style>

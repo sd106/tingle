@@ -21,6 +21,12 @@ interface FanMeetingContent {
     name: string
 }   
 
+interface hotstarInfo {
+    id: number;
+    picture: string; 
+    userName: string;
+}
+
 interface FanMeeting {
     name: string;
     ticketStartDate: Date | null 
@@ -87,7 +93,7 @@ interface ProductCreationPayload {
 }
 
 export type {
-    SignUp, LogIn,
+    SignUp, LogIn, hotstarInfo,
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
     User, Star, Starinfo,
     Product, ProductCreationPayload, StarLogininfo
