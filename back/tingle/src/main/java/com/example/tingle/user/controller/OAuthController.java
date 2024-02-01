@@ -1,5 +1,7 @@
 package com.example.tingle.user.controller;
 
+import com.nimbusds.openid.connect.sdk.claims.UserInfo;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,17 +26,21 @@ public class OAuthController {
 
         HttpStatus status = HttpStatus.ACCEPTED;
         Map<String, Object> resultMap = new HashMap<String, Object>();
+//        int id = (int) user.getAttributes().get("id");
+
         String username = (String) user.getAttributes().get("name");
         String sub = (String) user.getAttributes().get("sub");
         String picture = (String) user.getAttributes().get("picture");
         String email = (String) user.getAttributes().get("email");
         String role = "ROLE_USER";
 
+//        resultMap.put("id", id);
         resultMap.put("username", username);
         resultMap.put("sub", sub);
         resultMap.put("picture", picture);
         resultMap.put("email", email);
         resultMap.put("role", role);
+        System.out.println("username = " + username);
 
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
@@ -41,6 +48,7 @@ public class OAuthController {
     @GetMapping("/naver")
     public ResponseEntity<Map<String, Object>> getNaverUser(@AuthenticationPrincipal OAuth2User user) {
 
+        System.out.println("user naver 2@@@@@@@@@@2 = " + user);
         HttpStatus status = HttpStatus.ACCEPTED;
         Map<String, Object> resultMap = new HashMap<String, Object>();
 
