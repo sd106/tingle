@@ -32,7 +32,7 @@ public class FollowServiceImpl implements FollowService{
     private final StarRepository starRepository;
 
     private Map<Long, Integer> followerCountMap= new ConcurrentHashMap<Long, Integer>();
-    List<Map.Entry<Long, Integer>> hotStars;
+    private List<Map.Entry<Long, Integer>> hotStars;
 
     @Transactional(readOnly = true)
     @Override
@@ -83,12 +83,15 @@ public class FollowServiceImpl implements FollowService{
     public void incrementFollowerCount(Long starId) {
         log.info("증가함");
         followerCountMap.put(starId, followerCountMap.getOrDefault(starId, 0) + 1);
+
     }
 
     public void decrementFollowerCount(Long starId) {
         log.info("감소함");
         followerCountMap.put(starId, followerCountMap.get(starId) - 1);
     }
+
+    private List<FollowReadRequest> hotStarsInfo;
 
     //가장 구독자가 많이 오른 스타10명 을 계산함
     @Scheduled(fixedDelay = 60000)
@@ -99,12 +102,30 @@ public class FollowServiceImpl implements FollowService{
                 .limit(10)
                 .collect(Collectors.toList());
 
+        // hotStars의 각 starId에 해당하는 FollowReadRequest를 리스트에 추가합니다.
+        hotStarsInfo = new ArrayList<>();
+        for (Map.Entry<Long, Integer> hotStar : hotStars) {
+            Long starId = hotStar.getKey();
+            FollowReadRequest followReadRequest = getFollow(starId);
+            hotStarsInfo.add(followReadRequest);
+        }
+
+        for(FollowReadRequest x: hotStarsInfo){
+            log.info(String.valueOf(x.getStarId()));
+        }
+
         // 원본 팔로워 수 정보를 초기화합니다.
         followerCountMap.clear();
     }
 
-    public List<Map.Entry<Long, Integer>> getHotStars(){
-        return hotStars;
+    public List<FollowReadRequest> getHotStarsInfo() {
+        return hotStarsInfo;
+    }
+
+    public FollowReadRequest getFollow(Long starId) {
+        FollowEntity followEntity = followRepository.findByStarEntityId(starId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid starId: " + starId));
+        return FollowReadRequest.toDto(followEntity);
     }
 
 }

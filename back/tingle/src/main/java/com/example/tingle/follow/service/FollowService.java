@@ -13,4 +13,5 @@ public interface FollowService {
 
     boolean deleteFollow(Long userId, Long starId) throws Exception;
 
+    FollowReadRequest getFollow(Long starId);
 }
