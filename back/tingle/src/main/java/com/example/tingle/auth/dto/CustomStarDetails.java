@@ -1,4 +1,4 @@
-package com.example.tingle.user.dto;
+package com.example.tingle.auth.dto;
 
 import com.example.tingle.star.entity.StarEntity;
 import org.springframework.security.core.GrantedAuthority;

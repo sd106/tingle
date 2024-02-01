@@ -1,4 +1,4 @@
-package com.example.tingle.user.config;
+package com.example.tingle.common.config;
 
 import com.example.tingle.webRTC.SignalHandler;
 import lombok.RequiredArgsConstructor;

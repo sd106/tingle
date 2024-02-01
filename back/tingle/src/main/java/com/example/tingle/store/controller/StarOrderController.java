@@ -9,7 +9,7 @@ import com.example.tingle.store.service.impl.OrderServiceImpl;
 import com.example.tingle.store.service.impl.ProductServiceImpl;
 import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.user.entity.UserEntity;
-import com.example.tingle.star.service.StarServiceImpl;
+import com.example.tingle.star.service.impl.StarServiceImpl;
 import com.example.tingle.user.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,8 +1,8 @@
-package com.example.tingle.user.service;
+package com.example.tingle.auth.service;
 
-import com.example.tingle.user.dto.CustomStarDetails;
-import com.example.tingle.star.entity.StarEntity;
-import com.example.tingle.star.repository.StarRepository;
+import com.example.tingle.auth.dto.CustomUserDetails;
+import com.example.tingle.user.entity.UserEntity;
+import com.example.tingle.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,22 +10,21 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomStarDetailsService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private StarRepository starRepository;
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // 유저가 있는지 확인
-        StarEntity starData = starRepository.findByUsername(username);
+        UserEntity userData = userRepository.findByUsername(username);
         System.out.println("username = " + username);
 
         // 시큐리티 세션 = Authentication = UserDetails
-        if (starData != null){
-            System.out.println("userData.getUsername() = " + starData.getUsername());
-            System.out.println("UserDetail Athentication에 넣습니다");
-            return new CustomStarDetails(starData);
+        if (userData != null){
+            System.out.println("userData.getUsername() = " + userData.getUsername());
+            return new CustomUserDetails(userData);
 
             /**  리턴하면 UserDetails가 Authentication 안에 들어감
              *   그리고 세션 내부에 Authentication이 들어감

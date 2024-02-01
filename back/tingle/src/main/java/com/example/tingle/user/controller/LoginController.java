@@ -1,6 +1,6 @@
 package com.example.tingle.user.controller;
 
-import com.example.tingle.user.dto.CustomStarDetails;
+import com.example.tingle.auth.dto.CustomStarDetails;
 import com.example.tingle.user.dto.LoginDto;
 import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.star.repository.StarRepository;

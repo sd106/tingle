@@ -1,7 +1,7 @@
 package com.example.tingle.star.controller;
 
 import com.example.tingle.star.dto.response.Response;
-import com.example.tingle.star.service.StarServiceImpl;
+import com.example.tingle.star.service.impl.StarServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

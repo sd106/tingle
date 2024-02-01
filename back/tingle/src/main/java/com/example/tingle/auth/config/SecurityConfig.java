@@ -1,6 +1,6 @@
-package com.example.tingle.user.config;
+package com.example.tingle.auth.config;
 
-import com.example.tingle.user.config.oauth.CustomOAuth2UserService;
+import com.example.tingle.auth.oauth.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -1,4 +1,4 @@
-package com.example.tingle.user.config.oauth;
+package com.example.tingle.auth.oauth;
 
 import com.example.tingle.user.entity.Role;
 import com.example.tingle.user.entity.UserEntity;

@@ -1,9 +1,9 @@
-package com.example.tingle.user.config.oauth;
+package com.example.tingle.auth.oauth;
 
-import com.example.tingle.user.config.oauth.provider.GoogleUserInfo;
-import com.example.tingle.user.config.oauth.provider.NaverUserInfo;
-import com.example.tingle.user.config.oauth.provider.OAuth2UserInfo;
-import com.example.tingle.user.dto.CustomUserDetails;
+import com.example.tingle.auth.oauth.provider.GoogleUserInfo;
+import com.example.tingle.auth.oauth.provider.NaverUserInfo;
+import com.example.tingle.auth.oauth.provider.OAuth2UserInfo;
+import com.example.tingle.auth.dto.CustomUserDetails;
 import com.example.tingle.user.entity.Role;
 import com.example.tingle.user.entity.UserEntity;
 import com.example.tingle.user.repository.UserRepository;

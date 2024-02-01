@@ -1,8 +1,9 @@
-package com.example.tingle.star.service;
+package com.example.tingle.star.service.impl;
 
 import com.example.tingle.star.dto.response.ReadStarByCategory;
 import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.star.repository.StarRepository;
+import com.example.tingle.star.service.StarService;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;

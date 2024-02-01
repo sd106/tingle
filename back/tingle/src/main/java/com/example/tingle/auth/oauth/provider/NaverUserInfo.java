@@ -1,4 +1,4 @@
-package com.example.tingle.user.config.oauth.provider;
+package com.example.tingle.auth.oauth.provider;
 
 import java.util.Map;
 
