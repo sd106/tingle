@@ -32,6 +32,7 @@ public class FollowServiceImpl implements FollowService{
     private final StarRepository starRepository;
 
     private Map<Long, Integer> followerCountMap= new ConcurrentHashMap<Long, Integer>();
+    List<Map.Entry<Long, Integer>> hotStars;
 
     @Transactional(readOnly = true)
     @Override
@@ -89,18 +90,21 @@ public class FollowServiceImpl implements FollowService{
         followerCountMap.put(starId, followerCountMap.get(starId) - 1);
     }
 
-    public List<Map.Entry<Long, Integer>> getHotStars() {
-        // 팔로워 수 정보를 복사합니다.
-        Map<Long, Integer> followerCountCopy = new HashMap(followerCountMap);
+    //가장 구독자가 많이 오른 스타10명 을 계산함
+    @Scheduled(fixedDelay = 60000)
+    public void CalculHotStars() {
 
-        List<Map.Entry<Long, Integer>> hotStars = followerCountCopy.entrySet().stream()
+        hotStars = followerCountMap.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .limit(10)
                 .collect(Collectors.toList());
 
         // 원본 팔로워 수 정보를 초기화합니다.
         followerCountMap.clear();
+    }
 
+    public List<Map.Entry<Long, Integer>> getHotStars(){
         return hotStars;
     }
+
 }

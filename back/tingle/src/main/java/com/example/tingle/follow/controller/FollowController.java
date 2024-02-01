@@ -67,11 +67,7 @@ public class FollowController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/hotStars")
     public Response getHotStars() {
-        List<Map.Entry<Long, Integer>> list= followService.getHotStars();
-        for(Map.Entry<Long, Integer> x: list){
-            System.out.println(x.getKey()+" "+x.getValue());
-        }
-        return new Response("성공","최근 팔로워가 많이 증가한 스타들", list);
+        return new Response("성공","최근 팔로워가 많이 증가한 스타들", followService.getHotStars());
 
     }
 
