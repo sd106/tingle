@@ -132,7 +132,7 @@ const router = createRouter({
       path: '/:starid/fanmeeting',
       name: 'fanmeeting',
       component: FanMeetingEntranceView,
-      props: (route) => ({ username: route.params.username }),
+      props: (route) => ({ starid: route.params.starid }),
     },
     {
       path: '/fanmeeting/create',
@@ -140,17 +140,17 @@ const router = createRouter({
       component: () => import('@/views/StarMenu/FanMeeting/CreateFanMeetingView.vue'),
     },
     {
-      path: '/profile/:username/fanmeeting/ticketbox',
+      path: '/profile/:starid/fanmeeting/ticketbox',
       name: 'FanMeetingTicketBoxView',
       component: () => import('@/views/StarMenu/FanMeeting/FanMeetingTicketBoxView.vue'),
     },
     {
-      path: '/fanmeeting/:username/waitingroom',
+      path: '/fanmeeting/:starid/waitingroom',
       name: 'WaitingRoomView',
       component: WaitingRoomView
     },
     {
-      path: '/fanmeeting/:username/meetingroom',
+      path: '/fanmeeting/:starid/meetingroom',
       name: 'MeetingRoomView',
       component: MeetingRoomView
     }

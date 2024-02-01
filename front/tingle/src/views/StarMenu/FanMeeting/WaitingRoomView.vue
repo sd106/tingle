@@ -46,7 +46,7 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const store = useUserStore()
 
-const starName = ref(route.params.username.toString())
+const starName = ref(route.params.starid.toString())
 const localUserName = ref(store.userName)
 const roomType = 'Waiting'
 localUserName.value = '나나나'

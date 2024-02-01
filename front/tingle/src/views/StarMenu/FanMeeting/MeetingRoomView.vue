@@ -48,7 +48,7 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 
-const starName = ref(route.params.username.toString())
+const starName = ref(route.params.starid.toString())
 const store = useUserStore()
 
 // 화면 구성 관련
