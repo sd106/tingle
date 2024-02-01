@@ -94,7 +94,7 @@ public class FollowServiceImpl implements FollowService{
     private List<ReadStarRequest> hotStarsInfo;
 
     //가장 구독자가 많이 오른 스타10명 을 계산함
-    @Scheduled(fixedDelay = 3600000)
+    //@Scheduled(fixedDelay = 3600000)
     public void CalculHotStars() {
 
         hotStars = followerCountMap.entrySet().stream()
@@ -111,10 +111,11 @@ public class FollowServiceImpl implements FollowService{
         }
 
         // 원본 팔로워 수 정보를 초기화합니다.
-        followerCountMap.clear();
+        //followerCountMap.clear();
     }
 
     public List<ReadStarRequest> getHotStarsInfo() {
+        CalculHotStars();
         return hotStarsInfo;
     }
 

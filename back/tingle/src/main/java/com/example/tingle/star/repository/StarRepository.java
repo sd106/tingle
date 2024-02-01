@@ -1,13 +1,11 @@
 package com.example.tingle.star.repository;
 
-import com.example.tingle.follow.entity.FollowEntity;
 import com.example.tingle.star.entity.StarEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface StarRepository extends JpaRepository<StarEntity, Long>, FindStarByCaterory {
+public interface StarRepository extends JpaRepository<StarEntity, Long>, CustomStarRepository {
 
     boolean existsByUsername(String username);
 

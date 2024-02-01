@@ -1,5 +1,6 @@
 package com.example.tingle.star.service;
 
+import com.example.tingle.star.dto.request.ReadStarRequest;
 import com.example.tingle.star.dto.response.ReadStarByCategory;
 import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.star.repository.StarRepository;
@@ -28,4 +29,10 @@ public class StarServiceImpl implements StarService {
     public List<ReadStarByCategory> findStarsByCategory(int category) {
         return starRepository.findStarsByCategory(category);
     }
+
+    @Override
+    public List<ReadStarRequest> find10Stars() {
+       return starRepository.find10Stars();
+    }
+
 }

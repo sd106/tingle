@@ -22,8 +22,8 @@ public class ReadStarRequest {
     public static ReadStarRequest toDto(StarEntity starEntity) {
         return new ReadStarRequest(
                 starEntity.getId(),
-                starEntity.getPicture(),
-                starEntity.getUsername()
+                starEntity.getUsername(),
+                starEntity.getPicture()
         );
     }
 
