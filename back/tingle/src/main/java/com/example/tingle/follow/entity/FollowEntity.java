@@ -17,11 +17,12 @@ public class FollowEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_entity_id")
+    @JoinColumn(name = "user_entity_id", foreignKey = @ForeignKey(name = "fk_follow_user"))
+
     private UserEntity userEntity;
 
     @ManyToOne
-    @JoinColumn(name = "star_entity_id")
+    @JoinColumn(name = "star_entity_id", foreignKey = @ForeignKey(name = "fk_follow_star"))
     private StarEntity starEntity;
 
 }
