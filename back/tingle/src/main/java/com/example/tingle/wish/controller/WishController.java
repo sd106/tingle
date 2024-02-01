@@ -1,91 +1,127 @@
 package com.example.tingle.wish.controller;
 
+import com.example.tingle.wish.dto.WishDto;
 import com.example.tingle.wish.dto.request.WishRequest;
-import com.example.tingle.wish.dto.response.WishResponse;
+import com.example.tingle.wish.dto.response.Response;
 import com.example.tingle.wish.service.WishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/wish")
 public class WishController {
 
     @Autowired
     private WishService wishService;
 
-    @GetMapping("/read/{starId}")
-    public ResponseEntity<Map<String, Object>> readWish(@PathVariable Long starId) {
-        HttpStatus status = HttpStatus.OK;
-        Map<String, Object> resultMap = new HashMap<String, Object>();
+    // 해당 스타의 위시 조회 (추천 수 높은 순)
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/read/withLikes/{starId}")
+    public Response readWishWithLikes(@PathVariable Long starId) {
 
         try {
-            List<WishResponse> list = wishService.read(starId);
+            List<WishDto> list = wishService.readWithLikes(starId);
 
             if(list.isEmpty())
-                resultMap.put("read", "list 비어 있음...");
+                return new Response("success", "readWishWithLikes", "null");
             else
-                resultMap.put("read", list);
+                return new Response("success", "readWishWithLikes", list);
         } catch (Exception e) {
-            resultMap.put("msg", "error 발생!");
             e.printStackTrace();
+            return new Response("fail", "readWishWithLikes", -1);
         }
-
-        return new ResponseEntity<Map<String,Object>>(resultMap, status);
     }
 
+    // 해당 스타의 위시 조회 (미션금 높은 순)
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/read/withPoints/{starId}")
+    public Response readWishWithPoints(@PathVariable Long starId) {
+
+        try {
+            List<WishDto> list = wishService.readWithPoints(starId);
+
+            if(list.isEmpty())
+                return new Response("success", "readWishWithPoints", "null");
+            else
+                return new Response("success", "readWishWithPoints", list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Response("fail", "readWishWithPoints", -1);
+        }
+    }
+
+    // 위시 등록
+
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/save")
-    public ResponseEntity<Map<String, Object>> saveWish(@RequestBody WishRequest wishRequest) {
-        HttpStatus status = HttpStatus.OK;
-        Map<String, Object> resultMap = new HashMap<String, Object>();
+    public Response saveWish(@RequestBody WishRequest wishRequest) {
 
         try {
             wishService.saveWish(wishRequest);
-            resultMap.put("save", "save 성공!");
+            return new Response("success", "saveWish", "null");
         } catch(Exception e) {
-            resultMap.put("msg", "error 발생!");
             e.printStackTrace();
+            return new Response("fail", "saveWish", -1);
         }
-
-        return new ResponseEntity<Map<String,Object>>(resultMap, status);
     }
 
-    /* 수정 기능 미구현 */
+    // 해당 위시 수정 (미구현 상태)
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/update")
-    public ResponseEntity<Map<String, Object>> updateWish(@RequestParam WishRequest wishRequest) {
-        HttpStatus status = HttpStatus.OK;
-        Map<String, Object> resultMap = new HashMap<String, Object>();
+    public Response updateWish(@RequestBody WishRequest wishRequest) {
 
         try {
             wishService.updateWish(wishRequest);
-            resultMap.put("update", "update 성공!");
+            return new Response("success", "updateWish", "null");
         } catch(Exception e) {
-            resultMap.put("msg", "error 발생!");
             e.printStackTrace();
+            return new Response("fail", "updateWish", -1);
         }
-
-        return new ResponseEntity<Map<String,Object>>(resultMap, status);
     }
 
-    @PostMapping("/delete/{id}")
-    public ResponseEntity<Map<String, Object>> deleteWish(@PathVariable Long id) {
-        HttpStatus status = HttpStatus.OK;
-        Map<String, Object> resultMap = new HashMap<String, Object>();
+    // 해당 위시 삭제
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/delete/{wishId}")
+    public Response deleteWish(@PathVariable Long wishId) {
 
         try {
-            wishService.deleteWish(id);
-            resultMap.put("delete", "delete 성공!");
+            wishService.deleteWish(wishId);
+            return new Response("success", "deleteWish", "null");
         } catch(Exception e) {
-            resultMap.put("msg", "error 발생!");
             e.printStackTrace();
+            return new Response("fail", "deleteWish", -1);
         }
+    }
 
-        return new ResponseEntity<Map<String,Object>>(resultMap, status);
+    // 해당 위시에 미션금 추가
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/points/add/{wishId}/{userId}/{points}")
+    public Response addPoints(@PathVariable Long wishId, @PathVariable int userId, @PathVariable int points) {
+
+        try {
+            wishService.addPoints(wishId, userId, points);
+            return new Response("success", "addPoints", "null");
+        } catch(Exception e) {
+            e.printStackTrace();
+            return new Response("fail", "addPoints", -1);
+        }
+    }
+
+    // 해당 위시를 미채택/채택/완료 상태로 변경
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/status/update/{wishId}/{wishStatus}")
+    public Response updateWishStatus(@PathVariable Long wishId, @PathVariable int wishStatus) {
+
+        try {
+            wishService.updateWishStatus(wishId, wishStatus);
+            return new Response("success", "updateWishStatus", "null");
+        } catch(Exception e) {
+            e.printStackTrace();
+            return new Response("fail", "updateWishStatus", -1);
+        }
     }
 }

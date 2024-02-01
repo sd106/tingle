@@ -20,26 +20,29 @@ public class WishEntity {
     private Long id; // 위시 아이디
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private UserEntity user; // 유저 아이디
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "star_id", nullable = false)
+    @JoinColumn(name = "star_id")
     private StarEntity star; // 스타 아이디
 
-    @Column(name = "status", nullable = false)
-    private boolean status; // 채택 여부
+    @Column(name = "status")
+    private int status; // 채택 여부
 
-    @Column(name = "points", nullable = false)
+    @Column(name = "points")
     private int points; // 미션금
 
-    @Column(name = "contents", nullable = false)
+    @Column(name = "liked_count")
+    private int likedCount; // 추천 수
+
+    @Column(name = "contents")
     private String contents; // 내용
 
-    @Column(name = "create_time", nullable = false)
+    @Column(name = "create_time")
     private LocalDate createTime; // 등록 날짜
 
-    @Column(name = "delete_time", nullable = false)
+    @Column(name = "delete_time")
     private LocalDate deleteTime; // 마감 날짜
 
     @PrePersist

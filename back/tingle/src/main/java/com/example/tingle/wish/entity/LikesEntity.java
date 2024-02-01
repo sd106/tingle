@@ -14,7 +14,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="Likes")
+@Table(name="likes")
 public class LikesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +22,14 @@ public class LikesEntity {
     private Long id; // 추천 아이디
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private UserEntity user; // 유저 아이디
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "wish_id", nullable = false)
+    @JoinColumn(name = "wish_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private WishEntity wish; // 위시 아이디
+
+    @Column(name = "liked")
+    private boolean liked; // 상태
 }

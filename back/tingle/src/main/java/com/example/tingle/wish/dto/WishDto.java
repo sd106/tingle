@@ -1,4 +1,4 @@
-package com.example.tingle.wish.dto.request;
+package com.example.tingle.wish.dto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 @Builder
-public class WishRequest {
+public class WishDto {
     private Long id;
     private int userId;
     private Long starId;
