@@ -19,9 +19,13 @@ const id = ref(props.id);
 
 <template>
   <div>
+    {{ file }}  | {{ content }}  | {{ tags }}
     <input type="file" @change="onFileChange">
     <input type="text" v-model="content" placeholder="Content">
-    <!-- 태그, 사용자 이름, 스타 이름 등 필요한 필드 추가 -->
+    <input type="text" v-model="tagInput" @keyup.enter="addTag" placeholder="태그 입력 후 엔터">
+    <ul>
+      <li v-for="tag in tags" :key="tag">{{ tag }}</li>
+    </ul>
     <button @click="updateSnapshot">Update</button>
   </div>
 </template>
@@ -31,23 +35,19 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter, useRoute } from 'vue-router';
 
+
+// 라우터와 라우트 객체 접근
+const router = useRouter();
+const route = useRoute();
+const snapshotId = route.params.snapshotid as string; // params는 반응형 객체이므로 as를 사용하여 타입 단언
+const starId = route.params.starid as String;
 const file = ref<File | null>(null);
 const content = ref('');
-const tags = ref([]); // 태그 입력 방식에 따라 수정 필요
-const snapshotId = useRoute().params.snapshotId;
-const router = useRouter();
+const tags = ref<string[]>([]); // 태그 상태 초기화
+const tagInput = ref<string>('');
 
-onMounted(async () => {
-  try {
-    const response = await axios.get(`/snapshot/${snapshotId}`);
-    const data = response.data;
-    content.value = data.content;
-    // 태그, 사용자 이름 등 필요한 필드를 여기에서 설정
-  } catch (error) {
-    console.error(error);
-  }
-});
 
+// 파일 선택 시 호출되는 함수
 const onFileChange = (e: Event) => {
   const target = e.target as HTMLInputElement;
   if (target.files) {
@@ -55,23 +55,35 @@ const onFileChange = (e: Event) => {
   }
 };
 
+// 업데이트 버튼 클릭 시 호출되는 함수
 const updateSnapshot = async () => {
   const formData = new FormData();
   if (file.value) {
     formData.append('file', file.value);
   }
   formData.append('content', content.value);
-  formData.append('tags', tags.value.join(',')); // 태그 형식에 따라 조정 필요
-
+  formData.append('tags', tags.value.join(',')); // 태그를 콤마로 구분된 문자열로 변환하여 추가
+  console.log(file.value)
+  console.log(content.value)
+  console.log(tags.value)
+  console.log(snapshotId)
+  // API 호출을 통해 스냅샷 데이터를 업데이트하는 로직
   try {
-    await axios.post(`/snapshot/${snapshotId}/update`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-    router.push(`/snapshot/${snapshotId}`);
+    console.log("axios 직전")
+    await axios.put(`http://localhost:8080/snapshot/${snapshotId}/update`, formData);
+    console.log("axios 통과")
+    router.push(`/${starId}/snapshot`); // 업데이트 후 상세 페이지로 이동
   } catch (error) {
     console.error(error);
   }
+};
+
+const addTag = () => {
+  const newTag = tagInput.value.trim()
+  if (newTag !== '') {
+    tags.value.push(newTag);
+    tagInput.value = ''; // 입력 필드 초기화
+  }
+  console.log(tags)
 };
 </script>

@@ -2,6 +2,7 @@ package com.example.tingle.snapshot.controller;
 
 import com.example.tingle.snapshot.dto.request.SnapShotRequest;
 import com.example.tingle.snapshot.dto.request.SnapShotUpdateRequest;
+import com.example.tingle.snapshot.entity.CommentEntity;
 import com.example.tingle.snapshot.entity.HashTagEntity;
 import com.example.tingle.snapshot.entity.SnapShotEntity;
 import com.example.tingle.snapshot.entity.SnapShotTag;
@@ -16,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -63,11 +61,12 @@ public class SnapShotController {
     @GetMapping("/{snapshotId}")
     public ResponseEntity<Map<String, Object>> SnapShotDetail(@PathVariable Long snapshotId) {
 
+        System.out.println("상세 스냅샷 불러올게요");
         HttpStatus status = HttpStatus.ACCEPTED;
         Map<String, Object> resultMap = new HashMap<String, Object>();
 
         Optional<SnapShotEntity> optSnapShotEntity = snapShotServiceImpl.getSnapShotById(snapshotId);
-
+        System.out.println("optSnapShotEntity = " + optSnapShotEntity.get().getId());
         if (optSnapShotEntity.isPresent()) {
 
             SnapShotEntity snapShot = optSnapShotEntity.get();
@@ -77,24 +76,39 @@ public class SnapShotController {
                     .map(HashTagEntity::getTag)
                     .collect(Collectors.toList());
 
+            List<CommentEntity> comments = snapShot.getComments();
+
+
+
+            List<Map<String, Object>> commentMaps = new ArrayList<>();
+            for (CommentEntity comment : snapShot.getComments()) {
+                Map<String, Object> commentMap = new HashMap<>();
+                commentMap.put("id", comment.getId());
+                commentMap.put("context", comment.getContext());
+                commentMap.put("username", comment.getUsername());
+                commentMap.put("snapshotId", comment.getSnapShotEntity().getId());
+
+                commentMaps.add(commentMap);
+            }
+            /**
+             *  위의 코멘트정보를 하나의 해쉬맵에 담고 그걸 리스트에 넣어줘야한다.
+             */
+
             resultMap.put("snapshotId", snapShot.getId());
             resultMap.put("imageUrl", snapShot.getImageUrl());
             resultMap.put("username", snapShot.getUser() != null ? snapShot.getUser().getUsername() : "Unknown User");
             resultMap.put("starname", snapShot.getStar() != null ? snapShot.getStar().getUsername() : "Unknown Star");
             resultMap.put("content", snapShot.getContent());
             resultMap.put("tags", tags);
-            resultMap.put("comments", snapShot.getComments());
+            resultMap.put("comments", commentMaps);
             resultMap.put("likes", snapShot.getLikes());
             resultMap.put("createdAt", snapShot.getCreatedAt());
             resultMap.put("updatedAt", snapShot.getUpdatedAt());
 
-
         } else {
             System.out.println("스냅샷을 찾을 수 없습니다.");
         }
-
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
-
     }
 
     @PostMapping("/new")
@@ -125,12 +139,14 @@ public class SnapShotController {
     }
 
 
-    @PostMapping("/{snapshotId}/update")
+    @PutMapping("/{snapshotId}/update")
     public ResponseEntity<Map<String, Object>> updateSnapShot(@PathVariable Long snapshotId,
                                                               @RequestParam("file") MultipartFile file,
                                                               @RequestParam("content") String content,
-                                                              @RequestParam("tags") List<String> tags, HttpServletResponse response)
+                                                              @RequestParam("tags") List<String> tags)
             throws IOException {
+
+        System.out.println("수정 시작합니다.");
 
         HttpStatus status = HttpStatus.ACCEPTED;
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -183,7 +199,7 @@ public class SnapShotController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
-    @PostMapping("/{snapshotId}/delete")
+    @DeleteMapping("/{snapshotId}/delete")
     public ResponseEntity<Map<String, Object>> deleteSnapShot(@PathVariable Long snapshotId, HttpServletResponse response) {
 
         HttpStatus status = HttpStatus.ACCEPTED;

@@ -27,22 +27,23 @@ public class CommentController {
 
     private final CommentServiceImpl commentService;
 
-    @GetMapping("/comments")
-    public ResponseEntity<Map<String, Object>> commentList() {
-
-        HttpStatus status = HttpStatus.ACCEPTED;
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-
-        List<CommentEntity> allComment = commentService.getComment();
-
-        resultMap.put("AllComment", allComment);
-
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-    }
+//    @GetMapping("/comments")
+//    public ResponseEntity<Map<String, Object>> commentList() {
+//
+//        HttpStatus status = HttpStatus.ACCEPTED;
+//        Map<String, Object> resultMap = new HashMap<String, Object>();
+//
+//        List<CommentEntity> allComment = commentService.getComment();
+//
+//        resultMap.put("AllComment", allComment);
+//
+//        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+//    }
 
     @PostMapping("/comment/new")
     public ResponseEntity<Map<String, Object>> newComment(@RequestBody CommentRequest commentRequest) {
 
+        System.out.println("댓글 생성 시작");
         HttpStatus status = HttpStatus.ACCEPTED;
         Map<String, Object> resultMap = new HashMap<String, Object>();
 

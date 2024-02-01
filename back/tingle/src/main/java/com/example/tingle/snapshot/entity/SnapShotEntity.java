@@ -69,7 +69,7 @@ public class SnapShotEntity {
     /**
      * 코멘트
      */
-    @OneToMany(mappedBy = "snapShotEntity")
+    @OneToMany(mappedBy = "snapShotEntity", cascade = CascadeType.REMOVE)
     private List<CommentEntity> comments = new ArrayList<>();
 
 
