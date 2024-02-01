@@ -33,7 +33,10 @@
     </div>
     <div class="container d-flex flex-wrap"
          style="height: 360px; background-color: lightgoldenrodyellow; border-radius: 20px;">
-      <div v-for="star in StarsByCategory" :key="star.id" class="p-2 star-card" style="width: 18%;">
+      <div v-if="StarsByCategory.length === 0">
+        아직 이 분야 스타가 존재하지 않습니다.
+      </div>
+      <div v-else v-for="star in StarsByCategory" :key="star.id" class="p-2 star-card" style="width: 18%;">
         <RouterLink class="router-link-custom" :to="`/${star.id}/home`">
           <div class="star-image">
             <img :src="star.picture" alt="not">
@@ -87,10 +90,20 @@ const hotStarsInfo= ref<HotStarInfo[]>([]);
 const getHotStars = async () => {
   const response = await axios.get('http://localhost:8080/follow/hotStars');
   hotStarsInfo.value = response.data.data;
+  if(hotStarsInfo.value.length ===0) //만약 핫스타가 없으면 구독자수가 많은 스타를 가져온다
+    getTop10Stars();
   console.log(response);
 }
 
 getHotStars();
+
+//상위 10명의 스타 가져오기
+const getTop10Stars = async () => {
+  const response = await axios.get('http://localhost:8080/star/Top10Stars');
+  hotStarsInfo.value = response.data.data;
+  console.log(response);
+}
+
 
 const getStarsByCategory = async (category:number) => {
   const response = await axios.get(`http://localhost:8080/star/${category}`);
