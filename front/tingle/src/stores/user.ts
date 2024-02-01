@@ -48,16 +48,6 @@ export const useUserStore = defineStore('user', () => {
     allstarinfo.value = allstar
   }
 
-  const categories: Record<string, Starinfo[]> = {
-    '유형민': yoo,
-    '황찬준': jun,
-    '정수빈': bin,
-    '이성모': mo,
-    '윤정영': yoon,
-    '오은아': oh,
-  };
-  // 
-
   const isSidebarOpen = ref(true)
 
   const starInfo = ref<StarLogininfo | null>(null);
@@ -138,7 +128,7 @@ export const useUserStore = defineStore('user', () => {
     signUp, logIn, logOut,
     //
     hotstarinfo, getStarInfo, starInfo,
-    allstarinfo, isLogin, categories,
+    allstarinfo, isLogin,
     //
     isSidebarOpen,
   }

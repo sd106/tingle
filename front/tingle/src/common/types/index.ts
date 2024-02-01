@@ -58,10 +58,16 @@ interface Star {
     image: string; // 프로필 사진
 }
 
+interface HotStarInfo{
+    id: number;
+    username: String;
+    picture: String;
+}
+
 interface Starinfo {
-    id: string;
-    nickName: string;
-    image: string;
+    id: number;
+    username: String;
+    picture: String;
 }
 interface StarLogininfo {
     starId?: number;
@@ -89,6 +95,6 @@ interface ProductCreationPayload {
 export type {
     SignUp, LogIn,
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
-    User, Star, Starinfo,
+    User, Star, Starinfo, HotStarInfo,
     Product, ProductCreationPayload, StarLogininfo
 }
