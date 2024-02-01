@@ -30,7 +30,7 @@ public class FanMeeting {
     private LocalDateTime fanMeetingStartAt;
     private Boolean isFinished;
 
-    @OneToMany
+    @ManyToMany
     private List<FanMeetingType> availableFanMeetingTypes;
 
     @OneToOne

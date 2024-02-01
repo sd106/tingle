@@ -36,8 +36,6 @@ public class QSnapShotEntity extends EntityPathBase<SnapShotEntity> {
 
     public final ListPath<SnapShotTag, QSnapShotTag> snapShotTags = this.<SnapShotTag, QSnapShotTag>createList("snapShotTags", SnapShotTag.class, QSnapShotTag.class, PathInits.DIRECT2);
 
-    public final ListPath<SnapShotTag, QSnapShotTag> snapShotTags = this.<SnapShotTag, QSnapShotTag>createList("snapShotTags", SnapShotTag.class, QSnapShotTag.class, PathInits.DIRECT2);
-
     public final com.example.tingle.star.entity.QStarEntity star;
 
     public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);

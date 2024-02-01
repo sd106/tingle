@@ -154,7 +154,6 @@ public class SignalHandler extends TextWebSocketHandler {
                 // roomType에 따라 roomId를 다르게 찾는다 (대기방 => *10 +1, 미팅방 => *10 + 2)
                 long waitingRoomId = star.getId() * 10 + 1;
 
-
                 // waitingRoom에 있는 팬을 찾아 메시지를 보낸다.
                 FanMeetingRoom waitingRoom = fanMeetingRoomService.findRoomById(waitingRoomId);
                 Map<String, WebSocketSession> waitingClients = fanMeetingRoomService.getClients(waitingRoom);
