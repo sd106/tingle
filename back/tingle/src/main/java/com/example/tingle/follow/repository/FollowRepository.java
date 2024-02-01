@@ -17,6 +17,5 @@ public interface FollowRepository extends JpaRepository<FollowEntity, Integer> {
     @Query("SELECT f FROM FollowEntity f WHERE f.userEntity.id = :userId AND f.starEntity.id = :starId")
     FollowEntity findByUserEntityIdAndStarEntityId(Long userId, Long starId) throws SQLException;
 
-    Optional<FollowEntity> findByStarEntityId(Long starId);
 
 }

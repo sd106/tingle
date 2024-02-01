@@ -2,6 +2,7 @@ package com.example.tingle.follow.service;
 
 import com.example.tingle.follow.dto.request.FollowReadRequest;
 import com.example.tingle.follow.entity.FollowEntity;
+import com.example.tingle.star.dto.request.ReadStarRequest;
 
 import java.util.ArrayList;
 
@@ -13,5 +14,5 @@ public interface FollowService {
 
     boolean deleteFollow(Long userId, Long starId) throws Exception;
 
-    FollowReadRequest getFollow(Long starId);
+    ReadStarRequest getFollow(Long starId);
 }

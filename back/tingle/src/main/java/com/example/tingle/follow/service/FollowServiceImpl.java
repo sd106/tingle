@@ -1,12 +1,13 @@
 package com.example.tingle.follow.service;
 
 
-import com.amazonaws.transform.MapEntry;
 import com.example.tingle.follow.dto.event.FollowerAddedEvent;
 import com.example.tingle.follow.dto.event.FollowerRemovedEvent;
 import com.example.tingle.follow.dto.request.FollowReadRequest;
 import com.example.tingle.follow.entity.FollowEntity;
 import com.example.tingle.follow.repository.FollowRepository;
+import com.example.tingle.star.dto.request.ReadStarRequest;
+import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.star.repository.StarRepository;
 import com.example.tingle.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,7 +91,7 @@ public class FollowServiceImpl implements FollowService{
         followerCountMap.put(starId, followerCountMap.get(starId) - 1);
     }
 
-    private List<FollowReadRequest> hotStarsInfo;
+    private List<ReadStarRequest> hotStarsInfo;
 
     //가장 구독자가 많이 오른 스타10명 을 계산함
     @Scheduled(fixedDelay = 3600000)
@@ -106,26 +106,22 @@ public class FollowServiceImpl implements FollowService{
         hotStarsInfo = new ArrayList<>();
         for (Map.Entry<Long, Integer> hotStar : hotStars) {
             Long starId = hotStar.getKey();
-            FollowReadRequest followReadRequest = getFollow(starId);
-            hotStarsInfo.add(followReadRequest);
-        }
-
-        for(FollowReadRequest x: hotStarsInfo){
-            log.info(String.valueOf(x.getStarId()));
+            ReadStarRequest readStarRequest = getFollow(starId);
+            hotStarsInfo.add(readStarRequest);
         }
 
         // 원본 팔로워 수 정보를 초기화합니다.
         followerCountMap.clear();
     }
 
-    public List<FollowReadRequest> getHotStarsInfo() {
+    public List<ReadStarRequest> getHotStarsInfo() {
         return hotStarsInfo;
     }
 
-    public FollowReadRequest getFollow(Long starId) {
-        FollowEntity followEntity = followRepository.findByStarEntityId(starId)
+    public ReadStarRequest getFollow(Long starId) {
+        StarEntity starEntity = starRepository.findStarEntityById(starId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid starId: " + starId));
-        return FollowReadRequest.toDto(followEntity);
+        return ReadStarRequest.toDto(starEntity);
     }
 
 }
