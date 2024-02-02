@@ -1,71 +1,46 @@
 <template>
-  <main class="row">
-    <StarMenu :id="id" />
-    <div class="container border col-12">
-      <button>정렬1</button>
-      <button>정렬2</button>
+  <StarMenu :id="id" />
+  <div class="d-flex justify-content-between align-items-center my-4 mx-3">
+    <div>
+      <button class="me-2">최신순</button>
+      <button>좋아요순</button>
     </div>
+    <div>
+      <RouterLink :to="`/${store.starInfo?.starId}/snapshot/create`" class="">글쓰기</RouterLink>
+    </div>
+  </div>
 
-    <div v-if="selectedSnapshot" class="off-canvas image-container">
-      <img :src="selectedSnapshot.imageUrl" alt="Snapshot Image" class="snapshot-image">
-      <h3>{{ selectedSnapshot.username }}</h3>
-      <p>{{ selectedSnapshot.content }}</p>
-      <ul>
-        <li v-for="(tag, index) in selectedSnapshot.tags" :key="index">{{ tag }}</li>
-      </ul>
-      <button @click="goToUpdate(selectedSnapshot.snapshotId)">스냅샷 수정</button>
-      <button @click="deleteSnapshot(selectedSnapshot.snapshotId)">스냅샷 삭제</button>
+  <div class="main-layout">
+    <!-- 상단 메뉴 -->
+    <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
+    <section v-if="selectedSnapshot" class="detail-section">
+      <SnapShotDetail :selectedSnapshot="selectedSnapshot" />
+    </section>
 
-      <!-- 댓글 목록 -->
-      <div v-for="comment in selectedSnapshot.comments" :key="comment.id" class="comment">
-      <!-- 수정 중인 댓글의 UI 변경 -->
-        <div v-if="editingCommentId === comment.id">
-          <input type="text" v-model="editingCommentContent" />
-          <button @click="submitCommentEdit(comment.id)">수정하기</button>
-          <button @click="cancelEdit">취소</button>
-        </div>
-        <div v-else>
-          <p>{{ comment.context }} | {{ comment.username }}</p>
-          <button @click="startEditComment(comment)">댓글 수정</button>
-          <button @click="deleteComment(comment.id)">댓글 삭제</button>
+    <!-- 스냅샷 목록 섹션 (파란색 부분) -->
+    <section class="snapshot-list-section">
+      <div class="snapshot-list-container" ref="containerRef" @scroll="handleScroll">
+        <div v-for="snapshot in snapshots" :key="snapshot.id" @click="selectSnapshot(snapshot.id)" class="snapshot-item">
+          <img :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image">
+          <div class="star-name">{{ snapshot.username }}</div>
         </div>
       </div>
-
-      <!-- 댓글 작성 폼 -->
-      <form @submit.prevent="postComment">
-        <input type="text" v-model="newCommentContent" placeholder="Write a comment...">
-        <button type="submit">Post</button>
-      </form>
-
-    </div>
-
-    <div class="col-12 container d-flex flex-wrap" ref="containerRef" @scroll="handleScroll"
-         style="height: 480px; overflow-y: auto;">
-      <div v-for="snapshot in snapshots" :key="snapshot.id" @click="selectSnapshot(snapshot.id)"
-           class="p-2 d-flex flex-column align-items-center image-container" style="width: 20%;">
-        <img :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image">
-        <div class="star-name">{{ snapshot.username }}</div>
-      </div>
-    </div>
-
-    <RouterLink :to="`/${store.starInfo?.starId}/snapshot/create`">글쓰기</RouterLink>
-  </main>
+    </section>
+  </div>
 </template>
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue';
   import axios from 'axios';
-  import { useRouter } from 'vue-router';
   import { useUserStore } from '@/stores/user';
   import StarMenu from '@/components/StarMenu/StarMenu.vue';
   import type { Starinfo } from '@/common/types';
+  import SnapShotDetail from '../../../components/StarMenu/SnapShot/SnapShotDetail.vue'
 
   const store = useUserStore();
-  const router = useRouter();
   const props = defineProps(['id']);
   const id = ref(props.id);
-  const username = store.starInfo?.username;
-  const starId = store.starInfo?.starId;
+
 
   type SnapshotType = {
     id: number;
@@ -146,101 +121,6 @@
   });
 
 
-  const goToUpdate = (id: number) => {
-    if (selectedSnapshot.value) {
-      // `router.push` 메소드에 객체를 전달하여 라우트 상태를 설정
-      router.push({
-        name: 'snapshotupdate', // 라우트 이름
-        params: { starid: starId, snapshotid: id, file: selectedSnapshot.value.imageUrl, content: selectedSnapshot.value.content, tags: selectedSnapshot.value.tags }, // URL 파라미터
-      });
-    } else {
-      console.error('No snapshot selected');
-    }
-  };
-
-
-  const deleteSnapshot = async (id: number) => {
-    console.log("삭제 시작할게요")
-    try {
-      const response = await axios.delete(`http://localhost:8080/snapshot/${id}/delete`);
-      console.log(response.data); // 성공 응답 로그
-      console.log("삭제 성공!");
-      // 성공적으로 삭제 후 필요한 추가 작업을 여기에 작성하세요.
-      router.go(0)
-    } catch (error) {
-      console.log("실패!");
-    }
-  };
-
-  // 댓글 관련 코드
-
-  const newCommentContent = ref(''); // 새 댓글 내용을 위한 반응형 변수
-
-  // 수정 중인 댓글의 상태
-  const editingCommentId = ref<number | null>(null);
-  const editingCommentContent = ref('');
-
-
-  // 새 댓글 작성
-  const postComment = async () => {
-    try {
-      console.log(selectedSnapshot.value?.snapshotId)
-      await axios.post(`http://localhost:8080/snapshot/${selectedSnapshot.value?.snapshotId}/comment/new`, {
-        context: newCommentContent.value,
-        username: username,
-        snapshotId: selectedSnapshot.value?.snapshotId
-        // 필요하다면 여기에 더 많은 필드 추가
-      });
-      newCommentContent.value = ''; // 입력 필드 초기화
-      router.go(0)
-      // 댓글 목록을 다시 불러오는 로직 필요
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // 댓글 수정 시작
-  const startEditComment = (comment: CommentType) => {
-    editingCommentId.value = comment.id;
-    editingCommentContent.value = comment.context;
-  };
-
-  // 수정 취소
-  const cancelEdit = () => {
-    editingCommentId.value = null;
-    editingCommentContent.value = '';
-  };
-
-  // 수정된 댓글 전송
-  const submitCommentEdit = async (commentId: number) => {
-    try {
-      const response = await axios.post(`http://localhost:8080/snapshot/${selectedSnapshot.value?.snapshotId}/comment/${commentId}/update`, {
-        context: editingCommentContent.value,
-        username: username,
-        snapshotId: selectedSnapshot.value?.snapshotId
-        // 기타 필요한 데이터
-      });
-      console.log(response.data);
-      // 여기서 댓글 목록 갱신 로직 필요
-      cancelEdit();
-      router.go(0)
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // 댓글 삭제
-  const deleteComment = async (id : number) => {
-    try {
-      await axios.post(`http://localhost:8080/snapshot/${selectedSnapshot.value?.snapshotId}/comment/${id}/delete`);
-      // 댓글 목록을 다시 불러오는 로직 필요
-      router.go(0)
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-
 </script>
 
 <style>
@@ -257,10 +137,45 @@
 .off-canvas {
   /* 오프캔버스 스타일 */
 
-  width: 300px; /* 상세 페이지의 너비 */
+  width: 100%; /* 상세 페이지의 너비 */
   height: 100%; /* 전체 높이 */
   background: white; /* 배경색 */
   z-index: 1000; /* 다른 요소 위에 표시 */
   /* 여기에 애니메이션 효과 등을 추가할 수 있습니다 */
 }
+
+.main-layout {
+  display: flex;
+  flex-direction: column; /* 수직 정렬 */
+  align-items: center;
+}
+
+.detail-section {
+  flex: 1;
+  
+  /* 상세 페이지가 가능한 많은 공간을 차지하게 함 */
+  /* 추가 스타일링 */
+}
+
+.snapshot-list-container {
+  display: flex;
+  flex-wrap: wrap; /* 항목들이 여러 줄로 나눠지도록 함 */
+  overflow-x: auto; /* 가로 스크롤 가능 */
+  align-items: flex-start; /* 항목들이 위에서부터 시작되도록 함 */
+  height: auto; /* 컨테이너의 높이를 자동으로 설정 */
+}
+
+.snapshot-item {
+  flex: 0 0 19%; /* flex-grow: 0, flex-shrink: 0, flex-basis: 20% */
+  box-sizing: border-box; /* padding과 border가 너비에 포함되도록 함 */
+  margin: 5px; /* 각 항목 사이의 간격 */
+  width: calc(20% - 10px); /* margin을 고려한 실제 너비 */
+}
+
+.snapshot-image {
+  width: 100%; /* 이미지가 항목의 너비를 꽉 채우도록 함 */
+  height: auto; /* 이미지의 높이를 자동으로 설정 */
+  object-fit: cover; /* 이미지가 비율을 유지하면서 항목을 꽉 채우도록 함 */
+}
+
 </style>

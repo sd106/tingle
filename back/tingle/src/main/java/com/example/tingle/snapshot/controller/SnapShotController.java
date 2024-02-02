@@ -88,7 +88,7 @@ public class SnapShotController {
                 commentMap.put("username", comment.getUsername());
                 commentMap.put("snapshotId", comment.getSnapShotEntity().getId());
 
-                commentMaps.add(commentMap);
+                commentMaps.add(0, commentMap);
             }
             /**
              *  위의 코멘트정보를 하나의 해쉬맵에 담고 그걸 리스트에 넣어줘야한다.
