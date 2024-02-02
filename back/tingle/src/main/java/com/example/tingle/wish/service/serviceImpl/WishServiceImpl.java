@@ -26,21 +26,19 @@ public class WishServiceImpl implements WishService {
     private StarRepository starRepository;
     @Autowired
     private WishRepository wishRepository;
-    @Autowired
-    private LikesRepository likesRepository;
 
     @Override
-    public List<WishDto> readWishes(Long starId, int opt) {
+    public List<WishDto> readWishes(Long starId, int sorting, int status) {
         List<WishEntity> wishEntities;
 
-        if(opt == 0) {
-            wishEntities  = wishRepository.findByStarIdWithNews(starId);
+        if(sorting == 0) {
+            wishEntities  = wishRepository.findByStarIdWithNews(starId, status);
         }
-        else if(opt == 1) {
-            wishEntities  = wishRepository.findByStarIdWithLikes(starId);
+        else if(sorting == 1) {
+            wishEntities  = wishRepository.findByStarIdWithLikes(starId, status);
         }
         else {
-            wishEntities  = wishRepository.findByStarIdWithPoints(starId);
+            wishEntities  = wishRepository.findByStarIdWithPoints(starId, status);
         }
 //        if (wishEntities.isEmpty()) { throw new NoSuchElementException("List is empty"); }
 

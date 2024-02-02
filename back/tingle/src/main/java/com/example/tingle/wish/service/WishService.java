@@ -2,14 +2,13 @@ package com.example.tingle.wish.service;
 
 import com.example.tingle.wish.dto.WishDto;
 import com.example.tingle.wish.dto.request.WishRequest;
-import com.example.tingle.wish.dto.response.Response;
 
 import java.util.List;
 
 public interface WishService {
 
     // 해당 스타의 위시 조회 (신규순, 추천순, 미션금순)
-    public List<WishDto> readWishes(Long starId, int opt);
+    public List<WishDto> readWishes(Long starId, int sorting, int status);
 
     // 해당 위시 등록
     public void saveWish(WishRequest wishRequest);

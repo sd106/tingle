@@ -1,10 +1,13 @@
 package com.example.tingle.wish.controller;
 
+import com.example.tingle.wish.dto.LikesDto;
 import com.example.tingle.wish.dto.response.Response;
 import com.example.tingle.wish.service.LikesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/likes")
@@ -12,6 +15,24 @@ public class LikesController {
 
     @Autowired
     private LikesService likesService;
+
+    // 해당 스타 위시에 대한 내 추천 목록 조회
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/read/mylist/{userId}")
+    public Response readMyLikedList(@PathVariable Long userId) {
+
+        try {
+            List<LikesDto> list = likesService.readLikesList(userId);
+
+            if(list.isEmpty())
+                return new Response("success", "readMyLikedList", null);
+            else
+                return new Response("success", "readMyLikedList", list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Response("fail", "readMyLikedList", null);
+        }
+    }
 
     // 해당 위시에 대한 내 추천 상태 조회
     @ResponseStatus(HttpStatus.OK)
@@ -29,7 +50,7 @@ public class LikesController {
                 return new Response("success", "readMyLiked", 2);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Response("fail", "readMyLiked", -1);
+            return new Response("fail", "readMyLiked", null);
         }
     }
 
@@ -49,7 +70,7 @@ public class LikesController {
                 return new Response("success", "updateWishLiked", 2);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Response("fail", "updateWishLiked", -1);
+            return new Response("fail", "updateWishLiked", null);
         }
     }
 }

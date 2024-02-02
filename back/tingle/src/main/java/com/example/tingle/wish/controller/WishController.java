@@ -18,21 +18,21 @@ public class WishController {
     @Autowired
     private WishService wishService;
 
-    // 해당 스타의 위시 조회 (신규순, 추천순, 미션금순)
+    // 해당 스타의 위시 조회 (신규순, 추천순, 미션금순 / 미채택, 채택, 완료)
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/read/{starId}/{opt}")
-    public Response readWishWithLikes(@PathVariable Long starId, @PathVariable int opt) {
+    @GetMapping("/read/{starId}/{sorting}/{status}")
+    public Response readWishesWith(@PathVariable Long starId, @PathVariable int sorting, @PathVariable int status) {
 
         try {
-            List<WishDto> list = wishService.readWishes(starId, opt);
+            List<WishDto> list = wishService.readWishes(starId, sorting, status);
 
             if(list.isEmpty())
-                return new Response("success", "readWishWithLikes", "null");
+                return new Response("success", "readWishWithLikes", null);
             else
                 return new Response("success", "readWishWithLikes", list);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Response("fail", "readWishWithLikes", -1);
+            return new Response("fail", "readWishWithLikes", null);
         }
     }
 
@@ -43,10 +43,10 @@ public class WishController {
 
         try {
             wishService.saveWish(wishRequest);
-            return new Response("success", "saveWish", "null");
+            return new Response("success", "saveWish", null);
         } catch(Exception e) {
             e.printStackTrace();
-            return new Response("fail", "saveWish", -1);
+            return new Response("fail", "saveWish", null);
         }
     }
 
@@ -57,10 +57,10 @@ public class WishController {
 
         try {
             wishService.updateWish(wishRequest);
-            return new Response("success", "updateWish", "null");
+            return new Response("success", "updateWish", null);
         } catch(Exception e) {
             e.printStackTrace();
-            return new Response("fail", "updateWish", -1);
+            return new Response("fail", "updateWish", null);
         }
     }
 
@@ -71,10 +71,10 @@ public class WishController {
 
         try {
             wishService.deleteWish(wishId);
-            return new Response("success", "deleteWish", "null");
+            return new Response("success", "deleteWish", null);
         } catch(Exception e) {
             e.printStackTrace();
-            return new Response("fail", "deleteWish", -1);
+            return new Response("fail", "deleteWish", null);
         }
     }
 
@@ -85,10 +85,10 @@ public class WishController {
 
         try {
             wishService.addPoints(wishId, userId, points);
-            return new Response("success", "addPoints", "null");
+            return new Response("success", "addPoints", null);
         } catch(Exception e) {
             e.printStackTrace();
-            return new Response("fail", "addPoints", -1);
+            return new Response("fail", "addPoints", null);
         }
     }
 
@@ -99,10 +99,10 @@ public class WishController {
 
         try {
             wishService.updateWishStatus(wishId, wishStatus);
-            return new Response("success", "updateWishStatus", "null");
+            return new Response("success", "updateWishStatus", null);
         } catch(Exception e) {
             e.printStackTrace();
-            return new Response("fail", "updateWishStatus", -1);
+            return new Response("fail", "updateWishStatus", null);
         }
     }
 }
