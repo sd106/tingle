@@ -20,8 +20,8 @@
             </form>
             <!-- 로그인 유무로 보이기 -->
             <RouterLink v-if="!store.isLogin" to="/signUp" class="router-link-custom">Signup</RouterLink>
-            <RouterLink v-if="!store.isLogin" @click="loginTemp" to="/logIn" class="router-link-custom">Login
-            </RouterLink>
+            <RouterLink v-if="!store.isLogin" to="/logIn" class="router-link-custom">Login</RouterLink>
+            <RouterLink v-if="store.isLogin" :to="`/${store.starInfo?.starId}/home`" class="router-link-custom">profile</RouterLink>
             <span v-if="store.isLogin" @click="logOut" style="cursor: pointer;">Logout</span>
             <!-- 사용자 프로필 사진 > 모달로 메뉴 -->
             <div class="dropdown dropstart">
@@ -49,10 +49,6 @@ import { RouterLink, useRouter } from 'vue-router'
 
 const store = useUserStore()
 const router = useRouter()
-
-const loginTemp = function (): void {
-    store.isLogin = true
-}
 
 
 const logOut = function (): void {

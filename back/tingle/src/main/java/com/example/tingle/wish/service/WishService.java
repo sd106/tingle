@@ -8,11 +8,8 @@ import java.util.List;
 
 public interface WishService {
 
-    // 해당 스타의 위시 조회 (추천 수 높은 순)
-    public List<WishDto> readWithLikes(Long starId);
-
-    // 해당 스타의 위시 조회 (미션금 높은 순)
-    public List<WishDto> readWithPoints(Long starId);
+    // 해당 스타의 위시 조회 (신규순, 추천순, 미션금순)
+    public List<WishDto> readWishes(Long starId, int opt);
 
     // 해당 위시 등록
     public void saveWish(WishRequest wishRequest);
@@ -24,7 +21,7 @@ public interface WishService {
     public void deleteWish(Long wishId);
 
     // 해당 위시에 미션금 추가
-    public void addPoints(Long wishId, int userId, int points);
+    public void addPoints(Long wishId, Long userId, int points);
 
     /* star */
     // 해당 위시를 미채택/채택/완료 상태로 변경

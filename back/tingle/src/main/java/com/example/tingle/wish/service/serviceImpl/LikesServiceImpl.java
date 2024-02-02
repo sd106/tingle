@@ -1,8 +1,8 @@
 package com.example.tingle.wish.service.serviceImpl;
 
 import com.amazonaws.services.kms.model.NotFoundException;
+import com.example.tingle.star.repository.StarRepository;
 import com.example.tingle.user.entity.UserEntity;
-import com.example.tingle.user.repository.StarRepository;
 import com.example.tingle.user.repository.UserRepository;
 import com.example.tingle.wish.entity.LikesEntity;
 import com.example.tingle.wish.entity.WishEntity;
@@ -23,7 +23,7 @@ public class LikesServiceImpl implements LikesService {
     @Autowired
     private LikesRepository likesRepository;
 
-    public int isLikes(Long wishId, int userId) {
+    public int isLikes(Long wishId, Long userId) {
         WishEntity wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new NotFoundException("Could not found wish id : " + wishId));
 
@@ -41,7 +41,7 @@ public class LikesServiceImpl implements LikesService {
             return 2;
     }
 
-    public int updateLikes(Long wishId, int userId) {
+    public int updateLikes(Long wishId, Long userId) {
         WishEntity wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new NotFoundException("Could not found wish id : " + wishId));
 

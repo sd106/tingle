@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Builder
 public class WishRequest {
     private Long id;
-    private int userId;
+    private Long userId;
     private Long starId;
     private int status;
     private int points;

@@ -1,9 +1,9 @@
 package com.example.tingle.wish.service.serviceImpl;
 
 import com.amazonaws.services.kms.model.NotFoundException;
-import com.example.tingle.user.entity.StarEntity;
+import com.example.tingle.star.entity.StarEntity;
+import com.example.tingle.star.repository.StarRepository;
 import com.example.tingle.user.entity.UserEntity;
-import com.example.tingle.user.repository.StarRepository;
 import com.example.tingle.user.repository.UserRepository;
 import com.example.tingle.wish.dto.WishDto;
 import com.example.tingle.wish.dto.request.WishRequest;
@@ -30,32 +30,18 @@ public class WishServiceImpl implements WishService {
     private LikesRepository likesRepository;
 
     @Override
-    public List<WishDto> readWithLikes(Long starId) {
-        List<WishEntity> wishEntities = wishRepository.findByStarIdWithLikes(starId);
-//        if (wishEntities.isEmpty()) { throw new NoSuchElementException("List is empty"); }
+    public List<WishDto> readWishes(Long starId, int opt) {
+        List<WishEntity> wishEntities;
 
-        List<WishDto> wishDtos = new ArrayList<>();
-
-        for(WishEntity entity : wishEntities) {
-            WishDto wishDto = WishDto.builder()
-                    .id(entity.getId())
-                    .userId(entity.getUser().getId())
-                    .starId(entity.getStar().getId())
-                    .status(entity.getStatus())
-                    .points(entity.getPoints())
-                    .likedCount(entity.getLikedCount())
-                    .contents(entity.getContents())
-//                    .createTime(entity.getCreateTime())
-//                    .deleteTime(entity.getDeleteTime())
-                    .build();
-
-            wishDtos.add(wishDto);
+        if(opt == 0) {
+            wishEntities  = wishRepository.findByStarIdWithNews(starId);
         }
-        return wishDtos;
-    }
-
-    public List<WishDto> readWithPoints(Long starId) {
-        List<WishEntity> wishEntities = wishRepository.findByStarIdWithPoints(starId);
+        else if(opt == 1) {
+            wishEntities  = wishRepository.findByStarIdWithLikes(starId);
+        }
+        else {
+            wishEntities  = wishRepository.findByStarIdWithPoints(starId);
+        }
 //        if (wishEntities.isEmpty()) { throw new NoSuchElementException("List is empty"); }
 
         List<WishDto> wishDtos = new ArrayList<>();
@@ -134,7 +120,7 @@ public class WishServiceImpl implements WishService {
     }
 
     @Override
-    public void addPoints(Long wishId, int userId, int points) {
+    public void addPoints(Long wishId, Long userId, int points) {
         WishEntity wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new NotFoundException("Could not found wish id : " + wishId));
 

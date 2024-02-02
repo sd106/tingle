@@ -1,6 +1,6 @@
 package com.example.tingle.store.entity;
 
-import com.example.tingle.user.entity.StarEntity;
+import com.example.tingle.star.entity.StarEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,10 +31,10 @@ public class ProductEntity {
 
     private int amount;
 
-    private double price;
+    private int price;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImageEntity> imageUrl;
 
     private String content;
 
@@ -65,11 +65,11 @@ public class ProductEntity {
         this.amount = amount;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
-    public void setImageUrl(String imageUrl) {
+    public void setImageUrl(List<ProductImageEntity> imageUrl) {
         this.imageUrl = imageUrl;
     }
 

@@ -7,7 +7,7 @@ import lombok.Getter;
 @Builder
 public class LikesRequest {
     private Long id;
-    private int userId;
+    private Long userId;
     private Long wishId;
     private boolean liked;
 }

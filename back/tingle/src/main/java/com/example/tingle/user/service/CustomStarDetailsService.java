@@ -1,8 +1,8 @@
 package com.example.tingle.user.service;
 
 import com.example.tingle.user.dto.CustomStarDetails;
-import com.example.tingle.user.entity.StarEntity;
-import com.example.tingle.user.repository.StarRepository;
+import com.example.tingle.star.entity.StarEntity;
+import com.example.tingle.star.repository.StarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

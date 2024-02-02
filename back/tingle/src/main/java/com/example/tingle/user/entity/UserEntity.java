@@ -1,13 +1,18 @@
 package com.example.tingle.user.entity;
 
+import com.example.tingle.follow.entity.FollowEntity;
 import com.example.tingle.store.entity.OrderEntity;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Entity(name = "users")
+@Entity(name = "user")
 @Getter
 @Builder
 @AllArgsConstructor
@@ -15,7 +20,7 @@ import java.util.List;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(unique = true)
     private String username;
@@ -48,4 +53,9 @@ public class UserEntity {
     public String getRoleKey() {
         return this.role.getKey();
     }
+
+    @OneToMany(mappedBy = "userEntity")
+    private Set<FollowEntity> followingStars = new HashSet<>();
+
+
 }

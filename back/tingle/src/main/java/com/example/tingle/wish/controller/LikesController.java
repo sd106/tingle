@@ -16,7 +16,7 @@ public class LikesController {
     // 해당 위시에 대한 내 추천 상태 조회
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/read/my/{wishId}/{userId}")
-    public Response readMyLiked(@PathVariable Long wishId, @PathVariable int userId) {
+    public Response readMyLiked(@PathVariable Long wishId, @PathVariable Long userId) {
 
         try {
             int result = likesService.isLikes(wishId, userId);
@@ -36,7 +36,7 @@ public class LikesController {
     // 해당 위시에 대한 추천 상태 토글 변경 (create 포함)
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/update/toggle/{wishId}/{userId}")
-    public Response updateWishLiked(@PathVariable Long wishId, @PathVariable int userId) {
+    public Response updateWishLiked(@PathVariable Long wishId, @PathVariable Long userId) {
 
         try {
             int result = likesService.updateLikes(wishId, userId);

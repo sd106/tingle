@@ -1,29 +1,54 @@
 <template>
-    <main class="m-2">
-        <div @click="createProduct" class="border text-center">
-            <button class="menu-btn" type="button" data-bs-toggle="modal" data-bs-target="#CreateProductModal"
-                    style="height: 50px; width: 50px;">
-                    <h1 class="fw-bold">+</h1>
-            </button>
-        </div>
-    <CreateProductModal />
+    <main>
+        <h1>상품 생성</h1>
+        <form @submit.prevent="submitForm">
+            <input type="text" v-model="productDto.name" placeholder="상품 이름">
+            <input type="number" v-model.number="productDto.amount" placeholder="수량">
+            <input type="number" v-model.number="productDto.price" placeholder="가격">
+            <textarea v-model="productDto.content" placeholder="상품 설명"></textarea>
+            <input type="file" ref="fileInput" multiple>
+            <button type="submit">생성</button>
+        </form>
     </main>
 </template>
-  
+
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from 'vue'
+import axios from 'axios';
 
-import CreateProductModal from '@/components/CreateProductModal.vue'
+import type { Product } from '@/common/types'
 
-const createProduct = () => {
-    console.log('생성 버튼이 클릭되었습니다. axios보낼게염');
 
-}
+const productDto = ref<Product>({
+    starId: 2,
+    starName: 'mo',
+    name: '',
+    amount: 0,
+    price: 0,
+    content: ''
+});
+const fileInput = ref();
 
-const openModal = () => {
-  // 모달 창 열기
+const createProduct = async (productDto: Product, fileInputs: FileList) => {
+    try {
+        const formData = new FormData();
+        formData.append('productDto', JSON.stringify(productDto));
+        for (let i = 0; i < fileInputs.length; i++) { formData.append('files', fileInputs[i]); } const response = await
+            axios.post('http://localhost:8080/product/create', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }); if (response.status === 200) { alert('상품이 성공적으로 생성되었습니다.'); } else { alert('상품 생성에 실패했습니다.'); }
+    } catch
+    (error) { console.error('상품 생성 중 오류 발생', error); }
+};
 
-}
+const submitForm = () => {
+    if (fileInput.value && fileInput.value.files && fileInput.value.files.length > 0) {
+        createProduct(productDto.value, fileInput.value.files);
+    } else {
+        alert('파일을 선택해주세요.');
+    }
+};
 
 </script>
-  

@@ -11,11 +11,15 @@ import java.util.List;
 
 @Repository
 public interface WishRepository extends JpaRepository<WishEntity, Long> {
-    // 해당 스타에 대한 모든 위시 추천 높은 순으로 조회 (정렬)
+    // 해당 스타에 대한 모든 위시 최신순 조회 (정렬)
+    @Query("SELECT w FROM WishEntity w WHERE w.star.id = :starId ORDER BY w.id DESC")
+    List<WishEntity> findByStarIdWithNews(Long starId);
+
+    // 해당 스타에 대한 모든 위시 추천순 조회 (정렬)
     @Query("SELECT w FROM WishEntity w WHERE w.star.id = :starId ORDER BY w.likedCount DESC")
     List<WishEntity> findByStarIdWithLikes(Long starId);
 
-    // 해당 스타에 대한 모든 위시 미션금 높은 순으로 조회 (정렬)
+    // 해당 스타에 대한 모든 위시 미션금순 조회 (정렬)
     @Query("SELECT w FROM WishEntity w WHERE w.star.id = :starId ORDER BY w.points DESC")
     List<WishEntity> findByStarIdWithPoints(Long starId);
 

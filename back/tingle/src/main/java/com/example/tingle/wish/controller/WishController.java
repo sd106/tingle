@@ -20,11 +20,11 @@ public class WishController {
 
     // 해당 스타의 위시 조회 (추천 수 높은 순)
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/read/withLikes/{starId}")
-    public Response readWishWithLikes(@PathVariable Long starId) {
+    @GetMapping("/read/withLikes/{starId}/{opt}")
+    public Response readWishWithLikes(@PathVariable Long starId, @PathVariable int opt) {
 
         try {
-            List<WishDto> list = wishService.readWithLikes(starId);
+            List<WishDto> list = wishService.readWishes(starId, opt);
 
             if(list.isEmpty())
                 return new Response("success", "readWishWithLikes", "null");
@@ -33,24 +33,6 @@ public class WishController {
         } catch (Exception e) {
             e.printStackTrace();
             return new Response("fail", "readWishWithLikes", -1);
-        }
-    }
-
-    // 해당 스타의 위시 조회 (미션금 높은 순)
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/read/withPoints/{starId}")
-    public Response readWishWithPoints(@PathVariable Long starId) {
-
-        try {
-            List<WishDto> list = wishService.readWithPoints(starId);
-
-            if(list.isEmpty())
-                return new Response("success", "readWishWithPoints", "null");
-            else
-                return new Response("success", "readWishWithPoints", list);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Response("fail", "readWishWithPoints", -1);
         }
     }
 
@@ -100,7 +82,7 @@ public class WishController {
     // 해당 위시에 미션금 추가
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/points/add/{wishId}/{userId}/{points}")
-    public Response addPoints(@PathVariable Long wishId, @PathVariable int userId, @PathVariable int points) {
+    public Response addPoints(@PathVariable Long wishId, @PathVariable Long userId, @PathVariable int points) {
 
         try {
             wishService.addPoints(wishId, userId, points);

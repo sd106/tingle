@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface LikesRepository extends JpaRepository<LikesEntity, Long> {
     // 해당 위시에 대한 나의 추천 여부 조회
     @Query("SELECT l FROM LikesEntity l WHERE l.wish.id = :wishId AND l.user.id = :userId")
-    LikesEntity findByWishId(Long wishId, int userId);
+    LikesEntity findByWishId(Long wishId, Long userId);
 
     // 해당 위시의 추천 상태 토글 변경
     @Modifying

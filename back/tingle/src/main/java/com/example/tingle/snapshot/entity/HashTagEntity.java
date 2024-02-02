@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
@@ -16,12 +19,12 @@ public class HashTagEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hashtag_id")
-    private int id;
+    private Long id;
 
     @Column(name = "tag")
     private String tag;
 
-    @ManyToOne
-    @JoinColumn(name = "snapshot_id")
-    private SnapShotEntity snapshot;
+    @Builder.Default
+    @OneToMany(mappedBy = "hashTagEntity", cascade = CascadeType.ALL)
+    private List<SnapShotTag> snapShotTags = new ArrayList<>();
 }
