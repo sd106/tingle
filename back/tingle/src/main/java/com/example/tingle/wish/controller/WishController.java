@@ -18,9 +18,9 @@ public class WishController {
     @Autowired
     private WishService wishService;
 
-    // 해당 스타의 위시 조회 (추천 수 높은 순)
+    // 해당 스타의 위시 조회 (신규순, 추천순, 미션금순)
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/read/withLikes/{starId}/{opt}")
+    @GetMapping("/read/{starId}/{opt}")
     public Response readWishWithLikes(@PathVariable Long starId, @PathVariable int opt) {
 
         try {
@@ -37,7 +37,6 @@ public class WishController {
     }
 
     // 위시 등록
-
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/save")
     public Response saveWish(@RequestBody WishRequest wishRequest) {
@@ -67,7 +66,7 @@ public class WishController {
 
     // 해당 위시 삭제
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/delete/{wishId}")
+    @DeleteMapping("/delete/{wishId}")
     public Response deleteWish(@PathVariable Long wishId) {
 
         try {
