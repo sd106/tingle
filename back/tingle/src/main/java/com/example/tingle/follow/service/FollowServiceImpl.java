@@ -1,12 +1,13 @@
 package com.example.tingle.follow.service;
 
 
-import com.amazonaws.transform.MapEntry;
 import com.example.tingle.follow.dto.event.FollowerAddedEvent;
 import com.example.tingle.follow.dto.event.FollowerRemovedEvent;
 import com.example.tingle.follow.dto.request.FollowReadRequest;
 import com.example.tingle.follow.entity.FollowEntity;
 import com.example.tingle.follow.repository.FollowRepository;
+import com.example.tingle.star.dto.request.ReadStarRequest;
+import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.star.repository.StarRepository;
 import com.example.tingle.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +32,7 @@ public class FollowServiceImpl implements FollowService{
     private final StarRepository starRepository;
 
     private Map<Long, Integer> followerCountMap= new ConcurrentHashMap<Long, Integer>();
+    private List<Map.Entry<Long, Integer>> hotStars;
 
     @Transactional(readOnly = true)
     @Override
@@ -82,6 +83,7 @@ public class FollowServiceImpl implements FollowService{
     public void incrementFollowerCount(Long starId) {
         log.info("증가함");
         followerCountMap.put(starId, followerCountMap.getOrDefault(starId, 0) + 1);
+
     }
 
     public void decrementFollowerCount(Long starId) {
@@ -89,18 +91,38 @@ public class FollowServiceImpl implements FollowService{
         followerCountMap.put(starId, followerCountMap.get(starId) - 1);
     }
 
-    public List<Map.Entry<Long, Integer>> getHotStars() {
-        // 팔로워 수 정보를 복사합니다.
-        Map<Long, Integer> followerCountCopy = new HashMap(followerCountMap);
+    private List<ReadStarRequest> hotStarsInfo;
 
-        List<Map.Entry<Long, Integer>> hotStars = followerCountCopy.entrySet().stream()
+    //가장 구독자가 많이 오른 스타10명 을 계산함
+    //@Scheduled(fixedDelay = 3600000)
+    public void CalculHotStars() {
+
+        hotStars = followerCountMap.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .limit(10)
                 .collect(Collectors.toList());
 
-        // 원본 팔로워 수 정보를 초기화합니다.
-        followerCountMap.clear();
+        // hotStars의 각 starId에 해당하는 FollowReadRequest를 리스트에 추가합니다.
+        hotStarsInfo = new ArrayList<>();
+        for (Map.Entry<Long, Integer> hotStar : hotStars) {
+            Long starId = hotStar.getKey();
+            ReadStarRequest readStarRequest = getFollow(starId);
+            hotStarsInfo.add(readStarRequest);
+        }
 
-        return hotStars;
+        // 원본 팔로워 수 정보를 초기화합니다.
+        //followerCountMap.clear();
     }
+
+    public List<ReadStarRequest> getHotStarsInfo() {
+        CalculHotStars();
+        return hotStarsInfo;
+    }
+
+    public ReadStarRequest getFollow(Long starId) {
+        StarEntity starEntity = starRepository.findStarEntityById(starId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid starId: " + starId));
+        return ReadStarRequest.toDto(starEntity);
+    }
+
 }

@@ -26,9 +26,14 @@ public class StarController {
 
     }
 
-    
+    @Operation(summary = "상위 구독자수 스타 10명 조회")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/Top10Stars")
+    public Response getStarTop10(){
 
+        return new Response("성공", "구독자 상위 10명의 스타 조회",starService.find10Stars());
 
+    }
 
 
 }

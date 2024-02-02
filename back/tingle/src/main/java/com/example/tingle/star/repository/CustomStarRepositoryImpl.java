@@ -1,5 +1,6 @@
 package com.example.tingle.star.repository;
 
+import com.example.tingle.star.dto.request.ReadStarRequest;
 import com.example.tingle.star.dto.response.ReadStarByCategory;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -14,7 +15,7 @@ import static com.example.tingle.star.entity.QStarEntity.starEntity;
 
 @Repository
 @RequiredArgsConstructor
-public class FindStarByCateroryImpl implements FindStarByCaterory{
+public class CustomStarRepositoryImpl implements CustomStarRepository {
 
 
     private final JPAQueryFactory jpaQueryFactory;
@@ -36,8 +37,27 @@ public class FindStarByCateroryImpl implements FindStarByCaterory{
                 .where(starEntity.category.eq(category))
                 .groupBy(starEntity.id)
                 .orderBy(starEntity.followerUsers.size().desc())
-                .limit(2)
+                .limit(10)
                 .fetch();
     }
 
+    @Override
+    public List<ReadStarRequest> find10Stars() {
+
+        return jpaQueryFactory
+                .select(
+                        Projections.constructor(ReadStarRequest.class,
+                                starEntity.id,
+                                starEntity.username,
+                                starEntity.picture
+                        )
+                )
+                .from(starEntity)
+                .orderBy(starEntity.followerUsers.size().desc())
+                .limit(10)
+                .fetch();
+
     }
+
+
+}

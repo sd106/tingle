@@ -105,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto convertToDto(OrderEntity order) {
         OrderDto dto = new OrderDto();
 
-        dto.setFanId(order.getFan().getId());
+        dto.setFanId((long) order.getFan().getId());
         dto.setFan(userService.mapToDTO(order.getFan()));
         dto.setGoods(productService.mapToDTO(order.getGoods()));
         return dto;

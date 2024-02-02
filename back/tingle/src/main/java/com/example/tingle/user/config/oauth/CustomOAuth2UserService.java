@@ -24,29 +24,24 @@ import java.util.Map;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
-    private final HttpSession httpSession;
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     /**
      * 구글로부터 받은 userRequest 데이터에 대한 후처리 함수
      * UserRequest : ClientRegistration, AccessToken, Attributes
      * 액세서 토큰으로 받아온 사용자 정보가 Request안에 들어있다
      */
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
-        System.out.println("delegate = " + delegate);
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
-        System.out.println("oAuth2User = " + oAuth2User);
-        System.out.println("userRequest = " + userRequest.getClientRegistration()); // 어떤 OAuth로 로그인 했는지 알 수 있다
-        System.out.println("getAccessToken = " + userRequest.getAccessToken().getTokenValue());
         // 구글 로그인 버튼 -> 로그인창 -> 완료 -> code 리턴 -> AccessToken 요청
         // UserRequest 정보 -> 회원 프로필 받아야함(loadUser 함수)
-        System.out.println("getAttribute = " + oAuth2User.getAttributes());
 
         OAuth2UserInfo oAuth2UserInfo = null;
         if (userRequest.getClientRegistration().getRegistrationId().equals("google")) {
-            System.out.println("구글 로그인 요청");
             oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
         } else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
             oAuth2UserInfo = new NaverUserInfo((Map<String, Object>) oAuth2User.getAttributes().get("response"));
@@ -76,8 +71,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             System.out.println("이미 OAuth 로그인 한 적이 있습니다.");
         }
         // Authentication 안에 들어감
+//        httpSession.setAttribute("user", username);
         return new CustomUserDetails(userEntity, oAuth2User.getAttributes());
     }
+
 
     private UserEntity saveOrUpdate(OAuthAttribute attributes) {
         UserEntity user = userRepository.findByEmail(attributes.getEmail())
