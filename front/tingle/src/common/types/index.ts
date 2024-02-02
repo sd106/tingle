@@ -19,17 +19,17 @@ interface User {
 
 interface FanMeetingContent {
     name: string
-}   
+}
 
 interface hotstarInfo {
     id: number;
-    picture: string; 
+    picture: string;
     userName: string;
 }
 
 interface FanMeeting {
     name: string;
-    ticketStartDate: Date | null 
+    ticketStartDate: Date | null
     ticketEndDate: Date | null
     startDate: Date | null
     participants: number
@@ -64,10 +64,16 @@ interface Star {
     image: string; // 프로필 사진
 }
 
+interface HotStarInfo{
+    id: number;
+    username: String;
+    picture: String;
+}
+
 interface Starinfo {
-    id: string;
-    nickName: string;
-    image: string;
+    id: number;
+    username: String;
+    picture: String;
 }
 interface StarLogininfo {
     starId?: number;
@@ -95,6 +101,6 @@ interface ProductCreationPayload {
 export type {
     SignUp, LogIn, hotstarInfo,
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
-    User, Star, Starinfo,
+    User, Star, Starinfo, HotStarInfo,
     Product, ProductCreationPayload, StarLogininfo
 }

@@ -11,12 +11,12 @@
     <!-- 슬라이더 좀 더 자연스럽고 부드럽게 회전초밥마냥 라이브러리 쓰든가-->
     <div class="container slider-container">
       <div class="justify-content-between slider-track" ref="sliderTrack">
-        <div v-for="hotstar in hotStarsInfo" :key="hotstar.userName" class="p-2 star-card" style="width: 18%;">
+        <div v-for="hotstar in hotStarsInfo" :key="hotstar.id" class="p-2 star-card" style="width: 18%;">
           <RouterLink class="router-link-custom" :to="`/${hotstar.id}/home`">
             <div class="hotstar-image">
               <img :src="hotstar.picture" alt="not" class="hotpic">
             </div>
-            <div class="hotstar-nickName">{{ hotstar.userName }}</div>
+            <div class="hotstar-nickName">{{ hotstar.username }}</div>
           </RouterLink>
         </div>
       </div>
@@ -25,21 +25,24 @@
     <div class="section-title">카테고리별 상위 10명!</div>
     <div class="container d-flex justify-content-around m-2">
       <!-- 카테고리 버튼 > 누르면 v-for에 들어갈 displaystarinfo 기준이 바뀜 -->
-      <button class="category-btn" @click="selectCategory('유형민')">유형민</button>
-      <button class="category-btn" @click="selectCategory('황찬준')">황찬준</button>
-      <button class="category-btn" @click="selectCategory('정수빈')">정수빈</button>
-      <button class="category-btn" @click="selectCategory('이성모')">이성모</button>
-      <button class="category-btn" @click="selectCategory('윤정영')">윤정영</button>
-      <button class="category-btn" @click="selectCategory('오은아')">오은아</button>
+      <button class="category-btn" @click="selectCategory(0)">일상/토크</button>
+      <button class="category-btn" @click="selectCategory(1)">동물</button>
+      <button class="category-btn" @click="selectCategory(2)">게임/스포츠</button>
+      <button class="category-btn" @click="selectCategory(3)">미술/음악</button>
+      <button class="category-btn" @click="selectCategory(4)">뷰티/패션</button>
+      <button class="category-btn" @click="selectCategory(5)">기타</button>
     </div>
     <div class="container d-flex flex-wrap"
-      style="height: 360px; background-color: lightgoldenrodyellow; border-radius: 20px;">
-      <div v-for="star in displayedStarInfo" :key="star.id" class="p-2 star-card" style="width: 18%;">
+         style="height: 360px; background-color: lightgoldenrodyellow; border-radius: 20px;">
+      <div v-if="StarsByCategory.length === 0">
+        아직 이 분야 스타가 존재하지 않습니다.
+      </div>
+      <div v-else v-for="star in StarsByCategory" :key="star.id" class="p-2 star-card" style="width: 18%;">
         <RouterLink class="router-link-custom" :to="`/${star.id}/home`">
           <div class="star-image">
-            <img :src="star.image" alt="not">
+            <img :src="star.picture" alt="not">
           </div>
-          <div class="star-nickName">{{ star.nickName }}</div>
+          <div class="star-nickName">{{ star.username }}</div>
         </RouterLink>
       </div>
     </div>
@@ -53,7 +56,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 
-import type { Starinfo, hotstarInfo } from '@/common/types/index'
+import type { Starinfo, HotStarInfo } from '@/common/types/index'
 
 
 const store = useUserStore()
@@ -72,33 +75,42 @@ const moveSlider = () => {
 };
 
 // 카테고리 디스플레이
-const selectedCategory = ref<string>('유형민'); // 기본값은 첫 번째 카테고리로 설정
-const displayedStarInfo = ref<Starinfo[]>([]);
+const StarsByCategory = ref<Starinfo[]>([]);
 
 const loadInitialData = () => {
-  displayedStarInfo.value = store.categories[selectedCategory.value];
+  getStarsByCategory(0);
 };
 
-const selectCategory = (category: string): void => {
-  selectedCategory.value = category;
-  // if (!categories[category]) {
-  //   // 만약 해당 카테고리의 starinfo가 없다면 요청
-  //   categories[category] = /* API 요청 결과 */;
-  // }
-  displayedStarInfo.value = store.categories[category];
+const selectCategory = (category: number): void => {
+  getStarsByCategory(category);
 };
 
-const hotStarsInfo= ref<hotstarInfo[]>([]);
+const hotStarsInfo= ref<HotStarInfo[]>([]);
 
 //최근 인기상승 핫스타 가져오기
 const getHotStars = async () => {
   const response = await axios.get('http://localhost:8080/follow/hotStars');
-  hotStarsInfo.value = response.data.data;  
+  hotStarsInfo.value = response.data.data;
+  if(hotStarsInfo.value.length ===0) //만약 핫스타가 없으면 구독자수가 많은 스타를 가져온다
+    getTop10Stars();
   console.log(response);
 }
 
 getHotStars();
 
+//상위 10명의 스타 가져오기
+const getTop10Stars = async () => {
+  const response = await axios.get('http://localhost:8080/star/Top10Stars');
+  hotStarsInfo.value = response.data.data;
+  console.log(response);
+}
+
+
+const getStarsByCategory = async (category:number) => {
+  const response = await axios.get(`http://localhost:8080/star/${category}`);
+  StarsByCategory.value = response.data.data;
+  console.log(response);
+}
 
 onMounted(() => {
 

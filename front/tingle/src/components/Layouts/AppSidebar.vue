@@ -67,8 +67,8 @@ import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 
 import ChatModal from '@/components/ChatModal.vue';
-
 const store = useUserStore()
+const starid = store.starInfo?.starId;
 
 // 사이드바 더보기
 const displayCount = ref(7);
@@ -87,7 +87,7 @@ const hotStarInfo= ref<{id: number, picture: string, userName: string}[]>([]);
 //구독한 스타 가져오기
 const getFolloings = async () => {
   const response = await axios.get('http://localhost:8080/follow/1');
-  folloingInfo.value = response.data.data;  
+  folloingInfo.value = response.data.data;
   console.log(response);
 }
 
