@@ -17,12 +17,17 @@ public interface WishService {
     public void updateWish(WishRequest wishRequest);
 
     // 해당 위시 삭제
-    public void deleteWish(Long wishId);
+    public void deleteWish(Long wishId, Long starId, Long userId);
 
     // 해당 위시에 미션금 추가
     public void addPoints(Long wishId, Long userId, int points);
 
     /* star */
-    // 해당 위시를 미채택/채택/완료 상태로 변경
-    public void updateWishStatus(Long wishId, int wishStatus);
+    // 해당 위시를 미채택/채택 상태로 변경 (스타)
+    public void updateWishStatusByStarId(Long starId, Long wishId, int wishStatus);
+
+    /* user */
+    // 해당 위시를 완료 상태로 변경 (팬)
+    public void updateWishStatusByUserId(Long userId, Long wishId);
+
 }

@@ -18,14 +18,14 @@ public class LikesController {
 
     // 해당 스타 위시에 대한 내 추천 목록 조회
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/read/mylist/{userId}")
-    public Response readMyLikedList(@PathVariable Long userId) {
+    @GetMapping("/read/mylist/{starId}/{userId}")
+    public Response readMyLikedList(@PathVariable Long starId, @PathVariable Long userId) {
 
         try {
-            List<LikesDto> list = likesService.readLikesList(userId);
+            List<LikesDto> list = likesService.readLikesList(starId, userId);
 
             if(list.isEmpty())
-                return new Response("success", "readMyLikedList", null);
+                return new Response("success", "readMyLikedList", list);
             else
                 return new Response("success", "readMyLikedList", list);
         } catch (Exception e) {
@@ -35,24 +35,24 @@ public class LikesController {
     }
 
     // 해당 위시에 대한 내 추천 상태 조회
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/read/my/{wishId}/{userId}")
-    public Response readMyLiked(@PathVariable Long wishId, @PathVariable Long userId) {
-
-        try {
-            int result = likesService.isLikes(wishId, userId);
-
-            if(result == 0)
-                return new Response("success", "readMyLiked", 0);
-            else if(result == 1)
-                return new Response("success", "readMyLiked", 1);
-            else
-                return new Response("success", "readMyLiked", 2);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Response("fail", "readMyLiked", null);
-        }
-    }
+//    @ResponseStatus(HttpStatus.OK)
+//    @GetMapping("/read/my/{wishId}/{userId}")
+//    public Response readMyLiked(@PathVariable Long wishId, @PathVariable Long userId) {
+//
+//        try {
+//            int result = likesService.isLikes(wishId, userId);
+//
+//            if(result == 0)
+//                return new Response("success", "readMyLiked", 0);
+//            else if(result == 1)
+//                return new Response("success", "readMyLiked", 1);
+//            else
+//                return new Response("success", "readMyLiked", 2);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return new Response("fail", "readMyLiked", null);
+//        }
+//    }
 
     // 해당 위시에 대한 추천 상태 토글 변경 (create 포함)
     @ResponseStatus(HttpStatus.OK)

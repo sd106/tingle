@@ -18,16 +18,17 @@ public class WishController {
     @Autowired
     private WishService wishService;
 
-    // 해당 스타의 위시 조회 (신규순, 추천순, 미션금순 / 미채택, 채택, 완료)
+    // 해당 스타의 위시 조회 (신규순,추천순,미션금순 / 미채택,채택,완료)
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/read/{starId}/{sorting}/{status}")
-    public Response readWishesWith(@PathVariable Long starId, @PathVariable int sorting, @PathVariable int status) {
+    public Response readWishesWith(@PathVariable Long starId, @PathVariable int sorting,
+                                   @PathVariable int status) {
 
         try {
             List<WishDto> list = wishService.readWishes(starId, sorting, status);
 
             if(list.isEmpty())
-                return new Response("success", "readWishWithLikes", null);
+                return new Response("success", "readWishWithLikes", list);
             else
                 return new Response("success", "readWishWithLikes", list);
         } catch (Exception e) {
@@ -66,11 +67,11 @@ public class WishController {
 
     // 해당 위시 삭제
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/delete/{wishId}")
-    public Response deleteWish(@PathVariable Long wishId) {
+    @DeleteMapping("/delete/{wishId}/{starId}/{userId}")
+    public Response deleteWish(@PathVariable Long wishId, @PathVariable Long starId, @PathVariable Long userId) {
 
         try {
-            wishService.deleteWish(wishId);
+            wishService.deleteWish(wishId, starId, userId);
             return new Response("success", "deleteWish", null);
         } catch(Exception e) {
             e.printStackTrace();
@@ -80,7 +81,7 @@ public class WishController {
 
     // 해당 위시에 미션금 추가
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/points/add/{wishId}/{userId}/{points}")
+    @PostMapping("/add/points/{wishId}/{userId}/{points}")
     public Response addPoints(@PathVariable Long wishId, @PathVariable Long userId, @PathVariable int points) {
 
         try {
@@ -92,13 +93,27 @@ public class WishController {
         }
     }
 
-    // 해당 위시를 미채택/채택/완료 상태로 변경
+    // 해당 위시를 미채택/채택 상태로 변경 (스타)
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/status/update/{wishId}/{wishStatus}")
-    public Response updateWishStatus(@PathVariable Long wishId, @PathVariable int wishStatus) {
+    @PostMapping("/update/status/star/{starId}/{wishId}/{wishStatus}")
+    public Response updateWishStatusByStarId(@PathVariable Long starId, @PathVariable Long wishId, @PathVariable int wishStatus) {
 
         try {
-            wishService.updateWishStatus(wishId, wishStatus);
+            wishService.updateWishStatusByStarId(starId, wishId, wishStatus);
+            return new Response("success", "updateWishStatus", null);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return new Response("fail", "updateWishStatus", null);
+        }
+    }
+
+    // 해당 위시를 완료 상태로 변경 (팬)
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/update/status/user/{wishId}")
+    public Response updateWishStatusByUserId(@PathVariable Long userId, @PathVariable Long wishId) {
+
+        try {
+            wishService.updateWishStatusByUserId(userId, wishId);
             return new Response("success", "updateWishStatus", null);
         } catch(Exception e) {
             e.printStackTrace();

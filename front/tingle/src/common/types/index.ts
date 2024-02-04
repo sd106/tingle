@@ -92,9 +92,29 @@ interface ProductCreationPayload {
     files: File[];
 }
 
+/* 위시 */
+interface LikesInfo {
+    id: number;
+    userId: number;
+    wishId: number;
+    liked: boolean;
+}
+interface WishInfo {
+    id: number;
+    userId: number;
+    starId: number;
+    status: number;
+    points: number;
+    likedCount: number;
+    contents: string;
+    createTime: Date;
+    deleteTime: Date;
+}
+
 export type {
     SignUp, LogIn, hotstarInfo,
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
     User, Star, Starinfo,
-    Product, ProductCreationPayload, StarLogininfo
+    Product, ProductCreationPayload, StarLogininfo,
+    WishInfo, LikesInfo
 }

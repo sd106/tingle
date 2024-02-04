@@ -8,9 +8,9 @@ import com.example.tingle.user.repository.UserRepository;
 import com.example.tingle.wish.dto.WishDto;
 import com.example.tingle.wish.dto.request.WishRequest;
 import com.example.tingle.wish.entity.WishEntity;
-import com.example.tingle.wish.repository.LikesRepository;
 import com.example.tingle.wish.repository.WishRepository;
 import com.example.tingle.wish.service.WishService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,19 +27,18 @@ public class WishServiceImpl implements WishService {
     @Autowired
     private WishRepository wishRepository;
 
+    @Transactional
     @Override
     public List<WishDto> readWishes(Long starId, int sorting, int status) {
         List<WishEntity> wishEntities;
 
-        if(sorting == 0) {
+        if(sorting == 0) // 신규순
             wishEntities  = wishRepository.findByStarIdWithNews(starId, status);
-        }
-        else if(sorting == 1) {
+        else if(sorting == 1)// 추천순
             wishEntities  = wishRepository.findByStarIdWithLikes(starId, status);
-        }
-        else {
+        else // 미션금순
             wishEntities  = wishRepository.findByStarIdWithPoints(starId, status);
-        }
+
 //        if (wishEntities.isEmpty()) { throw new NoSuchElementException("List is empty"); }
 
         List<WishDto> wishDtos = new ArrayList<>();
@@ -62,6 +61,7 @@ public class WishServiceImpl implements WishService {
         return wishDtos;
     }
 
+    @Transactional
     @Override
     public void saveWish(WishRequest wishRequest) {
         UserEntity user = userRepository.findById(wishRequest.getUserId())
@@ -71,7 +71,6 @@ public class WishServiceImpl implements WishService {
                 .orElseThrow(() -> new NotFoundException("Could not found star id : " + wishRequest.getStarId()));
 
         WishEntity wishEntity = WishEntity.builder()
-                .id(wishRequest.getId())
                 .user(user)
                 .star(star)
                 .status(wishRequest.getStatus())
@@ -85,7 +84,9 @@ public class WishServiceImpl implements WishService {
         wishRepository.save(wishEntity);
     }
 
+
     /* 수정 기능 미구현 */
+    @Transactional
     @Override
     public void updateWish(WishRequest wishRequest) {
         UserEntity user = userRepository.findById(wishRequest.getUserId())
@@ -95,7 +96,6 @@ public class WishServiceImpl implements WishService {
                 .orElseThrow(() -> new NotFoundException("Could not found star id : " + wishRequest.getStarId()));
 
         WishEntity wishEntity = WishEntity.builder()
-                .id(wishRequest.getId())
                 .user(user)
                 .star(star)
                 .status(wishRequest.getStatus())
@@ -109,14 +109,21 @@ public class WishServiceImpl implements WishService {
         wishRepository.save(wishEntity);
     }
 
+    @Transactional
     @Override
-    public void deleteWish(Long wishId) {
+    public void deleteWish(Long wishId, Long starId, Long userId) {
         WishEntity wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new NotFoundException("Could not found wish id : " + wishId));
+        StarEntity star = starRepository.findById(starId)
+                .orElseThrow(() -> new NotFoundException("Could not found star id : " + starId));
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Could not found user id : " + userId));
 
-        wishRepository.deleteById(wish.getId());
+        if(wish.getUser().getId() == user.getId() && wish.getStar().getId() == star.getId())
+            wishRepository.deleteById(wish.getId());
     }
 
+    @Transactional
     @Override
     public void addPoints(Long wishId, Long userId, int points) {
         WishEntity wish = wishRepository.findById(wishId)
@@ -130,11 +137,25 @@ public class WishServiceImpl implements WishService {
         wishRepository.updatePointsByWishId(wish.getId(), points);
     }
 
+    @Transactional
     @Override
-    public void updateWishStatus(Long wishId, int wishStatus) {
+    public void updateWishStatusByUserId(Long userId, Long wishId) {
         WishEntity wish = wishRepository.findById(wishId)
                 .orElseThrow(() -> new NotFoundException("Could not found wish id : " + wishId));
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Could not found user id : " + userId));
 
-        wishRepository.updateStatusByWishId(wish.getId(), wishStatus);
+        wishRepository.updateStatusByUserId(user.getId(), wish.getId());
+    }
+
+    @Transactional
+    @Override
+    public void updateWishStatusByStarId(Long starId, Long wishId, int wishStatus) {
+        WishEntity wish = wishRepository.findById(wishId)
+                .orElseThrow(() -> new NotFoundException("Could not found wish id : " + wishId));
+        StarEntity star = starRepository.findById(starId)
+                .orElseThrow(() -> new NotFoundException("Could not found star id : " + starId));
+
+        wishRepository.updateStatusByStarId(star.getId(), wish.getId(), wishStatus);
     }
 }

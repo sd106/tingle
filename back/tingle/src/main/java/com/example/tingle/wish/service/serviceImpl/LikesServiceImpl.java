@@ -1,6 +1,7 @@
 package com.example.tingle.wish.service.serviceImpl;
 
 import com.amazonaws.services.kms.model.NotFoundException;
+import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.star.repository.StarRepository;
 import com.example.tingle.user.entity.UserEntity;
 import com.example.tingle.user.repository.UserRepository;
@@ -11,6 +12,7 @@ import com.example.tingle.wish.entity.WishEntity;
 import com.example.tingle.wish.repository.LikesRepository;
 import com.example.tingle.wish.repository.WishRepository;
 import com.example.tingle.wish.service.LikesService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,16 +24,21 @@ public class LikesServiceImpl implements LikesService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private StarRepository starRepository;
+    @Autowired
     private WishRepository wishRepository;
     @Autowired
     private LikesRepository likesRepository;
 
+    @Transactional
     @Override
-    public List<LikesDto> readLikesList(Long userId) {
+    public List<LikesDto> readLikesList(Long starId, Long userId) {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Could not found user id : " + userId));
+        StarEntity star = starRepository.findById(starId)
+                .orElseThrow(() -> new NotFoundException("Could not found star id : " + starId));
 
-        List<LikesEntity> likesEntities = likesRepository.findAllByUserId(user.getId());
+        List<LikesEntity> likesEntities = likesRepository.findAllByUserId(star.getId(), user.getId());
 
         List<LikesDto> likesDtos = new ArrayList<>();
 
@@ -48,6 +55,7 @@ public class LikesServiceImpl implements LikesService {
         return likesDtos;
     }
 
+    @Transactional
     @Override
     public int isLikes(Long wishId, Long userId) {
         WishEntity wish = wishRepository.findById(wishId)
@@ -67,6 +75,7 @@ public class LikesServiceImpl implements LikesService {
             return 2;
     }
 
+    @Transactional
     @Override
     public int updateLikes(Long wishId, Long userId) {
         WishEntity wish = wishRepository.findById(wishId)
@@ -74,7 +83,6 @@ public class LikesServiceImpl implements LikesService {
 
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Could not found user id : " + userId));
-
 
         LikesEntity likes = likesRepository.findByIds(wish.getId(), user.getId());
 

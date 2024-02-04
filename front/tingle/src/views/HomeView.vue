@@ -44,12 +44,11 @@
       </div>
     </div>
   </main>
-  <RouterView />
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 

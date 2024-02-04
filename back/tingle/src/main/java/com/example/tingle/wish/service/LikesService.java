@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface LikesService {
     // 해당 스타 위시에 대한 내 추천 목록 조회
-    public List<LikesDto> readLikesList(Long userId);
+    public List<LikesDto> readLikesList(Long starId, Long userId);
 
     // 해당 위시에 대한 추천 여부 조회
     public int isLikes(Long wishId, Long userId);
