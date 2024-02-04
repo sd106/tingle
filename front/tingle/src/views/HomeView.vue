@@ -2,6 +2,7 @@
   <main>
     <!-- 배경색을 두고 다른걸 다 흰색으로 두는 것도 괜찮을듯 -->
     <!-- 배너사진 -->
+    <div v-if="hotStarsInfo"></div>
     <div class="container p-0" style="height: 250px;">
       <img class="img-fluid w-100 h-100" src="/image/logo.webp" alt="">
     </div>
@@ -55,7 +56,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 
-import type { StarByCategory, HotStarInfo } from '@/common/types/index'
+import type { Starinfo, HotStarInfo } from '@/common/types/index'
 
 
 const store = useUserStore()
@@ -74,7 +75,7 @@ const moveSlider = () => {
 };
 
 // 카테고리 디스플레이
-const StarsByCategory = ref<StarByCategory[]>([]);
+const StarsByCategory = ref<Starinfo[]>([]);
 
 const loadInitialData = () => {
   getStarsByCategory(0);
