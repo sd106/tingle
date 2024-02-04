@@ -19,7 +19,7 @@ import WishManageView from '@/views/Star/Wish/WishManageView.vue'
 
 import StoreMainView from '@/views/Star/Store/StoreMainView.vue'
 import StoreManageView from '@/views/Star/Store/StoreManageView.vue'
-
+import StoreDetailView from '@/views/Star/Store/StoreDetailView.vue'
 
 import FanMeetingEntranceView from '@/views/StarMenu/FanMeeting/FanMeetingEntranceView.vue'
 import WaitingRoomView from '@/views/StarMenu/FanMeeting/WaitingRoomView.vue'
@@ -121,6 +121,12 @@ const router = createRouter({
       name: 'store',
       component: StoreMainView,
       props: (route) => ({ id: route.params.starid }),
+    },
+    {
+      path: '/:starid/store/:productId(\\d+)',
+      name: 'storedetail',
+      component: StoreDetailView,
+      props: true
     },
     {
       path: '/:starid/store/manage',

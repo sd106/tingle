@@ -78,9 +78,6 @@ onMounted(() => {
   /* 애니메이션을 없애는 스타일 */
 }
 
-main {
-}
-
 .content {
   margin-top: 71px;
   margin-left: 64px;
