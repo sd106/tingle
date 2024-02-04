@@ -1,7 +1,7 @@
 package com.example.tingle.star.entity;
 
 import com.example.tingle.follow.entity.FollowEntity;
-import com.example.tingle.homeArticle.entity.HomeArticleEntity;
+import com.example.tingle.home.entity.HomeEntity;
 import com.example.tingle.store.entity.OrderEntity;
 import com.example.tingle.user.entity.Role;
 import jakarta.persistence.*;
@@ -74,6 +74,8 @@ public class StarEntity {
     private Set<FollowEntity> followerUsers;
 
     @OneToMany(mappedBy="starEntity")
-    private List<HomeArticleEntity> articles;
+    private List<HomeEntity> homes;
+
+
 
 }

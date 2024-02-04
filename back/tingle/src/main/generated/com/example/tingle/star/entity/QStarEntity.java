@@ -20,13 +20,13 @@ public class QStarEntity extends EntityPathBase<StarEntity> {
 
     public static final QStarEntity starEntity = new QStarEntity("starEntity");
 
-    public final ListPath<com.example.tingle.homeArticle.entity.HomeArticleEntity, com.example.tingle.homeArticle.entity.QHomeArticleEntity> articles = this.<com.example.tingle.homeArticle.entity.HomeArticleEntity, com.example.tingle.homeArticle.entity.QHomeArticleEntity>createList("articles", com.example.tingle.homeArticle.entity.HomeArticleEntity.class, com.example.tingle.homeArticle.entity.QHomeArticleEntity.class, PathInits.DIRECT2);
-
     public final NumberPath<Integer> category = createNumber("category", Integer.class);
 
     public final StringPath email = createString("email");
 
     public final SetPath<com.example.tingle.follow.entity.FollowEntity, com.example.tingle.follow.entity.QFollowEntity> followerUsers = this.<com.example.tingle.follow.entity.FollowEntity, com.example.tingle.follow.entity.QFollowEntity>createSet("followerUsers", com.example.tingle.follow.entity.FollowEntity.class, com.example.tingle.follow.entity.QFollowEntity.class, PathInits.DIRECT2);
+
+    public final ListPath<com.example.tingle.home.entity.HomeEntity, com.example.tingle.home.entity.QHomeEntity> homes = this.<com.example.tingle.home.entity.HomeEntity, com.example.tingle.home.entity.QHomeEntity>createList("homes", com.example.tingle.home.entity.HomeEntity.class, com.example.tingle.home.entity.QHomeEntity.class, PathInits.DIRECT2);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
