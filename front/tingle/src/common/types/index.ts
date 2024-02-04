@@ -19,12 +19,12 @@ interface User {
 
 interface FanMeetingContent {
     name: string
-}   
+}
 
-interface hotstarInfo {
+interface HotStarInfo {
     id: number;
-    picture: string; 
-    userName: string;
+    username: string;
+    picture: string;
 }
 
 interface FanMeeting {
@@ -69,6 +69,14 @@ interface Starinfo {
     nickName: string;
     image: string;
 }
+
+interface StarByCategory {
+    id: number;
+    username: string;
+    picture: string;
+}
+
+
 interface StarLogininfo {
     starId?: number;
     username: string;
@@ -112,9 +120,9 @@ interface WishInfo {
 }
 
 export type {
-    SignUp, LogIn, hotstarInfo,
+    SignUp, LogIn, HotStarInfo,
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
-    User, Star, Starinfo,
+    User, Star, Starinfo, StarByCategory,
     Product, ProductCreationPayload, StarLogininfo,
     WishInfo, LikesInfo
 }
