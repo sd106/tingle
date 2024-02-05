@@ -1,6 +1,7 @@
 package com.example.tingle.home.service;
 
 import com.example.tingle.home.dto.HomeDto;
+import com.example.tingle.home.dto.HomeProfileDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -15,5 +16,7 @@ public interface HomeService {
 
     boolean updateHome(String homeRequestJson, List<MultipartFile> files) throws IOException;
 
-    public boolean deleteHome(Long homeId);
+    boolean deleteHome(Long homeId);
+
+    HomeProfileDto findHomeProfile(Long starId);
 }

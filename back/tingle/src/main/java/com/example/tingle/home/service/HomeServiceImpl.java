@@ -1,6 +1,7 @@
 package com.example.tingle.home.service;
 
 import com.example.tingle.home.dto.HomeDto;
+import com.example.tingle.home.dto.HomeProfileDto;
 import com.example.tingle.home.dto.request.HomeCreateRequest;
 import com.example.tingle.home.dto.request.HomeUpdateRequest;
 import com.example.tingle.home.entity.HomeEntity;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -148,6 +150,16 @@ public class HomeServiceImpl implements HomeService {
         homeRepository.deleteById(homeId);
 
         return true;
+    }
+
+    @Override
+    public HomeProfileDto findHomeProfile(Long starId) {
+
+        StarEntity starEntity = starRepository.findById(starId)
+                .orElseThrow(() -> new IllegalArgumentException("Star not found"));
+
+        return starEntity.toDto();
+
     }
 
 }

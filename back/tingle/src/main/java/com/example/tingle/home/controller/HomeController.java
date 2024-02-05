@@ -24,7 +24,7 @@ public class HomeController {
     @Operation(summary = "스타 홈의 글 조회")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{starId}")
-    public Response getHome(@PathVariable Long starId) throws Exception {
+    public Response getHome(@PathVariable Long starId){
         return new Response("성공", "스타 홈 글 조회", homeService.findHomesByStarId(starId));
 
     }
@@ -55,6 +55,15 @@ public class HomeController {
     public Response deleteHome(@PathVariable Long homeId) throws Exception {
 
         return new Response("성공", "스타 홈 글 삭제", homeService.deleteHome(homeId));
+
+    }
+
+    @Operation(summary = "스타 프로필 조회")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/profile/{starId}")
+    public Response getProfile(@PathVariable Long starId){
+
+        return new Response("성공", "스타 프로필 조회",homeService.findHomeProfile(starId));
 
     }
 
