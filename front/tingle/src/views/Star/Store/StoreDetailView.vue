@@ -1,31 +1,43 @@
 <template>
-    <link href="/dist/output.css" rel="stylesheet">
     <main>
         <StarMenu :id="starid" />
-        <div v-if="product" class="d-flex row">
+        <div v-if="product" class="d-flex row tw-space-x-4 tw-mt-2">
             <!-- 왼쪽 -->
-            {{ product }}
-            <div class="col-6 border tw-border-y-green-800">
-                왼쪽
-                <button class="tw-btn tw-btn-square">
-                    <span class="tw-loading tw-loading-spinner">아오</span>
-                </button>
-                <input type="checkbox" value="synthwave" class="tw-toggle tw-theme-controller" />
-                <!-- <div v-for="image in product.imageUrl" :key="product" class="">
-                    <img :src="image.url" alt="상품 이미지" class="goods-image">
-                </div> -->
+            <div class="col-1">
+                <button @click="goBack" class="tw-btn tw-btn-circle tw-glass">❮</button>
+            </div>
+            <div class=" col-6">
+                <div class="tw-carousel tw-w-full">
+                    <div v-for="(image, index) in product.imageUrl" :key="image.id"
+                        class="tw-carousel-item tw-relative tw-w-full" :class="{ 'tw-hidden': index !== activeIndex }">
+                        <img :src="image.url" alt="" class="tw-w-full">
+                        <div v-if="product.imageUrl.length > 2" class="tw-absolute tw-flex tw-justify-between tw-transform tw--translate-y-1/2 tw-left-5
+                            tw-right-5 tw-top-1/2">
+                            <button @click="prevSlide" class="tw-btn tw-btn-circle tw-glass">❮</button>
+                            <button @click="nextSlide" class="tw-btn tw-btn-circle tw-glass">❯</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- 오른쪽 -->
-            <div class="col-6 border">
+            <div class="col-4 tw-ps-6 tw-flex tw-flex-col tw-justify-between">
                 <div>
-                    <p>상품명 : {{ product.name }}</p>
-                    <p>가격 : {{ product.price }}</p>
-                    <p>수량 : {{ product.amount }}</p>
-                    <p>설명 : {{ product.content }}</p>
+                    <p class="tw-text-3xl tw-font-bold tw-text-gray-900 tw-px-2 tw-py-2">{{ product.name }}</p>
+                    <p class="tw-text-xl tw-font-semibold tw-text-gray-900 tw-pt-2 tw-px-2">
+                        {{ formattedPrice }}<span class="tw-text-sm">원</span>
+                    </p>
+                    <div class="tw-flex tw-items-center tw-mb-4 tw-px-1">
+                        <p class="tw-text-xs tw-text-gray-500 tw-border tw-px-2 tw-py-1 tw-rounded">{{ product.amount }} 개
+                            남음
+                        </p>
+                    </div>
+                    <hr class="tw-my-4">
+                    <p class="tw-py-4 tw-px-2">{{ product.content }}</p>
+                    <hr class="tw-my-4">
                 </div>
                 <div>
-                    <!-- //////주문 생성이랑 연결 -->
-                    <button>구매 버튼</button>
+                    <button
+                        class="tw-btn tw-btn-active tw-btn-block tw-bg-black tw-text-white tw-py-3 tw-rounded-md tw-mb-2">구매하기</button>
                 </div>
             </div>
         </div>
@@ -34,6 +46,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import type { Goods } from '@/common/types';
 import axios from 'axios'
 
@@ -44,6 +57,7 @@ const props = defineProps({
     productId: String, // URL에서 받은 값은 문자열이므로 String으로 받음
 });
 
+const router = useRouter()
 
 const starid = ref(props.starid);
 const productIdNumber = computed(() => Number(props.productId)); // 숫자로 변환
@@ -72,9 +86,27 @@ onMounted(() => {
 
 
 // 사진들 카로셀
+const activeIndex = ref(0);
+
+const prevSlide = () => {
+    if (activeIndex.value > 0)
+        activeIndex.value -= 1
+};
+
+const nextSlide = () => {
+    if (activeIndex.value < product.value!.imageUrl.length - 1)
+        activeIndex.value += 1
+};
 
 
+const formattedPrice = computed(() => {
+    return new Intl.NumberFormat('ko-KR', { style: 'decimal' }).format(product.value!.price)
+})
 
+// 뒤로가기
+function goBack() {
+    router.go(-1) // 또는 router.back()
+}
 </script>
 
 <style scoped>

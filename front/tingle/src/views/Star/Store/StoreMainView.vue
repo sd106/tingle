@@ -1,20 +1,21 @@
 <template>
   <main class="container">
     <StarMenu :id="id" />
-    <div class="container border">
-      <h2>상품목록</h2>
+    <div class="container">
+      <h1>상품목록</h1>
       <RouterLink :to="`/${id}/store/manage`">
         설정
       </RouterLink>
-      <div v-if="products" class="d-flex row">
-        <!-- //////정렬기준 수정할 수 있게 row 하나 추가해서 변경 가능하게 -->
-        <!-- //////available = false면 비활성화하고 회색처리  -->
-        <div v-for="product in products" :key="product.productId" class="border product-card col-3 p-3">
-          <RouterLink :to="`/${id}/store/${product.productId}`">
-            <img :src="product.imageUrl[0].url" alt="">
-            <div class="product-info">
-              <p>상품명: {{ product.name }}</p>
-              <p>가격: {{ product.price }}</p>
+      <!-- //////정렬기준 수정할 수 있게 row 하나 추가해서 변경 가능하게 -->
+      <!-- //////available = false면 비활성화하고 회색처리  -->
+      <div v-if="altProducts" class="tw-grid tw-grid-cols-5 tw-gap-2">
+        <div v-for="product in altProducts" :key="product.productId"
+          class="product-card tw-rounded-lg tw-transition tw-mb-5">
+          <RouterLink :to="`/${id}/store/${product.productId}`" class="tw-flex tw-flex-col">
+            <img :src="product.imageUrl[0].url" alt="" class="tw-w-full tw-h-60 tw-object-cover">
+            <div class="product-info tw-text-left tw-py-1">
+              <span class="tw-text-md tw-font-semibold tw-truncate">{{ product.name }}</span>
+              <span class="tw-text-lg tw-font-bold tw-text-gray-800">{{ product.formattedPrice }}</span>
             </div>
           </RouterLink>
         </div>
@@ -28,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import axios from 'axios';
 
@@ -56,6 +57,13 @@ const getAllProducts = async (starName: string) => {
     console.error('스타의 상품 목록 조회 중 오류 발생', error);
   }
 };
+
+const altProducts = computed(() => {
+  return products.value?.map((product) => ({
+    ...product,
+    formattedPrice: new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(product.price)
+  }));
+});
 
 
 onMounted(() => {
