@@ -1,103 +1,96 @@
 <template>
-  <div class="off-canvas mx-0 ">
-
-    <!-- 이미지 컨테이너 -->
-    <div class="image-container">
-      <img :src="props.selectedSnapshot?.imageUrl" alt="Snapshot Image" class="snapshot-image">
-    </div>
-    <div class="content-section">
-      <!-- 본문 내용 -->
-      <div class="content mx-0">
-        <h3>{{ props.selectedSnapshot?.content }}</h3>
-        <p>{{ props.selectedSnapshot?.username }}</p>
+  <div class="container mt-2">
+    <div class="row">
+      <!-- 이미지 컨테이너 -->
+      <div class="col-md-6">
+        <img :src="props.selectedSnapshot!.imageUrl" alt="Snapshot Image" class="snapshot-image">
       </div>
+      <div class="col-md-6">
+        <!-- 스냅샷 관리 버튼 -->
+        <div class="snapshot-actions">
+          <button class="btn" @click="goToUpdate(props.selectedSnapshot!.snapshotId)">스냅샷 수정</button>
+          <button class="btn" @click="deleteSnapshot(props.selectedSnapshot!.snapshotId)">스냅샷 삭제</button>
+          <button class="btn" @click="like(props.selectedSnapshot!.snapshotId)">좋아요 {{ props.selectedSnapshot!.likes }}</button>
+        </div>
+         <!-- 본문 내용 -->
+         <div class="content mx-0 mt-2">
+          <h3>{{ props.selectedSnapshot!.content }}</h3>
+          <p>{{ props.selectedSnapshot!.username }}</p>
+          <p>{{ time }}</p>
+        </div>
 
-      <!-- 태그 리스트 -->
-      <ul class="tags-list">
-        <li v-for="(tag, index) in props.selectedSnapshot?.tags" :key="index">{{ tag }}</li>
-      </ul>
+        <!-- 태그 리스트 -->
+        <ul class="tags-list">
+          <li v-for="(tag, index) in props.selectedSnapshot?.tags" :key="index">{{ tag }}</li>
+        </ul>
 
-      <!-- 댓글 작성 폼 -->
-      <form @submit.prevent="postComment" class="comment-form">
-        <input type="text" v-model="newCommentContent" placeholder="Write a comment...">
-        <button type="submit">Post</button>
-      </form>
-
-      <!-- 댓글 목록 -->
-      <div class="comments-list">
-        <div v-for="comment in props.selectedSnapshot?.comments" :key="comment.id" class="comment">
-          <!-- 수정 중인 댓글의 UI 변경 -->
-          <div v-if="editingCommentId === comment.id">
-            <input type="text" v-model="editingCommentContent" />
-            <button @click="submitCommentEdit(comment.id)">수정하기</button>
-            <button @click="cancelEdit">취소</button>
-          </div>
-          <!-- 일반 댓글 표시 -->
-          <div v-else>
-            <p>{{ comment.context }} | {{ comment.username }}</p>
-            <button @click="startEditComment(comment)">수정</button>
-            <button @click="deleteComment(comment.id)">삭제</button>
+        <!-- 댓글 목록 -->
+        <div class="comments-list">
+          <p>댓글 {{ props.selectedSnapshot?.comments.length }}</p>
+          
+          <div v-for="comment in props.selectedSnapshot!.comments" :key="comment.id" class="">
+            <!-- 수정 중인 댓글의 UI 변경 -->
+            <div v-if="editingCommentId === comment.id">
+              <input type="text" v-model="editingCommentContent" />
+              <button class="btn" @click="submitCommentEdit(comment.id)">수정하기</button>
+              <button class="btn" @click="cancelEdit">취소</button>
+            </div>
+            <!-- 일반 댓글 표시 -->
+            <div v-else>
+              <p>
+                <span>{{ comment.username }}</span>
+              </p>
+              <p>
+                <span>{{ comment.context }}</span>
+              </p>
+              <p class="">
+                <button class="btn btn-outline-danger" @click="deleteComment(comment.id)">삭제</button>
+                <button class="btn btn-outline-secondary mx-2" @click="startEditComment(comment)">수정</button>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-
-      <!-- 스냅샷 관리 버튼 -->
-      <div class="snapshot-actions">
-        <button @click="goToUpdate(props.selectedSnapshot?.snapshotId)">스냅샷 수정</button>
-        <button @click="deleteSnapshot(props.selectedSnapshot?.snapshotId)">스냅샷 삭제</button>
+        <!-- 댓글 작성 폼 -->
+        <form @submit.prevent="postComment" class="row comment-form bg-body-secondary">
+          <div class="col-sm-10">
+            <input class="form-control" type="text" v-model="newCommentContent" placeholder="댓글을 남겨보세요!">
+          </div>
+          <button type="submit" class="col-sm-2 btn btn-success">작성</button>
+        </form>
       </div>
     </div>
   </div>
 </template>
   
 <script lang="ts" setup>
-  import { ref, onMounted, defineProps } from 'vue';
+  import { ref, defineProps } from 'vue';
+  import { formatDistanceToNow } from 'date-fns';
+  import { ko } from 'date-fns/locale';
   import { useUserStore } from '@/stores/user';
+  import { useWishStore } from '@/stores/wish'
   import axios from 'axios';
-  import { useRouter, useRoute } from 'vue-router';
-  
-
-  type selectedSnapshotType = {
-    snapshotId : number;
-    imageUrl: string;
-    username: string;
-    starname: string;
-    content: string;
-    tags: string[];
-    comments: CommentType[];
-    likes: number;
-    createdAt: string;
-    updatedAt: string;
-  }
-
-  type CommentType = {
-    id: number;
-    context: string;
-    username: string;
-    snapshotId: number;
-  };
-
-  
+  import { useRouter } from 'vue-router';
+  import type { selectedSnapshotType, CommentType } from '@/common/types/index'
 
 
   // const snapshot = ref<SnapshotType | null>(null);
   const router = useRouter();
-  const route = useRoute();
-  
+
+  // 좋아요 상태를 추적하는 반응형 변수
+  const isLiked = ref(false);
   const store = useUserStore();
+  const wishStore = useWishStore();
   const username = store.starInfo?.username;
   
-
   const starid = store.starInfo?.starId;
   
   const props = defineProps({
-    selectedSnapshot: Object as () => selectedSnapshotType | null
+    selectedSnapshot: Object as () => selectedSnapshotType
   });
 
-  const snapshotId = props.selectedSnapshot?.snapshotId;
+  const time = formatDistanceToNowFromLocalDateTime(props.selectedSnapshot!.updatedAt)
 
-
-  const goToUpdate = (id: number | undefined) => {
+  const goToUpdate = (id: number) => {
     if (id && props.selectedSnapshot) {
       router.push({
         name: 'snapshotupdate',
@@ -114,7 +107,23 @@
   };
 
 
-  const deleteSnapshot = async (id: number | undefined) => {
+
+  const like = async (id: number) => {
+  if (id) {
+    try {
+      // 좋아요 API 호출
+      await axios.post(`http://localhost:8080/snapshot/${id}/likes`);
+      
+      // 스토어에서 선택된 스냅샷을 다시 가져온 후 좋아요 수를 갱신
+      
+    } catch (error) {
+      console.error('좋아요 실패:', error);
+    }
+  }
+};
+
+
+  const deleteSnapshot = async (id: number) => {
     console.log("삭제 시작할게요")
     if (id && props.selectedSnapshot) {
       
@@ -148,7 +157,7 @@
         // 필요하다면 여기에 더 많은 필드 추가
       });
       newCommentContent.value = ''; // 입력 필드 초기화
-      router.go(0)
+      wishStore.selectSnapshot(props.selectedSnapshot!.snapshotId)
       // 댓글 목록을 다시 불러오는 로직 필요
     } catch (error) {
       console.error(error);
@@ -195,12 +204,29 @@
       console.error(error);
     }
   };
+
+  // 날짜 함수
+  function formatDistanceToNowFromLocalDateTime(localDateTimeArray: number []) {
+    // 배열에서 연, 월, 일, 시, 분, 초를 추출합니다.
+    // JavaScript의 Date 월은 0부터 시작하므로 월에서 1을 빼줍니다.
+    const [year, month, day, hour, minute, second] = localDateTimeArray;
+    
+    // Date 객체 생성
+    const date = new Date(year, month - 1, day, hour, minute, second);
+    
+    // 현재 시간으로부터의 거리 계산
+    const distance = formatDistanceToNow(date, { addSuffix: true, locale: ko });
+    
+    return distance;
+  }
+
 </script>
 
 <style>
 .off-canvas {
   display: flex; /* Flex 컨테이너 설정 */
   flex-direction: row; /* 자식 요소들을 세로로 나열 */
+  flex: 1;
   align-items: center;
   width: 100%; /* 컨테이너 너비 설정 */
   max-width: 100vh; /* 최대 너비 설정 */
@@ -223,12 +249,9 @@
 .comment-form,
 .comments-list {
   padding: 16px; /* 패딩 설정 */
-  border-top: 1px solid #eee; /* 상단에 경계선 설정 */
 }
 
-.content {
-  font-size: 1rem; /* 본문 폰트 크기 */
-}
+
 
 .content-section {
   flex-basis: 50%; /* 나머지 50% 공간 차지 */
@@ -281,4 +304,15 @@
   height: auto; /* 이미지 높이 자동 조절 */
   object-fit: cover; /* 이미지 비율 유지 */
 }
+
+.download-link {
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+    background: #007bff;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+  }
 </style>

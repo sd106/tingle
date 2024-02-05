@@ -17,9 +17,9 @@ public interface SnapShotService {
 
     Long updateSnapShot(Long snapshotId, SnapShotUpdateRequest snapShotUpdateRequest, MultipartFile file, String previousImageUrl) throws IOException;
 
-    List<SnapShotEntity> getAllSnapShot();
+    List<SnapShotEntity> getAllSnapShot(Long starId);
 
-    List<SnapShotEntity> getSnapShotsByLikes();
+    List<SnapShotEntity> getAllSnapShotsByLikes(Long starId);
 
-    List<SnapShotEntity> getSnapShotsByCreatedTime();
+    List<SnapShotEntity> getAllSnapShotsByCreatedTime(Long starId);
 }

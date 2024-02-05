@@ -2,27 +2,26 @@
   <StarMenu :id="id" />
   <div class="d-flex justify-content-between align-items-center my-4 mx-3">
     <div>
-      <button class="me-2">최신순</button>
-      <button>좋아요순</button>
+      <button class="btn me-2 fs-5 fw-bold text-secondary" @click="loadSnapshots">✧ 최신순</button>
+      <button class="btn fs-5 fw-bold text-secondary" @click="loadSnapshotsBylikes">🔥 좋아요순</button>
     </div>
     <div>
-      <RouterLink :to="`/${store.starInfo?.starId}/snapshot/create`" class="">글쓰기</RouterLink>
+      <RouterLink :to="`/${store.starInfo?.starId}/snapshot/create`" class="btn btn-secondary">글쓰기</RouterLink>
     </div>
   </div>
 
   <div class="main-layout">
     <!-- 상단 메뉴 -->
     <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
-    <section v-if="selectedSnapshot" class="detail-section">
-      <SnapShotDetail :selectedSnapshot="selectedSnapshot" />
+    <section v-if="wishStore.selectedSnapshot" class="detail-section">
+      <SnapShotDetail :selectedSnapshot="wishStore.selectedSnapshot"/>
     </section>
 
     <!-- 스냅샷 목록 섹션 (파란색 부분) -->
     <section class="snapshot-list-section">
       <div class="snapshot-list-container" ref="containerRef" @scroll="handleScroll">
-        <div v-for="snapshot in snapshots" :key="snapshot.id" @click="selectSnapshot(snapshot.id)" class="snapshot-item">
+        <div v-for="snapshot in snapshots" :key="snapshot.id" @click="wishStore.selectSnapshot(snapshot.id)" class="snapshot-item">
           <img :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image">
-          <div class="star-name">{{ snapshot.username }}</div>
         </div>
       </div>
     </section>
@@ -33,67 +32,43 @@
   import { ref, onMounted } from 'vue';
   import axios from 'axios';
   import { useUserStore } from '@/stores/user';
+  import { useWishStore } from '@/stores/wish'
   import StarMenu from '@/components/StarMenu/StarMenu.vue';
-  import type { Starinfo } from '@/common/types';
+  import type { Starinfo, SnapshotType } from '@/common/types';
   import SnapShotDetail from '../../../components/StarMenu/SnapShot/SnapShotDetail.vue'
 
   const store = useUserStore();
+  const wishStore = useWishStore();
   const props = defineProps(['id']);
   const id = ref(props.id);
 
 
-  type SnapshotType = {
-    id: number;
-    imageUrl: string;
-    username: string;
-  };
-
-  type selectedSnapshotType = {
-    snapshotId : number;
-    imageUrl: string;
-    username: string;
-    starname: string;
-    content: string;
-    tags: string[];
-    comments: CommentType[];
-    likes: number;
-    createdAt: string;
-    updatedAt: string;
-  }
-
-  type CommentType = {
-    id: number;
-    context: string;
-    username: string;
-    snapshotId: number;
-  };
-
+  
   const snapshots = ref<SnapshotType[]>([]);
   const display = ref<Starinfo[]>([]);
   const containerRef = ref<HTMLElement | null>(null);
 
-  const selectedSnapshot = ref<selectedSnapshotType | null>(null);
+  
 
-  const selectSnapshot = async (id: number) => {
-    console.log("스냅샷 선택됨")
-    try {
-      const response = await axios.get(`http://localhost:8080/snapshot/${id}`);
-      console.log(response.data)
-      selectedSnapshot.value = response.data;
-      console.log(selectedSnapshot.value?.snapshotId)
-    
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  
 
 
 
   const loadSnapshots = async (): Promise<void> => {
     try {
-      const response = await axios.get('http://localhost:8080/snapshot/');
+      const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/created`);
       snapshots.value = response.data.AllSnapShot;
-      console.log(snapshots.value);
+      console.log("최신순");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const loadSnapshotsBylikes = async (): Promise<void> => {
+    try {
+      const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/likes`);
+      snapshots.value = response.data.AllSnapShot;
+      console.log("좋아요순");
     } catch (error) {
       console.error(error);
     }
@@ -117,6 +92,7 @@
   };
 
   onMounted(() => {
+    wishStore.selectedSnapshot = null;
     loadSnapshots();
   });
 
@@ -174,7 +150,7 @@
 
 .snapshot-image {
   width: 100%; /* 이미지가 항목의 너비를 꽉 채우도록 함 */
-  height: auto; /* 이미지의 높이를 자동으로 설정 */
+  height: 100%; /* 이미지의 높이를 자동으로 설정 */
   object-fit: cover; /* 이미지가 비율을 유지하면서 항목을 꽉 채우도록 함 */
 }
 

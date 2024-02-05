@@ -1,5 +1,3 @@
-import type { StringDecoder } from "string_decoder";
-
 interface SignUp {
     username: string;
     password: string;
@@ -86,9 +84,38 @@ interface ProductCreationPayload {
     files: File[];
 }
 
+// 위시
+interface SnapshotType  {
+    id: number;
+    imageUrl: string;
+    username: string;
+  };
+
+interface selectedSnapshotType {
+    snapshotId : number;
+    imageUrl: string;
+    username: string;
+    starname: string;
+    content: string;
+    tags: string[];
+    comments: CommentType[];
+    likes: number;
+    createdAt: number [];
+    updatedAt: number [];
+}
+
+interface CommentType {
+    id: number;
+    context: string;
+    username: string;
+    snapshotId: number;
+};
+
+
 export type {
     SignUp, LogIn,
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
     User, Star, Starinfo,
-    Product, ProductCreationPayload, StarLogininfo
+    Product, ProductCreationPayload, StarLogininfo,
+    SnapshotType, selectedSnapshotType, CommentType
 }

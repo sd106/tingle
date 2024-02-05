@@ -39,7 +39,7 @@ const id = ref(props.id);
         <!-- 파일 업로드 -->
         <div class="input-group mb-3">
           <input type="file" @change="onFileChange" class="form-control" id="inputGroupFile02">
-          <label class="input-group-text" for="inputGroupFile02">Upload</label>
+
         </div>
         <div v-if="imagePreview" class="mb-3">
           <img :src="imagePreview" class="img-thumbnail">
@@ -89,15 +89,21 @@ const imagePreview = ref<string | null>(null);
 const onFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
   // 파일이 있고, 이미지 파일이면 FileReader로 읽어서 미리보기를 생성합니다.
-  if (target.files && target.files[0] && target.files[0].type.startsWith('image/')) {
-    const file = target.files[0];
+  if (target.files && target.files[0]) {
+
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (target.files[0].size > maxSize) {
+      alert('파일 크기가 너무 큽니다. 10MB 이하의 파일을 선택해주세요.');
+      return;
+    }
+    file.value = target.files[0];
     const reader = new FileReader();
     reader.onload = (e: ProgressEvent<FileReader>) => {
       // e.target!.result에는 이미지의 데이터 URL이 담겨있습니다.
       // Non-null assertion operator(!)를 사용하여 result가 null이 아님을 확신합니다.
       imagePreview.value = e.target!.result as string;
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file.value);
   } else {
     // 이미지 파일이 아니라면 imagePreview를 null로 리셋합니다.
     imagePreview.value = null;
@@ -119,8 +125,10 @@ const createSnapshot = async () => {
   }
 
   try {
-    await axios.post('http://localhost:8080/snapshot/new', formData);
-    router.push('/'); // 메인 뷰로 이동
+    console.log("post직전")
+    axios.post('http://localhost:8080/snapshot/new', formData);
+    console.log("post끝")
+    router.go(-1); // 메인 뷰로 이동
   } catch (error) {
     console.error(error);
     console.log("실패!")
