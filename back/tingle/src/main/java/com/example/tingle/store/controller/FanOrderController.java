@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,17 +28,17 @@ public class FanOrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/getUserOrders/{username}")
-    public ResultDTO<List<OrderDto>> getUserOrders(@PathVariable String username) {
-        UserEntity user = userService.findByUsername(username);
+    @GetMapping("/getUserOrders/{userId}")
+    public ResultDTO<List<OrderDto>> getUserOrders(@PathVariable Long userId) {
+        Optional<UserEntity> byId = userService.findById(userId);
 
-        if (user != null) {
-            List<OrderDto> orderDtos = user.getOrders().stream()
+        if (byId.isPresent()) {
+            UserEntity userEntity = byId.get();
+            List<OrderDto> collect = userEntity.getOrders().stream()
                     .map(order -> orderService.convertToDto(order))
                     .collect(Collectors.toList());
 
-            // 성공적인 결과를 ResultDTO로 래핑하여 반환
-            return ResultDTO.of("SUCCESS", "사용자 주문 목록 조회 성공", orderDtos);
+            return ResultDTO.of("SUCCESS", "사용자 주문 목록 조회 성공", collect);
         } else {
             // 사용자를 찾지 못한 경우 실패 결과를 ResultDTO로 반환
             return ResultDTO.of("NOT_FOUND", "사용자를 찾을 수 없음", new ArrayList<>());

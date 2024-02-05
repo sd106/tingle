@@ -32,11 +32,8 @@ public class UserEntity {
     @Column(nullable = false)
     private Role role;
 
-    //gpt
-//    @JsonManagedReference
     @OneToMany(mappedBy = "fan")
     private List<OrderEntity> orders;
-    //
 
     // OAuth2 로그인 때 구분한 Provider
     private String provider;
@@ -57,5 +54,7 @@ public class UserEntity {
     @OneToMany(mappedBy = "userEntity")
     private Set<FollowEntity> followingStars = new HashSet<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<UserStoreStorage> storeStorages;
 
 }

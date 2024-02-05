@@ -20,7 +20,6 @@ public class UserDto {
     private Role role;
     private String provider;
     private String email;
-    // 추가로 필요한 필드가 있다면 여기에 추가할 수 있습니다.
 
     public String getRoleKey() {
         return this.role.getKey();

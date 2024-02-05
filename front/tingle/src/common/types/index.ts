@@ -67,14 +67,6 @@ interface Starinfo {
     nickName: string;
     image: string;
 }
-
-interface StarByCategory {
-    id: number;
-    username: string;
-    picture: string;
-}
-
-
 interface StarLogininfo {
     starId?: number;
     username: string;
@@ -125,11 +117,77 @@ interface ProductCreationPayload {
     files: File[];
 }
 
+
+interface ImageUrl {
+    id: number;
+    url: string;
+    productId: Goods;
+  }
+  
+
+interface Goods {
+    productId: number;
+    starId: null | number;
+    starName: null | string;
+    name: string;
+    amount: number;
+    price: number;
+    imageUrl: ImageUrl[];
+    content: string;
+    available: boolean;
+  }
+
+interface UserStoreStorageResponse {
+    
+    id : number,
+    storageId : number,
+    url : string,
+    title : string,
+    content : string,
+    username : string,
+    starname : string,
+    userId : number,
+    starId : number, 
+}
+
+
+
+interface OrderResponse {
+    productService: null,
+    userService: null,
+    fanId: null,
+    User : UserOauth,
+    goods : Goods,
+    orderId : number,
+}
+
+interface UserOauth {
+    id : number,
+    username : string,
+    password : string,
+    picture : string,
+    role: String,
+    provide : string,
+    email : String,
+    roleKey : string,
+}
+
+interface OrderResponse2 {
+    productService: null;
+    userService: null;
+    fanId: number;
+    fan : UserOauth;
+    goods : Goods;
+    orderId : number,
+}
+
+
 export type {
-    SignUp, LogIn, StarLogininfo,
-    User, Star, Starinfo, HotStarInfo, StarByCategory,
+    SignUp, LogIn, StarLogininfo, HotStarInfo,
     // 스토어
-    Product, Goods, ProductCreationPayload, ImageUrl, OrderResponse,
+    Goods, ImageUrl, OrderResponse,
     // 팬미팅
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
+    User, Star, Starinfo,
+    Product, ProductCreationPayload, OrderResponse2, UserStoreStorageResponse
 }

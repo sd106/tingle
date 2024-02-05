@@ -11,6 +11,8 @@ import com.example.tingle.user.entity.UserEntity;
 import com.example.tingle.star.repository.StarRepository;
 import com.example.tingle.user.repository.UserRepository;
 import com.example.tingle.user.service.impl.UserServiceImpl;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,7 @@ public class OrderServiceImpl implements OrderService {
     private final StarRepository starRepository;
     private final UserServiceImpl userService;
     private final ProductServiceImpl productService;
+    private final EntityManager entityManager;
 
     @Autowired
     public OrderServiceImpl(ProductRepository productRepository,
@@ -34,15 +37,16 @@ public class OrderServiceImpl implements OrderService {
                             UserRepository userRepository,
                             StarRepository starRepository,
                             UserServiceImpl userService,
-                            ProductServiceImpl productService) {
+                            ProductServiceImpl productService,
+                            EntityManager entityManager) {
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.starRepository = starRepository;
         this.userService = userService;
         this.productService = productService;
+        this.entityManager = entityManager;
     }
-
 
     @Override
     public boolean processOrder(Long productId, Long fanId, String starName) {
@@ -105,7 +109,8 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto convertToDto(OrderEntity order) {
         OrderDto dto = new OrderDto();
 
-        dto.setFanId((long) order.getFan().getId());
+        dto.setOrderId(order.getOrderId());
+        dto.setFanId(order.getFan().getId());
         dto.setFan(userService.mapToDTO(order.getFan()));
         dto.setGoods(productService.mapToDTO(order.getGoods()));
         return dto;

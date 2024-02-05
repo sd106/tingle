@@ -36,6 +36,8 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     public final EnumPath<Role> role = createEnum("role", Role.class);
 
+    public final ListPath<UserStoreStorage, QUserStoreStorage> storeStorages = this.<UserStoreStorage, QUserStoreStorage>createList("storeStorages", UserStoreStorage.class, QUserStoreStorage.class, PathInits.DIRECT2);
+
     public final StringPath username = createString("username");
 
     public QUserEntity(String variable) {
