@@ -1,5 +1,7 @@
-package com.example.tingle.user.config.oauth;
+package com.example.tingle.auth.oauth;
 
+import com.example.tingle.auth.entity.Member;
+import com.example.tingle.auth.oauth.provider.OAuth2UserInfo;
 import com.example.tingle.user.entity.Role;
 import com.example.tingle.user.entity.UserEntity;
 import lombok.AllArgsConstructor;
@@ -16,6 +18,7 @@ import java.util.Map;
 public class OAuthAttribute {
 
     private Map<String, Object> attributes;
+    private OAuth2UserInfo oAuth2UserInfo;
     private String nameAttributeKey;
     private String username;
     private String email;
@@ -45,18 +48,21 @@ public class OAuthAttribute {
         return OAuthAttribute.builder()
                 .username((String) response.get("name"))
                 .email((String) response.get("email"))
-                .picture((String) response.get("profile_image"))
+                .picture((String) response.get("profil" +
+                        "" +
+                        "e_image"))
                 .attributes(response)
                 .nameAttributeKey(userNameAttributeName)
                 .build();
     }
 
-    public UserEntity toEntity() {
-        return UserEntity.builder()
-                .username(username)
+    public Member toEntity(String email, String name, String socialType, String providerId) {
+        return Member.builder()
                 .email(email)
-                .picture(picture)
-                .role(Role.FAN)
+                .name(name)
+                .socialType(socialType)
+                .socialId(providerId)
+                .isRealMember(false)
                 .build();
     }
 }

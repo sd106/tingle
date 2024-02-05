@@ -175,7 +175,21 @@ const router = createRouter({
       component: TestStoreViewOrderVue,
       props: (route) => ({ username: route.params.username }),
     },
-    //
+    {
+      path: '/login/mk2',
+      name: 'LogInMk2View',
+      component: () => import("@/views/User/LogInView_MK2.vue"),
+    },
+    {
+      path: '/selectLoginType',
+      name: 'SelectLoginTypeView',
+      component: () => import("@/views/User/SelectLoginTypeView_MK2.vue")
+    },
+    {
+      path: '/signup/mk2',
+      name: 'SignUpMK2View',
+      component: () => import("@/views/User/SignUpView_MK2.vue"),
+    },
   ]
 })
 

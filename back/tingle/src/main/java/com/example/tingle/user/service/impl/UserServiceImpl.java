@@ -29,9 +29,7 @@ public class UserServiceImpl implements UserService {
         UserDto userDto = UserDto.builder()
                 .id(userEntity.getId())
                 .username(userEntity.getUsername())
-                .password(userEntity.getPassword())
                 .picture(userEntity.getPicture())
-                .role(userEntity.getRole())
                 .provider(userEntity.getProvider())
                 .email(userEntity.getEmail())
                 .build();
