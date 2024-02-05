@@ -12,6 +12,8 @@
       <a @click="redirectToGoogle" class="btn btn-success active" role="button">Google Login</a>
       <a @click="redirectToNaver" class="btn btn-secondary active" role="button">Naver Login</a>
       <a @click="redirectToKakao" class="btn btn-secondary active" role="button">Kakao Login</a>
+      <a @click="fetchUserData" class="btn btn-secondary active" role="button">정보확인</a>
+
     </form>
   </main>
 </template>
@@ -20,6 +22,8 @@
 import { ref } from 'vue'
 import type { LogIn } from '@/common/types/index';
 import { useUserStore } from '@/stores/user';
+import type { promiseHooks } from 'v8';
+import axios from 'axios';
 
 const store = useUserStore()
 
@@ -34,13 +38,22 @@ const logIn = function (): void {
   store.logIn(payload)
 }
 
+
+const fetchUserData = async () => {
+  try {
+    // JSESSIONID 쿠키는 자동으로 요청에 포함됩니다.
+    const response = await axios.get('http://localhost:8080/oauth2/naver');
+    console.log('사용자 정보:', response.data);
+  } catch (error) {
+    console.error('오류 발생:', error);
+  }
+};
+
+
+
 const redirectToGoogle = () => {
-  // http://localhost:8080/oauth2/authorization/google 으로 리다이렉션
   window.location.href = 'http://localhost:8080/oauth2/authorization/google';
-  //axios로 요청
-  //then으로 화면전환
-  //팬, 스타 클릭후 서브밋하면 백에 axios보내고, 백은 request에서 팬인지 스타인지 받아서 유저 정보 수정
-  
+  console.log(window.location)
 };
 
 const redirectToNaver = () => {

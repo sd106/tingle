@@ -1,5 +1,6 @@
 package com.example.tingle.star.service;
 
+import com.example.tingle.star.dto.request.ReadStarRequest;
 import com.example.tingle.star.dto.response.ReadStarByCategory;
 import com.example.tingle.star.entity.StarEntity;
 
@@ -11,4 +12,5 @@ public interface StarService {
 
     List<ReadStarByCategory> findStarsByCategory(int category);
 
+    List<ReadStarRequest> find10Stars();
 }

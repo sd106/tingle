@@ -19,11 +19,13 @@ import WishManageView from '@/views/Star/Wish/WishManageView.vue'
 
 import StoreMainView from '@/views/Star/Store/StoreMainView.vue'
 import StoreManageView from '@/views/Star/Store/StoreManageView.vue'
-
+import StoreDetailView from '@/views/Star/Store/StoreDetailView.vue'
 
 import FanMeetingEntranceView from '@/views/StarMenu/FanMeeting/FanMeetingEntranceView.vue'
 import WaitingRoomView from '@/views/StarMenu/FanMeeting/WaitingRoomView.vue'
 import MeetingRoomView from '@/views/StarMenu/FanMeeting/MeetingRoomView.vue'
+import TestStoreViewVue from '@/views/StarMenu/TestStoreView.vue'
+import TestStoreViewOrderVue from '@/views/StarMenu/TestStoreViewOrder.vue'
 
 
 const router = createRouter({
@@ -121,6 +123,12 @@ const router = createRouter({
       props: (route) => ({ id: route.params.starid }),
     },
     {
+      path: '/:starid/store/:productId(\\d+)',
+      name: 'storedetail',
+      component: StoreDetailView,
+      props: true
+    },
+    {
       path: '/:starid/store/manage',
       name: 'storemange',
       component: StoreManageView,
@@ -153,7 +161,35 @@ const router = createRouter({
       path: '/fanmeeting/:starid/meetingroom',
       name: 'MeetingRoomView',
       component: MeetingRoomView
-    }
+    },
+    // Store의 test를 위한 View
+    {
+      path: '/profile/:username/teststore',
+      name: 'teststore',
+      component: TestStoreViewVue,
+      props: (route) => ({ username: route.params.username }),
+    },
+    {
+      path: '/profile/:username/teststore2',
+      name: 'teststore2',
+      component: TestStoreViewOrderVue,
+      props: (route) => ({ username: route.params.username }),
+    },
+    {
+      path: '/login/mk2',
+      name: 'LogInMk2View',
+      component: () => import("@/views/User/LogInView_MK2.vue"),
+    },
+    {
+      path: '/selectLoginType',
+      name: 'SelectLoginTypeView',
+      component: () => import("@/views/User/SelectLoginTypeView_MK2.vue")
+    },
+    {
+      path: '/signup/mk2',
+      name: 'SignUpMK2View',
+      component: () => import("@/views/User/SignUpView_MK2.vue"),
+    },
   ]
 })
 

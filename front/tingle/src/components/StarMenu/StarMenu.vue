@@ -20,6 +20,14 @@
             <RouterLink :to="`/${props.id}/fanmeeting`" class="nav-link router-link-custom"
                 :class="{ 'active': isActive('/fanmeeting') }">Fanmeeting</RouterLink>
         </li>
+        <li class="nav-item">
+            <RouterLink :to="`/profile/${props.id}/teststore`" class="nav-link router-link-custom"
+                :class="{ 'active': isActive('/teststore') }">Test스토어Product</RouterLink>
+        </li>
+        <li class="nav-item">
+            <RouterLink :to="`/profile/${props.id}/teststore2`" class="nav-link router-link-custom"
+                :class="{ 'active': isActive('/teststore2') }">Test스토어Order</RouterLink>
+        </li>
     </ul>
 </template>
 
