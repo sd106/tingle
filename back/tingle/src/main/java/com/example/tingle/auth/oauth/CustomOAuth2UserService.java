@@ -1,14 +1,17 @@
 package com.example.tingle.auth.oauth;
 
+import com.example.tingle.auth.dto.CustomOAuth2User;
+import com.example.tingle.auth.entity.Member;
 import com.example.tingle.auth.oauth.provider.GoogleUserInfo;
 import com.example.tingle.auth.oauth.provider.NaverUserInfo;
 import com.example.tingle.auth.oauth.provider.OAuth2UserInfo;
-import com.example.tingle.auth.dto.CustomUserDetails;
-import com.example.tingle.user.entity.Role;
-import com.example.tingle.user.entity.UserEntity;
+import com.example.tingle.auth.repository.MemberRepository;
 import com.example.tingle.user.repository.UserRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -16,7 +19,11 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Base64;
+import java.util.Collections;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -24,9 +31,11 @@ import java.util.Map;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final HttpSession httpSession;
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     /**
      * 구글로부터 받은 userRequest 데이터에 대한 후처리 함수
      * UserRequest : ClientRegistration, AccessToken, Attributes
@@ -34,58 +43,52 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
      */
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
-        System.out.println("delegate = " + delegate);
+
+        DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
-        System.out.println("oAuth2User = " + oAuth2User);
-        System.out.println("userRequest = " + userRequest.getClientRegistration()); // 어떤 OAuth로 로그인 했는지 알 수 있다
-        System.out.println("getAccessToken = " + userRequest.getAccessToken().getTokenValue());
-        // 구글 로그인 버튼 -> 로그인창 -> 완료 -> code 리턴 -> AccessToken 요청
-        // UserRequest 정보 -> 회원 프로필 받아야함(loadUser 함수)
-        System.out.println("getAttribute = " + oAuth2User.getAttributes());
+
+        String socialType = userRequest.getClientRegistration().getRegistrationId();
 
         OAuth2UserInfo oAuth2UserInfo = null;
-        if (userRequest.getClientRegistration().getRegistrationId().equals("google")) {
-            System.out.println("구글 로그인 요청");
+        if (socialType.equals("google")) {
             oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
-        } else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
+        } else if (socialType.equals("naver")) {
             oAuth2UserInfo = new NaverUserInfo((Map<String, Object>) oAuth2User.getAttributes().get("response"));
         }
 
-        String provider = oAuth2UserInfo.getProvider(); // google
-        String providerId = oAuth2UserInfo.getProviderId();
-        String username = provider + "_" + providerId;
-//        String password = bCryptPasswordEncoder.encode("qweasdadgehethf");
-        String email = oAuth2UserInfo.getEmail();
-        String picture = oAuth2UserInfo.getPicture();
+        String userNameAttributeName = userRequest.getClientRegistration()
+                .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName(); // OAuth2 로그인 시 키(PK)가 되는 값
 
-        UserEntity userEntity = userRepository.findByUsername(username);
+        Map<String, Object> attributes = oAuth2User.getAttributes(); // 소셜 로그인에서 API가 제공하는 userInfo의 Json 값(유저 정보들)
 
-        if (userEntity == null) {
-            System.out.println("OAuth 로그인이 최초입니다");
-            userEntity = UserEntity.builder()
-                    .username(username)
-                    .password("qwtdnghjjsdffhghkghjfafssfjghkgasfshjfghhhgraggethrhwwytmthdsvafdgxvssdsb")
-                    .email(email)
-                    .role(Role.FAN)
-                    .provider(provider)
-                    .picture(picture)
-                    .build();
-            userRepository.save(userEntity);
-        } else {
-            System.out.println("이미 OAuth 로그인 한 적이 있습니다.");
+        // socialType에 따라 유저 정보를 통해 OAuthAttributes 객체 생성
+        OAuthAttribute extractAttribute = OAuthAttribute.of(socialType, userNameAttributeName, attributes);
+
+        Member createdMember = getMember(extractAttribute, socialType, oAuth2UserInfo); // getUser() 메소드로 User 객체 생성 후 반환
+
+        // 추가 정보를 받아서 정회원이 되었는지
+        Boolean isRealMember = createdMember.getIsRealMember();
+
+        // DefaultOAuth2User를 구현한 CustomOAuth2User 객체를 생성해서 반환
+        return new CustomOAuth2User(
+                oAuth2User.getAuthorities(),
+                attributes,
+                extractAttribute.getNameAttributeKey(),
+                createdMember.getEmail(),
+                isRealMember
+        );
+    }
+
+    private Member getMember(OAuthAttribute attribute, String socialType, OAuth2UserInfo oAuth2UserInfo){
+        Member member = memberRepository.findBySocialIdAndSocialType(oAuth2UserInfo.getProviderId(),socialType).orElse(null);
+        if (member == null) {
+            Member createdMemeber = attribute.toEntity(oAuth2UserInfo.getEmail(), oAuth2UserInfo.getName(), socialType, oAuth2UserInfo.getProviderId());
+            return memberRepository.save(createdMemeber);
         }
-        // Authentication 안에 들어감
-        return new CustomUserDetails(userEntity, oAuth2User.getAttributes());
+
+        return member;
     }
 
-    private UserEntity saveOrUpdate(OAuthAttribute attributes) {
-        UserEntity user = userRepository.findByEmail(attributes.getEmail())
-                .map(entity -> entity.update(attributes.getUsername(), attributes.getPicture()))
-                .orElse(attributes.toEntity());
-
-        return userRepository.save(user);
-    }
 }
 
 /**

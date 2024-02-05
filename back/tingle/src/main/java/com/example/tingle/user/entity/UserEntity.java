@@ -21,16 +21,13 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
 
     @Column(unique = true)
     private String username;
-    private String password;
 
     private String picture;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
 
     //gpt
 //    @JsonManagedReference
@@ -40,6 +37,7 @@ public class UserEntity {
 
     // OAuth2 로그인 때 구분한 Provider
     private String provider;
+    private String providerId;
 
     @Column(nullable = false)
     private String email;
@@ -48,10 +46,6 @@ public class UserEntity {
         this.username = name;
         this.picture = picture;
         return this;
-    }
-
-    public String getRoleKey() {
-        return this.role.getKey();
     }
 
     @OneToMany(mappedBy = "userEntity")

@@ -24,24 +24,23 @@ public class StarEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
     @Column(unique = true)
     private String username;
-    private String password;
 
     private String picture;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
-
     // OAuth2 로그인 때 구분한 Provider
     private String provider;
+    private String providerId;
 
     @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
     private int category;
+
+    private String password;
 
     // Order된 목록 추가
 //    이건 필요 없지 않을까??
@@ -58,9 +57,6 @@ public class StarEntity {
         return this;
     }
 
-    public String getRoleKey() {
-        return this.role.getKey();
-    }
 
     public void addOrderEntity(OrderEntity orderEntity) {
         if (orderEntities == null) {
