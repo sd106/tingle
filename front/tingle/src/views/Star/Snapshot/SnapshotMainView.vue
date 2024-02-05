@@ -13,7 +13,7 @@
   <div class="main-layout">
     <!-- 상단 메뉴 -->
     <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
-    <section v-if="wishStore.selectedSnapshot" class="detail-section">
+    <section v-if="wishStore.selectedSnapshot" class="detail-section cont mb-5">
       <SnapShotDetail :selectedSnapshot="wishStore.selectedSnapshot"/>
     </section>
 
@@ -47,12 +47,6 @@
   const snapshots = ref<SnapshotType[]>([]);
   const display = ref<Starinfo[]>([]);
   const containerRef = ref<HTMLElement | null>(null);
-
-  
-
-  
-
-
 
   const loadSnapshots = async (): Promise<void> => {
     try {
@@ -97,9 +91,19 @@
   });
 
 
+
 </script>
 
 <style>
+.cont {
+  background-color: #fff; /* 배경색 */
+  border-radius: 20px; /* 테두리 둥글기 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* 그림자 효과 */
+  overflow: hidden; /* 내부 요소가 테두리를 넘어가지 않도록 설정 */
+  border: 1px solid white; /* 테두리 색상 설정 */
+}
+
+
 .container::-webkit-scrollbar {
   display: none; /* 스크롤바 숨기기 */
 }
@@ -146,12 +150,18 @@
   box-sizing: border-box; /* padding과 border가 너비에 포함되도록 함 */
   margin: 5px; /* 각 항목 사이의 간격 */
   width: calc(20% - 10px); /* margin을 고려한 실제 너비 */
+  cursor: pointer;
+}
+
+.snapshot-item:hover .snapshot-image {
+  opacity: 0.6; /* 이미지 어두워짐 효과 */
 }
 
 .snapshot-image {
+  display: inline-block;
   width: 100%; /* 이미지가 항목의 너비를 꽉 채우도록 함 */
-  height: 100%; /* 이미지의 높이를 자동으로 설정 */
+  height: auto; /* 이미지의 높이를 자동으로 설정 */
   object-fit: cover; /* 이미지가 비율을 유지하면서 항목을 꽉 채우도록 함 */
+  transition: opacity 0.3s ease; /* 부드러운 효과를 위한 전환 */
 }
-
 </style>

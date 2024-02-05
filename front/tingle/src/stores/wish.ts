@@ -18,11 +18,15 @@ export const useWishStore = defineStore('wish', () => {
         console.log(response.data)
         selectedSnapshot.value = response.data;
         console.log(selectedSnapshot.value?.snapshotId)
-      
       } catch (error) {
         console.error(error);
       }
+      scrollTop();
     };
+
+    const scrollTop = () => {
+      window.scrollTo(0,0);
+    }
   return {
     API_URL, selectedSnapshot, selectSnapshot
   }

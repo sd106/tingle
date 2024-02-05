@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-2">
+  <div class="container mt-2 mb-3">
     <div class="row">
       <!-- 이미지 컨테이너 -->
       <div class="col-md-6">
@@ -7,26 +7,30 @@
       </div>
       <div class="col-md-6">
         <!-- 스냅샷 관리 버튼 -->
-        <div class="snapshot-actions">
-          <button class="btn" @click="goToUpdate(props.selectedSnapshot!.snapshotId)">스냅샷 수정</button>
-          <button class="btn" @click="deleteSnapshot(props.selectedSnapshot!.snapshotId)">스냅샷 삭제</button>
-          <button class="btn" @click="like(props.selectedSnapshot!.snapshotId)">좋아요 {{ props.selectedSnapshot!.likes }}</button>
+        <div class="snapshot-actions d-flex justify-content-between">
+          <button class="btn btn-outline-dark" @click="like(props.selectedSnapshot!.snapshotId)">좋아요 {{  }}</button>
+          <span>
+            <button class="btn btn-secondary" @click="goToUpdate(props.selectedSnapshot!.snapshotId)">스냅샷 수정</button>
+            <button class="btn btn-danger" @click="deleteSnapshot(props.selectedSnapshot!.snapshotId)">스냅샷 삭제</button>
+          </span>
         </div>
          <!-- 본문 내용 -->
          <div class="content mx-0 mt-2">
+          <p class="d-flex justify-content-between">
+            <span>{{ props.selectedSnapshot!.username }}</span>
+            <span class="text-body-tertiary">{{ time }}</span>
+          </p>
           <h3>{{ props.selectedSnapshot!.content }}</h3>
-          <p>{{ props.selectedSnapshot!.username }}</p>
-          <p>{{ time }}</p>
         </div>
 
         <!-- 태그 리스트 -->
-        <ul class="tags-list">
+        <ul class="tags-list border-top border-bottom">
           <li v-for="(tag, index) in props.selectedSnapshot?.tags" :key="index">{{ tag }}</li>
         </ul>
 
         <!-- 댓글 목록 -->
         <div class="comments-list">
-          <p>댓글 {{ props.selectedSnapshot?.comments.length }}</p>
+          <p class="">💬 댓글 {{ props.selectedSnapshot?.comments.length }}</p>
           
           <div v-for="comment in props.selectedSnapshot!.comments" :key="comment.id" class="">
             <!-- 수정 중인 댓글의 UI 변경 -->
@@ -37,15 +41,15 @@
             </div>
             <!-- 일반 댓글 표시 -->
             <div v-else>
-              <p>
-                <span>{{ comment.username }}</span>
-              </p>
-              <p>
-                <span>{{ comment.context }}</span>
-              </p>
-              <p class="">
-                <button class="btn btn-outline-danger" @click="deleteComment(comment.id)">삭제</button>
-                <button class="btn btn-outline-secondary mx-2" @click="startEditComment(comment)">수정</button>
+              <p class="d-flex justify-content-between align-items-center">
+                <span>
+                  <span class="fw-bold me-3">{{ comment.username }}</span>
+                  <span class="">{{ comment.context }}</span>
+                </span>
+                <span class="">
+                  <button class="btn btn-outline-danger btn-sm" @click="deleteComment(comment.id)">삭제</button>
+                  <button class="btn btn-outline-secondary btn-sm mx-2" @click="startEditComment(comment)">수정</button>
+                </span>
               </p>
             </div>
           </div>
@@ -292,7 +296,7 @@
 
 .snapshot-actions {
   padding: 16px;
-  text-align: center; /* 버튼을 가운데 정렬 */
+  
 }
 
 .snapshot-actions button {
