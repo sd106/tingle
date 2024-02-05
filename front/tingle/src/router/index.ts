@@ -19,7 +19,7 @@ import WishManageView from '@/views/Star/Wish/WishManageView.vue'
 
 import StoreMainView from '@/views/Star/Store/StoreMainView.vue'
 import StoreManageView from '@/views/Star/Store/StoreManageView.vue'
-
+import StoreDetailView from '@/views/Star/Store/StoreDetailView.vue'
 
 import FanMeetingEntranceView from '@/views/StarMenu/FanMeeting/FanMeetingEntranceView.vue'
 import WaitingRoomView from '@/views/StarMenu/FanMeeting/WaitingRoomView.vue'
@@ -123,6 +123,12 @@ const router = createRouter({
       props: (route) => ({ id: route.params.starid }),
     },
     {
+      path: '/:starid/store/:productId(\\d+)',
+      name: 'storedetail',
+      component: StoreDetailView,
+      props: true
+    },
+    {
       path: '/:starid/store/manage',
       name: 'storemange',
       component: StoreManageView,
@@ -169,7 +175,21 @@ const router = createRouter({
       component: TestStoreViewOrderVue,
       props: (route) => ({ username: route.params.username }),
     },
-    //
+    {
+      path: '/login/mk2',
+      name: 'LogInMk2View',
+      component: () => import("@/views/User/LogInView_MK2.vue"),
+    },
+    {
+      path: '/selectLoginType',
+      name: 'SelectLoginTypeView',
+      component: () => import("@/views/User/SelectLoginTypeView_MK2.vue")
+    },
+    {
+      path: '/signup/mk2',
+      name: 'SignUpMK2View',
+      component: () => import("@/views/User/SignUpView_MK2.vue"),
+    },
   ]
 })
 

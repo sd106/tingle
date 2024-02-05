@@ -1,5 +1,3 @@
-import type { StringDecoder } from "string_decoder";
-
 interface SignUp {
     username: string;
     password: string;
@@ -19,11 +17,17 @@ interface User {
 
 interface FanMeetingContent {
     name: string
-}   
+}
+
+interface HotStarInfo {
+    id: number;
+    username: string;
+    picture: string;
+}
 
 interface FanMeeting {
     name: string;
-    ticketStartDate: Date | null 
+    ticketStartDate: Date | null
     ticketEndDate: Date | null
     startDate: Date | null
     participants: number
@@ -63,6 +67,14 @@ interface Starinfo {
     nickName: string;
     image: string;
 }
+
+interface StarByCategory {
+    id: number;
+    username: string;
+    picture: string;
+}
+
+
 interface StarLogininfo {
     starId?: number;
     username: string;
@@ -81,14 +93,43 @@ interface Product {
     price: number;
     content: string;
 }
+
+interface Goods {
+    productId: number;
+    starId: null | number;
+    starName: null | string;
+    name: string;
+    amount: number;
+    price: number;
+    imageUrl: ImageUrl[];
+    content: string;
+    available: boolean;
+}
+
+interface ImageUrl {
+    id: number;
+    url: string;
+    productId: Goods;
+}
+
+interface OrderResponse {
+    productService: null;
+    userService: null;
+    fanId: null;
+    fan: User;
+    goods: Goods;
+}
+
 interface ProductCreationPayload {
     productDto: Product;
     files: File[];
 }
 
 export type {
-    SignUp, LogIn,
+    SignUp, LogIn, StarLogininfo,
+    User, Star, Starinfo, HotStarInfo, StarByCategory,
+    // 스토어
+    Product, Goods, ProductCreationPayload, ImageUrl, OrderResponse,
+    // 팬미팅
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
-    User, Star, Starinfo,
-    Product, ProductCreationPayload, StarLogininfo
 }

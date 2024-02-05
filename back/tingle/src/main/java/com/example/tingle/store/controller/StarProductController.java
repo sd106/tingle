@@ -2,7 +2,7 @@ package com.example.tingle.store.controller;
 
 import com.example.tingle.common.ResultDTO;
 import com.example.tingle.star.entity.StarEntity;
-import com.example.tingle.star.service.StarServiceImpl;
+import com.example.tingle.star.service.impl.StarServiceImpl;
 import com.example.tingle.store.dto.ProductDto;
 import com.example.tingle.store.entity.ProductEntity;
 import com.example.tingle.store.entity.ProductImageEntity;

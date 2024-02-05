@@ -4,6 +4,7 @@ import com.example.tingle.follow.dto.FollowDto;
 import com.example.tingle.follow.dto.event.FollowerAddedEvent;
 import com.example.tingle.follow.dto.event.FollowerRemovedEvent;
 import com.example.tingle.follow.dto.request.FollowCreateRequest;
+import com.example.tingle.follow.dto.request.FollowReadRequest;
 import com.example.tingle.follow.dto.response.Response;
 import com.example.tingle.follow.service.FollowServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @Tag(name = "팔로우 API")
@@ -67,14 +69,9 @@ public class FollowController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/hotStars")
     public Response getHotStars() {
-        List<Map.Entry<Long, Integer>> list= followService.getHotStars();
-        for(Map.Entry<Long, Integer> x: list){
-            System.out.println(x.getKey()+" "+x.getValue());
-        }
-        return new Response("성공","최근 팔로워가 많이 증가한 스타들", list);
+
+        return new Response("성공", "최근 팔로워가 많이 증가한 스타들", followService.getHotStarsInfo());
 
     }
-
-
 
 }

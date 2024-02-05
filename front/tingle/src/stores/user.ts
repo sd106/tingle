@@ -38,6 +38,7 @@ export const useUserStore = defineStore('user', () => {
 
   const API_URL = 'http://localhost:8080'
 
+  const signupType = ref('')
 
   // 바꿔야할 것
   const hotstarinfo = ref<Starinfo[]>([])
@@ -141,5 +142,6 @@ export const useUserStore = defineStore('user', () => {
     allstarinfo, isLogin, categories,
     //
     isSidebarOpen,
+    signupType,
   }
 })
