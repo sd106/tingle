@@ -1,7 +1,6 @@
 package com.example.tingle.home.controller;
 
 import com.example.tingle.follow.dto.response.Response;
-import com.example.tingle.home.dto.request.HomeRequest;
 import com.example.tingle.home.service.HomeServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,19 +24,40 @@ public class HomeController {
     @Operation(summary = "스타 홈의 글 조회")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{starId}")
-    public Response getFollowing(@PathVariable Long starId) throws Exception {
+    public Response getHome(@PathVariable Long starId) throws Exception {
         return new Response("성공", "스타 홈 글 조회", homeService.findHomesByStarId(starId));
 
     }
 
     @Operation(summary = "스타 홈의 글 작성")
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/post")
-    public Response postFollowing(@RequestBody HomeRequest homeRequest, @RequestParam List<MultipartFile> files) throws Exception {
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(value = "/post")
+    public Response postHome(@RequestParam("homeCreateRequest") String homeCreateRequestJson,
+                             @RequestParam("files") List<MultipartFile> files) throws Exception {
 
-        return new Response("성공", "스타 홈 글 작성", homeService.insertHome(homeRequest, files));
+        return new Response("성공", "스타 홈 글 작성", homeService.insertHome(homeCreateRequestJson, files));
 
     }
+
+    @Operation(summary = "스타 홈의 글 수정")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/update")
+    public Response updateHome(@RequestParam("homeUpdateRequest") String homeUpdateRequestJson,
+                             @RequestParam("files") List<MultipartFile> files) throws Exception {
+
+        return new Response("성공", "스타 홈 글 수정", homeService.updateHome(homeUpdateRequestJson, files));
+
+    }
+
+    @Operation(summary = "스타 홈의 글 삭제")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/update")
+    public Response deleteHome(@PathVariable Long homeId) throws Exception {
+
+        return new Response("성공", "스타 홈 글 수정", homeService.deleteHome(homeId));
+
+    }
+
 
 
 }

@@ -1,29 +1,26 @@
 package com.example.tingle.home.service;
 
 import com.example.tingle.home.dto.HomeDto;
-import com.example.tingle.home.dto.request.HomeRequest;
+import com.example.tingle.home.dto.request.HomeCreateRequest;
+import com.example.tingle.home.dto.request.HomeUpdateRequest;
 import com.example.tingle.home.entity.HomeEntity;
 import com.example.tingle.home.entity.HomePictureEntity;
 import com.example.tingle.home.repository.HomePictureRepository;
 import com.example.tingle.home.repository.HomeRepository;
-import com.example.tingle.snapshot.S3.S3Service;
 import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.star.repository.StarRepository;
+import com.example.tingle.store.service.S3UploadService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Builder
@@ -35,7 +32,7 @@ public class HomeServiceImpl implements HomeService {
     private final StarRepository starRepository;
     private final HomeRepository homeRepository;
     private final HomePictureRepository homePictureRepository;
-    private final S3Service s3Service;
+    private final S3UploadService s3UploadService;
 
     @Transactional
     @Override
@@ -56,7 +53,10 @@ public class HomeServiceImpl implements HomeService {
 
     @Transactional
     @Override
-    public boolean insertHome(@RequestBody HomeRequest homeRequest, @RequestParam List<MultipartFile> files) throws IOException {
+    public boolean insertHome(String homeRequestJson, List<MultipartFile> files) throws IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        HomeCreateRequest homeRequest = objectMapper.readValue(homeRequestJson, HomeCreateRequest.class);
 
         StarEntity starEntity = starRepository.findById(homeRequest.getStarId())
                 .orElseThrow(() -> new IllegalArgumentException("StarEntity not found"));
@@ -67,12 +67,13 @@ public class HomeServiceImpl implements HomeService {
                 .starEntity(starEntity)
                 .build());
 
+        //s3에 이미지를 업로드한다
         List<HomePictureEntity> homePictureEntities = new ArrayList<>();
-        for (MultipartFile file : files) {
-            String modifiedFilename = appendCurrentTimestampToFilename(file.getOriginalFilename());
-            String imagePath = s3Service.saveFile(file,modifiedFilename);
+
+        for(MultipartFile file: files) {
+            String imageUrl = s3UploadService.saveFile(file);
             HomePictureEntity homePictureEntity = HomePictureEntity.builder()
-                    .image(imagePath)
+                    .image(imageUrl)
                     .homeEntity(homeEntity)
                     .build();
 
@@ -84,17 +85,77 @@ public class HomeServiceImpl implements HomeService {
         return true;
     }
 
-    public String appendCurrentTimestampToFilename(String originalFilename) {
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        int dotIndex = originalFilename.lastIndexOf(".");
-        if (dotIndex > 0) {
-            String nameWithoutExtension = originalFilename.substring(0, dotIndex);
-            String extension = originalFilename.substring(dotIndex);
-            return nameWithoutExtension + "_" + timestamp + extension;
-        } else {
-            return originalFilename + "_" + timestamp;
+  /*  @Transactional
+    @Override
+    public boolean updateHome(String homeRequestJson, List<MultipartFile> files) throws IOException {
+
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        HomeUpdateRequest homeRequest = objectMapper.readValue(homeRequestJson, HomeUpdateRequest.class);
+
+        // Home 엔티티 조회
+        HomeEntity homeEntity = homeRepository.findById(homeRequest.getHomeId())
+                .orElseThrow(() -> new RuntimeException("Home not found"));
+
+
+        // Home 엔티티 저장
+        homeRepository.save(homeEntity);
+
+
+        //기존 이미지들을 삭제한다
+        List<HomePictureEntity> homePictureEntities= homePictureRepository.findByHomeEntityId(homeRequest.getHomeId());
+
+
+        for(HomePictureEntity homePictureEntity: homePictureEntities){
+            s3UploadService.deleteImage(homePictureEntity.getImage());
+            homeRepository.delete(homePictureEntity);
         }
+
+        //s3에 이미지를 업로드한다
+        List<HomePictureEntity> homePictureEntities = new ArrayList<>();
+
+        for(MultipartFile file: files) {
+            String imageUrl = s3UploadService.saveFile(file);
+            HomePictureEntity homePictureEntity = HomePictureEntity.builder()
+                    .image(imageUrl)
+                    .homeEntity(homeEntity)
+                    .build();
+
+            homePictureEntities.add(homePictureEntity);
+        }
+
+        homePictureRepository.saveAll(homePictureEntities);
+
+        // Home 엔티티 업데이트
+        homeEntity = HomeEntity.builder()
+                .ordering(homeRequest.getOrdering())
+                .content(homeRequest.getContent())
+                .updatedAt(homeEntity.getUpdatedAt())
+                .homePictureEntities(homeEntity.getHomePictureEntities())
+                .build();
+
+        return true;
+    }*/
+
+    @Transactional
+    @Override
+    public void deleteHomePictures(Long homeId) {
+        // HomePictureEntity 리스트 조회
+        List<HomePictureEntity> homePictures = homePictureRepository.findByHomeEntityId(homeId);
+
+        // 각 HomePictureEntity에 대해
+        for (HomePictureEntity homePicture : homePictures) {
+            s3UploadService.deleteImage(homePicture.getImage());
+            // HomePictureEntity 삭제
+            homePictureRepository.delete(homePicture);
+        }
+
+        //각 HomeEntity 삭제
+        homeRepository.deleteById(homeId);
+
+
     }
+
 }
 
 

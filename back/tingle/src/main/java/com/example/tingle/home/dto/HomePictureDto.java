@@ -11,8 +11,6 @@ public class HomePictureDto {
 
     private Long homeId;
 
-    private int ordering;
-
     private String image;
 
 }

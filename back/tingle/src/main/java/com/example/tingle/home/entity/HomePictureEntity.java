@@ -16,11 +16,8 @@ public class HomePictureEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int ordering;
-
     private String image;
 
-    @Setter
     @ManyToOne
     private HomeEntity homeEntity;
 
@@ -28,7 +25,6 @@ public class HomePictureEntity {
     public HomePictureDto toDto() {
         return HomePictureDto.builder()
                 .homeId(homeEntity.getId())
-                .ordering(ordering)
                 .image(image)
                 .build();
     }
