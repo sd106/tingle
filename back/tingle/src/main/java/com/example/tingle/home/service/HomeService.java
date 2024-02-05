@@ -15,7 +15,5 @@ public interface HomeService {
 
     boolean updateHome(String homeRequestJson, List<MultipartFile> files) throws IOException;
 
-    public boolean deleteHome(Long homeId) throws IOException;
-
-    public void deleteHomePictures(Long homeId);
+    public boolean deleteHome(Long homeId);
 }

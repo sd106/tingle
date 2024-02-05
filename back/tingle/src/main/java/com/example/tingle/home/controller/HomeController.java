@@ -41,7 +41,7 @@ public class HomeController {
 
     @Operation(summary = "스타 홈의 글 수정")
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping(value = "/update")
+    @PutMapping(value = "/update")
     public Response updateHome(@RequestParam("homeUpdateRequest") String homeUpdateRequestJson,
                              @RequestParam("files") List<MultipartFile> files) throws Exception {
 
@@ -51,10 +51,10 @@ public class HomeController {
 
     @Operation(summary = "스타 홈의 글 삭제")
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping(value = "/update")
+    @DeleteMapping(value = "/delete/{homeId}")
     public Response deleteHome(@PathVariable Long homeId) throws Exception {
 
-        return new Response("성공", "스타 홈 글 수정", homeService.deleteHome(homeId));
+        return new Response("성공", "스타 홈 글 삭제", homeService.deleteHome(homeId));
 
     }
 

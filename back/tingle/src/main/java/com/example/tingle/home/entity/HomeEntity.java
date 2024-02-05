@@ -4,10 +4,7 @@ import com.example.tingle.home.dto.HomeDto;
 import com.example.tingle.home.dto.HomePictureDto;
 import com.example.tingle.star.entity.StarEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -18,6 +15,7 @@ import java.util.List;
 
 @Entity(name = "home")
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

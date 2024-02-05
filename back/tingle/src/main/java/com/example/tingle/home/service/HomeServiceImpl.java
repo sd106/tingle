@@ -7,6 +7,7 @@ import com.example.tingle.home.entity.HomeEntity;
 import com.example.tingle.home.entity.HomePictureEntity;
 import com.example.tingle.home.repository.HomePictureRepository;
 import com.example.tingle.home.repository.HomeRepository;
+import com.example.tingle.snapshot.S3.S3Service;
 import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.star.repository.StarRepository;
 import com.example.tingle.store.service.S3UploadService;
@@ -33,6 +34,7 @@ public class HomeServiceImpl implements HomeService {
     private final HomeRepository homeRepository;
     private final HomePictureRepository homePictureRepository;
     private final S3UploadService s3UploadService;
+    private final S3Service s3Service;
 
     @Transactional
     @Override
@@ -85,7 +87,7 @@ public class HomeServiceImpl implements HomeService {
         return true;
     }
 
-  /*  @Transactional
+    @Transactional
     @Override
     public boolean updateHome(String homeRequestJson, List<MultipartFile> files) throws IOException {
 
@@ -95,20 +97,14 @@ public class HomeServiceImpl implements HomeService {
 
         // Home 엔티티 조회
         HomeEntity homeEntity = homeRepository.findById(homeRequest.getHomeId())
-                .orElseThrow(() -> new RuntimeException("Home not found"));
-
-
-        // Home 엔티티 저장
-        homeRepository.save(homeEntity);
-
+                .orElseThrow(() -> new IllegalArgumentException("Home not found"));
 
         //기존 이미지들을 삭제한다
-        List<HomePictureEntity> homePictureEntities= homePictureRepository.findByHomeEntityId(homeRequest.getHomeId());
+        List<HomePictureEntity> homePictures = homePictureRepository.findByHomeEntityId(homeRequest.getHomeId());
 
-
-        for(HomePictureEntity homePictureEntity: homePictureEntities){
-            s3UploadService.deleteImage(homePictureEntity.getImage());
-            homeRepository.delete(homePictureEntity);
+        // 각 HomePictureEntity에 대해 S3애서 이미지 삭제
+        for (HomePictureEntity homePicture : homePictures) {
+            s3Service.deleteImage(homePicture.getImage());
         }
 
         //s3에 이미지를 업로드한다
@@ -126,20 +122,18 @@ public class HomeServiceImpl implements HomeService {
 
         homePictureRepository.saveAll(homePictureEntities);
 
-        // Home 엔티티 업데이트
-        homeEntity = HomeEntity.builder()
-                .ordering(homeRequest.getOrdering())
-                .content(homeRequest.getContent())
-                .updatedAt(homeEntity.getUpdatedAt())
-                .homePictureEntities(homeEntity.getHomePictureEntities())
-                .build();
+        homeEntity.setOrdering(homeRequest.getOrdering());
+        homeEntity.setContent(homeRequest.getContent());
+        homeEntity.setHomePictureEntities(homePictureEntities);
+
+        homeRepository.save(homeEntity);
 
         return true;
-    }*/
+    }
 
     @Transactional
     @Override
-    public void deleteHomePictures(Long homeId) {
+    public boolean deleteHome(Long homeId) {
         // HomePictureEntity 리스트 조회
         List<HomePictureEntity> homePictures = homePictureRepository.findByHomeEntityId(homeId);
 
@@ -153,7 +147,7 @@ public class HomeServiceImpl implements HomeService {
         //각 HomeEntity 삭제
         homeRepository.deleteById(homeId);
 
-
+        return true;
     }
 
 }
