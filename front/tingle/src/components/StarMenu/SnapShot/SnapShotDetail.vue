@@ -1,4 +1,5 @@
 <template>
+
   <div class="container mt-2 mb-3">
     <div class="row">
       <!-- 이미지 컨테이너 -->

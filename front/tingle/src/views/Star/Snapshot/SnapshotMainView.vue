@@ -1,3 +1,4 @@
+
 <template>
   <StarMenu :id="id" />
   <div class="d-flex justify-content-between align-items-center my-4 mx-3">
@@ -37,13 +38,13 @@
   import type { Starinfo, SnapshotType } from '@/common/types';
   import SnapShotDetail from '../../../components/StarMenu/SnapShot/SnapShotDetail.vue'
 
+
   const store = useUserStore();
   const wishStore = useWishStore();
   const props = defineProps(['id']);
   const id = ref(props.id);
 
 
-  
   const snapshots = ref<SnapshotType[]>([]);
   const display = ref<Starinfo[]>([]);
   const containerRef = ref<HTMLElement | null>(null);
@@ -74,6 +75,7 @@
     display.value = [...display.value, ...newData];
   };
 
+
   const handleScroll = function (): void {
     // 스크롤 이벤트 처리 로직
     const container = containerRef.value;
@@ -92,6 +94,7 @@
 
 
 
+
 </script>
 
 <style>
@@ -102,7 +105,6 @@
   overflow: hidden; /* 내부 요소가 테두리를 넘어가지 않도록 설정 */
   border: 1px solid white; /* 테두리 색상 설정 */
 }
-
 
 .container::-webkit-scrollbar {
   display: none; /* 스크롤바 숨기기 */
@@ -164,4 +166,5 @@
   object-fit: cover; /* 이미지가 비율을 유지하면서 항목을 꽉 채우도록 함 */
   transition: opacity 0.3s ease; /* 부드러운 효과를 위한 전환 */
 }
+
 </style>

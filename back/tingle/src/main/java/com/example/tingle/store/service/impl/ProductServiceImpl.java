@@ -1,6 +1,7 @@
 package com.example.tingle.store.service.impl;
 
 import com.example.tingle.store.dto.ProductDto;
+import com.example.tingle.store.dto.ProductImageDto;
 import com.example.tingle.store.entity.ProductEntity;
 import com.example.tingle.store.entity.ProductImageEntity;
 import com.example.tingle.store.repository.ProductRepository;
@@ -34,38 +35,42 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    @Override
     public ProductDto mapToDTO(ProductEntity productEntity) {
-        List<String> imageUrls = productEntity.getImageUrl().stream()
-                .map(ProductImageEntity::getUrl) // URL 추출
+        List<ProductImageDto> imageDtos = productEntity.getImageUrl().stream()
+                .map(imageEntity -> new ProductImageDto(imageEntity.getUrl(), imageEntity.getProduct().getId(), imageEntity.getId()))
                 .collect(Collectors.toList());
         ProductDto productDTO = new ProductDto();
+        productDTO.setProductId(productEntity.getId());
         productDTO.setName(productEntity.getName());
         productDTO.setAmount(productEntity.getAmount());
         productDTO.setPrice(productEntity.getPrice());
-        productDTO.setImageUrl(imageUrls);
+        productDTO.setImageUrl(imageDtos); // 수정된 부분
         productDTO.setContent(productEntity.getContent());
         productDTO.setAvailable(productEntity.isAvailable());
         return productDTO;
     }
 
+
     @Override
     public ProductEntity convertDtoToEntity(ProductDto productDto) {
         ProductEntity productEntity = new ProductEntity();
-//        productEntity.setStarId(productDto.getStarId()); // 예를 들어, 이런 식으로 필드를 설정
         productEntity.setStarName(productDto.getStarName());
         productEntity.setName(productDto.getName());
         productEntity.setAmount(productDto.getAmount());
         productEntity.setPrice(productDto.getPrice());
+
+        // ProductImageDto 리스트를 ProductImageEntity 리스트로 변환
         List<ProductImageEntity> imageEntities = productDto.getImageUrl().stream()
-                .map(url -> new ProductImageEntity(url, productEntity)) // 여기서 ProductImageEntity 생성
+                .map(imageDto -> new ProductImageEntity(imageDto.getUrl(), productEntity))
                 .collect(Collectors.toList());
         productEntity.setImageUrl(imageEntities);
+
         productEntity.setContent(productDto.getContent());
         productEntity.setAvailable(productDto.isAvailable());
 
         return productEntity;
     }
+
 
 
     @Override

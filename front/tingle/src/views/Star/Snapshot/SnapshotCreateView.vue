@@ -1,22 +1,3 @@
-<!-- <template>
-  <main class="container">
-    <StarMenu :id="id" />
-    <h1>스냅샷 생성</h1>
-  </main>
-</template>
-
-<script setup lang="ts">
-import { ref } from 'vue'
-
-import StarMenu from '@/components/StarMenu/StarMenu.vue';
-
-
-const props = defineProps(['id']);
-const id = ref(props.id);
-
-</script> -->
-
-
 <template>
   <div class="container mt-5">
     <!-- 반응형으로 가로 길이를 조정하는 컨테이너 -->

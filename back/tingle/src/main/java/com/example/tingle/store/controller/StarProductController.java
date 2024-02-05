@@ -2,7 +2,7 @@ package com.example.tingle.store.controller;
 
 import com.example.tingle.common.ResultDTO;
 import com.example.tingle.star.entity.StarEntity;
-import com.example.tingle.star.service.StarServiceImpl;
+import com.example.tingle.star.service.impl.StarServiceImpl;
 import com.example.tingle.store.dto.ProductDto;
 import com.example.tingle.store.entity.ProductEntity;
 import com.example.tingle.store.entity.ProductImageEntity;
@@ -91,7 +91,6 @@ public class StarProductController {
             // S3에서 각 이미지 삭제
             for (ProductImageEntity image : images) {
                 s3UploadService.deleteImage(image.getUrl());
-                System.out.println("image.getUrl() = " + image.getUrl());
             }
 
             // 데이터베이스에서 Product 삭제
@@ -128,6 +127,7 @@ public class StarProductController {
             return "FAIL";
         }
     }
+
 
     @PostMapping(path = "/updateImg/{productId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> updateProductImage(@PathVariable Long productId,

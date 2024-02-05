@@ -14,7 +14,7 @@ export const useWishStore = defineStore('wish', () => {
     const selectSnapshot = async (id: number) => {
       console.log("스냅샷 선택됨")
       try {
-        const response = await axios.get(`http://localhost:8080/snapshot/${id}`);
+        const response = await axios.get(`${API_URL}/snapshot/${id}`);
         console.log(response.data)
         selectedSnapshot.value = response.data;
         console.log(selectedSnapshot.value?.snapshotId)

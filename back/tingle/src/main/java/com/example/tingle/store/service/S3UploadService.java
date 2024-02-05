@@ -2,6 +2,10 @@ package com.example.tingle.store.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.example.tingle.store.dto.ProductImageDto;
+import com.example.tingle.store.entity.ProductImageEntity;
+import com.example.tingle.store.repository.ProductImageRepository;
+import com.example.tingle.store.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,15 +18,30 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class S3UploadService {
 
     private final AmazonS3 amazonS3;
+    private final ProductImageRepository productImageRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
+
+    public void deleteById(Long imageId) {
+        productImageRepository.deleteById(imageId);
+    }
+
+    public void save(ProductImageEntity productImageEntity) {
+        productImageRepository.save(productImageEntity);
+    }
+    public ProductImageEntity findById(Long imageId) {
+        Optional<ProductImageEntity> byId = productImageRepository.findById(imageId);
+        return byId.get();
+    }
+
 
     public String saveFile(MultipartFile multipartFile) throws IOException {
         String originalFilename = multipartFile.getOriginalFilename();
