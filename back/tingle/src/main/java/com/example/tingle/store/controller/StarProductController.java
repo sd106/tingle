@@ -106,6 +106,7 @@ public class StarProductController {
         // 특정 ID에 해당하는 Product 조회
         Optional<ProductEntity> optionalProductEntity = productService.findById(productId);
 
+
         if (optionalProductEntity.isPresent()) {
             // 기존 Product 엔터티를 가져옴
             ProductEntity existingProductEntity = optionalProductEntity.get();

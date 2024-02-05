@@ -31,6 +31,9 @@ public class StarServiceImpl implements StarService {
     }
 
     @Override
+    public void save(StarEntity starEntity) {
+        starRepository.save(starEntity);
+    }
     public List<ReadStarRequest> find10Stars() {
        return starRepository.find10Stars();
     }

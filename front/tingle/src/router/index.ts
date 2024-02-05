@@ -167,13 +167,13 @@ const router = createRouter({
       path: '/profile/:username/teststore',
       name: 'teststore',
       component: TestStoreViewVue,
-      props: (route) => ({ username: route.params.username }),
+      props: (route) => ({ id: route.params.starid }),
     },
     {
       path: '/profile/:username/teststore2',
       name: 'teststore2',
       component: TestStoreViewOrderVue,
-      props: (route) => ({ username: route.params.username }),
+      props: (route) => ({ id: route.params.starid }),
     },
     //
   ]

@@ -21,7 +21,6 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-
     public UserDto mapToDTO(UserEntity userEntity) {
         if (userEntity == null) {
             return null;
@@ -47,5 +46,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public void save(UserEntity userEntity) {
+        userRepository.save(userEntity);
     }
 }

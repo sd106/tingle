@@ -12,5 +12,6 @@ public interface StarService {
 
     List<ReadStarByCategory> findStarsByCategory(int category);
 
+    void save(StarEntity starEntity);
     List<ReadStarRequest> find10Stars();
 }

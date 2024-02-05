@@ -44,7 +44,7 @@ const id = ref(props.id);
 import type { Goods } from '@/common/types'
 const products = ref<Goods[] | null>(null);
 ////// props로 받은거 나오게 설정해야함
-const starName = 'l2esm24'
+const starName = 'test01'
 
 const getAllProducts = async (starName: string) => {
   try {
