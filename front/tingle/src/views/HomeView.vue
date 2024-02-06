@@ -52,13 +52,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { RouterLink } from 'vue-router'
-import { useUserStore } from '@/stores/user';
+// import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 
 import type { StarByCategory, HotStarInfo } from '@/common/types/index'
 
 
-const store = useUserStore()
+// const store = useUserStore()
 
 // 슬라이드
 const sliderTrack = ref<HTMLDivElement | null>(null);

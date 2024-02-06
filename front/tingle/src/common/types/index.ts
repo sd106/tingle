@@ -4,11 +4,6 @@ interface SignUp {
     email: string;
 }
 
-interface LogIn {
-    username: string;
-    password: string;
-}
-
 interface User {
     id: string;
     nickName: string;
@@ -88,16 +83,6 @@ interface StarByCategory {
     picture: string;
 }
 
-
-interface StarLogininfo {
-    starId?: number;
-    username: string;
-    picture?: string;
-    email?: string;
-    role?: string;
-    provider?: string;
-}
-
 // 스토어
 interface Product {
     starId: number;
@@ -140,14 +125,14 @@ interface ProductCreationPayload {
 }
 
 // 위시
-interface SnapshotType  {
+interface SnapshotType {
     id: number;
     imageUrl: string;
     username: string;
-  };
+};
 
 interface selectedSnapshotType {
-    snapshotId : number;
+    snapshotId: number;
     imageUrl: string;
     username: string;
     starname: string;
@@ -155,8 +140,8 @@ interface selectedSnapshotType {
     tags: string[];
     comments: CommentType[];
     likes: number;
-    createdAt: number [];
-    updatedAt: number [];
+    createdAt: number[];
+    updatedAt: number[];
 }
 
 interface CommentType {
@@ -168,7 +153,7 @@ interface CommentType {
 
 
 export type {
-    SignUp, LogIn, StarLogininfo, FanState, StarState,
+    SignUp, FanState, StarState,
     User, Star, Starinfo, HotStarInfo, StarByCategory,
     // 스토어
     Product, Goods, ProductCreationPayload, ImageUrl, OrderResponse,

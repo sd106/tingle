@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="d-flex ">
+    <div class="d-flex">
       <button @click="selectLoginType('fan')" :class="{ 'signin__btn': true, 'is_selected': selectedType === 'fan' }">
         <span>팬이에요!</span> </button>
       <button @click="selectLoginType('star')" :class="{ 'signin__btn2': true, 'is_selected': selectedType === 'star' }">
@@ -31,6 +31,7 @@ const selectLoginType = async (type: string) => {
     } else if (type === 'star') {
       const { id, username, picture } = data
       store.starState = { id, username, picture }
+      store.isStar = true
     }
 
     router.push('/')

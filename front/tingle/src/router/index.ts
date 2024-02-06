@@ -178,7 +178,7 @@ const router = createRouter({
     {
       path: '/selectLoginType',
       name: 'SelectLoginTypeView',
-      component: () => import("@/views/User/SelectLoginTypeView_MK2.vue")
+      component: () => import("@/views/User/SelectLoginTypeView.vue")
     },
   ]
 })

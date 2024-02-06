@@ -18,31 +18,26 @@
                     <img src="/image/magnifier.png" alt="">
                 </button>
             </form>
-            <!-- 로그인 유무로 보이기 -->
-            <!-- <RouterLink v-if="!store.isLogin" to="/signUp" class="router-link-custom">Signup</RouterLink>
-            <RouterLink v-if="!store.isLogin" to="/logIn" class="router-link-custom">Login</RouterLink>
-            <RouterLink v-if="store.isLogin" :to="`/${store.starInfo?.starId}/home`" class="router-link-custom">profile
-            </RouterLink> -->
-            <!-- <span v-if="store.isLogin" @click="logOut" style="cursor: pointer;">Logout</span> -->
-            <!-- 사용자 프로필 사진 > 모달로 메뉴 -->
-            <RouterLink v-if="!store.isLogin" to="/logIn" class="router-link-custom">
-                <button>Login</button>
-            </RouterLink>
-            <button class="tw-btn" v-if="store.isLogin" @click="logOut">로그아웃</button>
+            <div v-if="!store.isLogin" class="d-flex">
+                <img @click="redirectToGoogle" class="menu-btn mx-1" src="/image/Logo_Google.png" alt="">
+                <img @click="redirectToNaver" class="menu-btn mx-1" src="/image/Logo_Naver.png" alt="">
+            </div>
+
             <div v-if="store.isLogin" class="dropdown dropstart">
                 <div class="dropdown-toggle user-image" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
-                    <!-- 사용자 프로필 사진으로 대체 -->
-                    <img class="" src="/image/titan.webp" alt="" style="height: 50px;">
+                    <img v-if="store.isStar" class="" :src="`${store.starState?.picture}`" alt="starimage"
+                        style="height: 50px;">
+                    <img v-if="!store.isStar" class="" :src="`${store.fanState?.picture}`" alt="userimage"
+                        style="height: 50px;">
                 </div>
                 <ul class="dropdown-menu">
-                    <!-- 간편 메뉴 넣기 -->
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li><a class="dropdown-item" href="#">정보 수정</a></li>
+                    <li><a class="dropdown-item" href="#">구매 목록</a></li>
+                    <li><a class="dropdown-item" href="#">보관함</a></li>
+                    <li><a class="dropdown-item" href="#" @click="logOut">로그아웃</a></li>
                 </ul>
             </div>
-
         </div>
     </nav>
 </template>
@@ -61,6 +56,7 @@ const logOut = function (): void {
     router.push({ name: 'home' })
     store.starState = null
     store.fanState = null
+    store.isStar = false
 }
 
 watch(() => store.isSidebarOpen, (newValue) => {
@@ -71,7 +67,23 @@ watch(() => store.isSidebarOpen, (newValue) => {
     }
 });
 
+// 로그인
+const redirectToOAuthProvider = async (provider: string) => {
+    try {
+        window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`;
 
+    } catch (error) {
+        console.log('error', error)
+    }
+}
+
+const redirectToGoogle = () => {
+    redirectToOAuthProvider('google');
+}
+
+const redirectToNaver = () => {
+    redirectToOAuthProvider('naver');
+}
 </script>
 
 <style>
@@ -103,9 +115,13 @@ watch(() => store.isSidebarOpen, (newValue) => {
     border: none;
     background: none;
     border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
 .menu-btn:hover {
+    scale: 1.1;
+    box-shadow: none;
     background-color: #dddddd;
 }
 

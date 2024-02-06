@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { onMounted, reactive } from 'vue'
 import axios from 'axios';
-import { useUserStore } from '@/stores/user'
+// import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
