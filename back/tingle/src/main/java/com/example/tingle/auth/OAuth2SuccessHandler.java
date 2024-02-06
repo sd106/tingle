@@ -22,7 +22,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
         if (Boolean.FALSE.equals(oAuth2User.getIsRealMember())) {
-            getRedirectStrategy().sendRedirect(request, response, "http://localhost:5173/signUp/mk2");
+            getRedirectStrategy().sendRedirect(request, response, "http://localhost:5173/signUp");
         } else {
             getRedirectStrategy().sendRedirect(request, response, "http://localhost:5173/selectLoginType");
         }

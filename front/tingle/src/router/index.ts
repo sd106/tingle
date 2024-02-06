@@ -21,9 +21,15 @@ import StoreMainView from '@/views/Star/Store/StoreMainView.vue'
 import StoreManageView from '@/views/Star/Store/StoreManageView.vue'
 import StoreDetailView from '@/views/Star/Store/StoreDetailView.vue'
 
-import FanMeetingEntranceView from '@/views/StarMenu/FanMeeting/FanMeetingEntranceView.vue'
-import WaitingRoomView from '@/views/StarMenu/FanMeeting/WaitingRoomView.vue'
-import MeetingRoomView from '@/views/StarMenu/FanMeeting/MeetingRoomView.vue'
+import FanMeetingEntranceView from '@/views/Star/FanMeeting/FanMeetingEntranceView.vue'
+import FanMeetingTicketBoxView from '@/views/Star/FanMeeting/FanMeetingTicketBoxView.vue'
+import CreateFanMeetingView from '@/views/Star/FanMeeting/CreateFanMeetingView.vue'
+import WaitingRoomView from '@/views/Star/FanMeeting/WaitingRoomView.vue'
+import MeetingRoomView from '@/views/Star/FanMeeting/MeetingRoomView.vue'
+import NormalMeetingView from '@/views/Star/FanMeeting/NormalMeeting.vue'
+import LifeFourCutMeetingView from '@/views/Star/FanMeeting/LifeFourCutMeeting.vue'
+import BirthdayMeetingView from '@/views/Star/FanMeeting/BirthdayMeeting.vue'
+
 import TestStoreViewVue from '@/views/StarMenu/TestStoreView.vue'
 import TestStoreViewOrderVue from '@/views/StarMenu/TestStoreViewOrder.vue'
 
@@ -145,22 +151,17 @@ const router = createRouter({
     {
       path: '/fanmeeting/create',
       name: 'CreateMeetingView',
-      component: () => import('@/views/StarMenu/FanMeeting/CreateFanMeetingView.vue'),
+      component: CreateFanMeetingView,
     },
     {
       path: '/profile/:starid/fanmeeting/ticketbox',
       name: 'FanMeetingTicketBoxView',
-      component: () => import('@/views/StarMenu/FanMeeting/FanMeetingTicketBoxView.vue'),
+      component: FanMeetingTicketBoxView,
     },
     {
       path: '/fanmeeting/:starid/waitingroom',
       name: 'WaitingRoomView',
       component: WaitingRoomView
-    },
-    {
-      path: '/fanmeeting/:starid/meetingroom',
-      name: 'MeetingRoomView',
-      component: MeetingRoomView
     },
     // Store의 test를 위한 View
     {
@@ -176,20 +177,32 @@ const router = createRouter({
       props: (route) => ({ username: route.params.username }),
     },
     {
-      path: '/login/mk2',
-      name: 'LogInMk2View',
-      component: () => import("@/views/User/LogInView_MK2.vue"),
-    },
-    {
       path: '/selectLoginType',
       name: 'SelectLoginTypeView',
       component: () => import("@/views/User/SelectLoginTypeView_MK2.vue")
     },
     {
-      path: '/signup/mk2',
-      name: 'SignUpMK2View',
-      component: () => import("@/views/User/SignUpView_MK2.vue"),
-    },
+      path: '/fanmeetingRoom/:starid',
+      name: 'FanMeetingRoomView',
+      component: MeetingRoomView,
+      children: [
+        {
+          path: 'normal',
+          name: 'NormalFanMeetingView',
+          component: NormalMeetingView,
+        },
+        {
+          path: 'lifeFourCut',
+          name: 'LifeFourCutMeetingView',
+          component: LifeFourCutMeetingView,
+        },
+        {
+          path: 'birthday',
+          name: 'BirthdayMeetingView',
+          component: BirthdayMeetingView,
+        }
+      ]
+    }
   ]
 })
 

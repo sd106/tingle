@@ -40,9 +40,18 @@ public class SnapShotServiceImpl implements SnapShotService {
     private final UserRepository userRepository;
     private final StarRepository starRepository;
 
-    public List<SnapShotEntity> getAllSnapShot() {
+    public void saveSnapShot(SnapShotEntity snapShotEntity) {
+        snapshotRepository.save(snapShotEntity);
+    }
+
+    public List<SnapShotEntity> getAllSnapShot(Long starId) {
         System.out.println("getAllSnapShot 메서드 실행");
-        return snapshotRepository.findAll();
+        return snapshotRepository.findAllByStar_IdOrderByCreatedAtDesc(starId);
+    }
+
+    public List<SnapShotEntity> getAllSnapShotOrderByLikes(Long starId) {
+        System.out.println("getAllSnapShot 메서드 실행");
+        return snapshotRepository.findAllByStar_IdOrderByLikesDescCreatedAtDesc(starId);
     }
 
     /**
@@ -152,14 +161,14 @@ public class SnapShotServiceImpl implements SnapShotService {
 
     // 추천수별 정렬된 게시글 목록 조회
     @Override
-    public List<SnapShotEntity> getSnapShotsByLikes() {
-        return snapshotRepository.findAllByOrderByLikesDesc();
+    public List<SnapShotEntity> getAllSnapShotsByLikes(Long starId) {
+        return snapshotRepository.findAllByStar_IdOrderByLikesDescCreatedAtDesc(starId);
     }
 
     // 최신순 정렬된 게시글 목록 조회
     @Override
-    public List<SnapShotEntity> getSnapShotsByCreatedTime() {
-        return snapshotRepository.findAllByOrderByCreatedAtDesc();
+    public List<SnapShotEntity> getAllSnapShotsByCreatedTime(Long starId) {
+        return snapshotRepository.findAllByStar_IdOrderByCreatedAtDesc(starId);
     }
 
     public Optional<SnapShotEntity> getSnapShotById(Long snapshotId) {

@@ -9,10 +9,12 @@ import java.util.Optional;
 public interface SnapShotRepository extends JpaRepository<SnapShotEntity, Long> {
 
     Optional<SnapShotEntity> findById(Long snapshotId);
+
+    List<SnapShotEntity> findAllByStar_Id(Long starId);
     // 추천수별 정렬
-    List<SnapShotEntity> findAllByOrderByLikesDesc();
+    List<SnapShotEntity> findAllByStar_IdOrderByCreatedAtDesc(Long starId);
 
     // 최신순 정렬
-    List<SnapShotEntity> findAllByOrderByCreatedAtDesc();
+    List<SnapShotEntity> findAllByStar_IdOrderByLikesDescCreatedAtDesc(Long starId);
 
 }
