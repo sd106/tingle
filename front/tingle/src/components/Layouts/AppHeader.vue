@@ -19,12 +19,17 @@
                 </button>
             </form>
             <!-- 로그인 유무로 보이기 -->
-            <RouterLink v-if="!store.isLogin" to="/signUp" class="router-link-custom">Signup</RouterLink>
+            <!-- <RouterLink v-if="!store.isLogin" to="/signUp" class="router-link-custom">Signup</RouterLink>
             <RouterLink v-if="!store.isLogin" to="/logIn" class="router-link-custom">Login</RouterLink>
-            <RouterLink v-if="store.isLogin" :to="`/${store.starInfo?.starId}/home`" class="router-link-custom">profile</RouterLink>
-            <span v-if="store.isLogin" @click="logOut" style="cursor: pointer;">Logout</span>
+            <RouterLink v-if="store.isLogin" :to="`/${store.starInfo?.starId}/home`" class="router-link-custom">profile
+            </RouterLink> -->
+            <!-- <span v-if="store.isLogin" @click="logOut" style="cursor: pointer;">Logout</span> -->
             <!-- 사용자 프로필 사진 > 모달로 메뉴 -->
-            <div class="dropdown dropstart">
+            <RouterLink v-if="!store.isLogin" to="/logIn" class="router-link-custom">
+                <button>Login</button>
+            </RouterLink>
+            <button class="tw-btn" v-if="store.isLogin" @click="logOut">로그아웃</button>
+            <div v-if="store.isLogin" class="dropdown dropstart">
                 <div class="dropdown-toggle user-image" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <!-- 사용자 프로필 사진으로 대체 -->
@@ -52,9 +57,10 @@ const router = useRouter()
 
 
 const logOut = function (): void {
-    store.isLogin = false
     window.location.href = 'http://localhost:8080/logout'
     router.push({ name: 'home' })
+    store.starState = null
+    store.fanState = null
 }
 
 watch(() => store.isSidebarOpen, (newValue) => {

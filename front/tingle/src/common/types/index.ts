@@ -15,6 +15,19 @@ interface User {
     image: string;
 }
 
+interface FanState {
+    id: number;
+    username: string;
+    picture: string;
+    follwingStars: Starinfo;
+}
+
+interface StarState {
+    id: number;
+    username: string;
+    picture: string;
+}
+
 interface FanMeetingContent {
     name: string
 }
@@ -54,6 +67,7 @@ interface FanMeetingTicket {
     description: string
     price: number
 }
+
 
 interface Star {
     id: string; // tjdah25
@@ -126,7 +140,7 @@ interface ProductCreationPayload {
 }
 
 export type {
-    SignUp, LogIn, StarLogininfo,
+    SignUp, LogIn, StarLogininfo, FanState, StarState,
     User, Star, Starinfo, HotStarInfo, StarByCategory,
     // 스토어
     Product, Goods, ProductCreationPayload, ImageUrl, OrderResponse,

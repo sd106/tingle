@@ -1,12 +1,10 @@
 <template>
     <main>
         <StarMenu :id="starid" />
-        <div v-if="product" class="d-flex row tw-space-x-4 tw-mt-2">
+        <div v-if="product" class="d-flex row justify-content-center tw-space-x-4 tw-mt-2">
             <!-- 왼쪽 -->
-            <div class="col-1">
-                <button @click="goBack" class="tw-btn tw-btn-circle tw-glass">❮</button>
-            </div>
-            <div class=" col-6">
+
+            <div class="col-6">
                 <div class="tw-carousel tw-w-full">
                     <div v-for="(image, index) in product.imageUrl" :key="image.id"
                         class="tw-carousel-item tw-relative tw-w-full" :class="{ 'tw-hidden': index !== activeIndex }">
@@ -30,9 +28,9 @@
                         <p class="tw-text-xs tw-text-gray-500 tw-border tw-px-2 tw-py-1 tw-rounded">{{ product.amount }} 개
                             남음
                         </p>
+
                     </div>
-                    <hr class="tw-my-4">
-                    <p class="tw-py-4 tw-px-2">{{ product.content }}</p>
+                    <p class="tw-py-4">{{ product.content }}</p>
                     <hr class="tw-my-4">
                 </div>
                 <div>
@@ -46,7 +44,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import type { Goods } from '@/common/types';
 import axios from 'axios'
 
@@ -57,7 +54,6 @@ const props = defineProps({
     productId: String, // URL에서 받은 값은 문자열이므로 String으로 받음
 });
 
-const router = useRouter()
 
 const starid = ref(props.starid);
 const productIdNumber = computed(() => Number(props.productId)); // 숫자로 변환
@@ -93,6 +89,7 @@ const prevSlide = () => {
         activeIndex.value -= 1
 };
 
+// 다음 슬라이드로 이동
 const nextSlide = () => {
     if (activeIndex.value < product.value!.imageUrl.length - 1)
         activeIndex.value += 1
@@ -103,10 +100,7 @@ const formattedPrice = computed(() => {
     return new Intl.NumberFormat('ko-KR', { style: 'decimal' }).format(product.value!.price)
 })
 
-// 뒤로가기
-function goBack() {
-    router.go(-1) // 또는 router.back()
-}
+
 </script>
 
 <style scoped>
