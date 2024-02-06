@@ -1,5 +1,4 @@
 <template>
-
   <div class="container mt-2 mb-3">
     <div class="row">
       <!-- 이미지 컨테이너 -->
@@ -9,7 +8,8 @@
       <div class="col-md-6">
         <!-- 스냅샷 관리 버튼 -->
         <div class="snapshot-actions d-flex justify-content-between">
-          <button class="btn btn-outline-dark" @click="like(props.selectedSnapshot!.snapshotId)">좋아요 {{  }}</button>
+          <button class="btn btn-dark" v-if="isLike" @click="dislike(props.selectedSnapshot!.snapshotId, store.fanState!.username)">좋아요 취소 {{ props.selectedSnapshot?.likes }}</button>
+          <button class="btn btn-outline-dark" v-else @click="like(props.selectedSnapshot!.snapshotId, store.fanState!.username)">좋아요 {{ props.selectedSnapshot?.likes }}</button>
           <span>
             <button class="btn btn-secondary" @click="goToUpdate(props.selectedSnapshot!.snapshotId)">스냅샷 수정</button>
             <button class="btn btn-danger" @click="deleteSnapshot(props.selectedSnapshot!.snapshotId)">스냅샷 삭제</button>
@@ -31,7 +31,7 @@
 
         <!-- 댓글 목록 -->
         <div class="comments-list">
-          <p class="">💬 댓글 {{ props.selectedSnapshot?.comments.length }}</p>
+          <p class="mb-2">💬 댓글 {{ props.selectedSnapshot?.comments.length }}</p>
           
           <div v-for="comment in props.selectedSnapshot!.comments" :key="comment.id" class="">
             <!-- 수정 중인 댓글의 UI 변경 -->
@@ -68,7 +68,7 @@
 </template>
   
 <script lang="ts" setup>
-  import { ref, defineProps } from 'vue';
+  import { ref, watch } from 'vue';
   import { formatDistanceToNow } from 'date-fns';
   import { ko } from 'date-fns/locale';
   import { useUserStore } from '@/stores/user';
@@ -81,11 +81,10 @@
   // const snapshot = ref<SnapshotType | null>(null);
   const router = useRouter();
 
-  // 좋아요 상태를 추적하는 반응형 변수
-  const isLiked = ref(false);
+  
   const store = useUserStore();
   const wishStore = useWishStore();
-  const username = store.starInfo?.username;
+  const username = store.fanState?.username
   
   const starid = store.starInfo?.starId;
   
@@ -94,6 +93,15 @@
   });
 
   const time = formatDistanceToNowFromLocalDateTime(props.selectedSnapshot!.updatedAt)
+  const isLike = ref(props.selectedSnapshot!.isLiked);
+
+  watch(
+    () => props.selectedSnapshot!.isLiked,
+    (newVal, oldVal) => {
+      // isLike 상태 업데이트
+      isLike.value = newVal;
+    }
+  );
 
   const goToUpdate = (id: number) => {
     if (id && props.selectedSnapshot) {
@@ -113,19 +121,35 @@
 
 
 
-  const like = async (id: number) => {
-  if (id) {
-    try {
-      // 좋아요 API 호출
-      await axios.post(`http://localhost:8080/snapshot/${id}/likes`);
-      
-      // 스토어에서 선택된 스냅샷을 다시 가져온 후 좋아요 수를 갱신
-      
-    } catch (error) {
-      console.error('좋아요 실패:', error);
+  const like = async (id: number, username : string) => {
+    if (id) {
+      try {
+        // 좋아요 API 호출
+        await axios.post(`http://localhost:8080/snapshot/${id}/likes`,{ username: username }, { withCredentials: true });
+        console.log("좋아요 실행됨")
+        router.go(0)
+        // 스토어에서 선택된 스냅샷을 다시 가져온 후 좋아요 수를 갱신
+        wishStore.selectSnapshot(id)
+      } catch (error) {
+        console.error('좋아요 실패:', error);
+      }
     }
-  }
-};
+  };
+  const dislike = async (id: number, username : string) => {
+    if (id) {
+      try {
+        // 좋아요 API 호출
+        await axios.post(`http://localhost:8080/snapshot/${id}/dislikes`,{ username: username }, { withCredentials: true });
+        console.log("싫어요 실행됨")
+        // 스토어에서 선택된 스냅샷을 다시 가져온 후 좋아요 수를 갱신
+        
+      } catch (error) {
+        console.error('좋아요 실패:', error);
+      }
+    }
+  };
+
+
 
 
   const deleteSnapshot = async (id: number) => {
