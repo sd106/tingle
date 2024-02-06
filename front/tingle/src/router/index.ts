@@ -83,7 +83,7 @@ const router = createRouter({
       props: (route) => ({ id: route.params.starid }),
     },
     {
-      path: '/:starid/snapshot/update',
+      path: '/:starid/snapshot/:snapshotid/update',
       name: 'snapshotupdate',
       component: SnapshotUpdateView,
       props: (route) => ({ id: route.params.starid }),
@@ -176,19 +176,9 @@ const router = createRouter({
       props: (route) => ({ username: route.params.username }),
     },
     {
-      path: '/login/mk2',
-      name: 'LogInMk2View',
-      component: () => import("@/views/User/LogInView_MK2.vue"),
-    },
-    {
       path: '/selectLoginType',
       name: 'SelectLoginTypeView',
       component: () => import("@/views/User/SelectLoginTypeView_MK2.vue")
-    },
-    {
-      path: '/signup/mk2',
-      name: 'SignUpMK2View',
-      component: () => import("@/views/User/SignUpView_MK2.vue"),
     },
   ]
 })

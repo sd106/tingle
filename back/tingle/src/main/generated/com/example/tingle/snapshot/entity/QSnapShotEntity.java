@@ -32,7 +32,7 @@ public class QSnapShotEntity extends EntityPathBase<SnapShotEntity> {
 
     public final StringPath imageUrl = createString("imageUrl");
 
-    public final NumberPath<Integer> likes = createNumber("likes", Integer.class);
+    public final ListPath<LikeEntity, QLikeEntity> likes = this.<LikeEntity, QLikeEntity>createList("likes", LikeEntity.class, QLikeEntity.class, PathInits.DIRECT2);
 
     public final ListPath<SnapShotTag, QSnapShotTag> snapShotTags = this.<SnapShotTag, QSnapShotTag>createList("snapShotTags", SnapShotTag.class, QSnapShotTag.class, PathInits.DIRECT2);
 

@@ -24,6 +24,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Base64;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -48,6 +49,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
         String socialType = userRequest.getClientRegistration().getRegistrationId();
+        System.out.println("socialType = " + socialType);
 
         OAuth2UserInfo oAuth2UserInfo = null;
         if (socialType.equals("google")) {
@@ -61,6 +63,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         Map<String, Object> attributes = oAuth2User.getAttributes(); // 소셜 로그인에서 API가 제공하는 userInfo의 Json 값(유저 정보들)
 
+
         // socialType에 따라 유저 정보를 통해 OAuthAttributes 객체 생성
         OAuthAttribute extractAttribute = OAuthAttribute.of(socialType, userNameAttributeName, attributes);
 
@@ -68,9 +71,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         // 추가 정보를 받아서 정회원이 되었는지
         Boolean isRealMember = createdMember.getIsRealMember();
+        
         if (socialType.equals("naver")) {
             attributes = (Map<String, Object>) attributes.get("response");
         }
+
         // DefaultOAuth2User를 구현한 CustomOAuth2User 객체를 생성해서 반환
         return new CustomOAuth2User(
                 oAuth2User.getAuthorities(),
@@ -87,10 +92,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             Member createdMemeber = attribute.toEntity(oAuth2UserInfo.getEmail(), oAuth2UserInfo.getName(), socialType, oAuth2UserInfo.getProviderId());
             return memberRepository.save(createdMemeber);
         }
-
         return member;
     }
-
 }
 
 /**
