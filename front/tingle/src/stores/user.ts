@@ -28,6 +28,9 @@ export const useUserStore = defineStore('user', () => {
 
   const isSidebarOpen = ref(true)
 
+  const starInfo = ref<StarLogininfo | null>(null);
+
+  const starId = ref<number>();
   const signUp = async function (payload: SignUp): Promise<void> {
     const { username, password, email } = payload;
 
@@ -63,6 +66,6 @@ export const useUserStore = defineStore('user', () => {
     //
     isLogin, isStar,
     //
-    isSidebarOpen,
+    isSidebarOpen, starId
   }
 }, { persist: true })

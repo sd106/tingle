@@ -140,9 +140,11 @@ interface selectedSnapshotType {
     tags: string[];
     comments: CommentType[];
     likes: number;
-    createdAt: number[];
-    updatedAt: number[];
+    createdAt: string;
+    updatedAt: string;
+    isLiked: boolean; // 사용자의 좋아요 상태
 }
+
 
 interface CommentType {
     id: number;

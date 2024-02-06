@@ -28,6 +28,7 @@ const selectLoginType = async (type: string) => {
     if (type === 'fan') {
       const { id, username, picture, follwingStars } = data
       store.fanState = { id, username, picture, follwingStars }
+      console.log(store.fanState)
     } else if (type === 'star') {
       const { id, username, picture } = data
       store.starState = { id, username, picture }

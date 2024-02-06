@@ -21,9 +21,15 @@ import StoreMainView from '@/views/Star/Store/StoreMainView.vue'
 import StoreManageView from '@/views/Star/Store/StoreManageView.vue'
 import StoreDetailView from '@/views/Star/Store/StoreDetailView.vue'
 
-import FanMeetingEntranceView from '@/views/StarMenu/FanMeeting/FanMeetingEntranceView.vue'
-import WaitingRoomView from '@/views/StarMenu/FanMeeting/WaitingRoomView.vue'
-import MeetingRoomView from '@/views/StarMenu/FanMeeting/MeetingRoomView.vue'
+import FanMeetingEntranceView from '@/views/Star/FanMeeting/FanMeetingEntranceView.vue'
+import FanMeetingTicketBoxView from '@/views/Star/FanMeeting/FanMeetingTicketBoxView.vue'
+import CreateFanMeetingView from '@/views/Star/FanMeeting/CreateFanMeetingView.vue'
+import WaitingRoomView from '@/views/Star/FanMeeting/WaitingRoomView.vue'
+import MeetingRoomView from '@/views/Star/FanMeeting/MeetingRoomView.vue'
+import NormalMeetingView from '@/views/Star/FanMeeting/NormalMeeting.vue'
+import LifeFourCutMeetingView from '@/views/Star/FanMeeting/LifeFourCutMeeting.vue'
+import BirthdayMeetingView from '@/views/Star/FanMeeting/BirthdayMeeting.vue'
+
 import TestStoreViewVue from '@/views/StarMenu/TestStoreView.vue'
 import TestStoreViewOrderVue from '@/views/StarMenu/TestStoreViewOrder.vue'
 
@@ -83,7 +89,7 @@ const router = createRouter({
       props: (route) => ({ id: route.params.starid }),
     },
     {
-      path: '/:starid/snapshot/:snapshotid/update',
+      path: '/:starid/snapshot/update',
       name: 'snapshotupdate',
       component: SnapshotUpdateView,
       props: (route) => ({ id: route.params.starid }),
@@ -140,27 +146,22 @@ const router = createRouter({
       path: '/:starid/fanmeeting',
       name: 'fanmeeting',
       component: FanMeetingEntranceView,
-      props: (route) => ({ username: route.params.username }),
+      props: (route) => ({ starid: route.params.starid }),
     },
     {
       path: '/fanmeeting/create',
       name: 'CreateMeetingView',
-      component: () => import('@/views/StarMenu/FanMeeting/CreateFanMeetingView.vue'),
+      component: CreateFanMeetingView,
     },
     {
-      path: '/profile/:username/fanmeeting/ticketbox',
+      path: '/profile/:starid/fanmeeting/ticketbox',
       name: 'FanMeetingTicketBoxView',
-      component: () => import('@/views/StarMenu/FanMeeting/FanMeetingTicketBoxView.vue'),
+      component: FanMeetingTicketBoxView,
     },
     {
-      path: '/fanmeeting/:username/waitingroom',
+      path: '/fanmeeting/:starid/waitingroom',
       name: 'WaitingRoomView',
       component: WaitingRoomView
-    },
-    {
-      path: '/fanmeeting/:username/meetingroom',
-      name: 'MeetingRoomView',
-      component: MeetingRoomView
     },
     // Store의 test를 위한 View
     {
@@ -180,6 +181,28 @@ const router = createRouter({
       name: 'SelectLoginTypeView',
       component: () => import("@/views/User/SelectLoginTypeView.vue")
     },
+    {
+      path: '/fanmeetingRoom/:starid',
+      name: 'FanMeetingRoomView',
+      component: MeetingRoomView,
+      children: [
+        {
+          path: 'normal',
+          name: 'NormalFanMeetingView',
+          component: NormalMeetingView,
+        },
+        {
+          path: 'lifeFourCut',
+          name: 'LifeFourCutMeetingView',
+          component: LifeFourCutMeetingView,
+        },
+        {
+          path: 'birthday',
+          name: 'BirthdayMeetingView',
+          component: BirthdayMeetingView,
+        }
+      ]
+    }
   ]
 })
 
