@@ -9,6 +9,9 @@ import com.example.tingle.snapshot.entity.SnapShotTag;
 import com.example.tingle.snapshot.service.LikeServiceimpl;
 import com.example.tingle.snapshot.service.SnapShotServiceImpl;
 import com.example.tingle.user.entity.UserEntity;
+import com.example.tingle.user.service.impl.UserServiceImpl;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +33,7 @@ public class SnapShotController {
 
     private final SnapShotServiceImpl snapShotServiceImpl;
     private final LikeServiceimpl likeServiceimpl;
+    private final UserServiceImpl userServiceimpl;
 
 
     @GetMapping("/star/{starId}/created")
@@ -88,8 +92,22 @@ public class SnapShotController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
-    @GetMapping("/{snapshotId}")
-    public ResponseEntity<Map<String, Object>> SnapShotDetail(@PathVariable Long snapshotId) {
+    @PostMapping("/{snapshotId}")
+    public ResponseEntity<Map<String, Object>> SnapShotDetail(@PathVariable Long snapshotId, @RequestBody String username)
+            throws IOException {
+
+        String json = username;
+
+// ObjectMapper 인스턴스 생성
+        ObjectMapper mapper = new ObjectMapper();
+
+// JSON 문자열을 JsonNode 객체로 변환
+        JsonNode rootNode = mapper.readTree(json);
+
+// "username" 필드의 값을 추출
+        String name = rootNode.get("username").asText();
+
+        System.out.println("username = " + name);
 
         System.out.println("상세 스냅샷 불러올게요");
         HttpStatus status = HttpStatus.ACCEPTED;
@@ -100,6 +118,8 @@ public class SnapShotController {
         if (optSnapShotEntity.isPresent()) {
 
             SnapShotEntity snapShot = optSnapShotEntity.get();
+
+            boolean isLike = likeServiceimpl.findLike(name, snapShot);
 
             List<String> tags = snapShot.getSnapShotTags().stream()
                     .map(SnapShotTag::getHashTagEntity)
@@ -134,6 +154,7 @@ public class SnapShotController {
             resultMap.put("likes", snapShot.getLikesCount());
             resultMap.put("createdAt", snapShot.getCreatedAt());
             resultMap.put("updatedAt", snapShot.getUpdatedAt());
+            resultMap.put("isLiked", isLike);
 
         } else {
             System.out.println("스냅샷을 찾을 수 없습니다.");
@@ -169,17 +190,46 @@ public class SnapShotController {
     }
 
     @PostMapping("/{snapshotId}/likes")
-    public ResponseEntity<Map<String, Object>> LikeSnapShot(@PathVariable Long snapshotId, @AuthenticationPrincipal UserEntity user)
+    public ResponseEntity<Map<String, Object>> LikeSnapShot(@PathVariable Long snapshotId, @RequestBody String username)
             throws IOException {
+        System.out.println("username = " + username);
+        // JSON 문자열
+        String json = username;
 
-        likeServiceimpl.addLike(user.getId(), snapshotId);
+// ObjectMapper 인스턴스 생성
+        ObjectMapper mapper = new ObjectMapper();
+
+// JSON 문자열을 JsonNode 객체로 변환
+        JsonNode rootNode = mapper.readTree(json);
+
+// "username" 필드의 값을 추출
+        String name = rootNode.get("username").asText();
+
+        System.out.println("username = " + name);
+
+        likeServiceimpl.addLike(name, snapshotId);
         return ResponseEntity.ok().build();
 
     }
 
-    @DeleteMapping("/{snapshotId}/likes")
-    public ResponseEntity<?> unlikeSnapshot(@PathVariable Long snapshotId, @AuthenticationPrincipal UserEntity user) {
-        likeServiceimpl.removeLike(user.getId(), snapshotId);
+    @PostMapping("/{snapshotId}/dislikes")
+    public ResponseEntity<?> dislikeSnapshot(@PathVariable Long snapshotId, @RequestBody String username)
+            throws IOException {
+        String json = username;
+
+    // ObjectMapper 인스턴스 생성
+        ObjectMapper mapper = new ObjectMapper();
+
+    // JSON 문자열을 JsonNode 객체로 변환
+        JsonNode rootNode = mapper.readTree(json);
+
+    // "username" 필드의 값을 추출
+        String name = rootNode.get("username").asText();
+
+        System.out.println("username = " + name);
+
+
+        likeServiceimpl.removeLike(name, snapshotId);
         return ResponseEntity.ok().build();
     }
 
