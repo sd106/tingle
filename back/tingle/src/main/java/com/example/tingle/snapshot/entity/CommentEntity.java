@@ -6,8 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Builder
 @NoArgsConstructor
@@ -31,6 +37,12 @@ public class CommentEntity {
     @ManyToOne
     @JoinColumn(name = "snapshot_id")
     private SnapShotEntity snapShotEntity;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     public void update(String context) {
         this.context = context;

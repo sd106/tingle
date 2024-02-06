@@ -139,6 +139,34 @@ interface ProductCreationPayload {
     files: File[];
 }
 
+// 위시
+interface SnapshotType  {
+    id: number;
+    imageUrl: string;
+    username: string;
+  };
+
+interface selectedSnapshotType {
+    snapshotId : number;
+    imageUrl: string;
+    username: string;
+    starname: string;
+    content: string;
+    tags: string[];
+    comments: CommentType[];
+    likes: number;
+    createdAt: number [];
+    updatedAt: number [];
+}
+
+interface CommentType {
+    id: number;
+    context: string;
+    username: string;
+    snapshotId: number;
+};
+
+
 export type {
     SignUp, LogIn, StarLogininfo, FanState, StarState,
     User, Star, Starinfo, HotStarInfo, StarByCategory,
@@ -146,4 +174,6 @@ export type {
     Product, Goods, ProductCreationPayload, ImageUrl, OrderResponse,
     // 팬미팅
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
+    SnapshotType, selectedSnapshotType, CommentType
+
 }

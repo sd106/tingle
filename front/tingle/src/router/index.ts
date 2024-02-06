@@ -83,7 +83,7 @@ const router = createRouter({
       props: (route) => ({ id: route.params.starid }),
     },
     {
-      path: '/:starid/snapshot/update',
+      path: '/:starid/snapshot/:snapshotid/update',
       name: 'snapshotupdate',
       component: SnapshotUpdateView,
       props: (route) => ({ id: route.params.starid }),

@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
@@ -18,7 +18,6 @@ import oh from '@/static/data/category/oh.json'
 
 
 // 세트로 id 이름 사진 그정도 저장 해두기?
-
 
 
 export const useUserStore = defineStore('user', () => {
