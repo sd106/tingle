@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-7">
             <div class="chat-thumbnail p-3">
-                <img src="/image/fan-meeting-img.webp" alt="채팅방 이미지"/>
+                <img src="/image/fan-meeting-img.webp" alt="채팅방 이미지" />
             </div>
         </div>
         <div class="col-5">
@@ -98,7 +98,7 @@ const sendToServer = (msg) => {
 
 const initializeWebSocket = () => {
     socket = new WebSocket("ws://localhost:8080/signal")
-    
+
     socket.onmessage = (msg) => {
         let message = JSON.parse(msg.data)
         console.log("서버로부터 메시지가 도착했습니다!")
@@ -138,7 +138,7 @@ const initializeWebSocket = () => {
                 handleErrorMessage('Wrong type message received from server')
         }
     }
-    
+
     socket.onopen = () => {
         console.log('소켓 열렸는디요.')
         sendToServer({
@@ -148,11 +148,11 @@ const initializeWebSocket = () => {
             roomType: roomType
         });
     };
-    
+
     socket.onclose = () => {
         console.log('소켓 닫혔는디요.')
     };
-    
+
     socket.onerror = (error) => {
         console.error(error)
     };
@@ -160,9 +160,9 @@ const initializeWebSocket = () => {
 
 const handleTextMessage = (message) => {
     messages.value.push({
-                            sender: message.sender,
-                            text: message.data
-                        })
+        sender: message.sender,
+        text: message.data
+    })
     console.log('Text message from ' + message.sender + ' received: ' + message.data)
 }
 
@@ -198,7 +198,7 @@ const handleJoinMessage = async (message) => {
     if (message.data === "true") {
         console.log("11")
         myPeerConnection.onnegotiationneeded = async () => {
-            try {   
+            try {
                 console.log("22")
 
                 const offer = await myPeerConnection.createOffer()
@@ -229,9 +229,9 @@ const handleErrorMessage = (message) => {
 
 onMounted(initializeWebSocket)
 onUnmounted(() => {
-  if (socket.value) {
-    socket.value.close()
-  }
+    if (socket.value) {
+        socket.value.close()
+    }
 })
 </script>
 
@@ -267,11 +267,12 @@ onUnmounted(() => {
     position: relative;
     padding: 0.5rem 1rem;
 }
+
 .message::after {
     content: '';
     position: absolute;
     border-style: solid;
-    width: 0; 
+    width: 0;
     height: 0;
 }
 
@@ -281,16 +282,17 @@ onUnmounted(() => {
 
 .other-message {
     background-color: #e47b7b;
-    border-radius: 0 3px 3px 3px; 
+    border-radius: 0 3px 3px 3px;
 }
 
 .other-message::after {
     right: 100%;
     top: 0%;
     border-width: 0 10px 10px 0;
-    border-color: transparent #e47b7b transparent transparent  ;
-   
+    border-color: transparent #e47b7b transparent transparent;
+
 }
+
 .my-message-content {
     justify-content: flex-end;
 }
@@ -298,8 +300,9 @@ onUnmounted(() => {
 .my-message {
     background-color: #007bff;
     color: white;
-    border-radius: 3px 0 3px 3px; 
+    border-radius: 3px 0 3px 3px;
 }
+
 .my-message::after {
     left: 100%;
     top: 0%;

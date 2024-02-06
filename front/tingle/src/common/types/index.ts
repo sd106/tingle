@@ -4,11 +4,6 @@ interface SignUp {
     email: string;
 }
 
-interface LogIn {
-    username: string;
-    password: string;
-}
-
 interface User {
     id: string;
     nickName: string;
@@ -88,16 +83,6 @@ interface StarByCategory {
     picture: string;
 }
 
-
-interface StarLogininfo {
-    starId?: number;
-    username: string;
-    picture?: string;
-    email?: string;
-    role?: string;
-    provider?: string;
-}
-
 // 스토어
 interface Product {
     starId: number;
@@ -139,15 +124,15 @@ interface ProductCreationPayload {
     files: File[];
 }
 
-// 스냅샷
-interface SnapshotType  {
+// 위시
+interface SnapshotType {
     id: number;
     imageUrl: string;
     username: string;
-  };
+};
 
 interface selectedSnapshotType {
-    snapshotId : number;
+    snapshotId: number;
     imageUrl: string;
     username: string;
     starname: string;
@@ -160,6 +145,7 @@ interface selectedSnapshotType {
     isLiked: boolean; // 사용자의 좋아요 상태
 }
 
+
 interface CommentType {
     id: number;
     context: string;
@@ -167,32 +153,14 @@ interface CommentType {
     snapshotId: number;
 };
 
-/* 위시 */
-interface LikesInfo {
-    id: number;
-    userId: number;
-    wishId: number;
-    liked: boolean;
-}
-interface WishInfo {
-    id: number;
-    userId: number;
-    starId: number;
-    status: number;
-    points: number;
-    likedCount: number;
-    contents: string;
-    createTime: Date;
-    deleteTime: Date;
-}
 
 export type {
-    SignUp, LogIn, StarLogininfo, FanState, StarState,
+    SignUp, FanState, StarState,
     User, Star, Starinfo, HotStarInfo, StarByCategory,
     // 스토어
     Product, Goods, ProductCreationPayload, ImageUrl, OrderResponse,
     // 팬미팅
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
-    SnapshotType, selectedSnapshotType, CommentType,
-    WishInfo, LikesInfo
+    SnapshotType, selectedSnapshotType, CommentType
+
 }
