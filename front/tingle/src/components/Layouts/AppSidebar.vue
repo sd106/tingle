@@ -96,7 +96,7 @@ const getFolloings = async () => {
 
 // 채팅 모달을 열기 위한 것
 const openChatModal = () => {
-
+    
 };
 
 onMounted(() => {
