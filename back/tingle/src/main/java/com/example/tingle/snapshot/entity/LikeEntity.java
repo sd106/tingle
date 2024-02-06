@@ -1,5 +1,6 @@
 package com.example.tingle.snapshot.entity;
 
+import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,5 +21,7 @@ public class LikeEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "star_id")
+    private StarEntity star;
 }
