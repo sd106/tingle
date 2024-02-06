@@ -15,6 +15,19 @@ interface User {
     image: string;
 }
 
+interface FanState {
+    id: number;
+    username: string;
+    picture: string;
+    follwingStars: Starinfo;
+}
+
+interface StarState {
+    id: number;
+    username: string;
+    picture: string;
+}
+
 interface FanMeetingContent {
     name: string
 }
@@ -54,6 +67,7 @@ interface FanMeetingTicket {
     description: string
     price: number
 }
+
 
 interface Star {
     id: string; // tjdah25
@@ -125,31 +139,42 @@ interface ProductCreationPayload {
     files: File[];
 }
 
-/* 위시 */
-interface LikesInfo {
+// 위시
+interface SnapshotType  {
     id: number;
-    userId: number;
-    wishId: number;
-    liked: boolean;
-}
-interface WishInfo {
-    id: number;
-    userId: number;
-    starId: number;
-    status: number;
-    points: number;
-    likedCount: number;
-    contents: string;
-    createTime: Date;
-    deleteTime: Date;
+    imageUrl: string;
+    username: string;
+  };
+
+interface selectedSnapshotType {
+    snapshotId : number;
+    imageUrl: string;
+    username: string;
+    starname: string;
+    content: string;
+    tags: string[];
+    comments: CommentType[];
+    likes: number;
+    createdAt: string;
+    updatedAt: string;
+    isLiked: boolean; // 사용자의 좋아요 상태
 }
 
+interface CommentType {
+    id: number;
+    context: string;
+    username: string;
+    snapshotId: number;
+};
+
+
 export type {
-    SignUp, LogIn, StarLogininfo,
+    SignUp, LogIn, StarLogininfo, FanState, StarState,
     User, Star, Starinfo, HotStarInfo, StarByCategory,
     // 스토어
     Product, Goods, ProductCreationPayload, ImageUrl, OrderResponse,
     // 팬미팅
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
-    LikesInfo, WishInfo
+    SnapshotType, selectedSnapshotType, CommentType
+
 }

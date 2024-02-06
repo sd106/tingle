@@ -1,9 +1,9 @@
-import { ref } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
-import type { SignUp, LogIn, Starinfo, StarLogininfo } from '@/common/types/index'
+import type { SignUp, LogIn, StarState, FanState, Starinfo, StarLogininfo } from '@/common/types/index'
 
 // 
 import hotstar from '@/static/data/hotstar.json'
@@ -18,18 +18,6 @@ import oh from '@/static/data/category/oh.json'
 
 
 // 세트로 id 이름 사진 그정도 저장 해두기?
-// const usernameState = ref(null)
-
-// const isLogin = computed(() => {
-//   if (usernameState.value === null) {
-//     return false
-//   } else {
-//     return true
-//   }
-// })
-
-const isLogin = ref(false)
-
 
 
 export const useUserStore = defineStore('user', () => {
@@ -37,6 +25,16 @@ export const useUserStore = defineStore('user', () => {
   const router = useRouter()
 
   const API_URL = 'http://localhost:8080'
+
+  const fanState = ref<FanState | null>(null)
+  const starState = ref<StarState | null>(null)
+  const isLogin = computed(() => {
+    if (fanState.value === null && starState.value === null) {
+      return false
+    } else {
+      return true
+    }
+  })
 
 
   // 바꿔야할 것
@@ -62,6 +60,7 @@ export const useUserStore = defineStore('user', () => {
 
   const starInfo = ref<StarLogininfo | null>(null);
 
+  const starId = ref<number>();
 
 
   const signUp = async function (payload: SignUp): Promise<void> {
@@ -85,34 +84,31 @@ export const useUserStore = defineStore('user', () => {
     const { username, password } = payload;
 
     try {
-      const response = await axios
-
-        .post(`${API_URL}/users/login`, {
-          username,
-          password
-        }, {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json', // 'Context-Type'을 'Content-Type'으로 수정
-          }
-        })
+      await axios.post(`${API_URL}/users/login`, {
+        username,
+        password
+      }, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json', // 'Context-Type'을 'Content-Type'으로 수정
+        }
+      })
         .then((res) => {
-          const { data } = res
+          // const { data } = res
           console.log(res.status)
           if (res.status === 200) {
-
-            isLogin.value = true;
             // 여기에서 로그인한 사용자의 정보를 갱신하기
-            starInfo.value = data;
-            console.log(starInfo.value?.starId)
-            console.log(starInfo.value?.username)
-            console.log(starInfo.value?.email)
-            console.log(starInfo.value?.picture)
-            console.log(starInfo.value?.role)
-            console.log(starInfo.value?.provider)
+            // starInfo.value = data;
+            // console.log(starInfo.value)
+            // console.log(starInfo.value?.starId)
+            // console.log(starInfo.value?.username)
+            // console.log(starInfo.value?.email)
+            // console.log(starInfo.value?.picture)
+            // console.log(starInfo.value?.role)
+            // console.log(starInfo.value?.provider)
           }
         }
-      )
+        )
       window.alert('로그인성공!');
       router.push({ name: 'home' }) // 무조건 홈으로 돌아가는 게 아니라 이전 창으로 돌아가기?
       // 토큰이라든가 뭔가 받아서 뭘 해야 하지 않을까
@@ -135,11 +131,11 @@ export const useUserStore = defineStore('user', () => {
   };
   return {
     API_URL,
-    signUp, logIn, logOut,
+    signUp, logIn, logOut, starState, fanState,
     //
     hotstarinfo, getStarInfo, starInfo,
     allstarinfo, isLogin, categories,
     //
-    isSidebarOpen,
+    isSidebarOpen,starId
   }
-})
+}, { persist: true })

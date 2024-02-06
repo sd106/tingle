@@ -31,7 +31,6 @@ public class JoinService {
                 .username(joinDTO.getUsername())
                 .password(bCryptPasswordEncoder.encode(joinDTO.getPassword()))
                 .email(joinDTO.getEmail())
-                .role(Role.STAR)
                 .build();
         System.out.println("star  " + star.getEmail());
         System.out.println("star  " + star.getUsername());
