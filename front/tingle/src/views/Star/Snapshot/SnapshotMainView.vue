@@ -44,6 +44,7 @@
   const props = defineProps(['id']);
   const id = ref(props.id);
 
+  const userStore = useUserStore()
 
   const snapshots = ref<SnapshotType[]>([]);
   const display = ref<Starinfo[]>([]);
@@ -51,7 +52,8 @@
 
   const loadSnapshots = async (): Promise<void> => {
     try {
-      const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/created`);
+      console.log(userStore.fanState!.id)
+      const response = await axios.get(`http://localhost:8080/snapshot/star/${userStore.fanState!.id}/created`);
       snapshots.value = response.data.AllSnapShot;
       console.log("최신순");
     } catch (error) {
@@ -61,7 +63,7 @@
 
   const loadSnapshotsBylikes = async (): Promise<void> => {
     try {
-      const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/likes`);
+      const response = await axios.get(`http://localhost:8080/snapshot/star/${userStore.fanState!.id}/likes`);
       snapshots.value = response.data.AllSnapShot;
       console.log("좋아요순");
     } catch (error) {

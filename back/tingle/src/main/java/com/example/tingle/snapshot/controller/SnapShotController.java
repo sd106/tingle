@@ -23,7 +23,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 @RequestMapping("/snapshot")
 @RequiredArgsConstructor
@@ -132,7 +131,7 @@ public class SnapShotController {
             resultMap.put("content", snapShot.getContent());
             resultMap.put("tags", tags);
             resultMap.put("comments", commentMaps);
-            resultMap.put("likes", snapShot.getLikes());
+            resultMap.put("likes", snapShot.getLikesCount());
             resultMap.put("createdAt", snapShot.getCreatedAt());
             resultMap.put("updatedAt", snapShot.getUpdatedAt());
 

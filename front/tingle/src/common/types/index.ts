@@ -155,8 +155,8 @@ interface selectedSnapshotType {
     tags: string[];
     comments: CommentType[];
     likes: number;
-    createdAt: number [];
-    updatedAt: number [];
+    createdAt: string;
+    updatedAt: string;
 }
 
 interface CommentType {

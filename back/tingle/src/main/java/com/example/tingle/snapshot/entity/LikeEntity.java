@@ -21,7 +21,4 @@ public class LikeEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "star_id")
-    private StarEntity star;
 }

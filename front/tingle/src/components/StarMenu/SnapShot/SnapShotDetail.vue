@@ -211,13 +211,10 @@
   };
 
   // 날짜 함수
-  function formatDistanceToNowFromLocalDateTime(localDateTimeArray: number []) {
+  function formatDistanceToNowFromLocalDateTime(isoString: string) {
     // 배열에서 연, 월, 일, 시, 분, 초를 추출합니다.
     // JavaScript의 Date 월은 0부터 시작하므로 월에서 1을 빼줍니다.
-    const [year, month, day, hour, minute, second] = localDateTimeArray;
-    
-    // Date 객체 생성
-    const date = new Date(year, month - 1, day, hour, minute, second);
+    const date = new Date(isoString);
     
     // 현재 시간으로부터의 거리 계산
     const distance = formatDistanceToNow(date, { addSuffix: true, locale: ko });
