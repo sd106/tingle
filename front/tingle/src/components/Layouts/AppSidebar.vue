@@ -50,10 +50,14 @@
                     </div>
                 </button>
                 <hr>
-                <button class="menu-btn" type="button" data-bs-toggle="modal" data-bs-target="#chatModal"
-                    style="height: 50px; width: 50px;">
+                <!-- 채팅 열기 -->
+                <button class="menu-btn" type="button" data-bs-toggle="modal" :data-bs-target="`#chatModal-${uniqueId}`"
+                        style="height: 50px; width: 50px;" @click="openChatModal">
                     <img src="/image/chat.jpg" alt="" style="height: 30px; width: 30px;">
                 </button>
+
+                <!-- 모달 컴포넌트 -->
+                <ChatModal :modalId="`chatModal-${store.$id}`" />
             </ul>
         </div>
     </div>
@@ -61,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/stores/user';
 import axios from 'axios';
@@ -90,8 +94,14 @@ const getFolloings = async () => {
     folloingInfo.value = response.data.data;
 }
 
-getFolloings();
+// 채팅 모달을 열기 위한 것
+const openChatModal = () => {
 
+};
+
+onMounted(() => {
+    getFolloings();
+});
 
 </script>
 
