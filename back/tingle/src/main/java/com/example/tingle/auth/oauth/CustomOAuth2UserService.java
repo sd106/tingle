@@ -71,11 +71,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         // 추가 정보를 받아서 정회원이 되었는지
         Boolean isRealMember = createdMember.getIsRealMember();
-
+        
         if (socialType.equals("naver")) {
             attributes = (Map<String, Object>) attributes.get("response");
         }
-
 
         // DefaultOAuth2User를 구현한 CustomOAuth2User 객체를 생성해서 반환
         return new CustomOAuth2User(
