@@ -146,31 +146,19 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 
 import { ref } from 'vue';
 import axios from 'axios';
 
-// ----------상품 상세조회----------------------------//
+
 
 const productgetById = ref(null);
 const inputProductId = ref(0);
 
 const getProductById = async (productId: number) => {
   try {
-    const response = await axios.get(`http://localhost:8080/product/getById/${productId}`);
+    const response = await axios.get(`http://i10d106.p.ssafy.io:8080/product/getById/${productId}`);
     if (response.data.resultCode === 'SUCCESS') {
       productgetById.value = response.data;
     } else {
@@ -180,279 +168,278 @@ const getProductById = async (productId: number) => {
     }
   } catch (error) {
     console.error('상품 조회 중 오류 발생', error);
-  }
-};
+  };
 
-const submitFormGetProductById = () => {
-  getProductById(inputProductId.value);
-};
-// ----------상품 상세 조회----------------------------//
-
+  const submitFormGetProductById = () => {
+    getProductById(inputProductId.value);
+  };
+  // ----------상품 상세 조회----------------------------//
 
 
 
-//-----------전체 상품 조회----------------------------//
 
-const productgetByStarName = ref(null);
-const inputStarName = ref('');
+  //-----------전체 상품 조회----------------------------//
 
-const getProductsByStarName = async (starName: string) => {
-  try {
-    const response = await axios.get(`http://localhost:8080/product/getByStarName/${starName}`);
-    if (response.data.resultCode === 'SUCCESS') {
-      productgetByStarName.value = response.data.data;
-    } else {
-      console.error(response.data.message);
-      productgetByStarName.value = response.data.data;
-    }
-  } catch (error) {
-    console.error('스타의 상품 목록 조회 중 오류 발생', error);
-  }
-};
+  const productgetByStarName = ref(null);
+  const inputStarName = ref('');
 
-const submitFormgetByStarName = () => {
-  getProductsByStarName(inputStarName.value);
-};
-
-//-----------전체 상품 조회----------------------------//
-
-
-
-//-----------상품 삭제----------------------------//
-
-const productdelete = ref(null);
-const inputProductIdDelete = ref(1);
-
-const getProductdelete = async (productId: number) => {
-  try {
-    const response = await axios.post(`http://localhost:8080/product/delete/${productId}`);
-    if (response.data.resultCode === 'SUCCESS') {
-      productdelete.value = response.data.data;
-    } else {
-      console.error(response.data.message);
-      productdelete.value = response.data.data;
-    }
-  } catch (error) {
-    console.error('스타의 상품 목록 조회 중 오류 발생', error);
-  }
-};
-
-const submitFormgetdelete = () => {
-  getProductdelete(inputProductIdDelete.value);
-};
-//-----------상품 삭제----------------------------//
-
-
-//-----------상품 생성----------------------------//
-
-const productcreate = ref({
-  starName: '',
-  name: '',
-  amount: 0,
-  price: 0,
-  content: ''
-});
-const files = ref(null);
-
-const createProduct = async (productInfo: any, fileInputs: FileList) => {
-  try {
-    const formData = new FormData();
-    formData.append('productDto', JSON.stringify(productInfo));
-    for (let i = 0; i < fileInputs.length; i++) {
-      formData.append('files', fileInputs[i]);
-    }
-
-    const response = await axios.post('http://localhost:8080/product/create', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+  const getProductsByStarName = async (starName: string) => {
+    try {
+      const response = await axios.get(`http://i10d106.p.ssafy.io:8080/product/getByStarName/${starName}`);
+      if (response.data.resultCode === 'SUCCESS') {
+        productgetByStarName.value = response.data.data;
+      } else {
+        console.error(response.data.message);
+        productgetByStarName.value = response.data.data;
       }
-    });
-    if (response.status === 200) {
-      alert('상품이 성공적으로 생성되었습니다.');
-    } else {
-      alert('상품 생성에 실패했습니다.');
+    } catch (error) {
+      console.error('스타의 상품 목록 조회 중 오류 발생', error);
     }
-  } catch (error) {
-    console.error('상품 생성 중 오류 발생', error);
-  }
-};
+  };
 
-const submitForm = () => {
-  if (files.value && files.value.files.length > 0) {
-    createProduct(productcreate.value, files.value.files);
-  } else {
-    alert('파일을 선택해주세요.');
-  }
-};
+  const submitFormgetByStarName = () => {
+    getProductsByStarName(inputStarName.value);
+  };
 
-//-----------상품 생성----------------------------//
-
-
-//-----------상품 수정 이미지제외----------------------------//
-
-
-const productIdupdate = ref(0);
-const productupdate = ref({
-  starId: 99,
-  starName: "nono",
-  name: '',
-  amount: 0,
-  price: 0,
-  imageUrl: [],
-  content: '',
-  isAvailable: false
-});
-
-const updateProduct = async (productIdupdate: number, updatedProductDto: any) => {
-  try {
-    const response = await axios.post(`http://localhost:8080/product/update/${productIdupdate}`, updatedProductDto);
-    if (response.data === 'SUCCESS') {
-      alert('상품이 성공적으로 업데이트되었습니다.');
-    } else {
-      alert('상품 업데이트에 실패했습니다.');
-      console.log(response.data)
-    }
-  } catch (error) {
-    console.error('상품 업데이트 중 오류 발생', error);
-  }
-};
-
-const submitFormupdate = () => {
-  updateProduct(productIdupdate.value, productupdate.value);
-};
-
-//-----------상품 수정 이미지제외----------------------------//
+  //-----------전체 상품 조회----------------------------//
 
 
 
+  //-----------상품 삭제----------------------------//
 
+  const productdelete = ref(null);
+  const inputProductIdDelete = ref(1);
 
-
-//-----------상품 이미지 수정----------------------------//
-
-const productIdimageupdate = ref(0);
-const existingImageUrl = ref('');
-const fileInputimageupdate = ref();
-
-const updateProductImage = async (productIdimageupdate: number, existingImageUrl: string, file: File) => {
-  try {
-    const formData = new FormData();
-    formData.append('existingImageUrl', existingImageUrl);
-    formData.append('file', file);
-
-    const response = await axios.post(`http://localhost:8080/product/updateImg/${productIdimageupdate}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+  const getProductdelete = async (productId: number) => {
+    try {
+      const response = await axios.post(`http://i10d106.p.ssafy.io:8080/product/delete/${productId}`);
+      if (response.data.resultCode === 'SUCCESS') {
+        productdelete.value = response.data.data;
+      } else {
+        console.error(response.data.message);
+        productdelete.value = response.data.data;
       }
-    });
-    if (response.status === 200) {
-      alert('상품 이미지가 성공적으로 업데이트되었습니다.');
-    } else {
-      alert('상품 이미지 업데이트에 실패했습니다.');
+    } catch (error) {
+      console.error('스타의 상품 목록 조회 중 오류 발생', error);
     }
-  } catch (error) {
-    console.error('상품 이미지 업데이트 중 오류 발생', error);
-  }
-};
+  };
 
-const submitFormimageupdate = () => {
-  if (fileInputimageupdate.value && fileInputimageupdate.value.files.length > 0) {
-    updateProductImage(productIdimageupdate.value, existingImageUrl.value, fileInputimageupdate.value.files[0]);
-  } else {
-    alert('이미지 파일을 선택해주세요.');
-  }
-};
-
-//-----------상품 이미지 수정----------------------------//
+  const submitFormgetdelete = () => {
+    getProductdelete(inputProductIdDelete.value);
+  };
+  //-----------상품 삭제----------------------------//
 
 
-//-----------상품 개별 이미지 수정, 삭제, 추가 ----------------------------//
-const uploadImage = async (productId: number) => {
-  try {
-    // 파일 선택하기
-    const file = await selectFile2();
-    if (!file) return;
+  //-----------상품 생성----------------------------//
 
-    // FormData 생성
-    const formData = new FormData();
-    formData.append('file', file);
-
-    // Axios 요청 보내기
-    const response = await axios.post(`http://localhost:8080/s3/upload/${productId}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-
-    // 업로드 후 결과 처리 (예: 새로고침, 상태 업데이트 등)
-    console.log('업로드 성공:', response.data);
-    getProductById(productId)
-  } catch (error) {
-    console.error('업로드 실패:', error);
-  }
-};
-
-// 파일 선택 함수
-const selectFile2 = () => {
-  return new Promise<File | null>((resolve) => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.onchange = () => {
-      resolve(input.files ? input.files[0] : null);
-    };
-    input.click();
+  const productcreate = ref({
+    starName: '',
+    name: '',
+    amount: 0,
+    price: 0,
+    content: ''
   });
-};
+  const files = ref(null);
+
+  const createProduct = async (productInfo: any, fileInputs: FileList) => {
+    try {
+      const formData = new FormData();
+      formData.append('productDto', JSON.stringify(productInfo));
+      for (let i = 0; i < fileInputs.length; i++) {
+        formData.append('files', fileInputs[i]);
+      }
+
+      const response = await axios.post('http://i10d106.p.ssafy.io:8080/product/create', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      if (response.status === 200) {
+        alert('상품이 성공적으로 생성되었습니다.');
+      } else {
+        alert('상품 생성에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('상품 생성 중 오류 발생', error);
+    }
+  };
+
+  const submitForm = () => {
+    if (files.value && files.value.files.length > 0) {
+      createProduct(productcreate.value, files.value.files);
+    } else {
+      alert('파일을 선택해주세요.');
+    }
+  };
+
+  //-----------상품 생성----------------------------//
 
 
+  //-----------상품 수정 이미지제외----------------------------//
 
 
-
-
-
-
-const updateImage = async (productId: number, imageId: number) => {
-  try {
-    // 파일 선택하기
-    const file = await selectFile();
-    if (!file) return;
-
-    // FormData 생성
-    const formData = new FormData();
-    formData.append('file', file);
-
-    // Axios 요청 보내기
-    const response = await axios.post(`http://localhost:8080/s3/update/${productId}/${imageId}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-
-    getProductById(productId)
-  } catch (error) {
-    console.error('업데이트 실패:', error);
-  }
-};
-
-const deleteImage = async (imageId: number, productId: number) => {
-  try {
-    await axios.post(`http://localhost:8080/s3/delete/${imageId}`);
-    getProductById(productId)
-  } catch (error) {
-    console.error('이미지 삭제 실패:', error);
-  }
-};
-
-const selectFile = () => {
-  return new Promise<File | null>((resolve) => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.onchange = () => {
-      resolve(input.files ? input.files[0] : null);
-    };
-    input.click();
+  const productIdupdate = ref(0);
+  const productupdate = ref({
+    starId: 99,
+    starName: "nono",
+    name: '',
+    amount: 0,
+    price: 0,
+    imageUrl: [],
+    content: '',
+    isAvailable: false
   });
-};
+
+  const updateProduct = async (productIdupdate: number, updatedProductDto: any) => {
+    try {
+      const response = await axios.post(`http://i10d106.p.ssafy.io:8080/product/update/${productIdupdate}`, updatedProductDto);
+      if (response.data === 'SUCCESS') {
+        alert('상품이 성공적으로 업데이트되었습니다.');
+      } else {
+        alert('상품 업데이트에 실패했습니다.');
+        console.log(response.data)
+      }
+    } catch (error) {
+      console.error('상품 업데이트 중 오류 발생', error);
+    }
+  };
+
+  const submitFormupdate = () => {
+    updateProduct(productIdupdate.value, productupdate.value);
+  };
+
+  //-----------상품 수정 이미지제외----------------------------//
+
+
+
+
+
+
+  //-----------상품 이미지 수정----------------------------//
+
+  const productIdimageupdate = ref(0);
+  const existingImageUrl = ref('');
+  const fileInputimageupdate = ref();
+
+  const updateProductImage = async (productIdimageupdate: number, existingImageUrl: string, file: File) => {
+    try {
+      const formData = new FormData();
+      formData.append('existingImageUrl', existingImageUrl);
+      formData.append('file', file);
+
+      const response = await axios.post(`http://i10d106.p.ssafy.io:8080/product/updateImg/${productIdimageupdate}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      if (response.status === 200) {
+        alert('상품 이미지가 성공적으로 업데이트되었습니다.');
+      } else {
+        alert('상품 이미지 업데이트에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('상품 이미지 업데이트 중 오류 발생', error);
+    }
+  };
+
+  const submitFormimageupdate = () => {
+    if (fileInputimageupdate.value && fileInputimageupdate.value.files.length > 0) {
+      updateProductImage(productIdimageupdate.value, existingImageUrl.value, fileInputimageupdate.value.files[0]);
+    } else {
+      alert('이미지 파일을 선택해주세요.');
+    }
+  };
+
+  //-----------상품 이미지 수정----------------------------//
+
+
+  //-----------상품 개별 이미지 수정, 삭제, 추가 ----------------------------//
+  const uploadImage = async (productId: number) => {
+    try {
+      // 파일 선택하기
+      const file = await selectFile2();
+      if (!file) return;
+
+      // FormData 생성
+      const formData = new FormData();
+      formData.append('file', file);
+
+      // Axios 요청 보내기
+      const response = await axios.post(`http://i10d106.p.ssafy.io:8080/s3/upload/${productId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      // 업로드 후 결과 처리 (예: 새로고침, 상태 업데이트 등)
+      console.log('업로드 성공:', response.data);
+      getProductById(productId)
+    } catch (error) {
+      console.error('업로드 실패:', error);
+    }
+  };
+
+  // 파일 선택 함수
+  const selectFile2 = () => {
+    return new Promise<File | null>((resolve) => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.onchange = () => {
+        resolve(input.files ? input.files[0] : null);
+      };
+      input.click();
+    });
+  };
+
+
+
+
+
+
+
+
+  const updateImage = async (productId: number, imageId: number) => {
+    try {
+      // 파일 선택하기
+      const file = await selectFile();
+      if (!file) return;
+
+      // FormData 생성
+      const formData = new FormData();
+      formData.append('file', file);
+
+      // Axios 요청 보내기
+      const response = await axios.post(`http://i10d106.p.ssafy.io:8080/s3/update/${productId}/${imageId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      getProductById(productId)
+    } catch (error) {
+      console.error('업데이트 실패:', error);
+    }
+  };
+
+  const deleteImage = async (imageId: number, productId: number) => {
+    try {
+      await axios.post(`http://i10d106.p.ssafy.io:8080/s3/delete/${imageId}`);
+      getProductById(productId)
+    } catch (error) {
+      console.error('이미지 삭제 실패:', error);
+    }
+  };
+
+  const selectFile = () => {
+    return new Promise<File | null>((resolve) => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.onchange = () => {
+        resolve(input.files ? input.files[0] : null);
+      };
+      input.click();
+    });
+  };
 //-----------상품 개별 이미지 수정 및 삭제----------------------------//
 
 </script>

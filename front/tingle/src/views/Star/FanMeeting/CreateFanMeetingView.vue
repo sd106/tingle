@@ -78,7 +78,7 @@
             <button @click="submit" class="btn btn-primary btn-lg">Submit</button>
         </div>
 
-        <button @click="temp1">임시로 팬미팅 만들기 이름: jun으로 접속</button>
+        <button @click="temp1">임시로 팬미팅 만들기 이름: 황찬준이다이 접속</button>
     </main>
 </template>
 
@@ -89,12 +89,15 @@ import '@vuepic/vue-datepicker/dist/main.css'  // https://vue3datepicker.com/
 import axios from 'axios'
 import type { FanMeeting, FanMeetingContent } from '@/common/types/index'
 
+
+const API_URL = 'http://i10d106.p.ssafy.io:8080/'
+
 const temp1 = async () => {
     try {
-        const { data } = await axios.post('http://localhost:8080/fanMeetingRoom/create',
+        const { data } = await axios.post(`${API_URL}/fanMeetingRoom/create`,
             {
                 roomName: '환영환영',
-                starName: 'jun',
+                starName: '황찬준이다이',
                 maxUserCnt: 8,
             })
         console.log(data)
@@ -141,14 +144,13 @@ const isSelected = (content: FanMeetingContent) => {
 
 const submit = () => {
     // Submit the meeting
-    axios.post('http://localhost:8080/fanMeeting', meeting.value)
+    axios.post(`${API_URL}/fanMeeting`, meeting.value)
     console.log(meeting.value)
 }
 
 const loadContents = async () => {
     // Load contents from server
-    const { data } = await axios.get('http://localhost:8080/fanMeeting/types')
-
+    const { data } = await axios.get(`${API_URL}/fanMeeting/types`)
     console.log(data)
     allContents.value = data
 }

@@ -32,8 +32,9 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { defineProps, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useUserStore } from '@/stores/user';
 
 const route = useRoute()
 
@@ -42,6 +43,15 @@ const isActive = (path: string) => {
 };
 
 const props = defineProps(['id']);
+const store = useUserStore();
+
+// props.id가 변경될 때마다 실행될 함수
+watch(() => props.id, (newId, oldId) => {
+  // Store의 starId 값을 업데이트
+  store.starId = newId;
+  // 필요한 경우 추가적인 로직을 여기에 구현할 수 있습니다.
+});
+
 </script>
 
 <style scoped></style>
