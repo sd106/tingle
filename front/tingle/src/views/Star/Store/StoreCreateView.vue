@@ -6,12 +6,12 @@
 
       <!-- 상품 정보 입력 폼 -->
       <div class="tw-grid tw-gap-4 tw-mb-8">
-        <input
+        <!-- <input
           type="text"
           v-model="productcreate.starName"
           placeholder="스타 이름"
           class="tw-input tw-input-bordered tw-w-full"
-        />
+        /> -->
         <input
           type="text"
           v-model="productcreate.name"
@@ -76,9 +76,13 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user' 
 import TiptapTest from '@/components/StarMenu/Store/TiptabTest.vue'
 import StarMenu from '@/components/StarMenu/StarMenu.vue'
 const router = useRouter()
+const store = useUserStore()
+
+const starName = store.starState.username
 
 const props = defineProps(['id'])
 const id = ref(props.id)
@@ -118,7 +122,7 @@ const submitForm = () => {
 import { onMounted, watch } from 'vue'
 
 const productcreate = ref({
-  starName: '',
+  starName: starName,
   name: '',
   amount: Number,
   price: Number,

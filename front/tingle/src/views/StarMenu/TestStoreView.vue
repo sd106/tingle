@@ -1,7 +1,27 @@
 <template>
   <main class="container">
-    <h1>Test스토어</h1>
-    <hr />
+
+    <StarOrderComponent/>
+    <UserOrderComponent/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- //-----------스타의 상품 상세 조회----------------------------// -->
     <div>
       <h1>상품 상세 조회</h1>
@@ -191,6 +211,12 @@
 </template>
 
 <script setup lang="ts">
+
+
+// ==============================유저 사진 수정=============================
+
+
+
 import { ref } from 'vue'
 import axios from 'axios'
 import type { Goods } from '@/common/types/index'

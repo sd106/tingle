@@ -4,17 +4,17 @@
     <main class="container">
       <h1>스토어OrderTest</h1>
       <div>
-        <StoreOrder/>
+        <StoreStarOrder/>
         <br>
         <hr>
-        <StoreOrderUser/>
+        <StoreUserOrder/>
         <br>
         <br>
         <UserStorePicutre/>
         <br>
         <hr>
       </div>
-
+      <h1>밑에부터 아님</h1>
       <!-- =====================주문 생성============================= -->
 
       <div>
@@ -101,8 +101,8 @@
   </template>
   
   <script setup lang="ts">
-  import StoreOrder from '@/components/StarMenu/Store/StoreOrder.vue';
-  import StoreOrderUser from '@/components/StarMenu/Store/StoreOrderUser.vue';
+  import StoreStarOrder from '@/components/StarMenu/Store/StoreStarOrder.vue';
+  import StoreUserOrder from '@/components/StarMenu/Store/StoreUserOrder.vue';
   import UserStorePicutre from '@/components/StarMenu/Store/UserStorePicture.vue'
 
   import { ref } from 'vue'
@@ -145,6 +145,7 @@
       responseMessageDelete.value = "주문 삭제 실패";
     } 
   }
+
 // ==================주문 삭제 =============================
 
 
@@ -158,6 +159,7 @@ const getStarOrder =async () => {
     console.log(error)
   }
 }
+
 // ==================스타 이름으로(email아님) 스타에게 들어온 주문 목록 모두 조회 =============================
 
 

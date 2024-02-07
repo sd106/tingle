@@ -32,8 +32,6 @@ public class CustomStarRepositoryImpl implements CustomStarRepository {
                                 )
                 )
                 .from(starEntity)
-                .innerJoin(starEntity.followerUsers, followEntity)
-                .on(followEntity.starEntity.eq(starEntity))
                 .where(starEntity.category.eq(category))
                 .groupBy(starEntity.id)
                 .orderBy(starEntity.followerUsers.size().desc())

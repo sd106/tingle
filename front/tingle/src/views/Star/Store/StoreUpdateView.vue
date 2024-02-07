@@ -6,12 +6,6 @@
       <div class="tw-grid tw-gap-4 tsw-mb-8">
         <input
           type="text"
-          v-model="product!.starName"
-          placeholder="스타 이름"
-          class="tw-input tw-input-bordered tw-w-full"
-        />
-        <input
-          type="text"
           v-model="product!.name"
           placeholder="상품 이름"
           class="tw-input tw-input-bordered tw-w-full"

@@ -15,6 +15,19 @@ interface User {
     image: string;
 }
 
+interface FanState {
+    id: number;
+    username: string;
+    picture: string;
+    follwingStars: Starinfo;
+}
+
+interface StarState {
+    id: number;
+    username: string;
+    picture: string;
+}
+
 interface FanMeetingContent {
     name: string
 }
@@ -54,6 +67,7 @@ interface FanMeetingTicket {
     description: string
     price: number
 }
+
 
 interface Star {
     id: string; // tjdah25
@@ -117,6 +131,7 @@ interface ProductCreationPayload {
     files: File[];
 }
 
+<<<<<<< HEAD
 
 interface ImageUrl {
     id: number;
@@ -184,10 +199,48 @@ interface OrderResponse2 {
 
 export type {
     SignUp, LogIn, StarLogininfo, HotStarInfo,
+=======
+// 위시
+interface SnapshotType  {
+    id: number;
+    imageUrl: string;
+    username: string;
+  };
+
+interface selectedSnapshotType {
+    snapshotId : number;
+    imageUrl: string;
+    username: string;
+    starname: string;
+    content: string;
+    tags: string[];
+    comments: CommentType[];
+    likes: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
+interface CommentType {
+    id: number;
+    context: string;
+    username: string;
+    snapshotId: number;
+};
+
+
+export type {
+    SignUp, LogIn, StarLogininfo, FanState, StarState,
+    User, Star, Starinfo, HotStarInfo, StarByCategory,
+>>>>>>> b47b3771f310f25dc9553e62d7b2800833658454
     // 스토어
     Goods, ImageUrl, OrderResponse,
     // 팬미팅
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
+<<<<<<< HEAD
     User, Star, Starinfo,
     Product, ProductCreationPayload, OrderResponse2, UserStoreStorageResponse
+=======
+    SnapshotType, selectedSnapshotType, CommentType
+
+>>>>>>> b47b3771f310f25dc9553e62d7b2800833658454
 }

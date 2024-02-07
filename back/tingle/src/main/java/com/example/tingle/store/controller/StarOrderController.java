@@ -2,24 +2,20 @@ package com.example.tingle.store.controller;
 
 
 import com.example.tingle.common.ResultDTO;
+import com.example.tingle.star.entity.StarEntity;
+import com.example.tingle.star.service.impl.StarServiceImpl;
 import com.example.tingle.store.dto.OrderDto;
-import com.example.tingle.store.dto.ProductDto;
 import com.example.tingle.store.entity.OrderEntity;
 import com.example.tingle.store.entity.ProductEntity;
-import com.example.tingle.store.entity.ProductImageEntity;
 import com.example.tingle.store.service.S3UploadService;
 import com.example.tingle.store.service.impl.OrderServiceImpl;
 import com.example.tingle.store.service.impl.ProductServiceImpl;
-import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.user.dto.UserStoreStorageDTO;
 import com.example.tingle.user.entity.UserEntity;
-import com.example.tingle.star.service.StarServiceImpl;
 import com.example.tingle.user.entity.UserStoreStorage;
 import com.example.tingle.user.service.impl.UserServiceImpl;
 import com.example.tingle.user.service.impl.UserStoreStorageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,7 +50,6 @@ public class StarOrderController {
         this.s3UploadService = s3UploadService;
         this.userStoreStorageService = userStoreStorageService;
     }
-
 
 
     // 주문 생성, 상품의 수량이 0일시 주문 불가능.
@@ -105,12 +100,10 @@ public class StarOrderController {
 
         if (star != null) {
             List<OrderEntity> orderEntities = star.getOrderEntities();
-
             // OrderDto로 변환
             List<OrderDto> orderDtos = orderEntities.stream()
                     .map(this::convertToOrderDto)
                     .collect(Collectors.toList());
-
             // ResultDTO로 결과를 래핑하여 반환
             return ResultDTO.of("SUCCESS", "주문 목록 조회 성공", orderDtos);
         } else {
@@ -149,12 +142,12 @@ public class StarOrderController {
 
     //유에에게 사진 보내기
     @PostMapping("/sendTouser")
-    public String sendTOuser(   @RequestParam("files") MultipartFile[] files,
-                                   @RequestParam("orderId") Long orderId,
-                                   @RequestParam("content") String content,
-                                   @RequestParam("title") String title) throws IOException {
+    public String sendTOuser(@RequestParam("files") MultipartFile[] files,
+                             @RequestParam("orderId") Long orderId,
+                             @RequestParam("content") String content,
+                             @RequestParam("title") String title) throws IOException {
         Optional<OrderEntity> optionalOrderEntity = orderService.findById(orderId);
-        if(optionalOrderEntity.isPresent()) {
+        if (optionalOrderEntity.isPresent()) {
             String starName = optionalOrderEntity.get().getGoods().getStarName();
             Long userId = optionalOrderEntity.get().getFan().getId();
             Optional<UserEntity> optionalUserEntity = userService.findById(userId);
@@ -178,7 +171,7 @@ public class StarOrderController {
                 starService.save(starEntity);
             }
             List<String> collect = storeStorages.stream().map(UserStoreStorage::getUrl)
-                    .collect(Collectors.toList());
+                    .toList();
             return collect.toString();
         }
         return "FAIL";
@@ -203,10 +196,6 @@ public class StarOrderController {
         return "FAIL";
     }
 
-
-//    List<OrderDto> orderDtos = orderEntities.stream()
-//            .map(this::convertToOrderDto)
-//            .collect(Collectors.toList());
     @GetMapping("/getStarsPicture/{userId}")
     public ResultDTO<List<UserStoreStorageDTO>> getStarsPicture(@PathVariable Long userId) {
         Optional<UserEntity> optionalUserEntity = userService.findById(userId);

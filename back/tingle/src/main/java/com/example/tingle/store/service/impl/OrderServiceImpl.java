@@ -29,7 +29,6 @@ public class OrderServiceImpl implements OrderService {
     private final StarRepository starRepository;
     private final UserServiceImpl userService;
     private final ProductServiceImpl productService;
-    private final EntityManager entityManager;
 
     @Autowired
     public OrderServiceImpl(ProductRepository productRepository,
@@ -37,15 +36,13 @@ public class OrderServiceImpl implements OrderService {
                             UserRepository userRepository,
                             StarRepository starRepository,
                             UserServiceImpl userService,
-                            ProductServiceImpl productService,
-                            EntityManager entityManager) {
+                            ProductServiceImpl productService) {
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.starRepository = starRepository;
         this.userService = userService;
         this.productService = productService;
-        this.entityManager = entityManager;
     }
 
     @Override

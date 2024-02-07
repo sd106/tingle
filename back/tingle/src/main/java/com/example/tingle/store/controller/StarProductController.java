@@ -2,7 +2,7 @@ package com.example.tingle.store.controller;
 
 import com.example.tingle.common.ResultDTO;
 import com.example.tingle.star.entity.StarEntity;
-import com.example.tingle.star.service.StarServiceImpl;
+import com.example.tingle.star.service.impl.StarServiceImpl;
 import com.example.tingle.store.dto.ProductDto;
 import com.example.tingle.store.entity.ProductEntity;
 import com.example.tingle.store.entity.ProductImageEntity;
@@ -94,6 +94,7 @@ public class StarProductController {
     public String updateProduct(@RequestParam("productDto") String productDtoJson,
                                 @RequestParam("files") MultipartFile[] files,
                                 @RequestParam("previewFiles") String previewFiles) throws IOException {
+        System.out.println("productDtoJson = " + productDtoJson);
         ProductDto productDto = objectMapper.readValue(productDtoJson, ProductDto.class);
         Long productId = productDto.getProductId();
         Optional<ProductEntity> optionalProductEntity = productService.findById(productId);
@@ -108,8 +109,7 @@ public class StarProductController {
         for (ProductImageEntity imageUrl : imageUrls) {
             if (!previewList.contains(imageUrl.getUrl())) {
                 filteredImageUrls.add(imageUrl);
-            }
-            else {
+            } else {
                 addfilteredImageUrls.add(imageUrl);
             }
         }
@@ -180,7 +180,6 @@ public class StarProductController {
         productService.save(product);
         return "SUCCESS";
     }
-
 
 
     @PostMapping("/delete/{productId}")
@@ -258,5 +257,23 @@ public class StarProductController {
         }
     }
 
+    @GetMapping("/getByStarId/{starId}")
+    public ResultDTO<List<ProductDto>> getProductsByStarName(@PathVariable Long starId) {
+        Optional<StarEntity> optionalStarEntity = starService.findById(starId);
+        if (optionalStarEntity.isPresent()) {
+            StarEntity starEntity = optionalStarEntity.get();
+            String username = starEntity.getUsername();
+            List<ProductEntity> products = productService.findByStarName(username);
+            if (!products.isEmpty()) {
+                // ProductEntity 리스트를 ProductDto 리스트로 변환
+                List<ProductDto> productDtos = products.stream()
+                        .map(productService::mapToDTO)
+                        .collect(Collectors.toList());
 
+                // 성공적인 결과를 ResultDTO로 래핑하여 반환
+                return ResultDTO.of("SUCCESS", "스타의 상품 목록 조회 성공", productDtos);
+            }
+        }
+        return ResultDTO.of("NOT_FOUND", "스타의 상품이 없음", new ArrayList<>());
+    }
 }

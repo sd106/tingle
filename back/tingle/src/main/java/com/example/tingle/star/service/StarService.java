@@ -5,11 +5,12 @@ import com.example.tingle.star.dto.response.ReadStarByCategory;
 import com.example.tingle.star.entity.StarEntity;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 public interface StarService {
     StarEntity findByUsername(String username);
 
+    Optional<StarEntity> findById(Long starId);
     List<ReadStarByCategory> findStarsByCategory(int category);
 
     void save(StarEntity starEntity);

@@ -55,7 +55,20 @@ public class SnapShotEntity {
     /**
      * 좋아요
      */
-    private int likes;
+    @OneToMany(mappedBy = "snapShot", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LikeEntity> likes = new ArrayList<>();
+
+    // 스냅샷에 좋아요를 추가하는 메소드
+    public void addLike(LikeEntity like) {
+        this.likes.add(like);
+        like.setSnapShot(this);
+    }
+
+    // 스냅샷의 좋아요 수를 반환하는 메소드
+    public int getLikesCount() {
+        return likes.size();
+    }
+
 
     /**
      * 스타와 팬
@@ -69,13 +82,9 @@ public class SnapShotEntity {
     /**
      * 코멘트
      */
-    @OneToMany(mappedBy = "snapShotEntity")
+    @OneToMany(mappedBy = "snapShotEntity", cascade = CascadeType.REMOVE)
     private List<CommentEntity> comments = new ArrayList<>();
 
-
-    public void likeChange(Integer likes) {
-        this.likes = likes;
-    }
 
     public void update(String image, SnapShotUpdateRequest dto, HashTagRepository hashTagRepository) {
 

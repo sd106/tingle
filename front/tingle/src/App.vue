@@ -16,13 +16,6 @@ import AppSidebar from '@/components/Layouts/AppSidebar.vue';
 
 const store = useUserStore()
 
-
-onMounted(() => {
-  store.getStarInfo()
-  if (store.isSidebarOpen) {
-    document.body.classList.add('is-sidebar-open');
-  }
-})
 </script>
 
 
