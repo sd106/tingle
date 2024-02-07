@@ -63,6 +63,19 @@ interface FanMeetingTicket {
     price: number
 }
 
+interface FanMeetingMessage {
+    sender?: string
+    text?: string
+}
+
+interface SocketMessage {
+    sender?: string
+    data?: string 
+    signalType?: string 
+    iceCandidate?: RTCIceCandidateInit 
+    sdp?: RTCSessionDescriptionInit 
+    roomType?: string 
+}
 
 interface Star {
     id: string; // tjdah25
@@ -161,6 +174,6 @@ export type {
     Product, Goods, ProductCreationPayload, ImageUrl, OrderResponse,
     // 팬미팅
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
-    SnapshotType, selectedSnapshotType, CommentType
+    SnapshotType, selectedSnapshotType, CommentType, FanMeetingMessage,SocketMessage
 
 }

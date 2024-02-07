@@ -11,7 +11,7 @@
             </div>
             <div id="chat-room">
                 <ul id="message-list">
-                    <li v-for="message in messages" :key="message.id">
+                    <li v-for="message in messages" :key="message.sender">
                         <div v-if="message.sender !== localUserName" class="message-content other-message-content">
                             <div class="profile-image">
                                 <img src="/image/fan-meeting-img.webp" alt="프로필 이미지">
@@ -37,40 +37,25 @@
     <InviteCard v-if="invited" :starName="starName"></InviteCard>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useUserStore } from '@/stores/user'
-import InviteCard from '@/components/starMenu/FanMeeting/InviteCard.vue'
+import InviteCard from '@/components/StarMenu/FanMeeting/InviteCard.vue'
 import { useRoute } from 'vue-router'
+import type { FanMeetingMessage, SocketMessage } from '@/common/types/index'
 
 const route = useRoute()
 const store = useUserStore()
 
-const starName = ref(route.params.username.toString())
-const localUserName = ref(store.userName)
+const starName = ref(route.params.starid.toString())
+const localUserName = ref(store.fanState?.username)
 const roomType = 'Waiting'
-localUserName.value = '나나나'
 
 
 // 메시지 관련
 const invited = ref(false)
 
-const messages = ref([{
-    sender: '가가가',
-    text: '채팅방에 오신 것을 환영합니다.'
-},
-{
-    sender: '나나나',
-    text: '직이네'
-},
-{
-    sender: '다다다',
-    text: '역시 릅신 ㅇㅅㄽ!!!'
-},
-{
-    sender: '라라라',
-    text: '불끄면 안보임'
-}
+const messages = ref<FanMeetingMessage[]>([
 ])
 const newMessage = ref('')
 
@@ -80,17 +65,17 @@ const sendMessage = () => {
             sender: localUserName.value,
             signalType: 'Text',
             data: newMessage.value,
-            roomType: roomType
+            roomType: roomType,
         });
         newMessage.value = ''
     }
 }
 
 // 소켓 관련
-let socket
+let socket: WebSocket | undefined;
 
 // 서버에게 메시지 전송 메서드
-const sendToServer = (msg) => {
+const sendToServer = (msg:SocketMessage) => {
     if (socket && socket.readyState === WebSocket.OPEN) {
         socket.send(JSON.stringify(msg))
     }
@@ -109,43 +94,29 @@ const initializeWebSocket = () => {
                 handleTextMessage(message)
                 break
 
-            case "Offer":
-                console.log('Signal OFFER received')
-                handleOfferMessage(message)
-                break
-
-            case "Answer":
-                console.log('Signal ANSWER received')
-                handleAnswerMessage(message)
-                break
-
-            case "Ice":
-                console.log('Signal ICE Candidate received')
-                handleICEMessage(message)
-                break
-
-            case "Join":
-                console.log('Client is starting to ' + (message.data === "true)" ? 'negotiate' : 'wait for a peer'))
-                handleJoinMessage(message)
-                break
-
             case 'Invite':
                 console.log('Invite message received')
                 handleInviteMessage(message)
                 break
 
             default:
-                handleErrorMessage('Wrong type message received from server')
+                handleErrorMessage(message)
         }
     }
 
     socket.onopen = () => {
         console.log('소켓 열렸는디요.')
+        const sendToServer = (msg: SocketMessage) => {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify(msg));
+            }
+        };
+
         sendToServer({
             sender: localUserName.value,
             signalType: 'Join',
             data: starName.value,
-            roomType: roomType
+            roomType: roomType,
         });
     };
 
@@ -158,7 +129,7 @@ const initializeWebSocket = () => {
     };
 }
 
-const handleTextMessage = (message) => {
+const handleTextMessage = (message: SocketMessage) => {
     messages.value.push({
         sender: message.sender,
         text: message.data
@@ -166,72 +137,21 @@ const handleTextMessage = (message) => {
     console.log('Text message from ' + message.sender + ' received: ' + message.data)
 }
 
-const handleOfferMessage = async (message) => {
-    try {
-        const remoteDescription = new RTCSessionDescription(message.sdp)
-        await myPeerConnection.setRemoteDescription(remoteDescription)
-
-        const answer = await myPeerConnection.createAnswer()
-        await myPeerConnection.setLocalDescription(answer)
-        sendToServer({
-            sender: localUserName.value,
-            signalType: 'Answer',
-            sdp: myPeerConnection.localDescription,
-            roomType: roomType
-        })
-    } catch (error) {
-        console.error('Error handling offer message: ', error)
-    }
-}
-
-const handleAnswerMessage = (message) => {
-    const remoteDescription = new RTCSessionDescription(message.sdp)
-    myPeerConnection.setRemoteDescription(remoteDescription)
-}
-
-const handleICEMessage = (message) => {
-    const candidate = new RTCIceCandidate(message.iceCandidate)
-    myPeerConnection.addIceCandidate(candidate)
-}
-
-const handleJoinMessage = async (message) => {
-    if (message.data === "true") {
-        console.log("11")
-        myPeerConnection.onnegotiationneeded = async () => {
-            try {
-                console.log("22")
-
-                const offer = await myPeerConnection.createOffer()
-                await myPeerConnection.setLocalDescription(offer)
-                sendToServer({
-                    sender: localUserName.value,
-                    signalType: 'Offer',
-                    sdp: myPeerConnection.localDescription,
-                    roomType: roomType
-                })
-                console.log('Negotiation Needed Event: SDP offer sent')
-            } catch (reason) {
-                // 연결 실패 시 오류 처리
-                console.error('failure to connect error: ', reason)
-            }
-        }
-    }
-}
-
-const handleInviteMessage = (message) => {
+const handleInviteMessage = (message: SocketMessage) => {
     invited.value = true
     console.log("초대왔땅")
 }
-const handleErrorMessage = (message) => {
+const handleErrorMessage = (message: SocketMessage) => {
+    
     console.error("에러발생!: ", message)
 }
 
 
 onMounted(initializeWebSocket)
 onUnmounted(() => {
-    if (socket.value) {
-        socket.value.close()
-    }
+if (socket) {
+    socket.close()
+  }
 })
 </script>
 

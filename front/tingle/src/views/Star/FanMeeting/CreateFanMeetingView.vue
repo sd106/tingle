@@ -77,7 +77,7 @@
             <button @click="submit" class="btn btn-primary btn-lg">Submit</button>
         </div>
 
-        <button @click="temp1">임시로 팬미팅 만들기 이름: jun으로 접속</button>
+        <button @click="temp1">임시로 팬미팅 만들기 이름: 황찬준이다이 접속</button>
     </main>
 </template>
 
@@ -93,7 +93,7 @@ const temp1 = async () => {
         const { data } = await axios.post('http://localhost:8080/fanMeetingRoom/create', 
                             {
                                 roomName: '환영환영',
-                                starName: 'jun',
+                                starName: '황찬준이다이',
                                 maxUserCnt: 8,
                             })
         console.log(data)
