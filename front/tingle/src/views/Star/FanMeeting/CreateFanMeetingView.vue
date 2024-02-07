@@ -16,7 +16,7 @@
                             <label for="participants" class="form-label">참여 인원</label>
                         </div>
                         <div class="col-md-6 d-flex">
-                            <input type="number" id="participants" class="form-control me-3" v-model="meeting.participants"> 
+                            <input type="number" id="participants" class="form-control me-3" v-model="meeting.participants">
                             <span>명</span>
                         </div>
                     </div>
@@ -37,7 +37,8 @@
                         <label class="form-label">입장권 구매 시작</label>
                     </div>
                     <div class="col-md-8 d-flex">
-                        <VueDatePicker v-model="meeting.ticketStartDate" locale="ko" :time-picker-inline="true" :is-24="false"></VueDatePicker>
+                        <VueDatePicker v-model="meeting.ticketStartDate" locale="ko" :time-picker-inline="true"
+                            :is-24="false"></VueDatePicker>
                     </div>
                 </div>
                 <div class="row mb-2">
@@ -45,7 +46,8 @@
                         <label class="form-label">입장권 구매 종료</label>
                     </div>
                     <div class="col-md-8 d-flex">
-                        <VueDatePicker v-model="meeting.ticketEndDate" locale="ko" :time-picker-inline="true" :is-24="false"></VueDatePicker>
+                        <VueDatePicker v-model="meeting.ticketEndDate" locale="ko" :time-picker-inline="true"
+                            :is-24="false"></VueDatePicker>
                     </div>
                 </div>
                 <div class="row">
@@ -53,22 +55,21 @@
                         <label class="form-label">팬미팅 시작</label>
                     </div>
                     <div class="col-md-8 d-flex mb-4">
-                        <VueDatePicker v-model="meeting.startDate" locale="ko" :time-picker-inline="true" :is-24="false"></VueDatePicker>
+                        <VueDatePicker v-model="meeting.startDate" locale="ko" :time-picker-inline="true" :is-24="false">
+                        </VueDatePicker>
                     </div>
                 </div>
             </div>
 
         </div>
-        
+
         <hr>
-        
+
         <div class="text-center">컨텐츠 선택</div>
         <hr>
         <div class="d-inline" v-for="(content, index) in allContents" :key="index">
-            <button
-                @click="toggleContent(content)" 
-                class="btn btn-outline-primary m-1" 
-                :class="{ 'bg-primary text-white': isSelected(content) }" >
+            <button @click="toggleContent(content)" class="btn btn-outline-primary m-1"
+                :class="{ 'bg-primary text-white': isSelected(content) }">
                 {{ content.name }}
             </button>
         </div>
@@ -90,12 +91,12 @@ import type { FanMeeting, FanMeetingContent } from '@/common/types/index'
 
 const temp1 = async () => {
     try {
-        const { data } = await axios.post('http://localhost:8080/fanMeetingRoom/create', 
-                            {
-                                roomName: '환영환영',
-                                starName: 'jun',
-                                maxUserCnt: 8,
-                            })
+        const { data } = await axios.post('http://localhost:8080/fanMeetingRoom/create',
+            {
+                roomName: '환영환영',
+                starName: 'jun',
+                maxUserCnt: 8,
+            })
         console.log(data)
     } catch (e) {
         console.log(e)
@@ -124,7 +125,7 @@ const toggleContent = (content: FanMeetingContent) => {
 
     if (indexInMeeting !== -1) {
         meeting.value.contents.splice(indexInMeeting, 1)
-        
+
     } else if (indexInAllContents !== -1) {
         meeting.value.contents.push(content.name)
 
@@ -135,8 +136,8 @@ const toggleContent = (content: FanMeetingContent) => {
 const allContents = ref<FanMeeting[]>([])
 
 const isSelected = (content: FanMeetingContent) => {
-        return meeting.value.contents.includes(content.name);
-    };
+    return meeting.value.contents.includes(content.name);
+};
 
 const submit = () => {
     // Submit the meeting
@@ -146,8 +147,8 @@ const submit = () => {
 
 const loadContents = async () => {
     // Load contents from server
-    const { data }  = await axios.get('http://localhost:8080/fanMeeting/types')
-    
+    const { data } = await axios.get('http://localhost:8080/fanMeeting/types')
+
     console.log(data)
     allContents.value = data
 }
@@ -167,5 +168,4 @@ onMounted(() => {
     background-color: rgb(231, 165, 165);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
 }
-
 </style>

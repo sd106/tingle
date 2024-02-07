@@ -1,46 +1,46 @@
 <template>
-    <main class="container">
-      <h1>Test스토어</h1>
-      <hr>
-<!-- //-----------스타의 상품 상세 조회----------------------------// -->
-      <div>
-        <h1>상품 상세 조회</h1>
-        <form @submit.prevent="submitFormGetProductById">
+  <main class="container">
+    <h1>Test스토어</h1>
+    <hr>
+    <!-- //-----------스타의 상품 상세 조회----------------------------// -->
+    <div>
+      <h1>상품 상세 조회</h1>
+      <form @submit.prevent="submitFormGetProductById">
         <input type="number" v-model="inputProductId" placeholder="상품 ID 입력">
         <button type="submit">상품 상세 조회</button>
       </form>
 
 
-      
-    <div v-if="productgetById">
-      <p>상품 이름: {{ productgetById.data.name }}</p>
-      <p>스타 이름: {{ productgetById.data.starName }}</p>
-      <p>수량: {{ productgetById.data.amount }}</p>
-      <p>가격: {{ productgetById.data.price }}</p>
-      <p>설명: {{ productgetById.data.content }}</p>
-      <p>사용 가능: {{ productgetById.data.available ? '예' : '아니오' }}</p>
-      <div v-if="productgetById.data.imageUrl && productgetById.data.imageUrl.length">
-      <h3>이미지:</h3>
-      <div v-for="url in productgetById.data.imageUrl" :key="url">
-        <img :src="url.url" alt="Product Image" style="max-width: 200px; margin: 5px;">
-        <button @click="updateImage(productgetById.data.productId, url.id)">수정하기</button>
-        <button @click="deleteImage(url.id, productgetById.data.productId)">삭제하기</button>
+
+      <div v-if="productgetById">
+        <p>상품 이름: {{ productgetById.data.name }}</p>
+        <p>스타 이름: {{ productgetById.data.starName }}</p>
+        <p>수량: {{ productgetById.data.amount }}</p>
+        <p>가격: {{ productgetById.data.price }}</p>
+        <p>설명: {{ productgetById.data.content }}</p>
+        <p>사용 가능: {{ productgetById.data.available ? '예' : '아니오' }}</p>
+        <div v-if="productgetById.data.imageUrl && productgetById.data.imageUrl.length">
+          <h3>이미지:</h3>
+          <div v-for="url in productgetById.data.imageUrl" :key="url">
+            <img :src="url.url" alt="Product Image" style="max-width: 200px; margin: 5px;">
+            <button @click="updateImage(productgetById.data.productId, url.id)">수정하기</button>
+            <button @click="deleteImage(url.id, productgetById.data.productId)">삭제하기</button>
+          </div>
+        </div>
+        <button @click="uploadImage(productgetById.data.productId)">업로드</button>
       </div>
     </div>
-    <button @click="uploadImage(productgetById.data.productId)">업로드</button>
-    </div>
-      </div>
-<!-- //-----------스타의 상품 상세 조회----------------------------// -->
+    <!-- //-----------스타의 상품 상세 조회----------------------------// -->
 
 
 
 
 
-<!-- //-----------스타의 상품 조회----------------------------// -->
-      <hr>
-      <br>
-      <hr>
-      <h1>스타의 상품 조회</h1>
+    <!-- //-----------스타의 상품 조회----------------------------// -->
+    <hr>
+    <br>
+    <hr>
+    <h1>스타의 상품 조회</h1>
     <div>
       <form @submit.prevent="submitFormgetByStarName">
         <input type="text" v-model="inputStarName" placeholder="스타 이름 입력">
@@ -57,26 +57,26 @@
         스타의 상품 목록이 없습니다.
       </div>
     </div>
-<!-- //-----------스타의 상품 조회----------------------------// -->
+    <!-- //-----------스타의 상품 조회----------------------------// -->
 
 
-<!-- //-----------상품 삭제----------------------------// -->
+    <!-- //-----------상품 삭제----------------------------// -->
     <hr>
-      <br>
-      <hr>
+    <br>
+    <hr>
     <div>
-        <h1>상품 삭제</h1>
-        <form @submit.prevent="submitFormgetdelete">
-            <input type="text" v-model="inputProductIdDelete" placeholder="삭제할 상품ID 입력">
-            <button type="submit">삭제하기</button>
-        </form>
-        <p>상품 상세 조회랑 같이 사용시 확인 가능</p>
+      <h1>상품 삭제</h1>
+      <form @submit.prevent="submitFormgetdelete">
+        <input type="text" v-model="inputProductIdDelete" placeholder="삭제할 상품ID 입력">
+        <button type="submit">삭제하기</button>
+      </form>
+      <p>상품 상세 조회랑 같이 사용시 확인 가능</p>
     </div>
-<!-- //-----------상품 삭제----------------------------// -->
+    <!-- //-----------상품 삭제----------------------------// -->
 
 
 
-<!-- //-----------상품 생성----------------------------// -->
+    <!-- //-----------상품 생성----------------------------// -->
 
     <hr>
     <br>
@@ -91,10 +91,10 @@
       <input type="file" ref="files" multiple>
       <button type="submit">생성</button>
     </form>
-<!-- //-----------상품 생성----------------------------// -->
+    <!-- //-----------상품 생성----------------------------// -->
 
 
-<!-- //-----------상품 수정 이미지제외----------------------------// -->
+    <!-- //-----------상품 수정 이미지제외----------------------------// -->
 
     <hr>
     <br>
@@ -102,18 +102,18 @@
 
     <h1>상품 정보 업데이트</h1>
     <form @submit.prevent="submitFormupdate">
-        <div class="d-flex">
-            <p>상품Id</p><input type="number" v-model="productIdupdate" placeholder="상품 ID">
-        </div>
-        <input type="text" v-model="productupdate.name" placeholder="상품 이름">
-        <div class="d-flex">
-            <p>수량</p>
-            <input type="number" v-model.number="productupdate.amount" placeholder="수량">
-        </div>
-        <div class="d-flex">
-            <p>가격</p>
-            <input type="number" v-model.number="productupdate.price" placeholder="가격">
-        </div>
+      <div class="d-flex">
+        <p>상품Id</p><input type="number" v-model="productIdupdate" placeholder="상품 ID">
+      </div>
+      <input type="text" v-model="productupdate.name" placeholder="상품 이름">
+      <div class="d-flex">
+        <p>수량</p>
+        <input type="number" v-model.number="productupdate.amount" placeholder="수량">
+      </div>
+      <div class="d-flex">
+        <p>가격</p>
+        <input type="number" v-model.number="productupdate.price" placeholder="가격">
+      </div>
       <input type="text" v-model="productupdate.imageUrl" placeholder="don't touch this holder">
       <textarea v-model="productupdate.content" placeholder="상품 설명"></textarea>
       <label>
@@ -123,10 +123,10 @@
       <button type="submit">업데이트</button>
     </form>
 
-<!-- //-----------상품 수정 이미지제외----------------------------// -->
+    <!-- //-----------상품 수정 이미지제외----------------------------// -->
 
 
-<!-- //-----------상품 이미지 수정----------------------------// -->
+    <!-- //-----------상품 이미지 수정----------------------------// -->
     <hr>
     <br>
     <hr>
@@ -138,10 +138,10 @@
       <input type="file" ref="fileInputimageupdate">
       <button type="submit">업데이트</button>
     </form>
-    
-<!-- //-----------상품 이미지 수정----------------------------// -->
-    </main>
-  </template>
+
+    <!-- //-----------상품 이미지 수정----------------------------// -->
+  </main>
+</template>
 
 
 
@@ -160,32 +160,32 @@
 
 <script setup lang="ts">
 
-  import { ref } from 'vue';
-  import axios from 'axios';
-  
-  // ----------상품 상세조회----------------------------//
+import { ref } from 'vue';
+import axios from 'axios';
 
-  const productgetById = ref(null);
-  const inputProductId = ref(0);
-  
-  const getProductById = async (productId: number) => {
-    try {
-      const response = await axios.get(`http://localhost:8080/product/getById/${productId}`);
-      if (response.data.resultCode === 'SUCCESS') {
-        productgetById.value = response.data;
-      } else {
-        console.error(response.data.message);
-        console.log(response.data)
-        productgetById.value = response.data
-      }
-    } catch (error) {
-      console.error('상품 조회 중 오류 발생', error);
+// ----------상품 상세조회----------------------------//
+
+const productgetById = ref(null);
+const inputProductId = ref(0);
+
+const getProductById = async (productId: number) => {
+  try {
+    const response = await axios.get(`http://localhost:8080/product/getById/${productId}`);
+    if (response.data.resultCode === 'SUCCESS') {
+      productgetById.value = response.data;
+    } else {
+      console.error(response.data.message);
+      console.log(response.data)
+      productgetById.value = response.data
     }
-  };
-  
-  const submitFormGetProductById = () => {
-    getProductById(inputProductId.value);
-  };
+  } catch (error) {
+    console.error('상품 조회 중 오류 발생', error);
+  }
+};
+
+const submitFormGetProductById = () => {
+  getProductById(inputProductId.value);
+};
 // ----------상품 상세 조회----------------------------//
 
 
@@ -200,7 +200,7 @@ const getProductsByStarName = async (starName: string) => {
   try {
     const response = await axios.get(`http://localhost:8080/product/getByStarName/${starName}`);
     if (response.data.resultCode === 'SUCCESS') {
-        productgetByStarName.value = response.data.data;
+      productgetByStarName.value = response.data.data;
     } else {
       console.error(response.data.message);
       productgetByStarName.value = response.data.data;
@@ -227,7 +227,7 @@ const getProductdelete = async (productId: number) => {
   try {
     const response = await axios.post(`http://localhost:8080/product/delete/${productId}`);
     if (response.data.resultCode === 'SUCCESS') {
-        productdelete.value = response.data.data;
+      productdelete.value = response.data.data;
     } else {
       console.error(response.data.message);
       productdelete.value = response.data.data;
@@ -293,8 +293,8 @@ const submitForm = () => {
 
 const productIdupdate = ref(0);
 const productupdate = ref({
-    starId : 99,
-    starName : "nono",
+  starId: 99,
+  starName: "nono",
   name: '',
   amount: 0,
   price: 0,
@@ -427,7 +427,7 @@ const updateImage = async (productId: number, imageId: number) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-    
+
     getProductById(productId)
   } catch (error) {
     console.error('업데이트 실패:', error);

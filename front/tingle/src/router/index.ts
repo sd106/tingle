@@ -1,4 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
+import LayoutOnView from '@/views/Layout/LayoutOnView.vue'
+import LayoutOnlyHeader from '@/views/Layout/LayoutOnlyHeader.vue'
+import LayoutOffView from '@/views/Layout/LayoutOffView.vue'
+
 import HomeView from '@/views/HomeView.vue'
 
 import SignUpView from '@/views/User/SignUpView.vue'
@@ -37,173 +42,205 @@ import TestStoreViewOrderVue from '@/views/StarMenu/TestStoreViewOrder.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // 레이아웃 모두 표시
     {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    // 회원
-    {
-      path: '/signup',
-      name: 'signup',
-      component: SignUpView
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: LogInView
-    },
-    {
-      path: '/:userid/profile',
-      name: 'profile',
-      component: ProfileView,
-      // props: (route) => ({ id: route.params.id }),
-    },
-    //// 스타 메뉴
-    // 홈
-    {
-      path: '/:starid/home',
-      name: 'starhome',
-      component: StarHomeMainView,
-      props: (route) => ({ id: route.params.starid }),
-    },
-    // 설정은 어떻게 만들 지 모르겠음
-    {
-      path: '/:starid/home/manage',
-      name: 'starhomemanage',
-      component: StarHomeManageView,
-      props: (route) => ({ id: route.params.starid }),
-    },
-
-    // 스냅샷
-    {
-      path: '/:starid/snapshot',
-      name: 'snapshot',
-      component: SnapshotMainView,
-      props: (route) => ({ id: route.params.starid }),
-    },
-    {
-      path: '/:starid/snapshot/create',
-      name: 'snapshotcreate',
-      component: SnapshotCreateView,
-      props: (route) => ({ id: route.params.starid }),
-    },
-    {
-      path: '/:starid/snapshot/update',
-      name: 'snapshotupdate',
-      component: SnapshotUpdateView,
-      props: (route) => ({ id: route.params.starid }),
-    },
-    // 위시
-    {
-      path: '/:starid/wish',
-      name: 'wish',
-      component: WishMainView,
-      props: (route) => ({ id: route.params.starid }),
-    },
-    {
-      path: '/:starid/wish/create',
-      name: 'wishcreate',
-      component: WishCreateView,
-      props: (route) => ({ id: route.params.starid }),
-    },
-    {
-      path: '/:starid/wish/update',
-      name: 'wishupdate',
-      component: WishUpdateView,
-      props: (route) => ({ id: route.params.starid }),
-    },
-    {
-      path: '/:starid/wish/manage',
-      name: 'wishmanage',
-      component: WishManageView,
-      props: (route) => ({ id: route.params.starid }),
-    },
-
-
-    // 스토어
-    {
-      path: '/:starid/store',
-      name: 'store',
-      component: StoreMainView,
-      props: (route) => ({ id: route.params.starid }),
-    },
-    {
-      path: '/:starid/store/:productId(\\d+)',
-      name: 'storedetail',
-      component: StoreDetailView,
-      props: true
-    },
-    {
-      path: '/:starid/store/manage',
-      name: 'storemange',
-      component: StoreManageView,
-      props: (route) => ({ id: route.params.starid }),
-    },
-
-
-    {
-      path: '/:starid/fanmeeting',
-      name: 'fanmeeting',
-      component: FanMeetingEntranceView,
-      props: (route) => ({ starid: route.params.starid }),
-    },
-    {
-      path: '/fanmeeting/create',
-      name: 'CreateMeetingView',
-      component: CreateFanMeetingView,
-    },
-    {
-      path: '/profile/:starid/fanmeeting/ticketbox',
-      name: 'FanMeetingTicketBoxView',
-      component: FanMeetingTicketBoxView,
-    },
-    {
-      path: '/fanmeeting/:starid/waitingroom',
-      name: 'WaitingRoomView',
-      component: WaitingRoomView
-    },
-    // Store의 test를 위한 View
-    {
-      path: '/profile/:username/teststore',
-      name: 'teststore',
-      component: TestStoreViewVue,
-      props: (route) => ({ username: route.params.username }),
-    },
-    {
-      path: '/profile/:username/teststore2',
-      name: 'teststore2',
-      component: TestStoreViewOrderVue,
-      props: (route) => ({ username: route.params.username }),
-    },
-    {
-      path: '/selectLoginType',
-      name: 'SelectLoginTypeView',
-      component: () => import("@/views/User/SelectLoginTypeView.vue")
-    },
-    {
-      path: '/fanmeetingRoom/:starid',
-      name: 'FanMeetingRoomView',
-      component: MeetingRoomView,
+      path: '',
+      name: 'layoutOn',
+      component: LayoutOnView,
       children: [
         {
-          path: 'normal',
-          name: 'NormalFanMeetingView',
-          component: NormalMeetingView,
+          path: '',
+          name: 'home',
+          component: HomeView
+        },
+        // 회원
+        {
+          path: '/signup',
+          name: 'signup',
+          component: SignUpView
         },
         {
-          path: 'lifeFourCut',
-          name: 'LifeFourCutMeetingView',
-          component: LifeFourCutMeetingView,
+          path: '/login',
+          name: 'login',
+          component: LogInView
         },
         {
-          path: 'birthday',
-          name: 'BirthdayMeetingView',
-          component: BirthdayMeetingView,
+          path: '/:userid/profile',
+          name: 'profile',
+          component: ProfileView,
+          // props: (route) => ({ id: route.params.id }),
+        },
+        //// 스타 메뉴
+        // 홈
+        {
+          path: '/:starid/home',
+          name: 'starhome',
+          component: StarHomeMainView,
+          props: (route) => ({ id: route.params.starid }),
+        },
+        /////// 설정은 어떻게 만들 지 모르겠음
+        {
+          path: '/:starid/home/manage',
+          name: 'starhomemanage',
+          component: StarHomeManageView,
+          props: (route) => ({ id: route.params.starid }),
+        },
+
+        // 스냅샷
+        {
+          path: '/:starid/snapshot',
+          name: 'snapshot',
+          component: SnapshotMainView,
+          props: (route) => ({ id: route.params.starid }),
+        },
+        {
+          path: '/:starid/snapshot/create',
+          name: 'snapshotcreate',
+          component: SnapshotCreateView,
+          props: (route) => ({ id: route.params.starid }),
+        },
+        {
+          path: '/:starid/snapshot/update',
+          name: 'snapshotupdate',
+          component: SnapshotUpdateView,
+          props: (route) => ({ id: route.params.starid }),
+        },
+        // 위시
+        {
+          path: '/:starid/wish',
+          name: 'wish',
+          component: WishMainView,
+          props: (route) => ({ id: route.params.starid }),
+        },
+        {
+          path: '/:starid/wish/create',
+          name: 'wishcreate',
+          component: WishCreateView,
+          props: (route) => ({ id: route.params.starid }),
+        },
+        {
+          path: '/:starid/wish/update',
+          name: 'wishupdate',
+          component: WishUpdateView,
+          props: (route) => ({ id: route.params.starid }),
+        },
+        {
+          path: '/:starid/wish/manage',
+          name: 'wishmanage',
+          component: WishManageView,
+          props: (route) => ({ id: route.params.starid }),
+        },
+
+
+        // 스토어
+        {
+          path: '/:starid/store',
+          name: 'store',
+          component: StoreMainView,
+          props: (route) => ({ id: route.params.starid }),
+        },
+        {
+          path: '/:starid/store/:productId(\\d+)',
+          name: 'storedetail',
+          component: StoreDetailView,
+          props: true
+        },
+        {
+          path: '/:starid/store/manage',
+          name: 'storemange',
+          component: StoreManageView,
+          props: (route) => ({ id: route.params.starid }),
+        },
+
+
+        {
+          path: '/:starid/fanmeeting',
+          name: 'fanmeeting',
+          component: FanMeetingEntranceView,
+          props: (route) => ({ starid: route.params.starid }),
+        },
+        {
+          path: '/fanmeeting/create',
+          name: 'CreateMeetingView',
+          component: CreateFanMeetingView,
+        },
+        {
+          path: '/profile/:starid/fanmeeting/ticketbox',
+          name: 'FanMeetingTicketBoxView',
+          component: FanMeetingTicketBoxView,
+        },
+        {
+          path: '/fanmeeting/:starid/waitingroom',
+          name: 'WaitingRoomView',
+          component: WaitingRoomView
+        },
+        // Store의 test를 위한 View
+        {
+          path: '/profile/:username/teststore',
+          name: 'teststore',
+          component: TestStoreViewVue,
+          props: (route) => ({ username: route.params.username }),
+        },
+        {
+          path: '/profile/:username/teststore2',
+          name: 'teststore2',
+          component: TestStoreViewOrderVue,
+          props: (route) => ({ username: route.params.username }),
+        },
+        {
+          path: '/selectLoginType',
+          name: 'SelectLoginTypeView',
+          component: () => import("@/views/User/SelectLoginTypeView.vue")
+        },
+
+      ]
+    },
+
+
+    // 사이드바 제거
+    {
+      path: '',
+      name: 'layoutonlyheader',
+      component: LayoutOnlyHeader,
+      children: [
+        {
+          path: '/fanmeetingRoom/:starid',
+          name: 'FanMeetingRoomView',
+          component: MeetingRoomView,
+          children: [
+            {
+              path: 'normal',
+              name: 'NormalFanMeetingView',
+              component: NormalMeetingView,
+            },
+            {
+              path: 'lifeFourCut',
+              name: 'LifeFourCutMeetingView',
+              component: LifeFourCutMeetingView,
+            },
+            {
+              path: 'birthday',
+              name: 'BirthdayMeetingView',
+              component: BirthdayMeetingView,
+            }
+          ]
         }
+      ]
+    },
+
+    // 레이아웃 모두 제거
+    {
+      path: '',
+      name: 'layoutOff',
+      component: LayoutOffView,
+      children: [
+        // {
+        //   path: '',
+        //   name: '',
+        //   component: ??.View,
+        // }
       ]
     }
   ]
-})
-
+});
 export default router
