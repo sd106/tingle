@@ -86,7 +86,7 @@ const hotStarInfo = ref<{ id: number, picture: string, userName: string }[]>([])
 
 //구독한 스타 가져오기
 const getFolloings = async () => {
-    const response = await axios.get('http://localhost:8080/follow/1');
+    const response = await axios.get('http://i10d106.p.ssafy.io:8080/follow/1');
     folloingInfo.value = response.data.data;
 }
 

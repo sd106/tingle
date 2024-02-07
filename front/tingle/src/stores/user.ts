@@ -13,7 +13,7 @@ export const useUserStore = defineStore('user', () => {
 
   const router = useRouter()
 
-  const API_URL = 'http://localhost:8080'
+  const API_URL = 'http://i10d106.p.ssafy.io:8080'
 
   const fanState = ref<FanState | null>(null)
   const starState = ref<StarState | null>(null)
@@ -27,8 +27,6 @@ export const useUserStore = defineStore('user', () => {
   })
 
   const isSidebarOpen = ref(true)
-
-  const starInfo = ref<StarLogininfo | null>(null);
 
   const starId = ref<number>();
   const signUp = async function (payload: SignUp): Promise<void> {
