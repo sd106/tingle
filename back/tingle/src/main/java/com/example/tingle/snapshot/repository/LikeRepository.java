@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface LikeRepository extends JpaRepository<LikeEntity, Long> {
+
     Optional<LikeEntity> findByUserAndSnapShot(UserEntity user, SnapShotEntity snapShot);
     long countBySnapShot(SnapShotEntity snapShot);
 }

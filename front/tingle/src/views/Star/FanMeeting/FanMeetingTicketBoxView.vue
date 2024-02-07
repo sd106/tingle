@@ -43,7 +43,7 @@ const products = ref<FanMeetingTicket[]>([])
 
 
 const starName = ref<string>()
-starName.value = route.params.username.toString();
+starName.value = route.params.starid.toString();
 
 products.value = [
   {

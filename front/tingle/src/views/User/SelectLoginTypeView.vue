@@ -1,18 +1,10 @@
 <template>
   <main>
     <div class="d-flex">
-      <button
-        @click="selectLoginType('fan')"
-        :class="{ signin__btn: true, is_selected: selectedType === 'fan' }"
-      >
-        <span>팬이에요!</span>
-      </button>
-      <button
-        @click="selectLoginType('star')"
-        :class="{ signin__btn2: true, is_selected: selectedType === 'star' }"
-      >
-        <span>스타에요!</span>
-      </button>
+      <button @click="selectLoginType('fan')" :class="{ 'signin__btn': true, 'is_selected': selectedType === 'fan' }">
+        <span>팬이에요!</span> </button>
+      <button @click="selectLoginType('star')" :class="{ 'signin__btn2': true, 'is_selected': selectedType === 'star' }">
+        <span>스타에요!</span> </button>
     </div>
   </main>
 </template>
@@ -34,12 +26,14 @@ const selectLoginType = async (type: string) => {
       {},
       { withCredentials: true }
     )
+    // const { data } = await axios.post(`http://i10d106.p.ssafy.io:8080/auth/login/${type}`, {}, { withCredentials: true })
     console.log('▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼')
     console.log(data)
     console.log('▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲')
     if (type === 'fan') {
       const { id, username, picture, follwingStars } = data
       store.fanState = { id, username, picture, follwingStars }
+      console.log(store.fanState)
     } else if (type === 'star') {
       const { id, username, picture } = data
       store.starState = { id, username, picture }

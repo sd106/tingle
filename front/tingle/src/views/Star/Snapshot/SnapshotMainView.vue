@@ -7,7 +7,7 @@
       <button class="btn fs-5 fw-bold text-secondary" @click="loadSnapshotsBylikes">🔥 좋아요순</button>
     </div>
     <div>
-      <RouterLink :to="`/${store.starInfo?.starId}/snapshot/create`" class="btn btn-secondary">글쓰기</RouterLink>
+      <RouterLink :to="`/${id}/snapshot/create`" class="btn btn-secondary">글쓰기</RouterLink>
     </div>
   </div>
 
@@ -20,7 +20,8 @@
 
     <!-- 스냅샷 목록 섹션 (파란색 부분) -->
     <section class="snapshot-list-section">
-      <div class="snapshot-list-container" ref="containerRef" @scroll="handleScroll">
+      <!-- @scroll="handleScroll" -->
+      <div class="snapshot-list-container" ref="containerRef">   
         <div v-for="snapshot in snapshots" :key="snapshot.id" @click="wishStore.selectSnapshot(snapshot.id)" class="snapshot-item">
           <img :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image">
         </div>
@@ -38,8 +39,6 @@
   import type { Starinfo, SnapshotType } from '@/common/types';
   import SnapShotDetail from '../../../components/StarMenu/SnapShot/SnapShotDetail.vue'
 
-
-  const store = useUserStore();
   const wishStore = useWishStore();
   const props = defineProps(['id']);
   const id = ref(props.id);
@@ -52,8 +51,8 @@
 
   const loadSnapshots = async (): Promise<void> => {
     try {
-      console.log(userStore.fanState!.id)
-      const response = await axios.get(`http://localhost:8080/snapshot/star/${userStore.fanState!.id}/created`);
+      console.log(id)
+      const response = await axios.get(`http://i10d106.p.ssafy.io:8080/snapshot/star/${id.value}/created`);
       snapshots.value = response.data.AllSnapShot;
       console.log("최신순");
     } catch (error) {
@@ -63,7 +62,7 @@
 
   const loadSnapshotsBylikes = async (): Promise<void> => {
     try {
-      const response = await axios.get(`http://localhost:8080/snapshot/star/${userStore.fanState!.id}/likes`);
+      const response = await axios.get(`http://i10d106.p.ssafy.io:8080/snapshot/star/${id.value}/likes`);
       snapshots.value = response.data.AllSnapShot;
       console.log("좋아요순");
     } catch (error) {
@@ -71,23 +70,23 @@
     }
   };
 
-  const loadMore = function (): void {
-    // 스크롤 관련 로딩 로직
-    const newData = store.allstarinfo.slice(display.value.length, display.value.length + 10);
-    display.value = [...display.value, ...newData];
-  };
+  // const loadMore = function (): void {
+  //   // 스크롤 관련 로딩 로직
+  //   const newData = store.allstarinfo.slice(display.value.length, display.value.length + 10);
+  //   display.value = [...display.value, ...newData];
+  // };
 
 
-  const handleScroll = function (): void {
-    // 스크롤 이벤트 처리 로직
-    const container = containerRef.value;
-    if (container) {
-      // 스크롤이 하단에 도달했을 때 추가 데이터 로딩
-      if (container.scrollTop + container.clientHeight >= container.scrollHeight) {
-        loadMore();
-      }
-    }
-  };
+  // const handleScroll = function (): void {
+  //   // 스크롤 이벤트 처리 로직
+  //   const container = containerRef.value;
+  //   if (container) {
+  //     // 스크롤이 하단에 도달했을 때 추가 데이터 로딩
+  //     if (container.scrollTop + container.clientHeight >= container.scrollHeight) {
+  //       loadMore();
+  //     }
+  //   }
+  // };
 
   onMounted(() => {
     wishStore.selectedSnapshot = null;

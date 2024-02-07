@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/stores/user';
 import axios from 'axios';
@@ -82,11 +82,11 @@ const showBrief = function (): void {
 }
 
 const folloingInfo = ref<{ id: number, picture: string, userName: string }[]>([]);
-const hotStarInfo = ref<{ id: number, picture: string, userName: string }[]>([]);
+// const hotStarInfo = ref<{ id: number, picture: string, userName: string }[]>([]);
 
 //구독한 스타 가져오기
 const getFolloings = async () => {
-    const response = await axios.get('http://localhost:8080/follow/1');
+    const response = await axios.get('http://i10d106.p.ssafy.io:8080/follow/1');
     folloingInfo.value = response.data.data;
 }
 

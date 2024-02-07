@@ -60,7 +60,7 @@
     </li>
     <li class="nav-item">
       <RouterLink
-        :to="`/${store.fanState.id}/profile`"
+        :to="`/${store.fanState!.id}/profile`"
         class="nav-link router-link-custom"
         :class="{ active: isActive('/profileview') }"
         >Profile</RouterLink
@@ -131,19 +131,16 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 
+const props = defineProps(['id'])
 const store = useUserStore()
 const route = useRoute()
-
 
 const isActive = (path: string) => {
   return route.path.includes(path)
 }
-
-const props = defineProps(['id'])
 </script>
 
 <style scoped></style>

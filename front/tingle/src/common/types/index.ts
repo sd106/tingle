@@ -4,11 +4,6 @@ interface SignUp {
     email: string;
 }
 
-interface LogIn {
-    username: string;
-    password: string;
-}
-
 interface User {
     id: string;
     nickName: string;
@@ -68,6 +63,19 @@ interface FanMeetingTicket {
     price: number
 }
 
+interface FanMeetingMessage {
+    sender?: string
+    text?: string
+}
+
+interface SocketMessage {
+    sender?: string
+    data?: string 
+    signalType?: string 
+    iceCandidate?: RTCIceCandidateInit 
+    sdp?: RTCSessionDescriptionInit 
+    roomType?: string 
+}
 
 interface Star {
     id: string; // tjdah25
@@ -81,13 +89,12 @@ interface Starinfo {
     nickName: string;
     image: string;
 }
-interface StarLogininfo {
-    starId?: number;
+
+
+interface StarByCategory {
+    id: number;
     username: string;
-    picture?: string;
-    email?: string;
-    role?: string;
-    provider?: string;
+    picture: string;
 }
 
 // 스토어
@@ -131,7 +138,6 @@ interface ProductCreationPayload {
     files: File[];
 }
 
-<<<<<<< HEAD
 
 interface ImageUrl {
     id: number;
@@ -197,18 +203,16 @@ interface OrderResponse2 {
 }
 
 
-export type {
-    SignUp, LogIn, StarLogininfo, HotStarInfo,
-=======
+
 // 위시
-interface SnapshotType  {
+interface SnapshotType {
     id: number;
     imageUrl: string;
     username: string;
-  };
+};
 
 interface selectedSnapshotType {
-    snapshotId : number;
+    snapshotId: number;
     imageUrl: string;
     username: string;
     starname: string;
@@ -218,7 +222,9 @@ interface selectedSnapshotType {
     likes: number;
     createdAt: string;
     updatedAt: string;
+    isLiked: boolean; // 사용자의 좋아요 상태
 }
+
 
 interface CommentType {
     id: number;
@@ -229,18 +235,12 @@ interface CommentType {
 
 
 export type {
-    SignUp, LogIn, StarLogininfo, FanState, StarState,
+    SignUp, FanState, StarState,
     User, Star, Starinfo, HotStarInfo, StarByCategory,
->>>>>>> b47b3771f310f25dc9553e62d7b2800833658454
     // 스토어
     Goods, ImageUrl, OrderResponse,
     // 팬미팅
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
-<<<<<<< HEAD
-    User, Star, Starinfo,
-    Product, ProductCreationPayload, OrderResponse2, UserStoreStorageResponse
-=======
-    SnapshotType, selectedSnapshotType, CommentType
-
->>>>>>> b47b3771f310f25dc9553e62d7b2800833658454
+    Product, ProductCreationPayload, OrderResponse2, UserStoreStorageResponse,
+    SnapshotType, selectedSnapshotType, CommentType, FanMeetingMessage,SocketMessage
 }
