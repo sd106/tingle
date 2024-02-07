@@ -73,6 +73,13 @@ interface FanMeetingMessage {
     text?: string
 }
 
+interface FanMeetingReservation {
+    orderAt: Date
+    userId: number
+    starId: number
+    fanMeetingType: string
+}
+
 interface SocketMessage {
     sender?: string
     data?: string 
@@ -186,7 +193,7 @@ export type {
     // 스토어
     Product, Goods, ProductCreationPayload, ImageUrl, OrderResponse,
     // 팬미팅
-    FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
+    FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket, FanMeetingReservation,
     SnapshotType, selectedSnapshotType, CommentType, FanMeetingMessage,SocketMessage
 
 }

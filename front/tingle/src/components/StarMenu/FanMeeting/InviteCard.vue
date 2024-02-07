@@ -8,7 +8,7 @@
             </div>
             <br>
             <div class="d-flex justify-content-center">
-                <button class="enter-btn" @click="store.goPage('MeetingRoomView')">입장하기</button>
+                <button class="enter-btn" @click="store.goPage('FanMeetingRoomView')">입장하기</button>
             </div>
         </div>
     </div>

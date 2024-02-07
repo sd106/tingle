@@ -53,7 +53,7 @@ const roomType = 'Waiting'
 
 
 // 메시지 관련
-const invited = ref(false)
+const invited = ref(true)
 
 const messages = ref<FanMeetingMessage[]>([
 ])

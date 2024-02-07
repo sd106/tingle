@@ -3,6 +3,7 @@ package com.example.tingle.fanMeeting.controller;
 import com.example.tingle.fanMeeting.dto.request.CreateFanMeetingRequest;
 import com.example.tingle.fanMeeting.dto.response.GetFanMeetingInfoResponse;
 import com.example.tingle.fanMeeting.entity.FanMeeting;
+import com.example.tingle.fanMeeting.entity.FanMeetingReservation;
 import com.example.tingle.fanMeeting.entity.FanMeetingType;
 import com.example.tingle.fanMeeting.service.FanMeetingService;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +36,10 @@ public class FanMeetingController {
         return fanMeetingService.getFanMeetingInfo(starName);
     }
 
+    @GetMapping("/reservation/{fanId}")
+    public FanMeetingReservation getFanMeetingReservation(@PathVariable Long fanId) {
+        System.out.println("getFanMeetingReservation");
+        return fanMeetingService.getFanMeetingReservation(fanId);
+    }
 
 }

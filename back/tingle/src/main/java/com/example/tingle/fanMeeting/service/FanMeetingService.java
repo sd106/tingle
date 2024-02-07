@@ -3,8 +3,10 @@ package com.example.tingle.fanMeeting.service;
 import com.example.tingle.fanMeeting.dto.request.CreateFanMeetingRequest;
 import com.example.tingle.fanMeeting.dto.response.GetFanMeetingInfoResponse;
 import com.example.tingle.fanMeeting.entity.FanMeeting;
+import com.example.tingle.fanMeeting.entity.FanMeetingReservation;
 import com.example.tingle.fanMeeting.entity.FanMeetingType;
 import com.example.tingle.fanMeeting.repository.FanMeetingRepository;
+import com.example.tingle.fanMeeting.repository.FanMeetingReservationRepository;
 import com.example.tingle.fanMeeting.repository.FanMeetingTypeRepository;
 import com.example.tingle.fanMeeting.utils.DateTimeParser;
 import com.example.tingle.star.entity.StarEntity;
@@ -22,6 +24,7 @@ import java.util.List;
 public class FanMeetingService {
     private final FanMeetingTypeRepository fanMeetingTypeRepository;
     private final FanMeetingRepository fanMeetingRepository;
+    private final FanMeetingReservationRepository fanMeetingReservationRepository;
     private final StarRepository starRepository;
     private final UserRepository userRepository;
 
@@ -30,7 +33,6 @@ public class FanMeetingService {
     }
 
     public FanMeeting createFanMeeting(CreateFanMeetingRequest request) {
-        UserEntity fan = userRepository.findByUsername(request.getFanName());
         StarEntity star = starRepository.findByUsername(request.getStarName());
 
         LocalDateTime ticketingStartAt = DateTimeParser.parse(request.getTicketingStartAt());
@@ -47,7 +49,6 @@ public class FanMeetingService {
                 .ticketingEndAt(ticketingStartAt)
 //                .imgURL(request.getImgURL())
                 .availableFanMeetingTypes(request.getAvailableFanMeetingTypes())
-                .fan(fan)
                 .star(star)
                 .isFinished(false)
                 .build();
@@ -98,5 +99,10 @@ public class FanMeetingService {
                 .imgURL(fanMeeting.getImgURL())
                 .build();
 
+    }
+
+    public FanMeetingReservation getFanMeetingReservation(Long fanId) {
+        UserEntity fan = userRepository.findById(fanId).orElseThrow(() -> new IllegalArgumentException("해당하는 fan이 없습니다."));
+        return fanMeetingReservationRepository.findByUser(fan);
     }
 }
