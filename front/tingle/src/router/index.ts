@@ -45,6 +45,7 @@ import BirthdayMeetingView from '@/views/Star/FanMeeting/BirthdayMeeting.vue'
 import TestStoreViewVue from '@/views/StarMenu/TestStoreView.vue'
 import TestStoreViewOrderVue from '@/views/StarMenu/TestStoreViewOrder.vue'
 import StoreStarOrderView from '@/views/Star/Store/StoreStarOrderView.vue'
+import ProfileUserOrdersDetailView from '@/views/User/ProfileUserOrdersDetailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -169,6 +170,12 @@ const router = createRouter({
           path: '/profile/orders',
           name: 'profileuserordersview',
           component: ProfileUserOrdersView
+        },
+        {
+          path: '/:starid/profile/orders/detail/:productId(\\d+)',
+          name: 'profileuserordersdetailview',
+          component: ProfileUserOrdersDetailView,
+          props: true
         },
         {
           path: '/store/orders',

@@ -64,7 +64,7 @@
           </button>
         </div>
       </div>
-
+      {{ store.starState }}
       <!-- 상품 생성 버튼 -->
       <button @click="submitForm" class="tw-btn tw-btn-primary tw-mt-4">상품 생성</button>
     </div>
@@ -82,7 +82,7 @@ import StarMenu from '@/components/StarMenu/StarMenu.vue'
 const router = useRouter()
 const store = useUserStore()
 
-const starName = store.starState.username
+const starName = store.starState!.username
 
 const props = defineProps(['id'])
 const id = ref(props.id)

@@ -1,45 +1,70 @@
 <template>
-    <!-- Nav바 -->
-    <nav class="navbar fixed-top custom-navbar">
-        <div class="container-fluid">
-            <!-- 사이드바 여는 버튼 -->
-            <button class="menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-                aria-controls="offcanvasNavbar" aria-label="Toggle navigation"
-                @click="store.isSidebarOpen = !store.isSidebarOpen">
-                <img src="/image/ham.png" alt="">
-            </button>
-            <RouterLink to="/">
-                <img class="" src="/image/nav_logo.webp" alt="" style="height: 50px;">
-            </RouterLink>
-            <!-- 검색창 -->
-            <form class="search-box" action="" method="get">
-                <input class="search-txt" type="search" placeholder="검색어를 입력하세요" aria-label="Search">
-                <button class="search-btn" type="submit">
-                    <img src="/image/magnifier.png" alt="">
-                </button>
-            </form>
-            <div v-if="!store.isLogin" class="d-flex">
-                <img @click="redirectToGoogle" class="menu-btn mx-1" src="/image/Logo_Google.png" alt="">
-                <img @click="redirectToNaver" class="menu-btn mx-1" src="/image/Logo_Naver.png" alt="">
-            </div>
+  <!-- Nav바 -->
+  <nav class="navbar fixed-top custom-navbar">
+    <div class="container-fluid">
+      <!-- 사이드바 여는 버튼 -->
+      <button
+        class="menu-btn"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasNavbar"
+        aria-controls="offcanvasNavbar"
+        aria-label="Toggle navigation"
+        @click="store.isSidebarOpen = !store.isSidebarOpen"
+      >
+        <img src="/image/ham.png" alt="" />
+      </button>
+      <RouterLink to="/">
+        <img class="" src="/image/nav_logo.webp" alt="" style="height: 50px" />
+      </RouterLink>
+      <!-- 검색창 -->
+      <form class="search-box" action="" method="get">
+        <input
+          class="search-txt"
+          type="search"
+          placeholder="검색어를 입력하세요"
+          aria-label="Search"
+        />
+        <button class="search-btn" type="submit">
+          <img src="/image/magnifier.png" alt="" />
+        </button>
+      </form>
+      <div v-if="!store.isLogin" class="d-flex">
+        <img @click="redirectToGoogle" class="menu-btn mx-1" src="/image/Logo_Google.png" alt="" />
+        <img @click="redirectToNaver" class="menu-btn mx-1" src="/image/Logo_Naver.png" alt="" />
+      </div>
 
-            <div v-if="store.isLogin" class="dropdown dropstart">
-                <div class="dropdown-toggle user-image" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <img v-if="store.isStar" class="" :src="`${store.starState?.picture}`" alt="starimage"
-                        style="height: 50px;">
-                    <img v-if="!store.isStar" class="" :src="`${store.fanState?.picture}`" alt="userimage"
-                        style="height: 50px;">
-                </div>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">정보 수정</a></li>
-                    <li><a class="dropdown-item" href="#">구매 목록</a></li>
-                    <li><a class="dropdown-item" href="#">보관함</a></li>
-                    <li><a class="dropdown-item" href="#" @click="logOut">로그아웃</a></li>
-                </ul>
-            </div>
+      <div v-if="store.isLogin" class="dropdown dropstart">
+        <div
+          class="dropdown-toggle user-image"
+          href="#"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <img
+            v-if="store.isStar"
+            class=""
+            :src="`${store.starState?.picture}`"
+            alt="starimage"
+            style="height: 50px"
+          />
+          <img
+            v-if="!store.isStar"
+            class=""
+            :src="`${store.fanState?.picture}`"
+            alt="userimage"
+            style="height: 50px"
+          />
         </div>
-
+        <ul class="dropdown-menu">
+          <li><RouterLink :to="`/profile/userinfo`" class="dropdown-item">회원 정보</RouterLink></li>
+          <li><RouterLink :to="`/profile/storage`" class="dropdown-item">보관함</RouterLink></li>
+          <li><RouterLink :to="`/profile/orders`" class="dropdown-item">주문 목록</RouterLink></li>
+          <li><a class="dropdown-item" href="#" @click="logOut">로그아웃</a></li>
+        </ul>
+      </div>
+    </div>
   </nav>
 </template>
 
@@ -53,12 +78,11 @@ const router = useRouter()
 
 const logOut = function (): void {
   window.location.href = 'http://localhost:8080/logout'
-  // window.location.href = 'http://i10d106.p.ssafy.io:8080/logout'
+  // window.location.href = 'http://localhost:8080/logout'
   router.push({ name: 'home' })
   store.starState = null
   store.fanState = null
   store.isStar = false
-
 }
 
 watch(
@@ -69,26 +93,24 @@ watch(
     } else {
       document.body.classList.remove('is-sidebar-open')
     }
-
-
-});
+  }
+)
 
 // 로그인
 const redirectToOAuthProvider = async (provider: string) => {
-    try {
-        window.location.href = `http://i10d106.p.ssafy.io:8080/oauth2/authorization/${provider}`;
-
-    } catch (error) {
-        console.log('error', error)
-    }
+  try {
+    window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`
+  } catch (error) {
+    console.log('error', error)
+  }
 }
 
 const redirectToGoogle = () => {
-    redirectToOAuthProvider('google');
+  redirectToOAuthProvider('google')
 }
 
 const redirectToNaver = () => {
-    redirectToOAuthProvider('naver');
+  redirectToOAuthProvider('naver')
 }
 </script>
 
@@ -116,20 +138,19 @@ const redirectToNaver = () => {
 }
 
 .menu-btn {
-
-    width: 54px;
-    height: 54px;
-    border: none;
-    background: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
+  width: 54px;
+  height: 54px;
+  border: none;
+  background: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
 .menu-btn:hover {
-    scale: 1.1;
-    box-shadow: none;
-    background-color: #dddddd;
+  scale: 1.1;
+  box-shadow: none;
+  background-color: #dddddd;
 }
 
 .menu-btn img {

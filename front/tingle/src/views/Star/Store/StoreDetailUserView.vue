@@ -47,7 +47,7 @@
           <!-- ////// 유저일때 -->
           <button
             class="tw-btn tw-btn-active tw-btn-block tw-bg-black tw-text-white tw-py-3 tw-rounded-md tw-mb-2"
-            @click="createOrder(fanState.id, product.productId)"
+            @click="createOrder(fanState!.id, product.productId)"
           >
             구매하기
           </button>

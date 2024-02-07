@@ -49,7 +49,7 @@
           <div class="d-flex row">
             <div class="col-2">
               <RouterLink
-                :to="`/${res.goods.starId}/store/${res.goods.productId}`"
+                :to="`/${res.goods.starId}/profile/orders/detail/${res.goods.productId}`"
                 class="tw-flex tw-flex-col"
               >
                 <img :src="res.goods.imageUrl[0].url" alt="" />
@@ -58,7 +58,7 @@
 
             <div class="p-3 col-8 d-flex flex-column">
               <RouterLink
-                :to="`/${res.goods.starId}/store/${res.goods.productId}`"
+                :to="`/${res.goods.starId}/profile/orders/detail/${res.goods.productId}`"
                 class="tw-flex tw-flex-col d-flex"
               >
                 <h2 class="my-3">{{ res.goods.name }}</h2>
@@ -87,7 +87,7 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const responseMessageGetByUserId = ref<OrderResponse2[]>([])
 const { fanState } = useUserStore()
-const userId = fanState.id
+const userId = fanState!.id
 
 const isActive = (path: string) => {
   return route.path.includes(path)

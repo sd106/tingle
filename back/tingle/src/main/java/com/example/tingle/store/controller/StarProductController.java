@@ -242,7 +242,7 @@ public class StarProductController {
     @GetMapping("/getByStarName/{starName}")
     public ResultDTO<List<ProductDto>> getProductsByStarName(@PathVariable String starName) {
         List<ProductEntity> products = productService.findByStarName(starName);
-
+        System.out.println("starName = " + starName);
         if (!products.isEmpty()) {
             // ProductEntity 리스트를 ProductDto 리스트로 변환
             List<ProductDto> productDtos = products.stream()

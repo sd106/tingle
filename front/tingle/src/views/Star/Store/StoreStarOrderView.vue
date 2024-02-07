@@ -67,7 +67,7 @@ import type { OrderResponse } from '@/common/types/index.ts'
 
 const { starState } = useUserStore()
 const responseMessageGetByStarName = ref<OrderResponse[]>([])
-const starname = starState.username
+const starname = starState!.username
 
 onMounted(() => {
   getStarOrder()

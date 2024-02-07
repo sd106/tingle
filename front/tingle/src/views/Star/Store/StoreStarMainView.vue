@@ -5,13 +5,13 @@
       <div class="d-flex justify-content-between my-2">
         <h1 class="fw-bold">상품 목록</h1>
         <div>
-        <RouterLink :to="`/store/orders`">
-          <button class="tw-btn tw-btn-outline mx-2">주문 목록</button>
-        </RouterLink>
-        <RouterLink :to="`/${id}/store/create`">
-          <button class="tw-btn tw-btn-outline mx-2">상품 등록</button>
-        </RouterLink>
-      </div>
+          <RouterLink :to="`/store/orders`">
+            <button class="tw-btn tw-btn-outline mx-2">주문 목록</button>
+          </RouterLink>
+          <RouterLink :to="`/${id}/store/create`">
+            <button class="tw-btn tw-btn-outline mx-2">상품 등록</button>
+          </RouterLink>
+        </div>
       </div>
 
       <!-- //////정렬기준 수정할 수 있게 row 하나 추가해서 변경 가능하게 -->
@@ -42,24 +42,24 @@
 import { ref, onMounted, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import axios from 'axios'
-
+import { useUserStore } from '@/stores/user' 
 import StarMenu from '@/components/StarMenu/StarMenu.vue'
-import StoreCreate from '@/components/StarMenu/Store/StoreCreate.vue'
 
 // 상속
 const props = defineProps(['id'])
 const id = ref(props.id)
+const { starState } = useUserStore()
 
 // 전체 상품 출력
 import type { Goods } from '@/common/types'
 const products = ref<Goods[] | null>(null)
 ////// props로 받은거 나오게 설정해야함
-const starName = 'test01'
+const starName = starState?.username
 
 const getAllProducts = async (starName: string) => {
   try {
     const response = await axios.get(`http://localhost:8080/product/getByStarName/${starName}`)
-    // const response = await axios.get(`http://i10d106.p.ssafy.io:8080/product/getByStarName/${starName}`);
+    // const response = await axios.get(`http://localhost:8080/product/getByStarName/${starName}`);
     if (response.data.resultCode === 'SUCCESS') {
       products.value = response.data.data
     }
@@ -78,7 +78,7 @@ const altProducts = computed(() => {
 })
 
 onMounted(() => {
-  getAllProducts(starName)
+  getAllProducts(starName!)
 })
 
 // const selectedProduct = ref<Goods | null>(null);
