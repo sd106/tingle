@@ -21,16 +21,28 @@
     <!-- 스냅샷 목록 섹션 (파란색 부분) -->
     <section class="snapshot-list-section">
       <div class="snapshot-list-container" ref="containerRef" @scroll="handleScroll">
-        <div v-for="snapshot in snapshots" :key="snapshot.id" @click="wishStore.selectSnapshot(snapshot.id)" class="snapshot-item">
-          <img :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image">
-        </div>
+        <span  class="snapshot-item">
+          <img v-for="snapshot in filteredSnapshot1" :key="snapshot.id" @click="wishStore.selectSnapshot(snapshot.id)" :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
+        </span>
+        <span  class="snapshot-item">
+          <img v-for="snapshot in filteredSnapshot2" :key="snapshot.id" @click="wishStore.selectSnapshot(snapshot.id)" :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
+        </span>
+        <span  class="snapshot-item">
+          <img v-for="snapshot in filteredSnapshot3" :key="snapshot.id" @click="wishStore.selectSnapshot(snapshot.id)" :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
+        </span>
+        <span  class="snapshot-item">
+          <img v-for="snapshot in filteredSnapshot4" :key="snapshot.id" @click="wishStore.selectSnapshot(snapshot.id)" :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
+        </span>
+        <span  class="snapshot-item">
+          <img v-for="snapshot in filteredSnapshot5" :key="snapshot.id" @click="wishStore.selectSnapshot(snapshot.id)" :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
+        </span>
       </div>
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, computed } from 'vue';
   import axios from 'axios';
   import { useUserStore } from '@/stores/user';
   import { useWishStore } from '@/stores/wish'
@@ -94,7 +106,21 @@
     loadSnapshots();
   });
 
-
+  const filteredSnapshot1 = computed(() => {
+    return snapshots.value.filter((_, index) => index % 5 === 0);
+  });
+  const filteredSnapshot2 = computed(() => {
+    return snapshots.value.filter((_, index) => index % 5 === 1);
+  });
+  const filteredSnapshot3 = computed(() => {
+    return snapshots.value.filter((_, index) => index % 5 === 2);
+  });
+  const filteredSnapshot4 = computed(() => {
+    return snapshots.value.filter((_, index) => index % 5 === 3);
+  });
+  const filteredSnapshot5 = computed(() => {
+    return snapshots.value.filter((_, index) => index % 5 === 4);
+  });
 
 
 </script>
@@ -135,7 +161,7 @@
 }
 
 .detail-section {
-  flex: 1;
+  width: 100%;
   
   /* 상세 페이지가 가능한 많은 공간을 차지하게 함 */
   /* 추가 스타일링 */
@@ -143,26 +169,26 @@
 
 .snapshot-list-container {
   display: flex;
-  flex-wrap: wrap; /* 항목들이 여러 줄로 나눠지도록 함 */
-  overflow-x: auto; /* 가로 스크롤 가능 */
-  align-items: flex-start; /* 항목들이 위에서부터 시작되도록 함 */
-  height: auto; /* 컨테이너의 높이를 자동으로 설정 */
+  flex-wrap: wrap;
+  align-items: flex-start;
+  overflow-x: auto;
 }
 
 .snapshot-item {
-  flex: 0 0 19%; /* flex-grow: 0, flex-shrink: 0, flex-basis: 20% */
-  box-sizing: border-box; /* padding과 border가 너비에 포함되도록 함 */
-  margin: 5px; /* 각 항목 사이의 간격 */
-  width: calc(20% - 10px); /* margin을 고려한 실제 너비 */
+  
+  flex: 0 0 calc(19% - 10px);
+  margin: 5px;
   cursor: pointer;
+  width: 100%; /* 이미지 컨테이너가 갖는 실제 너비 */
+  box-sizing: border-box;
 }
 
-.snapshot-item:hover .snapshot-image {
+.snapshot-image:hover .snapshot-image {
   opacity: 0.6; /* 이미지 어두워짐 효과 */
 }
 
 .snapshot-image {
-  display: inline-block;
+  
   width: 100%; /* 이미지가 항목의 너비를 꽉 채우도록 함 */
   height: auto; /* 이미지의 높이를 자동으로 설정 */
   object-fit: cover; /* 이미지가 비율을 유지하면서 항목을 꽉 채우도록 함 */
