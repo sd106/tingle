@@ -49,7 +49,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
         String socialType = userRequest.getClientRegistration().getRegistrationId();
-        System.out.println("socialType = " + socialType);
+        System.out.println("socialType =!! " + socialType);
 
         OAuth2UserInfo oAuth2UserInfo = null;
         if (socialType.equals("google")) {
