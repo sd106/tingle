@@ -81,7 +81,7 @@ const sendToServer = (msg: SocketMessage) => {
 }
 
 const initializeWebSocket = () => {
-  socket = new WebSocket('ws://i10d106.p.ssafy.io:8080signal')
+  socket = new WebSocket('ws://i10d106.p.ssafy.io:8080/signal')
 
   socket.onmessage = (msg) => {
     let message = JSON.parse(msg.data)
