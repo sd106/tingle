@@ -50,7 +50,7 @@ const createProduct = async (orderId: Number, fileInputs: File[]) => {
             formData.append('files', fileInputs[i]);
         }
 
-    const response = await axios.post('http://localhost:8080/order/sendTouser', formData, {
+    const response = await axios.post('http://i10d106.p.ssafy.io:8080/order/sendTouser', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

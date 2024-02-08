@@ -64,7 +64,7 @@ const uploadProfilePicture = async () => {
     formData.append('fanId', String(fanId))
     formData.append('file', file)
 
-    const response = await axios.post('http://localhost:8080/api/user/profilePicture', formData, {
+    const response = await axios.post('http://i10d106.p.ssafy.io:8080/api/user/profilePicture', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
