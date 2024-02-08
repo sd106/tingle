@@ -30,10 +30,10 @@ public class FanMeetingController {
         return fanMeetingService.createFanMeeting(request);
     }
 
-    @GetMapping("/info/{starName}")
-    public GetFanMeetingInfoResponse getFanMeetingInfo(@PathVariable String starName) {
+    @GetMapping("/info/{starId}")
+    public GetFanMeetingInfoResponse getFanMeetingInfo(@PathVariable Long starId) {
         System.out.println("getFanMeetingInfo");
-        return fanMeetingService.getFanMeetingInfo(starName);
+        return fanMeetingService.getFanMeetingInfo(starId);
     }
 
     @GetMapping("/reservation/{fanId}")

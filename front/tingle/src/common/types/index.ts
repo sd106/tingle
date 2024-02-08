@@ -38,6 +38,22 @@ interface HotStarInfo {
     picture: string;
 }
 
+interface FanMeetingType {  
+    id: number
+    name: string
+}
+
+interface CreateFanMeetingForm {
+    title: string
+    description: string
+    fanMeetingStartAt: string
+    ticketingStartAt: string
+    ticketingEndAt: string
+    price: number
+    capacity: number
+    availableFanMeetingTypes: FanMeetingType[]
+    starName: string
+}
 interface FanMeeting {
     name: string;
     ticketStartDate: Date | null
@@ -193,7 +209,7 @@ export type {
     // 스토어
     Product, Goods, ProductCreationPayload, ImageUrl, OrderResponse,
     // 팬미팅
-    FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket, FanMeetingReservation,
+    FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket, FanMeetingReservation, CreateFanMeetingForm,
     SnapshotType, selectedSnapshotType, CommentType, FanMeetingMessage,SocketMessage
 
 }

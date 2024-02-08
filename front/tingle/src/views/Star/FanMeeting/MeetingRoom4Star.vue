@@ -15,7 +15,7 @@
         :localStream="localStream"
         />
     </section>
-    <section v-else-if="fanMeetingReservation?.fanMeetingType == 'birthday'">
+    <section v-else-if="fanMeetingReservation?.fanMeetingType== 'birthday'">
         <BirthdayMeeting 
         :localVideo="localVideo"
         :remoteVideo="remoteVideo"
@@ -194,8 +194,8 @@ const initializeWebRTC = async () => {
     // ICE 연결 상태 변경되면 로깅
     myPeerConnection.oniceconnectionstatechange = (event) => {
         if (myPeerConnection) {
-            console.log('ICE Connection State:', myPeerConnection.iceConnectionState)
             console.log(event)
+            console.log('ICE Connection State:', myPeerConnection.iceConnectionState)
         }
     }
 

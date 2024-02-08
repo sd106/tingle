@@ -58,16 +58,16 @@ public class FanMeetingService {
     }
 
     // 가장 최근의 fanMeeting을 가져온다.
-    public FanMeeting recentFanMeeting(String starName) {
-        StarEntity star = starRepository.findByUsername(starName);
+    public FanMeeting recentFanMeeting(Long starId) {
+        StarEntity star = starRepository.findById(starId).orElseThrow(() -> new IllegalArgumentException("해당하는 star가 없습니다."));
 
         return fanMeetingRepository.findRecentFanMeetingByStar(star);
     }
 
     //     star의 이름으로 fanMeeting의 정보를 가져온다.
-    public GetFanMeetingInfoResponse getFanMeetingInfo(String starName) {
+    public GetFanMeetingInfoResponse getFanMeetingInfo(Long starId) {
 
-        FanMeeting fanMeeting = recentFanMeeting(starName);
+        FanMeeting fanMeeting = recentFanMeeting(starId);
 
         if (fanMeeting == null || fanMeeting.getIsFinished()) {
             return GetFanMeetingInfoResponse.builder()

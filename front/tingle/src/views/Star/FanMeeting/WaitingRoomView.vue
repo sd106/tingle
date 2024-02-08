@@ -34,7 +34,7 @@
             </div>
         </div>
     </div>
-    <InviteCard v-if="invited" :starName="starName"></InviteCard>
+    <InviteCard v-if="invited" :starid="starid"></InviteCard>
 </template>
 
 <script lang="ts" setup>
@@ -47,7 +47,7 @@ import type { FanMeetingMessage, SocketMessage } from '@/common/types/index'
 const route = useRoute()
 const store = useUserStore()
 
-const starName = ref(route.params.starid.toString())
+const starid = ref(String(route.params.starid))
 const localUserName = ref(store.fanState?.username)
 const roomType = 'Waiting'
 
@@ -115,7 +115,7 @@ const initializeWebSocket = () => {
         sendToServer({
             sender: localUserName.value,
             signalType: 'Join',
-            data: starName.value,
+            data: String(starid.value),
             roomType: roomType,
         });
     };
@@ -139,7 +139,7 @@ const handleTextMessage = (message: SocketMessage) => {
 
 const handleInviteMessage = (message: SocketMessage) => {
     invited.value = true
-    console.log("초대왔땅")
+    console.log("초대왔땅", message)
 }
 const handleErrorMessage = (message: SocketMessage) => {
     
