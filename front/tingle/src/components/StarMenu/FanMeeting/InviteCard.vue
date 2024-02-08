@@ -3,12 +3,12 @@
         <div class="invite-card-container">
             <div>
               <p>
-                {{ starName }} 으로부터 팬미팅 초대장이 왔습니다.
+                {{ starid }} 으로부터 팬미팅 초대장이 왔습니다.
               </p>
             </div>
             <br>
             <div class="d-flex justify-content-center">
-                <button class="enter-btn" @click="store.goPage('MeetingRoomView')">입장하기</button>
+                <button class="enter-btn" @click="store.goPage('FanMeetingRoomView')">입장하기</button>
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@ import { useFanMeetingStore } from '@/stores/fanMeeting'
 const store = useFanMeetingStore()
 
 const props = defineProps({
-    starName: {
+    starid: {
         type: String,
         required: true
     }
