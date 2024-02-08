@@ -77,6 +77,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         }
 
         // DefaultOAuth2User를 구현한 CustomOAuth2User 객체를 생성해서 반환
+        System.out.println(oAuth2User.getAuthorities());
+        System.out.println(attributes);
+        System.out.println(extractAttribute.getNameAttributeKey());
+        System.out.println(createdMember.getEmail());
+        System.out.println(isRealMember);
         return new CustomOAuth2User(
                 oAuth2User.getAuthorities(),
                 attributes,
