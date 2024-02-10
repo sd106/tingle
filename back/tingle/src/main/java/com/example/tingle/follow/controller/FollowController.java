@@ -65,6 +65,15 @@ public class FollowController {
 
     }
 
+    @Operation(summary = "팔로잉 유무 조회")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/isFollowing")
+    public Response getIsFollowing(@RequestParam Long userId, @RequestParam Long starId) throws Exception {
+        return new Response("성공", "팔로잉 유무 리턴", followService.IsFollowing(userId, starId));
+
+    }
+
+
     @Operation(summary = "가장 팔로워가 많이 증가한 스타 10명 조회")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/hotStars")

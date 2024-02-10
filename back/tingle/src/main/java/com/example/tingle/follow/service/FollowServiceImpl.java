@@ -3,16 +3,19 @@ package com.example.tingle.follow.service;
 
 import com.example.tingle.follow.dto.event.FollowerAddedEvent;
 import com.example.tingle.follow.dto.event.FollowerRemovedEvent;
+import com.example.tingle.follow.dto.request.FollowCreateRequest;
 import com.example.tingle.follow.dto.request.FollowReadRequest;
 import com.example.tingle.follow.entity.FollowEntity;
 import com.example.tingle.follow.repository.FollowRepository;
 import com.example.tingle.star.dto.request.ReadStarRequest;
 import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.star.repository.StarRepository;
+import com.example.tingle.user.entity.UserEntity;
 import com.example.tingle.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.sql.ast.tree.expression.Star;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -123,6 +126,17 @@ public class FollowServiceImpl implements FollowService{
         StarEntity starEntity = starRepository.findStarEntityById(starId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid starId: " + starId));
         return ReadStarRequest.toDto(starEntity);
+    }
+
+    @Override
+    public boolean IsFollowing(Long userId, Long starId) {
+        UserEntity userEntity=  userRepository.findById(userId)
+                .orElseThrow(() ->new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+
+        return userEntity.getFollowingStars().stream()
+                .anyMatch(follow -> follow.getStarEntity()
+                        .getId().equals(starId));
+
     }
 
 }
