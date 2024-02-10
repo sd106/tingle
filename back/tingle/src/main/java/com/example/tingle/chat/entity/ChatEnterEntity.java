@@ -22,4 +22,8 @@ public class ChatEnterEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "follow_id")
     private FollowEntity follow; // 팔로우 아이디
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private ChatRoomEntity chatRoom; // 방 아이디
 }

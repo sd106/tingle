@@ -28,5 +28,5 @@ public class ChatRoomEntity {
     private StarEntity star; // 스타 아이디
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE)
-    private List<ChatMessageEntity> chatMessageList;
+    private List<ChatMessageEntity> chatMessageList; // 메시지 리스트
 }

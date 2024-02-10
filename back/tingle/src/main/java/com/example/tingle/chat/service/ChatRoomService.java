@@ -1,12 +1,13 @@
 package com.example.tingle.chat.service;
 
+import com.example.tingle.chat.dto.ChatEnterDto;
 import com.example.tingle.chat.dto.ChatRoomDto;
 
 import java.util.List;
 
 public interface ChatRoomService {
 
-    // 구독한 스타들의 채팅 방 조회
+    // 구독 & 추가한 스타들의 채팅 방 조회
     public List<ChatRoomDto> findRoomsByUserId(Long userId);
 
     // 해당 채팅 방 조회 (스타)

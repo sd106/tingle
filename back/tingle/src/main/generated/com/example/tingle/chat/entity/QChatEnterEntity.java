@@ -22,6 +22,8 @@ public class QChatEnterEntity extends EntityPathBase<ChatEnterEntity> {
 
     public static final QChatEnterEntity chatEnterEntity = new QChatEnterEntity("chatEnterEntity");
 
+    public final QChatRoomEntity chatRoom;
+
     public final com.example.tingle.follow.entity.QFollowEntity follow;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
@@ -44,6 +46,7 @@ public class QChatEnterEntity extends EntityPathBase<ChatEnterEntity> {
 
     public QChatEnterEntity(Class<? extends ChatEnterEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.chatRoom = inits.isInitialized("chatRoom") ? new QChatRoomEntity(forProperty("chatRoom"), inits.get("chatRoom")) : null;
         this.follow = inits.isInitialized("follow") ? new com.example.tingle.follow.entity.QFollowEntity(forProperty("follow"), inits.get("follow")) : null;
     }
 
