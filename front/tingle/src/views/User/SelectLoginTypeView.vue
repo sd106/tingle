@@ -1,10 +1,18 @@
 <template>
   <main>
     <div class="d-flex">
-      <button @click="selectLoginType('fan')" :class="{ 'signin__btn': true, 'is_selected': selectedType === 'fan' }">
-        <span>팬이에요!</span> </button>
-      <button @click="selectLoginType('star')" :class="{ 'signin__btn2': true, 'is_selected': selectedType === 'star' }">
-        <span>스타에요!</span> </button>
+      <button
+        @click="selectLoginType('fan')"
+        :class="{ signin__btn: true, is_selected: selectedType === 'fan' }"
+      >
+        <span>팬이에요!</span>
+      </button>
+      <button
+        @click="selectLoginType('star')"
+        :class="{ signin__btn2: true, is_selected: selectedType === 'star' }"
+      >
+        <span>스타에요!</span>
+      </button>
     </div>
   </main>
 </template>
@@ -21,7 +29,12 @@ const store = useUserStore()
 
 const selectLoginType = async (type: string) => {
   try {
-    const { data } = await axios.post(`http://localhost:8080/auth/login/${type}`, {}, { withCredentials: true })
+    const { data } = await axios.post(
+      `http://i10d106.p.ssafy.io:8080/auth/login/${type}`,
+      {},
+      { withCredentials: true }
+    )
+    // const { data } = await axios.post(`http://i10d106.p.ssafy.io:8080/auth/login/${type}`, {}, { withCredentials: true })
     console.log('▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼')
     console.log(data)
     console.log('▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲')
@@ -39,7 +52,6 @@ const selectLoginType = async (type: string) => {
   } catch (error) {
     console.log('error', error)
   }
-
 }
 </script>
 
@@ -55,7 +67,10 @@ const selectLoginType = async (type: string) => {
   /* 선택된 버튼에 그림자 효과 추가 */
   transform: scale(1.05);
   /* 버튼을 약간 크게 만들어 선택됨을 강조 */
-  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  transition:
+    background-color 0.3s,
+    transform 0.3s,
+    box-shadow 0.3s;
 }
 
 .signin__btn {
@@ -70,14 +85,13 @@ const selectLoginType = async (type: string) => {
   cursor: pointer;
   font-size: 20px;
   font-family: 'Montserrat', sans-serif;
-  box-shadow: 0 15px 30px rgba(#e91e63, .36);
-  transition: .2s linear;
+  box-shadow: 0 15px 30px rgba(#e91e63, 0.36);
+  transition: 0.2s linear;
 }
 
 .signin__btn:hover {
-  box-shadow: 0 0 0 rgba(#e91e63, .0);
+  box-shadow: 0 0 0 rgba(#e91e63, 0);
 }
-
 
 .signin__btn:hover {
   background: #cb4ae2;
@@ -101,11 +115,11 @@ const selectLoginType = async (type: string) => {
   cursor: pointer;
   font-size: 20px;
   font-family: 'Montserrat', sans-serif;
-  box-shadow: 0 15px 30px rgba(#e91e63, .36);
-  transition: .2s linear;
+  box-shadow: 0 15px 30px rgba(#e91e63, 0.36);
+  transition: 0.2s linear;
 }
 
 .signin__btn2 :hover {
-  box-shadow: 0 0 0 rgba(#e91e63, .0);
+  box-shadow: 0 0 0 rgba(#e91e63, 0);
 }
 </style>

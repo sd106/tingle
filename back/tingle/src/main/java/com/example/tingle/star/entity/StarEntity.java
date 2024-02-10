@@ -3,6 +3,7 @@ package com.example.tingle.star.entity;
 import com.example.tingle.follow.entity.FollowEntity;
 import com.example.tingle.store.entity.OrderEntity;
 import com.example.tingle.user.entity.Role;
+import com.example.tingle.user.entity.UserStoreStorage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,7 +50,6 @@ public class StarEntity {
 //    @JsonIgnore
     @JoinColumn(name = "orders", nullable = true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private List<OrderEntity> orderEntities;
-
 
     public StarEntity update(String name, String picture) {
         this.username = name;

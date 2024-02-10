@@ -43,59 +43,59 @@ const products = ref<FanMeetingTicket[]>([])
 
 
 const starName = ref<string>()
-starName.value = route.params.username.toString();
+starName.value = route.params.starid.toString();
 
-products.value = [
-  {
-    id: 1,
-    image: '/image/fan-meeting-img.webp',
-    name: '생일 축하 노래!',
-    description: '생일 축하 노래!',
-    price: 3000
-  },
-  {
-    id: 2,
-    image: '/image/fan-meeting-img.webp',
-    name: '인생 네컷',
-    description: '60초 안에 인생 네컷을 찍어보세요!',
-    price: 4000
-  },
-  {
-    id: 3,
-    image: '/image/fan-meeting-img.webp',
-    name: '테트리스',
-    description: '같이 테트리스 해봅시다!',
-    price: 5000
-  },
-  {
-    id: 4,
-    image: '/image/fan-meeting-img.webp',
-    name: '자유',
-    description: '스타와 자유로운 시간을 보내세요!',
-    price: 10000
-  },
-  {
-    id: 2,
-    image: '/image/fan-meeting-img.webp',
-    name: '인생 네컷',
-    description: '60초 안에 인생 네컷을 찍어보세요!',
-    price: 4000
-  },
-  {
-    id: 3,
-    image: '/image/fan-meeting-img.webp',
-    name: '테트리스',
-    description: '같이 테트리스 해봅시다!',
-    price: 5000
-  },
-  {
-    id: 4,
-    image: '/image/fan-meeting-img.webp',
-    name: '자유',
-    description: '스타와 자유로운 시간을 보내세요!',
-    price: 10000
-  }
-]
+// products.value = [
+//   {
+//     id: 1,
+//     image: '/image/fan-meeting-img.webp',
+//     name: '생일 축하 노래!',
+//     description: '생일 축하 노래!',
+//     price: 3000
+//   },
+//   {
+//     id: 2,
+//     image: '/image/fan-meeting-img.webp',
+//     name: '인생 네컷',
+//     description: '60초 안에 인생 네컷을 찍어보세요!',
+//     price: 4000
+//   },
+//   {
+//     id: 3,
+//     image: '/image/fan-meeting-img.webp',
+//     name: '테트리스',
+//     description: '같이 테트리스 해봅시다!',
+//     price: 5000
+//   },
+//   {
+//     id: 4,
+//     image: '/image/fan-meeting-img.webp',
+//     name: '자유',
+//     description: '스타와 자유로운 시간을 보내세요!',
+//     price: 10000
+//   },
+//   {
+//     id: 2,
+//     image: '/image/fan-meeting-img.webp',
+//     name: '인생 네컷',
+//     description: '60초 안에 인생 네컷을 찍어보세요!',
+//     price: 4000
+//   },
+//   {
+//     id: 3,
+//     image: '/image/fan-meeting-img.webp',
+//     name: '테트리스',
+//     description: '같이 테트리스 해봅시다!',
+//     price: 5000
+//   },
+//   {
+//     id: 4,
+//     image: '/image/fan-meeting-img.webp',
+//     name: '자유',
+//     description: '스타와 자유로운 시간을 보내세요!',
+//     price: 10000
+//   }
+// ]
 
 const selectedProduct = ref<FanMeetingTicket>()
 
@@ -123,7 +123,7 @@ const payRequest = async () => {
 
 
 onMounted(() => {
-//   getProducts()
+  getProducts()
 })
 </script>
 

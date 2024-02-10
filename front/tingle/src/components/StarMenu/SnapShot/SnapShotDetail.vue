@@ -3,20 +3,42 @@
     <div class="row">
       <!-- 이미지 컨테이너 -->
       <div class="col-md-6">
-        <img :src="props.selectedSnapshot!.imageUrl" alt="Snapshot Image" class="snapshot-image">
+        <img :src="props.selectedSnapshot!.imageUrl" alt="Snapshot Image" class="snapshot-image" />
       </div>
       <div class="col-md-6">
         <!-- 스냅샷 관리 버튼 -->
         <div class="snapshot-actions d-flex justify-content-between">
-          <button class="btn btn-dark" v-if="isLike" @click="dislike(props.selectedSnapshot!.snapshotId, store.fanState!.username)">좋아요 취소 {{ props.selectedSnapshot?.likes }}</button>
-          <button class="btn btn-outline-dark" v-else @click="like(props.selectedSnapshot!.snapshotId, store.fanState!.username)">좋아요 {{ props.selectedSnapshot?.likes }}</button>
+          <button
+            class="btn btn-dark"
+            v-if="isLike"
+            @click="dislike(props.selectedSnapshot!.snapshotId, store.fanState!.username)"
+          >
+            좋아요 취소 {{ props.selectedSnapshot?.likes }}
+          </button>
+          <button
+            class="btn btn-outline-dark"
+            v-else
+            @click="like(props.selectedSnapshot!.snapshotId, store.fanState!.username)"
+          >
+            좋아요 {{ props.selectedSnapshot?.likes }}
+          </button>
           <span>
-            <button class="btn btn-secondary" @click="goToUpdate(props.selectedSnapshot!.snapshotId)">스냅샷 수정</button>
-            <button class="btn btn-danger" @click="deleteSnapshot(props.selectedSnapshot!.snapshotId)">스냅샷 삭제</button>
+            <button
+              class="btn btn-secondary"
+              @click="goToUpdate(props.selectedSnapshot!.snapshotId)"
+            >
+              스냅샷 수정
+            </button>
+            <button
+              class="btn btn-danger"
+              @click="deleteSnapshot(props.selectedSnapshot!.snapshotId)"
+            >
+              스냅샷 삭제
+            </button>
           </span>
         </div>
-         <!-- 본문 내용 -->
-         <div class="content mx-0 mt-2">
+        <!-- 본문 내용 -->
+        <div class="content mx-0 mt-2">
           <p class="d-flex justify-content-between">
             <span>{{ props.selectedSnapshot!.username }}</span>
             <span class="text-body-tertiary">{{ time }}</span>
@@ -32,7 +54,7 @@
         <!-- 댓글 목록 -->
         <div class="comments-list">
           <p class="mb-2">💬 댓글 {{ props.selectedSnapshot?.comments.length }}</p>
-          
+
           <div v-for="comment in props.selectedSnapshot!.comments" :key="comment.id" class="">
             <!-- 수정 중인 댓글의 UI 변경 -->
             <div v-if="editingCommentId === comment.id">
@@ -48,8 +70,15 @@
                   <span class="">{{ comment.context }}</span>
                 </span>
                 <span class="">
-                  <button class="btn btn-outline-danger btn-sm" @click="deleteComment(comment.id)">삭제</button>
-                  <button class="btn btn-outline-secondary btn-sm mx-2" @click="startEditComment(comment)">수정</button>
+                  <button class="btn btn-outline-danger btn-sm" @click="deleteComment(comment.id)">
+                    삭제
+                  </button>
+                  <button
+                    class="btn btn-outline-secondary btn-sm mx-2"
+                    @click="startEditComment(comment)"
+                  >
+                    수정
+                  </button>
                 </span>
               </p>
             </div>
@@ -58,7 +87,12 @@
         <!-- 댓글 작성 폼 -->
         <form @submit.prevent="postComment" class="row comment-form bg-body-secondary">
           <div class="col-sm-10">
-            <input class="form-control" type="text" v-model="newCommentContent" placeholder="댓글을 남겨보세요!">
+            <input
+              class="form-control"
+              type="text"
+              v-model="newCommentContent"
+              placeholder="댓글을 남겨보세요!"
+            />
           </div>
           <button type="submit" class="col-sm-2 btn btn-success">작성</button>
         </form>
@@ -66,186 +100,191 @@
     </div>
   </div>
 </template>
-  
+
 <script lang="ts" setup>
-  import { ref, watch } from 'vue';
-  import { formatDistanceToNow } from 'date-fns';
-  import { ko } from 'date-fns/locale';
-  import { useUserStore } from '@/stores/user';
-  import { useWishStore } from '@/stores/wish'
-  import axios from 'axios';
-  import { useRouter } from 'vue-router';
-  import type { selectedSnapshotType, CommentType } from '@/common/types/index'
+import { ref, watch } from 'vue'
+import { formatDistanceToNow } from 'date-fns'
+import { ko } from 'date-fns/locale'
+import { useUserStore } from '@/stores/user'
+import { useWishStore } from '@/stores/wish'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
+import type { selectedSnapshotType, CommentType } from '@/common/types/index'
 
+// const snapshot = ref<SnapshotType | null>(null);
+const router = useRouter()
 
-  // const snapshot = ref<SnapshotType | null>(null);
-  const router = useRouter();
+const store = useUserStore()
+const wishStore = useWishStore()
+const username = store.fanState?.username
 
-  
-  const store = useUserStore();
-  const wishStore = useWishStore();
-  const username = store.fanState?.username
-  
-  const starid = store.starInfo?.starId;
-  
-  const props = defineProps({
-    selectedSnapshot: Object as () => selectedSnapshotType
-  });
+const starid = store.starId
 
-  const time = formatDistanceToNowFromLocalDateTime(props.selectedSnapshot!.updatedAt)
-  const isLike = ref(props.selectedSnapshot!.isLiked);
+const props = defineProps({
+  selectedSnapshot: Object as () => selectedSnapshotType
+})
 
-  watch(
-    () => props.selectedSnapshot!.isLiked,
-    (newVal, oldVal) => {
-      // isLike 상태 업데이트
-      isLike.value = newVal;
-    }
-  );
+const time = formatDistanceToNowFromLocalDateTime(props.selectedSnapshot!.updatedAt)
+const isLike = ref(props.selectedSnapshot!.isLiked)
 
-  const goToUpdate = (id: number) => {
-    if (id && props.selectedSnapshot) {
-      router.push({
-        name: 'snapshotupdate',
-        params: { starid: starid, snapshotid: id },
-        query: {
-          file: props.selectedSnapshot.imageUrl,
-          content: props.selectedSnapshot.content,
-          tags: props.selectedSnapshot.tags
-        }
-      });
-    } else {
-      console.error('No snapshot selected or invalid ID');
-    }
-  };
+watch(
+  () => props.selectedSnapshot!.isLiked,
+  (newVal, oldVal) => {
+    // isLike 상태 업데이트
+    isLike.value = newVal
+  }
+)
 
-
-
-  const like = async (id: number, username : string) => {
-    if (id) {
-      try {
-        // 좋아요 API 호출
-        await axios.post(`http://localhost:8080/snapshot/${id}/likes`,{ username: username }, { withCredentials: true });
-        console.log("좋아요 실행됨")
-        router.go(0)
-        // 스토어에서 선택된 스냅샷을 다시 가져온 후 좋아요 수를 갱신
-        wishStore.selectSnapshot(id)
-      } catch (error) {
-        console.error('좋아요 실패:', error);
+const goToUpdate = (id: number) => {
+  if (id && props.selectedSnapshot) {
+    router.push({
+      name: 'snapshotupdate',
+      params: { starid: starid, snapshotid: id },
+      query: {
+        file: props.selectedSnapshot.imageUrl,
+        content: props.selectedSnapshot.content,
+        tags: props.selectedSnapshot.tags
       }
-    }
-  };
-  const dislike = async (id: number, username : string) => {
-    if (id) {
-      try {
-        // 좋아요 API 호출
-        await axios.post(`http://localhost:8080/snapshot/${id}/dislikes`,{ username: username }, { withCredentials: true });
-        console.log("싫어요 실행됨")
-        // 스토어에서 선택된 스냅샷을 다시 가져온 후 좋아요 수를 갱신
-        
-      } catch (error) {
-        console.error('좋아요 실패:', error);
-      }
-    }
-  };
+    })
+  } else {
+    console.error('No snapshot selected or invalid ID')
+  }
+}
 
-
-
-
-  const deleteSnapshot = async (id: number) => {
-    console.log("삭제 시작할게요")
-    if (id && props.selectedSnapshot) {
-      
-        const response = await axios.delete(`http://localhost:8080/snapshot/${id}/delete`);
-        console.log(response.data); // 성공 응답 로그
-        console.log("삭제 성공!");
-        // 성공적으로 삭제 후 필요한 추가 작업을 여기에 작성하세요.
-        router.go(0)
-      } else {
-      console.error('No snapshot selected or invalid ID');
-    }
-  };
-
-  // 댓글 관련 코드
-
-  const newCommentContent = ref(''); // 새 댓글 내용을 위한 반응형 변수
-
-  // 수정 중인 댓글의 상태
-  const editingCommentId = ref<number | null>(null);
-  const editingCommentContent = ref('');
-
-
-  // 새 댓글 작성
-  const postComment = async () => {
+const like = async (id: number, username: string) => {
+  if (id) {
     try {
-      console.log(props.selectedSnapshot?.snapshotId)
-      await axios.post(`http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/new`, {
+      // 좋아요 API 호출
+      await axios.post(
+        `http://i10d106.p.ssafy.io:8080/snapshot/${id}/likes`,
+        { username: username },
+        { withCredentials: true }
+      )
+      console.log('좋아요 실행됨')
+      router.go(0)
+      // 스토어에서 선택된 스냅샷을 다시 가져온 후 좋아요 수를 갱신
+      wishStore.selectSnapshot(id)
+    } catch (error) {
+      console.error('좋아요 실패:', error)
+    }
+  }
+}
+const dislike = async (id: number, username: string) => {
+  if (id) {
+    try {
+      // 좋아요 API 호출
+      await axios.post(
+        `http://i10d106.p.ssafy.io:8080/snapshot/${id}/dislikes`,
+        { username: username },
+        { withCredentials: true }
+      )
+      console.log('싫어요 실행됨')
+      // 스토어에서 선택된 스냅샷을 다시 가져온 후 좋아요 수를 갱신
+    } catch (error) {
+      console.error('좋아요 실패:', error)
+    }
+  }
+}
+
+const deleteSnapshot = async (id: number) => {
+  console.log('삭제 시작할게요')
+  if (id && props.selectedSnapshot) {
+    const response = await axios.delete(`http://i10d106.p.ssafy.io:8080/snapshot/${id}/delete`)
+    console.log(response.data) // 성공 응답 로그
+    console.log('삭제 성공!')
+    // 성공적으로 삭제 후 필요한 추가 작업을 여기에 작성하세요.
+    router.go(0)
+  } else {
+    console.error('No snapshot selected or invalid ID')
+  }
+}
+
+// 댓글 관련 코드
+
+const newCommentContent = ref('') // 새 댓글 내용을 위한 반응형 변수
+
+// 수정 중인 댓글의 상태
+const editingCommentId = ref<number | null>(null)
+const editingCommentContent = ref('')
+
+// 새 댓글 작성
+const postComment = async () => {
+  try {
+    console.log(props.selectedSnapshot?.snapshotId)
+    await axios.post(
+      `http://i10d106.p.ssafy.io:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/new`,
+      {
         context: newCommentContent.value,
         username: username,
         snapshotId: props.selectedSnapshot?.snapshotId
         // 필요하다면 여기에 더 많은 필드 추가
-      });
-      newCommentContent.value = ''; // 입력 필드 초기화
-      wishStore.selectSnapshot(props.selectedSnapshot!.snapshotId)
-      // 댓글 목록을 다시 불러오는 로직 필요
-    } catch (error) {
-      console.error(error);
-    }
-  };
+      }
+    )
+    newCommentContent.value = '' // 입력 필드 초기화
+    wishStore.selectSnapshot(props.selectedSnapshot!.snapshotId)
+    // 댓글 목록을 다시 불러오는 로직 필요
+  } catch (error) {
+    console.error(error)
+  }
+}
 
-  // 댓글 수정 시작
-  const startEditComment = (comment: CommentType) => {
-    editingCommentId.value = comment.id;
-    editingCommentContent.value = comment.context;
-  };
+// 댓글 수정 시작
+const startEditComment = (comment: CommentType) => {
+  editingCommentId.value = comment.id
+  editingCommentContent.value = comment.context
+}
 
-  // 수정 취소
-  const cancelEdit = () => {
-    editingCommentId.value = null;
-    editingCommentContent.value = '';
-  };
+// 수정 취소
+const cancelEdit = () => {
+  editingCommentId.value = null
+  editingCommentContent.value = ''
+}
 
-  // 수정된 댓글 전송
-  const submitCommentEdit = async (commentId: number) => {
-    try {
-      const response = await axios.post(`http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${commentId}/update`, {
+// 수정된 댓글 전송
+const submitCommentEdit = async (commentId: number) => {
+  try {
+    const response = await axios.post(
+      `http://i10d106.p.ssafy.io:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${commentId}/update`,
+      {
         context: editingCommentContent.value,
         username: username,
         snapshotId: props.selectedSnapshot?.snapshotId
         // 기타 필요한 데이터
-      });
-      console.log(response.data);
-      // 여기서 댓글 목록 갱신 로직 필요
-      cancelEdit();
-      router.go(0)
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // 댓글 삭제
-  const deleteComment = async (id : number) => {
-    try {
-      await axios.post(`http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${id}/delete`);
-      // 댓글 목록을 다시 불러오는 로직 필요
-      router.go(0)
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // 날짜 함수
-  function formatDistanceToNowFromLocalDateTime(isoString: string) {
-    // 배열에서 연, 월, 일, 시, 분, 초를 추출합니다.
-    // JavaScript의 Date 월은 0부터 시작하므로 월에서 1을 빼줍니다.
-    const date = new Date(isoString);
-    
-    // 현재 시간으로부터의 거리 계산
-    const distance = formatDistanceToNow(date, { addSuffix: true, locale: ko });
-    
-    return distance;
+      }
+    )
+    console.log(response.data)
+    // 여기서 댓글 목록 갱신 로직 필요
+    cancelEdit()
+    router.go(0)
+  } catch (error) {
+    console.error(error)
   }
+}
 
+// 댓글 삭제
+const deleteComment = async (id: number) => {
+  try {
+    await axios.post(
+      `http://i10d106.p.ssafy.io:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${id}/delete`
+    )
+    // 댓글 목록을 다시 불러오는 로직 필요
+    router.go(0)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 날짜 함수
+function formatDistanceToNowFromLocalDateTime(isoString: string) {
+  // 배열에서 연, 월, 일, 시, 분, 초를 추출합니다.
+  // JavaScript의 Date 월은 0부터 시작하므로 월에서 1을 빼줍니다.
+  const date = new Date(isoString)
+
+  // 현재 시간으로부터의 거리 계산
+  const distance = formatDistanceToNow(date, { addSuffix: true, locale: ko })
+
+  return distance
+}
 </script>
 
 <style>
@@ -277,8 +316,6 @@
   padding: 16px; /* 패딩 설정 */
 }
 
-
-
 .content-section {
   flex-basis: 50%; /* 나머지 50% 공간 차지 */
   padding: 1em; /* 내용과 테두리 사이의 여백 */
@@ -298,7 +335,7 @@
   align-items: center; /* 요소들을 세로 중앙 정렬 */
 }
 
-.comment-form input[type="text"] {
+.comment-form input[type='text'] {
   flex-grow: 1; /* 입력 필드가 가능한 모든 공간을 차지하도록 설정 */
   margin-right: 8px; /* 버튼과의 여백 설정 */
 }
@@ -318,7 +355,6 @@
 
 .snapshot-actions {
   padding: 16px;
-  
 }
 
 .snapshot-actions button {
@@ -332,13 +368,13 @@
 }
 
 .download-link {
-    display: block;
-    margin-top: 10px;
-    text-align: center;
-    background: #007bff;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
-    text-decoration: none;
-  }
+  display: block;
+  margin-top: 10px;
+  text-align: center;
+  background: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+}
 </style>

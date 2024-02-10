@@ -3,69 +3,54 @@ import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
-import type { SignUp, StarState, FanState } from '@/common/types/index'
-
+import type { StarState, FanState } from '@/common/types/index'
 
 // 세트로 id 이름 사진 그정도 저장 해두기?
 
+export const useUserStore = defineStore(
+  'user',
+  () => {
+    const router = useRouter()
 
-export const useUserStore = defineStore('user', () => {
+    const API_URL = 'http://i10d106.p.ssafy.io:8080'
 
-  const router = useRouter()
+    const fanState = ref<FanState | null>(null)
+    const starState = ref<StarState | null>(null)
+    const isStar = ref(false)
+    const isLogin = computed(() => {
+      if (fanState.value === null && starState.value === null) {
+        return false
+      } else {
+        return true
+      }
+    })
 
-  const API_URL = 'http://localhost:8080'
+    const isSidebarOpen = ref(true)
 
-  const fanState = ref<FanState | null>(null)
-  const starState = ref<StarState | null>(null)
-  const isStar = ref(false)
-  const isLogin = computed(() => {
-    if (fanState.value === null && starState.value === null) {
-      return false
-    } else {
-      return true
+    const starId = ref<number>()
+
+    const logOut = async function (): Promise<void> {
+      try {
+        const response = await axios.post(`${API_URL}/users/logout`, {})
+        console.log(response)
+        window.alert('로그아웃!')
+        router.push({ name: 'home' })
+      } catch (error) {
+        console.error(error)
+      }
     }
-  })
-
-  const isSidebarOpen = ref(true)
-
-  const starInfo = ref<StarLogininfo | null>(null);
-
-  const starId = ref<number>();
-  const signUp = async function (payload: SignUp): Promise<void> {
-    const { username, password, email } = payload;
-
-    try {
-      await axios.post(`${API_URL}/users/new`, {
-        username,
-        password,
-        email
-      });
-      window.alert('회원가입완료');
-      // username, password 받아서 바로 로그인 하기
-    } catch (error) {
-      console.error(error);
+    return {
+      API_URL,
+      logOut,
+      starState,
+      fanState,
+      //
+      isLogin,
+      isStar,
+      //
+      isSidebarOpen,
+      starId
     }
-  };
-
-
-
-  const logOut = async function (): Promise<void> {
-    try {
-      const response = await axios.post(`${API_URL}/users/logout`, {
-      });
-      console.log(response);
-      window.alert('로그아웃!');
-      router.push({ name: 'home' })
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  return {
-    API_URL,
-    signUp, logOut, starState, fanState,
-    //
-    isLogin, isStar,
-    //
-    isSidebarOpen, starId
-  }
-}, { persist: true })
+  },
+  { persist: true }
+)

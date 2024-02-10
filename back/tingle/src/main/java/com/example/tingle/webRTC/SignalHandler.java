@@ -84,7 +84,9 @@ public class SignalHandler extends TextWebSocketHandler {
                 break;
             case "Join":
                 // data 에 starname이 들어온다
-                star = starRepository.findByUsername(data);
+                Optional<StarEntity> optionalStar = starRepository.findById(Long.valueOf(data));
+
+                star = optionalStar.orElseThrow(() -> new IllegalArgumentException("Star not found: " + data));
                 System.out.println("star: " + star.getId() + "한테 입장중~~");
                 System.out.println("roomType: " + roomType);
                 // roomType에 따라 roomId를 다르게 찾는다 (대기방 => *10 +1, 미팅방 => *10 + 2)
@@ -153,7 +155,6 @@ public class SignalHandler extends TextWebSocketHandler {
 
                 // roomType에 따라 roomId를 다르게 찾는다 (대기방 => *10 +1, 미팅방 => *10 + 2)
                 long waitingRoomId = star.getId() * 10 + 1;
-
 
                 // waitingRoom에 있는 팬을 찾아 메시지를 보낸다.
                 FanMeetingRoom waitingRoom = fanMeetingRoomService.findRoomById(waitingRoomId);

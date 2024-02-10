@@ -6,9 +6,13 @@ import com.example.tingle.star.service.impl.StarServiceImpl;
 import com.example.tingle.store.dto.ProductDto;
 import com.example.tingle.store.entity.ProductEntity;
 import com.example.tingle.store.entity.ProductImageEntity;
+import com.example.tingle.store.service.ProductImageService;
 import com.example.tingle.store.service.S3UploadService;
+import com.example.tingle.store.service.impl.ProductImageServiceImpl;
 import com.example.tingle.store.service.impl.ProductServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,29 +20,35 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/product")
+@Slf4j
 public class StarProductController {
 
     private final ProductServiceImpl productService;
     private final StarServiceImpl starService;
     private final S3UploadService s3UploadService;
     private final ObjectMapper objectMapper;
+    private final ProductImageServiceImpl productImageService;
 
     @Autowired
     public StarProductController(ProductServiceImpl productService,
                                  StarServiceImpl starService,
                                  S3UploadService s3UploadService,
-                                 ObjectMapper objectMapper) {
+                                 ObjectMapper objectMapper,
+                                 ProductImageServiceImpl productImageService) {
         this.productService = productService;
         this.starService = starService;
         this.s3UploadService = s3UploadService;
         this.objectMapper = objectMapper;
+        this.productImageService = productImageService;
     }
 
 
@@ -79,7 +89,99 @@ public class StarProductController {
         }
     }
 
-    //http://localhost:8080/deleteProduct, body에 productId=?
+    @PostMapping("/update")
+    @Transactional
+    public String updateProduct(@RequestParam("productDto") String productDtoJson,
+                                @RequestParam("files") MultipartFile[] files,
+                                @RequestParam("previewFiles") String previewFiles) throws IOException {
+        System.out.println("productDtoJson = " + productDtoJson);
+        ProductDto productDto = objectMapper.readValue(productDtoJson, ProductDto.class);
+        Long productId = productDto.getProductId();
+        Optional<ProductEntity> optionalProductEntity = productService.findById(productId);
+        ProductEntity product = optionalProductEntity.get();
+
+        List<ProductImageEntity> imageUrls = product.getImageUrl();
+        List<String> previewList = Arrays.asList(previewFiles.split(","));
+        List<ProductImageEntity> filteredImageUrls = new ArrayList<>();
+
+        List<ProductImageEntity> addfilteredImageUrls = new ArrayList<>();
+
+        for (ProductImageEntity imageUrl : imageUrls) {
+            if (!previewList.contains(imageUrl.getUrl())) {
+                filteredImageUrls.add(imageUrl);
+            } else {
+                addfilteredImageUrls.add(imageUrl);
+            }
+        }
+
+        // 필터링된 리스트 사용
+        for (ProductImageEntity image : filteredImageUrls) {
+            System.out.println(image.getUrl());
+            if (image.getId() != null) {
+                productImageService.deleteById(image.getId());
+                s3UploadService.deleteImage(image.getUrl());
+                product.removeImage(image);
+            }
+        }
+
+        for (MultipartFile file : files) {
+            String url = s3UploadService.saveFile(file);
+            ProductImageEntity save = productImageService.save(new ProductImageEntity(url, product));
+            product.addImage(save);
+        }
+        for (ProductImageEntity filter : addfilteredImageUrls) {
+            product.addImage(filter);
+        }
+
+        product.setName(productDto.getName());
+        product.setAmount(productDto.getAmount());
+        product.setPrice(productDto.getPrice());
+        product.setContent(productDto.getContent());
+        product.setAvailable(productDto.isAvailable());
+
+        productService.save(product);
+        return "SUCCESS";
+    }
+
+    @PostMapping("/update/nofile")
+    @Transactional
+    public String updateProduct(@RequestParam("productDto") String productDtoJson,
+                                @RequestParam("previewFiles") String previewFiles) throws IOException {
+        ProductDto productDto = objectMapper.readValue(productDtoJson, ProductDto.class);
+        Long productId = productDto.getProductId();
+        Optional<ProductEntity> optionalProductEntity = productService.findById(productId);
+        ProductEntity product = optionalProductEntity.get();
+
+        List<ProductImageEntity> imageUrls = product.getImageUrl();
+        List<String> previewList = Arrays.asList(previewFiles.split(","));
+
+        List<ProductImageEntity> filteredImageUrls = new ArrayList<>();
+
+        for (ProductImageEntity imageUrl : imageUrls) {
+            if (!previewList.contains(imageUrl.getUrl())) {
+                filteredImageUrls.add(imageUrl);
+            }
+        }
+
+        // 필터링된 리스트 사용
+        for (ProductImageEntity image : filteredImageUrls) {
+            if (image.getId() != null) {
+                productImageService.deleteById(image.getId());
+                s3UploadService.deleteImage(image.getUrl());
+                product.removeImage(image);
+            }
+        }
+        product.setName(productDto.getName());
+        product.setAmount(productDto.getAmount());
+        product.setPrice(productDto.getPrice());
+        product.setContent(productDto.getContent());
+        product.setAvailable(productDto.isAvailable());
+
+        productService.save(product);
+        return "SUCCESS";
+    }
+
+
     @PostMapping("/delete/{productId}")
     public String deleteProduct(@PathVariable Long productId) {
         // 해당 ID에 해당하는 Product 조회
@@ -98,34 +200,6 @@ public class StarProductController {
             return "SUCCESS";
         }
         return "FAIL";
-    }
-
-    //http://localhost:8080/{productId}
-    @PostMapping("/update/{productId}")
-    public String updateProduct(@PathVariable Long productId, @RequestBody ProductDto updatedProductDto) {
-        // 특정 ID에 해당하는 Product 조회
-        Optional<ProductEntity> optionalProductEntity = productService.findById(productId);
-
-        if (optionalProductEntity.isPresent()) {
-            // 기존 Product 엔터티를 가져옴
-            ProductEntity existingProductEntity = optionalProductEntity.get();
-
-            // 수정할 내용으로 기존 엔터티 업데이트
-            existingProductEntity.setName(updatedProductDto.getName());
-            existingProductEntity.setAmount(updatedProductDto.getAmount());
-            existingProductEntity.setPrice(updatedProductDto.getPrice());
-            existingProductEntity.setImageUrl(existingProductEntity.getImageUrl());
-            // 이미지는 각 이미지마다 업데이트 할 예정. 여기서는 업데이트 하지 않음.
-            existingProductEntity.setContent(updatedProductDto.getContent());
-            existingProductEntity.setAvailable(updatedProductDto.isAvailable());
-
-            // 수정된 내용을 저장
-            productService.save(existingProductEntity);
-
-            return "SUCCESS";
-        } else {
-            return "FAIL";
-        }
     }
 
 
@@ -168,7 +242,7 @@ public class StarProductController {
     @GetMapping("/getByStarName/{starName}")
     public ResultDTO<List<ProductDto>> getProductsByStarName(@PathVariable String starName) {
         List<ProductEntity> products = productService.findByStarName(starName);
-
+        System.out.println("starName = " + starName);
         if (!products.isEmpty()) {
             // ProductEntity 리스트를 ProductDto 리스트로 변환
             List<ProductDto> productDtos = products.stream()
@@ -183,5 +257,23 @@ public class StarProductController {
         }
     }
 
+    @GetMapping("/getByStarId/{starId}")
+    public ResultDTO<List<ProductDto>> getProductsByStarName(@PathVariable Long starId) {
+        Optional<StarEntity> optionalStarEntity = starService.findById(starId);
+        if (optionalStarEntity.isPresent()) {
+            StarEntity starEntity = optionalStarEntity.get();
+            String username = starEntity.getUsername();
+            List<ProductEntity> products = productService.findByStarName(username);
+            if (!products.isEmpty()) {
+                // ProductEntity 리스트를 ProductDto 리스트로 변환
+                List<ProductDto> productDtos = products.stream()
+                        .map(productService::mapToDTO)
+                        .collect(Collectors.toList());
 
+                // 성공적인 결과를 ResultDTO로 래핑하여 반환
+                return ResultDTO.of("SUCCESS", "스타의 상품 목록 조회 성공", productDtos);
+            }
+        }
+        return ResultDTO.of("NOT_FOUND", "스타의 상품이 없음", new ArrayList<>());
+    }
 }
