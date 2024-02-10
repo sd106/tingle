@@ -138,26 +138,6 @@ interface ProductCreationPayload {
     files: File[];
 }
 
-
-interface ImageUrl {
-    id: number;
-    url: string;
-    productId: Goods;
-  }
-  
-
-interface Goods {
-    productId: number;
-    starId: null | number;
-    starName: null | string;
-    name: string;
-    amount: number;
-    price: number;
-    imageUrl: ImageUrl[];
-    content: string;
-    available: boolean;
-  }
-
 interface UserStoreStorageResponse {
     
     id : number,
@@ -170,8 +150,6 @@ interface UserStoreStorageResponse {
     userId : number,
     starId : number, 
 }
-
-
 
 interface OrderResponse {
     productService: null,
@@ -202,14 +180,12 @@ interface OrderResponse2 {
     orderId : number,
 }
 
-
-
-// 위시
+// 스냅샷
 interface SnapshotType {
     id: number;
     imageUrl: string;
     username: string;
-};
+}
 
 interface selectedSnapshotType {
     snapshotId: number;
@@ -231,7 +207,43 @@ interface CommentType {
     context: string;
     username: string;
     snapshotId: number;
-};
+}
+
+/* 위시 */
+interface LikesInfo {
+    id: number;
+    userId: number;
+    wishId: number;
+    liked: boolean;
+}
+
+interface WishInfo {
+    id: number;
+    userId: number;
+    starId: number;
+    status: number;
+    points: number;
+    likedCount: number;
+    contents: string;
+    createTime: Date;
+    deleteTime: Date;
+}
+
+// 채팅
+interface ChatRoomInfo {
+    id: number;
+    starId: number;
+    chatMessages: ChatMessageInfo[];
+}
+
+interface ChatMessageInfo {
+    id: number;
+    userId: number;
+    direction: number;
+    message: string;
+    createDate: Date;
+    roomId: number;
+}
 
 
 export type {
@@ -242,5 +254,9 @@ export type {
     // 팬미팅
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
     Product, ProductCreationPayload, OrderResponse2, UserStoreStorageResponse,
-    SnapshotType, selectedSnapshotType, CommentType, FanMeetingMessage,SocketMessage
+    SnapshotType, selectedSnapshotType, CommentType, FanMeetingMessage,SocketMessage,
+    // 위시
+    WishInfo, LikesInfo,
+    // 채팅
+    ChatRoomInfo, ChatMessageInfo
 }
