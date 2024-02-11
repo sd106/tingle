@@ -30,11 +30,11 @@ const store = useUserStore()
 const selectLoginType = async (type: string) => {
   try {
     const { data } = await axios.post(
-      `http://i10d106.p.ssafy.io:8080/auth/login/${type}`,
+      `http://i10d106.p.ssafy.io/api/auth/login/${type}`,
       {},
       { withCredentials: true }
     )
-    // const { data } = await axios.post(`http://i10d106.p.ssafy.io:8080/auth/login/${type}`, {}, { withCredentials: true })
+    // const { data } = await axios.post(`http://i10d106.p.ssafy.io/api/auth/login/${type}`, {}, { withCredentials: true })
     console.log('▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼')
     console.log(data)
     console.log('▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲')

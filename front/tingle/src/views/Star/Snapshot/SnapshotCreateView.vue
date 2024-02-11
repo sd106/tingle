@@ -132,7 +132,7 @@ const createSnapshot = async () => {
 
   try {
     console.log('post직전')
-    axios.post('http://i10d106.p.ssafy.io:8080/snapshot/new', formData, { withCredentials: true })
+    axios.post('http://i10d106.p.ssafy.io/api/snapshot/new', formData, { withCredentials: true })
     console.log('post끝')
     router.go(-1) // 메인 뷰로 이동
   } catch (error) {

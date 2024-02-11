@@ -122,7 +122,7 @@
 
   const createOrder = async () => {
     try {
-      const response = await axios.post(`http://i10d106.p.ssafy.io:8080/order/create/${userId.value}/${productId.value}`);
+      const response = await axios.post(`http://i10d106.p.ssafy.io/api/order/create/${userId.value}/${productId.value}`);
       responseMessageCreate.value = response.data;
     } catch (error) {
       console.error(error);
@@ -138,7 +138,7 @@
 
   const deleteOrder =async () => {
     try {
-      const response = await axios.post(`http://i10d106.p.ssafy.io:8080/order/delete/${productId.value}`);
+      const response = await axios.post(`http://i10d106.p.ssafy.io/api/order/delete/${productId.value}`);
       responseMessageDelete.value = response.data;
     } catch (error) {
       console.log(error);
@@ -153,7 +153,7 @@
 
 const getStarOrder =async () => {
   try {
-    const response = await axios.get(`http://i10d106.p.ssafy.io:8080/order/getByStarName/${starname.value}`)
+    const response = await axios.get(`http://i10d106.p.ssafy.io/api/order/getByStarName/${starname.value}`)
     responseMessageGetByStarName.value = response.data
   } catch (error) {
     console.log(error)
@@ -167,7 +167,7 @@ const getStarOrder =async () => {
 
 const getOrderDetail = async () => {
   try {
-    const response = await axios.get(`http://i10d106.p.ssafy.io:8080/order/getById/${productId.value}`);
+    const response = await axios.get(`http://i10d106.p.ssafy.io/api/order/getById/${productId.value}`);
     responseMessageDetail.value = response.data;
     console.log(response.data)
     
@@ -186,7 +186,7 @@ const getOrderDetail = async () => {
 
 const getOrderByUserId =async () => {
   try {
-    const response = await axios.get(`http://i10d106.p.ssafy.io:8080/order/getUserOrders/${userId.value}`);
+    const response = await axios.get(`http://i10d106.p.ssafy.io/api/order/getUserOrders/${userId.value}`);
     responseMessageGetByUserId.value = response.data
     console.log(response.data)
   } catch (error) {

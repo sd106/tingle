@@ -32,7 +32,7 @@ const userStoreStorages = ref<UserStoreStorageResponse[]>([]);
 
 const fetchData = async () => {
   try {
-    const response = await axios.get(`http://i10d106.p.ssafy.io:8080/order/getStarsPicture/1`);
+    const response = await axios.get(`http://i10d106.p.ssafy.io/api/order/getStarsPicture/1`);
     console.log(response.data.resultCode)
     if (response.data.resultCode === 'SUCCESS') {
       userStoreStorages.value = response.data.data;

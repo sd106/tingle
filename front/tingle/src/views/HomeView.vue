@@ -98,7 +98,7 @@ const hotStarsInfo = ref<HotStarInfo[]>([])
 
 //최근 인기상승 핫스타 가져오기
 const getHotStars = async () => {
-  const response = await axios.get('http://i10d106.p.ssafy.io:8080/follow/hotStars')
+  const response = await axios.get('http://i10d106.p.ssafy.io/api/follow/hotStars')
   hotStarsInfo.value = response.data.data
   if (hotStarsInfo.value.length === 0)
     //만약 핫스타가 없으면 구독자수가 많은 스타를 가져온다
@@ -110,13 +110,13 @@ getHotStars()
 
 //상위 10명의 스타 가져오기
 const getTop10Stars = async () => {
-  const response = await axios.get('http://i10d106.p.ssafy.io:8080/star/Top10Stars')
+  const response = await axios.get('http://i10d106.p.ssafy.io/api/star/Top10Stars')
   hotStarsInfo.value = response.data.data
   console.log(response)
 }
 
 const getStarsByCategory = async (category: number) => {
-  const response = await axios.get(`http://i10d106.p.ssafy.io:8080/star/${category}`)
+  const response = await axios.get(`http://i10d106.p.ssafy.io/api/star/${category}`)
   StarsByCategory.value = response.data.data
   console.log(response)
 }

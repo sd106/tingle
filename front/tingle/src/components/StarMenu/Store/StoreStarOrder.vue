@@ -61,7 +61,7 @@ const starname = ref('');
 
 const getStarOrder =async () => {
   try {
-    const response = await axios.get(`http://i10d106.p.ssafy.io:8080/order/getByStarName/${starname.value}`)
+    const response = await axios.get(`http://i10d106.p.ssafy.io/api/order/getByStarName/${starname.value}`)
     responseMessageGetByStarName.value = response.data.data
     console.log(response.data.data)
     console.log(response.data)
@@ -81,7 +81,7 @@ import StoreOrderDetail from '@/components/StarMenu/Store/StoreOrderDetail.vue'
 
   const deleteOrder =async (orderId : number) => {
     try {
-      const response = await axios.post(`http://i10d106.p.ssafy.io:8080/order/delete/${orderId}`);
+      const response = await axios.post(`http://i10d106.p.ssafy.io/api/order/delete/${orderId}`);
       console.log(response.data)
       getStarOrder();
     } catch (error) {
