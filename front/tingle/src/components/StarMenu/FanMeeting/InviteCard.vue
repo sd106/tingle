@@ -22,7 +22,7 @@ const store = useFanMeetingStore()
 
 const props = defineProps({
     starid: {
-        type: Number,
+        type: String,
         required: true
     }
 })

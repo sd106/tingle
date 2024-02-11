@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -21,12 +23,28 @@ public class LikeServiceimpl implements LikeService {
     private final LikeRepository likeRepository;
     private final UserRepository userRepository;
     private final SnapShotRepository snapShotRepository;
+
+    public boolean findLike(String username, SnapShotEntity snapShot) {
+        UserEntity user = userRepository.findByUsername(username);
+
+        boolean isLike = false;
+
+        Optional<LikeEntity> optlike = likeRepository.findByUserAndSnapShot(user, snapShot);
+        if (optlike.isPresent()) {
+            LikeEntity like = optlike.get();
+            isLike = true;
+        }
+        return isLike;
+    };
     @Override
-    public void addLike(Long userId, Long snapshotId) {
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+    public void addLike(String username, Long snapshotId) {
+        System.out.println("username = " + username);
+        UserEntity user = userRepository.findByUsername(username);
+        System.out.println("user = " + user.getId());
+
         SnapShotEntity snapShot = snapShotRepository.findById(snapshotId)
                 .orElseThrow(() -> new EntityNotFoundException("Snapshot not found"));
+        System.out.println("snapShot = " + snapShot);
 
         likeRepository.findByUserAndSnapShot(user, snapShot)
                 .ifPresentOrElse(
@@ -42,10 +60,10 @@ public class LikeServiceimpl implements LikeService {
     }
 
     @Override
-    public void removeLike(Long userId, Long snapshotId) {
+    public void removeLike(String username, Long snapshotId) {
 
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        UserEntity user = userRepository.findByUsername(username);
+
         SnapShotEntity snapShot = snapShotRepository.findById(snapshotId)
                 .orElseThrow(() -> new EntityNotFoundException("Snapshot not found"));
 

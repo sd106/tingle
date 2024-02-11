@@ -26,7 +26,7 @@ import FanMeetingTicketing from '@/components/StarMenu/FanMeeting/FanMeetingTick
 import FanMeetingClosed from '@/components/StarMenu/FanMeeting/FanMeetingClosed.vue';
 import StarMenu from '@/components/StarMenu/StarMenu.vue';
 
-const props = defineProps(['username'])
+const props = defineProps(['username', 'starid'])
 const name = ref('')
 name.value = props.username
 

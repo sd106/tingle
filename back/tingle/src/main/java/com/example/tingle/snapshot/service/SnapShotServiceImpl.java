@@ -73,6 +73,11 @@ public class SnapShotServiceImpl implements SnapShotService {
         // 스타 정보 가져오기 (예: starName은 고정된 값)
         StarEntity star = starRepository.findByUsername(starname);
 
+        System.out.println("star.getName() = " + star.getName());
+        System.out.println("user.getname() = " +user.getName());
+        System.out.println("스냅샷 엔티티 생성 직전");
+
+
         SnapShotEntity snapshotEntity = SnapShotEntity.builder()
                 .imageUrl(imageUrl)
                 .content(content)
@@ -80,8 +85,11 @@ public class SnapShotServiceImpl implements SnapShotService {
                 .star(star)
                 .build();
 
+        System.out.println("스냅샷 엔티티 생성 완료/ 저장 전");
+
         snapshotRepository.save(snapshotEntity);
 
+        System.out.println("스냅샷 저장 완료");
         // 해시태그 처리
         for (String tag : tags) {
 

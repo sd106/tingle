@@ -21,7 +21,7 @@
       </form>
     </div>
 
-    
+
   </main>
 </template>
 
@@ -58,18 +58,17 @@ const isModalOpen = ref(false);
 const submitForm = () => {
   // 위시 등록 함수 호출
   createWish(formData.value);
-  
+
   console.log('폼이 제출되었습니다.');
   isModalOpen.value = true;
 };
 
 // 위시 등록
 const createWish = async function (payload: WishInfo): Promise<void> {
-  
+
   try {
     const res = await axios.post(`${store.API_URL}/wish/save`, payload);
     console.log(res);
-    window.alert('폼 미쳤다이')
     router.push(`/${id.value}/wish`);
   } catch (error) {
     console.error('Error saving wish:', error);

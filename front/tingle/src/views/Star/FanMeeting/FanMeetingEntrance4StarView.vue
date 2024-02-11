@@ -13,22 +13,24 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import type { FanMeetingInfo } from '@/common/types/index'
-import type CreateFanMeetingViewVue from './CreateFanMeetingView.vue';
+import CreateFanMeetingViewVue from '@/views/Star/FanMeeting/CreateFanMeetingView.vue'
+import MeetingRoomView4Star from '@/views/Star/FanMeeting/MeetingRoom4StarView.vue'
+
+const props = defineProps(['username', 'starid'])
 
 const fanMeetingInfo = ref<FanMeetingInfo>()
 
 const getFanMeetingInfo = async () => {
-  try {
-    const response = await axios.get(`http://i10d106.p.ssafy.io:8080/api/fanMeeting/info/${props.username}`)
-    fanMeetingInfo.value = response.data
-  } catch (error) {
-    console.log(error)
-  }
+    try {
+        const response = await axios.get(`http://i10d106.p.ssafy.io:8080/api/fanMeeting/info/${props.starid}`)
+        fanMeetingInfo.value = response.data
+    } catch (error) {
+        console.log(error)
+    }
 }
 
-
 onMounted(() => {
-  // getFanMeetingInfo()
+    getFanMeetingInfo()
 })
 </script>
 

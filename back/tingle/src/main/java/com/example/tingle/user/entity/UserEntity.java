@@ -3,10 +3,8 @@ package com.example.tingle.user.entity;
 import com.example.tingle.follow.entity.FollowEntity;
 import com.example.tingle.store.entity.OrderEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +13,7 @@ import java.util.Set;
 @Entity(name = "user")
 @Getter
 @Builder
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserEntity {
@@ -29,11 +28,8 @@ public class UserEntity {
     private String picture;
 
 
-    //gpt
-//    @JsonManagedReference
     @OneToMany(mappedBy = "fan")
     private List<OrderEntity> orders;
-    //
 
     // OAuth2 로그인 때 구분한 Provider
     private String provider;
@@ -50,6 +46,9 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "userEntity")
     private Set<FollowEntity> followingStars = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<UserStoreStorage> storeStorages;
 
 
 }
