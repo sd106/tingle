@@ -12,7 +12,7 @@
     <div class="container slider-container">
       <div class="justify-content-between slider-track" ref="sliderTrack">
         <div v-for="hotstar in hotStarsInfo" :key="hotstar.id" class="p-2 star-card" style="width: 18%;">
-          <RouterLink class="router-link-custom" :to="`/${hotstar.id}/home`">
+          <RouterLink class="router-link-custom" :to=" hotstar.id===1 ? `/${hotstar.id}/home/manage`: `/${hotstar.id}/home`">
             <div class="hotstar-image">
               <img :src="hotstar.picture" alt="not" class="hotpic">
             </div>
@@ -38,7 +38,7 @@
         아직 이 분야 스타가 존재하지 않습니다.
       </div>
       <div v-else v-for="star in StarsByCategory" :key="star.id" class="p-2 star-card" style="width: 18%;">
-        <RouterLink class="router-link-custom" :to="`/${star.id}/home`">
+        <RouterLink class="router-link-custom" :to=" star.id===1 ? `/${star.id}/home/manage`: `/${star.id}/home`">
           <div class="star-image">
             <img :src="star.picture" alt="not">
           </div>
