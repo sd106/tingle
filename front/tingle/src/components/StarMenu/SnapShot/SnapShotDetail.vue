@@ -3,7 +3,7 @@
     <div class="row">
       <!-- 이미지 컨테이너 -->
       <div class="col-md-6">
-        <img :src="props.selectedSnapshot!.imageUrl" alt="Snapshot Image" class="snapshot-image">
+        <img :src="props.selectedSnapshot!.imageUrl" alt="Snapshot Image" class="rounded snapshot-image">
       </div>
       <div class="col-md-6">
         <!-- 스냅샷 관리 버튼 -->
@@ -36,9 +36,15 @@
           <div v-for="comment in props.selectedSnapshot!.comments" :key="comment.id" class="">
             <!-- 수정 중인 댓글의 UI 변경 -->
             <div v-if="editingCommentId === comment.id">
-              <input type="text" v-model="editingCommentContent" />
-              <button class="btn" @click="submitCommentEdit(comment.id)">수정하기</button>
-              <button class="btn" @click="cancelEdit">취소</button>
+              <p class="d-flex justify-content-between align-items-center">
+                <span>
+                  <input type="text" class="form-control" v-model="editingCommentContent" />
+                </span>
+                <span>
+                  <button class="btn btn-outline-secondary btn-sm mx-2" @click="submitCommentEdit(comment.id)">수정하기</button>
+                  <button class="btn btn-outline-danger btn-sm" @click="cancelEdit">취소</button>
+                </span>
+              </p>
             </div>
             <!-- 일반 댓글 표시 -->
             <div v-else>
@@ -56,7 +62,7 @@
           </div>
         </div>
         <!-- 댓글 작성 폼 -->
-        <form @submit.prevent="postComment" class="row comment-form bg-body-secondary">
+        <form @submit.prevent="postComment" class="me-1 row rounded comment-form rounded-lg bg-body-secondary">
           <div class="col-sm-10">
             <input class="form-control" type="text" v-model="newCommentContent" placeholder="댓글을 남겨보세요!">
           </div>
@@ -72,7 +78,7 @@
   import { formatDistanceToNow } from 'date-fns';
   import { ko } from 'date-fns/locale';
   import { useUserStore } from '@/stores/user';
-  import { useWishStore } from '@/stores/wish'
+  import { useSnapshotStore } from '@/stores/snapshot'
   import axios from 'axios';
   import { useRouter } from 'vue-router';
   import type { selectedSnapshotType, CommentType } from '@/common/types/index'
@@ -83,7 +89,7 @@
 
   
   const store = useUserStore();
-  const wishStore = useWishStore();
+  const snapshotStore = useSnapshotStore();
   const username = store.fanState?.username
   
   const starid = store.starInfo?.starId;
@@ -125,11 +131,11 @@
     if (id) {
       try {
         // 좋아요 API 호출
-        await axios.post(`http://localhost:8080/snapshot/${id}/likes`,{ username: username }, { withCredentials: true });
-        console.log("좋아요 실행됨")
-        router.go(0)
-        // 스토어에서 선택된 스냅샷을 다시 가져온 후 좋아요 수를 갱신
-        wishStore.selectSnapshot(id)
+        await axios.post(`http://localhost:8080/snapshot/${id}/likes`,{ username: username }, { withCredentials: true })
+        .then(() => {
+          snapshotStore.selectSnapshot(id)
+        });
+
       } catch (error) {
         console.error('좋아요 실패:', error);
       }
@@ -142,7 +148,7 @@
         await axios.post(`http://localhost:8080/snapshot/${id}/dislikes`,{ username: username }, { withCredentials: true });
         console.log("싫어요 실행됨")
         // 스토어에서 선택된 스냅샷을 다시 가져온 후 좋아요 수를 갱신
-        
+        snapshotStore.selectSnapshot(id)
       } catch (error) {
         console.error('좋아요 실패:', error);
       }
@@ -186,7 +192,7 @@
         // 필요하다면 여기에 더 많은 필드 추가
       });
       newCommentContent.value = ''; // 입력 필드 초기화
-      wishStore.selectSnapshot(props.selectedSnapshot!.snapshotId)
+      snapshotStore.selectSnapshot(props.selectedSnapshot!.snapshotId)
       // 댓글 목록을 다시 불러오는 로직 필요
     } catch (error) {
       console.error(error);
@@ -217,7 +223,7 @@
       console.log(response.data);
       // 여기서 댓글 목록 갱신 로직 필요
       cancelEdit();
-      router.go(0)
+      snapshotStore.selectSnapshot(props.selectedSnapshot!.snapshotId)
     } catch (error) {
       console.error(error);
     }
@@ -228,7 +234,7 @@
     try {
       await axios.post(`http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${id}/delete`);
       // 댓글 목록을 다시 불러오는 로직 필요
-      router.go(0)
+      snapshotStore.selectSnapshot(props.selectedSnapshot!.snapshotId)
     } catch (error) {
       console.error(error);
     }
@@ -342,3 +348,4 @@
     text-decoration: none;
   }
 </style>
+@/stores/snapshot

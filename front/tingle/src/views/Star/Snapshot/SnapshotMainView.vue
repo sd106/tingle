@@ -46,14 +46,14 @@
   import { ref, onMounted, computed } from 'vue';
   import axios from 'axios';
   import { useUserStore } from '@/stores/user';
-  import { useWishStore } from '@/stores/wish'
+  import { useSnapshotStore } from '@/stores/snapshot'
   import StarMenu from '@/components/StarMenu/StarMenu.vue';
   import type { Starinfo, SnapshotType } from '@/common/types';
   import SnapShotDetail from '../../../components/StarMenu/SnapShot/SnapShotDetail.vue'
 
 
   const store = useUserStore();
-  const wishStore = useWishStore();
+  const wishStore = useSnapshotStore();
   const props = defineProps(['id']);
   const id = ref(props.id);
 
@@ -196,4 +196,4 @@
   transition: opacity 0.3s ease; /* 부드러운 효과를 위한 전환 */
 }
 
-</style>
+</style>@/stores/snapshot

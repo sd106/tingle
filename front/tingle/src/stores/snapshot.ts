@@ -6,7 +6,7 @@ import { useUserStore } from '@/stores/user';
 
 
 
-export const useWishStore = defineStore('wish', () => {
+export const useSnapshotStore = defineStore('snapshot', () => {
 
     const userStore = useUserStore()
 

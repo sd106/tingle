@@ -49,7 +49,7 @@ const id = ref(props.id);
 import { ref } from 'vue';
 import axios from 'axios';
 import { useRouter, useRoute } from 'vue-router';
-
+import { useSnapshotStore } from '@/stores/snapshot'
 
 // 라우터와 라우트 객체 접근
 const router = useRouter();
@@ -61,6 +61,7 @@ const content = ref('');
 const tags = ref<string[]>([]); // 태그 상태 초기화
 const tagInput = ref<string>('');
 
+const snapshotStore = useSnapshotStore()
 const imagePreview = ref<string | null>(null);
 
 // onFileChange 함수는 Event 타입의 이벤트 객체를 매개변수로 받습니다.
@@ -100,7 +101,10 @@ const updateSnapshot = async () => {
     console.log("axios 직전")
     await axios.put(`http://localhost:8080/snapshot/${snapshotId}/update`, formData);
     console.log("axios 통과")
+
     router.push(`/${starId}/snapshot`); // 업데이트 후 상세 페이지로 이동
+    console.log(snapshotStore.selectedSnapshot!.snapshotId)
+    snapshotStore.selectSnapshot(snapshotStore.selectedSnapshot!.snapshotId)
   } catch (error) {
     console.error(error);
   }
