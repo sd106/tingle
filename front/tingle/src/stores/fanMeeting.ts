@@ -25,6 +25,7 @@ export const useFanMeetingStore = defineStore('fanMeeting', () => {
   }
 
   return {
+    API_URL,
     formatDateTime,
     goPage
   }

@@ -3,7 +3,7 @@
         <div class="invite-card-container">
             <div>
               <p>
-                {{ star?.nickName }} 으로부터 팬미팅 초대장이 왔습니다.
+                {{ star?.username }} 으로부터 팬미팅 초대장이 왔습니다.
               </p>
             </div>
             <br>
@@ -15,14 +15,18 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { defineProps, onMounted } from 'vue'
 import { useFanMeetingStore } from '@/stores/fanMeeting'
 import { ref } from 'vue'
 import type { Star } from '@/common/types'
+import axios from 'axios';
 
 const store = useFanMeetingStore()
 
 const star = ref<Star>()
+const loadStar = async () => {
+  star.value = await axios.get(`${store.API_URL}/star/${props.starid}`)
+}
 
 const props = defineProps({
     starid: {
@@ -31,6 +35,9 @@ const props = defineProps({
     }
 })
 
+onMounted(() => {
+  loadStar()
+})
 </script>
 
 <style scoped>

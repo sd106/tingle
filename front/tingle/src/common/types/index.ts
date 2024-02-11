@@ -6,7 +6,7 @@ interface SignUp {
 
 interface User {
     id: string;
-    nickName: string;
+    username: string;
     image: string;
 }
 
@@ -103,13 +103,13 @@ interface SocketMessage {
 interface Star {
     id: string; // tjdah25
     name: string;   // 이성모 
-    nickName: string; // 서옴
+    username: string; // 서옴
     image: string; // 프로필 사진
 }
 
 interface Starinfo {
     id: string;
-    nickName: string;
+    username: string;
     image: string;
 }
 
