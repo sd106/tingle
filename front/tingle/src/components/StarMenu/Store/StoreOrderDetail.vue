@@ -1,8 +1,8 @@
 <template>
     <main>
-        <img :src="order.fan.picture" alt="">
+        <!-- <img :src="order.fan.picture" alt="">
         <p>username : {{ order.fan.username }}</p>
-        <p>email : {{ order.fan.email }}</p>
+        <p>email : {{ order.fan.email }}</p> -->
         <p>상품 정보 : {{ order.goods.name }}</p>
         <p>상품 설명 : {{ order.goods.content }}</p>
         <p>상품 가격 : {{ order.goods.price }}</p>
@@ -50,7 +50,7 @@ const createProduct = async (orderId: Number, fileInputs: File[]) => {
             formData.append('files', fileInputs[i]);
         }
 
-    const response = await axios.post('http://i10d106.p.ssafy.io:8080/order/sendTouser', formData, {
+    const response = await axios.post('http://i10d106.p.ssafy.io/order/sendTouser', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

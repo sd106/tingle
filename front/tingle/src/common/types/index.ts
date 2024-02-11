@@ -228,6 +228,27 @@ interface OrderResponse2 {
 
 
 // 위시
+interface WishInfo {
+    id: number;
+    userId: number;
+    starId: number;
+    status: number;
+    points: number;
+    likedCount: number;
+    contents: string;
+    createTime: Date;
+    deleteTime: Date;
+}
+
+interface LikesInfo {
+    id: number;
+    userId: number;
+    wishId: number;
+    liked: boolean;
+}
+
+
+// 스냅샷
 interface SnapshotType {
     id: number;
     imageUrl: string;
@@ -265,5 +286,8 @@ export type {
     // 팬미팅
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket, FanMeetingReservation, CreateFanMeetingForm,
     Product, ProductCreationPayload, OrderResponse2, UserStoreStorageResponse,
+    // 위시
+    LikesInfo, WishInfo,
+    // 스냅샷
     SnapshotType, selectedSnapshotType, CommentType, FanMeetingMessage,SocketMessage
 }

@@ -3,7 +3,7 @@
         <div class="invite-card-container">
             <div>
               <p>
-                {{ starid }} 으로부터 팬미팅 초대장이 왔습니다.
+                {{ star?.nickName }} 으로부터 팬미팅 초대장이 왔습니다.
               </p>
             </div>
             <br>
@@ -17,8 +17,12 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
 import { useFanMeetingStore } from '@/stores/fanMeeting'
+import { ref } from 'vue'
+import type { Star } from '@/common/types'
 
 const store = useFanMeetingStore()
+
+const star = ref<Star>()
 
 const props = defineProps({
     starid: {

@@ -57,12 +57,12 @@ import { useRoute } from 'vue-router'
 
   const route = useRoute()
   const { fanState } = useUserStore() // 예시로 사용할 userId, 필요에 따라 변경
-  const userId = fanState.id
+  const userId = fanState?.id
   const userStoreStorages = ref<UserStoreStorageResponse[]>([]);
   
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://i10d106.p.ssafy.io:8080/order/getStarsPicture/${userId}`);
+      const response = await axios.get(`http://i10d106.p.ssafy.io/order/getStarsPicture/${userId}`);
       console.log(response.data.resultCode)
       if (response.data.resultCode === 'SUCCESS') {
         userStoreStorages.value = response.data.data;

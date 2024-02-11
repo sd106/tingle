@@ -77,8 +77,8 @@ const store = useUserStore()
 const router = useRouter()
 
 const logOut = function (): void {
-  window.location.href = 'http://i10d106.p.ssafy.io:8080/api/logout'
-  // window.location.href = 'http://i10d106.p.ssafy.io:8080/logout'
+  window.location.href = 'http://i10d106.p.ssafy.io/api/logout'
+  // window.location.href = 'http://i10d106.p.ssafy.io/logout'
   router.push({ name: 'home' })
   store.starState = null
   store.fanState = null
@@ -99,7 +99,7 @@ watch(
 // 로그인
 const redirectToOAuthProvider = async (provider: string) => {
   try {
-    window.location.href = `http://i10d106.p.ssafy.io:8080/oauth2/authorization/${provider}`
+    window.location.href = `http://i10d106.p.ssafy.io/oauth2/authorization/${provider}`
   } catch (error) {
     console.log('error', error)
   }

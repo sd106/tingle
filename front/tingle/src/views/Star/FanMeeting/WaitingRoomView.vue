@@ -35,7 +35,7 @@
       </div>
     </div>
   </div>
-  <InviteCard v-if="invited" :starName="starName"></InviteCard>
+  <InviteCard v-if="invited" :starid="starid"></InviteCard>
 </template>
 
 <script lang="ts" setup>
@@ -81,7 +81,7 @@ const sendToServer = (msg: SocketMessage) => {
 }
 
 const initializeWebSocket = () => {
-  socket = new WebSocket('ws://i10d106.p.ssafy.io:8080/signal')
+  socket = new WebSocket('ws://i10d106.p.ssafy.io/signal')
 
   socket.onmessage = (msg) => {
     let message = JSON.parse(msg.data)
@@ -114,7 +114,7 @@ const initializeWebSocket = () => {
     sendToServer({
       sender: localUserName.value,
       signalType: 'Join',
-      data: starName.value,
+      data: starid.value,
       roomType: roomType
     })
   }

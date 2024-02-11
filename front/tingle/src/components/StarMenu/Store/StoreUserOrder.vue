@@ -62,11 +62,11 @@ import type { OrderResponse2 } from '@/common/types'
 
 const responseMessageGetByUserId = ref<OrderResponse2[]>([])
 const { fanState } = useUserStore()
-const userId = fanState.id
+const userId = fanState?.id
 
 const getOrderByUserId = async () => {
   try {
-    const response = await axios.get(`http://i10d106.p.ssafy.io:8080/order/getUserOrders/${userId}`)
+    const response = await axios.get(`http://i10d106.p.ssafy.io/order/getUserOrders/${userId}`)
     responseMessageGetByUserId.value = response.data.data
     console.log(response.data.data)
     // var textOnly = responseMessageGetByUserId.replace(/<[^>]*>/g, '');
@@ -96,7 +96,7 @@ function truncateText(text: string, maxLength: number): string {
 
 const deleteOrder = async (orderId: number) => {
   try {
-    const response = await axios.post(`http://i10d106.p.ssafy.io:8080/order/delete/${orderId}`)
+    const response = await axios.post(`http://i10d106.p.ssafy.io/order/delete/${orderId}`)
     console.log(response.data)
     getOrderByUserId()
   } catch (error) {

@@ -86,11 +86,11 @@ const sendToServer = (msg: SocketMessage) => {
   }
 }
 
-const API_URL = 'http://i10d106.p.ssafy.io:8080/'
+const API_URL = 'http://i10d106.p.ssafy.io/'
 // WebSocket
 const initializeWebSocket = () => {
   // 소켓 초기화
-  socket = new WebSocket('ws://i10d106.p.ssafy.io:8080/signal')
+  socket = new WebSocket('ws://i10d106.p.ssafy.io/signal')
 
   // 소켓이 message를 받을 때 이벤트 함수
   socket.onmessage = (msg) => {
