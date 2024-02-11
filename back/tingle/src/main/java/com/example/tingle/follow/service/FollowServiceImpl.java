@@ -3,7 +3,6 @@ package com.example.tingle.follow.service;
 
 import com.example.tingle.follow.dto.event.FollowerAddedEvent;
 import com.example.tingle.follow.dto.event.FollowerRemovedEvent;
-import com.example.tingle.follow.dto.request.FollowCreateRequest;
 import com.example.tingle.follow.dto.request.FollowReadRequest;
 import com.example.tingle.follow.entity.FollowEntity;
 import com.example.tingle.follow.repository.FollowRepository;
@@ -15,9 +14,7 @@ import com.example.tingle.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.sql.ast.tree.expression.Star;
 import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,20 +47,22 @@ public class FollowServiceImpl implements FollowService{
 
     @Transactional
     @Override
-    public FollowEntity insertFollow(Long userId, Long starId) throws Exception {
+    public boolean insertFollow(Long userId, Long starId) throws Exception {
+        try {
+            FollowEntity followEntity = new FollowEntity();
+            followEntity.setUserEntity(userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("유저 엔티티를 찾을 수 없습니다.")));
+            followEntity.setStarEntity(starRepository.findById(starId).orElseThrow(() -> new EntityNotFoundException("스타 엔티티를 찾을 수 없습니다.")));
 
-        FollowEntity followEntity = new FollowEntity();
-        followEntity.setUserEntity(userRepository.findById(userId).orElseThrow(()-> new EntityNotFoundException("유저 엔티티를 찾을 수 없습니다.")));
-        followEntity.setStarEntity(starRepository.findById(starId).orElseThrow(()-> new EntityNotFoundException("스타 엔티티를 찾을 수 없습니다.")));
-
-        return followRepository.save(followEntity);
-
+            followRepository.save(followEntity);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
     }
 
     @Transactional
     @Override
     public boolean deleteFollow(Long userId, Long starId) throws Exception {
-
         FollowEntity followEntity = followRepository.findByUserEntityIdAndStarEntityId(userId, starId);
         if (followEntity == null) {
             throw new IllegalArgumentException("해당 사용자와 스타 사이의 팔로우가 존재하지 않습니다.");

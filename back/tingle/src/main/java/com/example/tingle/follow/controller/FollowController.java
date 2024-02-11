@@ -14,12 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 @RestController
 @Tag(name = "팔로우 API")
 @RequiredArgsConstructor
@@ -42,12 +36,9 @@ public class FollowController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
     public Response createFollowing(@RequestBody FollowCreateRequest followCreateRequest){
-
         try {
-            FollowDto followDto= new FollowDto(followCreateRequest.getUserId(), followCreateRequest.getStarId());
-            followService.insertFollow(followCreateRequest.getUserId(), followCreateRequest.getStarId());
             eventPublisher.publishEvent(new FollowerAddedEvent(this, followCreateRequest.getStarId()));
-            return new Response("성공", "스타 팔로잉 성공", followDto);
+            return new Response("성공", "스타 팔로잉 성공",  followService.insertFollow(followCreateRequest.getUserId(), followCreateRequest.getStarId()));
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -60,7 +51,9 @@ public class FollowController {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/delete")
     public Response deleteFolloing(@RequestBody FollowCreateRequest followCreateRequest) throws Exception {
+        log.info("왓따왓따1");
         eventPublisher.publishEvent(new FollowerRemovedEvent(this, followCreateRequest.getStarId()));
+        log.info("왓따왓따");
         return new Response("성공", "팔로잉 삭제",followService.deleteFollow(followCreateRequest.getUserId(), followCreateRequest.getStarId()));
 
     }

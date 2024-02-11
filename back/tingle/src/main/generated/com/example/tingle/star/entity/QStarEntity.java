@@ -20,6 +20,8 @@ public class QStarEntity extends EntityPathBase<StarEntity> {
 
     public static final QStarEntity starEntity = new QStarEntity("starEntity");
 
+    public final StringPath banner = createString("banner");
+
     public final NumberPath<Integer> category = createNumber("category", Integer.class);
 
     public final StringPath email = createString("email");
@@ -39,6 +41,8 @@ public class QStarEntity extends EntityPathBase<StarEntity> {
     public final StringPath provider = createString("provider");
 
     public final EnumPath<com.example.tingle.user.entity.Role> role = createEnum("role", com.example.tingle.user.entity.Role.class);
+
+    public final StringPath snsUrl = createString("snsUrl");
 
     public final StringPath username = createString("username");
 
