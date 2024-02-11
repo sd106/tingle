@@ -87,7 +87,7 @@ const sendToServer = (msg: SocketMessage) => {
 }
 
 
-const API_URL = 'http://i10d106.p.ssafy.io/api'
+const API_URL = 'https://i10d106.p.ssafy.io/api'
 // WebSocket
 const initializeWebSocket = () => {
   // 소켓 초기화
