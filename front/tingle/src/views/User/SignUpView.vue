@@ -6,6 +6,7 @@
       <div>
         <label for="email">이메일</label>
         <input id="email" v-model="signupData.email" type="email" disabled />
+       
       </div>
       <div>
         <label for="name">이름</label>
