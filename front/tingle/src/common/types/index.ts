@@ -66,15 +66,27 @@ interface Star {
 
 interface HotStarInfo{
     id: number;
-    username: String;
-    picture: String;
+    username: string;
+    picture: string;
 }
 
 interface Starinfo {
     id: number;
-    username: String;
-    picture: String;
+    username: string;
+    picture: string;
 }
+
+interface StarProfile{
+
+    banner?: string;
+    profileImage?: string;
+    username: string;
+    snsUrl?: string;
+
+
+}
+
+
 interface StarLogininfo {
     starId?: number;
     username: string;
@@ -101,6 +113,6 @@ interface ProductCreationPayload {
 export type {
     SignUp, LogIn, hotstarInfo,
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
-    User, Star, Starinfo, HotStarInfo,
+    User, Star, Starinfo, HotStarInfo, StarProfile,
     Product, ProductCreationPayload, StarLogininfo
 }
