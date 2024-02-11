@@ -24,7 +24,7 @@ export const useUserStore = defineStore('user', () => {
 
   const router = useRouter()
 
-  const API_URL = 'http://localhost:8080'
+  const API_URL = 'http://i10d106.p.ssafy.io:8080/api'
 
   const fanState = ref<FanState | null>(null)
   const starState = ref<StarState | null>(null)

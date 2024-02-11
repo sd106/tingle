@@ -117,7 +117,7 @@
   if (id) {
     try {
       // 좋아요 API 호출
-      await axios.post(`http://localhost:8080/snapshot/${id}/likes`);
+      await axios.post(`http://i10d106.p.ssafy.io:8080/api/snapshot/${id}/likes`);
       
       // 스토어에서 선택된 스냅샷을 다시 가져온 후 좋아요 수를 갱신
       
@@ -132,7 +132,7 @@
     console.log("삭제 시작할게요")
     if (id && props.selectedSnapshot) {
       
-        const response = await axios.delete(`http://localhost:8080/snapshot/${id}/delete`);
+        const response = await axios.delete(`http://i10d106.p.ssafy.io:8080/api/snapshot/${id}/delete`);
         console.log(response.data); // 성공 응답 로그
         console.log("삭제 성공!");
         // 성공적으로 삭제 후 필요한 추가 작업을 여기에 작성하세요.
@@ -155,7 +155,7 @@
   const postComment = async () => {
     try {
       console.log(props.selectedSnapshot?.snapshotId)
-      await axios.post(`http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/new`, {
+      await axios.post(`http://i10d106.p.ssafy.io:8080/api/snapshot/${props.selectedSnapshot?.snapshotId}/comment/new`, {
         context: newCommentContent.value,
         username: username,
         snapshotId: props.selectedSnapshot?.snapshotId
@@ -184,7 +184,7 @@
   // 수정된 댓글 전송
   const submitCommentEdit = async (commentId: number) => {
     try {
-      const response = await axios.post(`http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${commentId}/update`, {
+      const response = await axios.post(`http://i10d106.p.ssafy.io:8080/api/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${commentId}/update`, {
         context: editingCommentContent.value,
         username: username,
         snapshotId: props.selectedSnapshot?.snapshotId
@@ -202,7 +202,7 @@
   // 댓글 삭제
   const deleteComment = async (id : number) => {
     try {
-      await axios.post(`http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${id}/delete`);
+      await axios.post(`http://i10d106.p.ssafy.io:8080/api/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${id}/delete`);
       // 댓글 목록을 다시 불러오는 로직 필요
       router.go(0)
     } catch (error) {

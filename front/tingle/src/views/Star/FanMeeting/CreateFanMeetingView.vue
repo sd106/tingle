@@ -90,7 +90,7 @@ import type { FanMeeting, FanMeetingContent } from '@/common/types/index'
 
 const temp1 = async () => {
     try {
-        const { data } = await axios.post('http://localhost:8080/fanMeetingRoom/create', 
+        const { data } = await axios.post('http://i10d106.p.ssafy.io:8080/api/fanMeetingRoom/create', 
                             {
                                 roomName: '환영환영',
                                 starName: '황찬준이다이',
@@ -140,13 +140,13 @@ const isSelected = (content: FanMeetingContent) => {
 
 const submit = () => {
     // Submit the meeting
-    axios.post('http://localhost:8080/fanMeeting', meeting.value)
+    axios.post('http://i10d106.p.ssafy.io:8080/api/fanMeeting', meeting.value)
     console.log(meeting.value)
 }
 
 const loadContents = async () => {
     // Load contents from server
-    const { data }  = await axios.get('http://localhost:8080/fanMeeting/types')
+    const { data }  = await axios.get('http://i10d106.p.ssafy.io:8080/api/fanMeeting/types')
     
     console.log(data)
     allContents.value = data

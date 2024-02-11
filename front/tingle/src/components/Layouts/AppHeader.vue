@@ -57,7 +57,7 @@ const router = useRouter()
 
 
 const logOut = function (): void {
-    window.location.href = 'http://localhost:8080/logout'
+    window.location.href = 'http://i10d106.p.ssafy.io:8080/api/logout'
     router.push({ name: 'home' })
     store.starState = null
     store.fanState = null

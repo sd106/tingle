@@ -37,7 +37,7 @@ const signupData = reactive({
 
 const starSignup = async () => {
   try {
-    const response = await axios.post('http://localhost:8080/auth/member/signup', signupData, { withCredentials: true })
+    const response = await axios.post('http://i10d106.p.ssafy.io:8080/api/auth/member/signup', signupData, { withCredentials: true })
 
     console.log(response)
     router.push('/')
@@ -48,7 +48,7 @@ const starSignup = async () => {
 
 const loadMemeber = async () => {
   try {
-    const response = await axios.get('http://localhost:8080/auth/member/info', { withCredentials: true })
+    const response = await axios.get('http://i10d106.p.ssafy.io:8080/api/auth/member/info', { withCredentials: true })
     console.log(response)
 
     if (response.data) {

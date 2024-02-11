@@ -7,7 +7,7 @@ import type { selectedSnapshotType } from '@/common/types/index'
 
 export const useWishStore = defineStore('wish', () => {
 
-    const API_URL = 'http://localhost:8080'
+    const API_URL = 'http://i10d106.p.ssafy.io:8080/api'
 
     const selectedSnapshot = ref<selectedSnapshotType | null>(null);
 

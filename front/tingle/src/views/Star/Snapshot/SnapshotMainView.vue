@@ -51,7 +51,7 @@
 
   const loadSnapshots = async (): Promise<void> => {
     try {
-      const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/created`);
+      const response = await axios.get(`http://i10d106.p.ssafy.io:8080/api/snapshot/star/${id.value}/created`);
       snapshots.value = response.data.AllSnapShot;
       console.log("최신순");
     } catch (error) {
@@ -61,7 +61,7 @@
 
   const loadSnapshotsBylikes = async (): Promise<void> => {
     try {
-      const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/likes`);
+      const response = await axios.get(`http://i10d106.p.ssafy.io:8080/api/snapshot/star/${id.value}/likes`);
       snapshots.value = response.data.AllSnapShot;
       console.log("좋아요순");
     } catch (error) {
