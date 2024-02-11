@@ -12,7 +12,7 @@
 <script setup lang="ts">
 const redirectToOAuthProvider = async (provider: string) => {
   try {
-    window.location.href = `https://i10d106.p.ssafy.io/api/oauth2/authorization/${provider}`
+    window.location.href = `https://i10d106.p.ssafy.io/oauth2/authorization/${provider}`
   } catch (error) {
     console.log('error', error)
   }

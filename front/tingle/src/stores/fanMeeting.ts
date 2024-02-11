@@ -3,9 +3,10 @@ import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 
 export const useFanMeetingStore = defineStore('fanMeeting', () => {
-  const API_URL = 'http://i10d106.p.ssafy.io/api'
+  const API_URL = 'https://i10d106.p.ssafy.io/api'
   
   const router = useRouter()
+
 
   const formatDateTime = (dateTimeStr: string) => {
     const options: Intl.DateTimeFormatOptions = {

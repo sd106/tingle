@@ -111,8 +111,8 @@ const folloingInfo = ref<{ id: number; picture: string; userName: string }[]>([]
 
 //구독한 스타 가져오기
 const getFolloings = async () => {
-    const response = await axios.get('http://i10d106.p.ssafy.io/api/follow/1');
-    folloingInfo.value = response.data.data;
+  const response = await axios.get(`https://i10d106.p.ssafy.io/api/follow/1`)
+  folloingInfo.value = response.data.data
 }
 
 getFolloings()

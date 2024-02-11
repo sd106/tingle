@@ -83,7 +83,7 @@ const router = useRouter()
 
 const getProduct = async (productId: number) => {
   try {
-    const response = await axios.get(`http://i10d106.p.ssafy.io/product/getById/${productId}`)
+    const response = await axios.get(`https://i10d106.p.ssafy.io/api/product/getById/${productId}`)
     if (response.data.resultCode === 'SUCCESS') {
       product.value = response.data.data
     } else {
@@ -127,7 +127,7 @@ function goBack() {
 
 const getProductdelete = async (productId: number) => {
   try {
-    const response = await axios.post(`http://i10d106.p.ssafy.io/product/delete/${productId}`)
+    const response = await axios.post(`https://i10d106.p.ssafy.io/api/product/delete/${productId}`)
     if (response.data === 'SUCCESS') {
       alert('상품 삭제에 성공 하였습니다.')
       router.go(-1)

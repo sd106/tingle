@@ -58,8 +58,8 @@ const starName = starState?.username
 
 const getAllProducts = async (starName: string) => {
   try {
-    const response = await axios.get(`http://i10d106.p.ssafy.io/api/product/getByStarName/${starName}`);
-    // const response = await axios.get(`http://i10d106.p.ssafy.io/product/getByStarName/${starName}`);
+    const response = await axios.get(`https://i10d106.p.ssafy.io/api/product/getByStarName/${starName}`)
+    // const response = await axios.get(`https://i10d106.p.ssafy.io/api/product/getByStarName/${starName}`);
     if (response.data.resultCode === 'SUCCESS') {
       products.value = response.data.data
     }
