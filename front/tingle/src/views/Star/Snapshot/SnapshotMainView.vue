@@ -1,6 +1,13 @@
 
 <template>
   <StarMenu :id="id" />
+  <div class="main-layout pt-5">
+    <!-- 상단 메뉴 -->
+    <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
+    <section v-if="wishStore.selectedSnapshot" class="detail-section cont mb-5">
+      <SnapShotDetail :selectedSnapshot="wishStore.selectedSnapshot"/>
+    </section>
+  </div>
   <div class="d-flex justify-content-between align-items-center my-4 mx-3">
     <div>
       <button class="btn me-2 fs-5 fw-bold text-secondary" @click="loadSnapshots">✧ 최신순</button>
@@ -12,12 +19,6 @@
   </div>
 
   <div class="main-layout">
-    <!-- 상단 메뉴 -->
-    <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
-    <section v-if="wishStore.selectedSnapshot" class="detail-section cont mb-5">
-      <SnapShotDetail :selectedSnapshot="wishStore.selectedSnapshot"/>
-    </section>
-
     <!-- 스냅샷 목록 섹션 (파란색 부분) -->
     <section class="snapshot-list-section">
       <div class="snapshot-list-container" ref="containerRef" @scroll="handleScroll">
