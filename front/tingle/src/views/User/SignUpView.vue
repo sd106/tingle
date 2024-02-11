@@ -58,6 +58,7 @@ const loadMemeber = async () => {
     const response = await axios.get('http://i10d106.p.ssafy.io/api/auth/member/info', {
       withCredentials: true
     })
+
     console.log(response)
 
     if (response.data) {

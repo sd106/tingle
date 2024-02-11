@@ -175,6 +175,7 @@ const dislike = async (id: number, username: string) => {
       // 좋아요 API 호출
       await axios.post(
         `http://i10d106.p.ssafy.io/api/snapshot/${id}/dislikes`,
+
         { username: username },
         { withCredentials: true }
       )

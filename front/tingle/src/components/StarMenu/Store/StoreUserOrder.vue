@@ -62,7 +62,7 @@ import type { OrderResponse2 } from '@/common/types'
 
 const responseMessageGetByUserId = ref<OrderResponse2[]>([])
 const { fanState } = useUserStore()
-const userId = fanState.id
+const userId = fanState?.id
 
 const getOrderByUserId = async () => {
   try {

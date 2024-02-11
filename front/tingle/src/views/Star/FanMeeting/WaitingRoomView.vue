@@ -35,7 +35,7 @@
       </div>
     </div>
   </div>
-  <InviteCard v-if="invited" :starName="starName"></InviteCard>
+  <InviteCard v-if="invited" :starid="starid"></InviteCard>
 </template>
 
 <script lang="ts" setup>
@@ -48,12 +48,12 @@ import type { FanMeetingMessage, SocketMessage } from '@/common/types/index'
 const route = useRoute()
 const store = useUserStore()
 
-const starName = ref(route.params.starid.toString())
+const starid = ref(String(route.params.starid))
 const localUserName = ref(store.fanState?.username)
 const roomType = 'Waiting'
 
 // 메시지 관련
-const invited = ref(false)
+const invited = ref(true)
 
 const messages = ref<FanMeetingMessage[]>([])
 const newMessage = ref('')
@@ -81,7 +81,8 @@ const sendToServer = (msg: SocketMessage) => {
 }
 
 const initializeWebSocket = () => {
-  socket = new WebSocket('ws://i10d106.p.ssafy.io:api/signal')
+  socket = new WebSocket('ws://i10d106.p.ssafy.io/api/signal')
+
 
   socket.onmessage = (msg) => {
     let message = JSON.parse(msg.data)
@@ -114,7 +115,7 @@ const initializeWebSocket = () => {
     sendToServer({
       sender: localUserName.value,
       signalType: 'Join',
-      data: starName.value,
+      data: starid.value,
       roomType: roomType
     })
   }

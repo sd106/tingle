@@ -34,6 +34,7 @@ const selectLoginType = async (type: string) => {
       {},
       { withCredentials: true }
     )
+
     // const { data } = await axios.post(`http://i10d106.p.ssafy.io/api/auth/login/${type}`, {}, { withCredentials: true })
     console.log('▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼')
     console.log(data)

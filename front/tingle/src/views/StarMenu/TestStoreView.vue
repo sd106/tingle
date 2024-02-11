@@ -261,6 +261,7 @@ const inputProductIdDelete = ref(1)
 const getProductdelete = async (productId: number) => {
   try {
     const response = await axios.post(`http://i10d106.p.ssafy.io/api/product/delete/${productId}`)
+
     if (response.data.resultCode === 'SUCCESS') {
       productdelete.value = response.data.data
     } else {
@@ -515,6 +516,7 @@ const updateImage = async (productId: number, imageId: number) => {
 
 const deleteImage = async (imageId: number, productId: number) => {
   try {
+
     await axios.post(`http://i10d106.p.ssafy.io/api/s3/delete/${imageId}`)
     getProductById(productId)
   } catch (error) {

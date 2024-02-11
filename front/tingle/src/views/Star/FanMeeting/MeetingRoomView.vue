@@ -1,26 +1,58 @@
 <template>
-  <div>
-    <RouterView
-      :localVideo="localVideo"
-      :remoteVideo="remoteVideo"
-      :starName="starName"
-      :localStream="localStream"
-    />
-  </div>
+    <section v-if="fanMeetingReservation?.fanMeetingType == 'normal'">
+        <NormalMeeting 
+        :localVideo="localVideo"
+        :remoteVideo="remoteVideo"
+        :starName="starName"
+        :localStream="localStream"
+        />
+    </section>
+    <section v-else-if="fanMeetingReservation?.fanMeetingType == 'lifefourcut'">
+        <LifeFourCutMeeting 
+        :localVideo="localVideo"
+        :remoteVideo="remoteVideo"
+        :starName="starName"
+        :localStream="localStream"
+        />
+    </section>
+    <section v-else-if="fanMeetingReservation?.fanMeetingType == 'birthday'">
+        <BirthdayMeeting 
+        :localVideo="localVideo"
+        :remoteVideo="remoteVideo"
+        :starName="starName"
+        :localStream="localStream"
+        />
+    </section>
+    <section v-else>
+        <h1>연결중입니다...</h1>
+    </section>
 </template>
 
 <script lang="ts" setup>
-import { RouterView } from 'vue-router'
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useRoute } from 'vue-router'
-import type { FanMeetingMessage, SocketMessage } from '@/common/types/index'
+import axios from 'axios'
+import type { SocketMessage, FanMeetingReservation } from '@/common/types/index'
+import NormalMeeting from '@/views/Star/FanMeeting/NormalMeeting.vue'
+import LifeFourCutMeeting from '@/views/Star/FanMeeting/LifeFourCutMeeting.vue'
+import BirthdayMeeting from '@/views/Star/FanMeeting/BirthdayMeeting.vue'
 
 const route = useRoute()
 
 const starName = ref(route.params.starid.toString())
 const store = useUserStore()
 
+const fanMeetingReservation = ref<FanMeetingReservation>()
+
+const loadReservation = async () => {
+    try {
+        const response = await axios.get(`${store.API_URL}/fanMeeting/reservation/${store.fanState?.id}`)
+        fanMeetingReservation.value = response.data
+    } catch (error) {
+        console.log(error)
+    }
+}
 // 주소로 연결할 웹소켓
 let socket: WebSocket | undefined
 
@@ -54,11 +86,12 @@ const sendToServer = (msg: SocketMessage) => {
   }
 }
 
-const API_URL = 'http://i10d106.p.ssafy.io/api/'
+
+const API_URL = 'http://i10d106.p.ssafy.io/api'
 // WebSocket
 const initializeWebSocket = () => {
   // 소켓 초기화
-  socket = new WebSocket('ws://i10d106.p.ssafy.io:api/signal')
+  socket = new WebSocket('ws://i10d106.p.ssafy.io/api/signal')
 
   // 소켓이 message를 받을 때 이벤트 함수
   socket.onmessage = (msg) => {
@@ -231,9 +264,10 @@ const handleErrorMessage = (message: SocketMessage) => {
   console.error('에러발생!: ', message)
 }
 
-onMounted(async () => {
-  await initializeWebRTC()
-  initializeWebSocket()
+onMounted(async() => {
+    loadReservation()
+    await initializeWebRTC()
+    initializeWebSocket()
 })
 
 onUnmounted(() => {

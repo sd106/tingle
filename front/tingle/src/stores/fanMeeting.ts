@@ -1,12 +1,12 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
 
 export const useFanMeetingStore = defineStore('fanMeeting', () => {
+  const API_URL = 'http://i10d106.p.ssafy.io/api'
+  
   const router = useRouter()
 
-  const API_URL = 'http://i10d106.p.ssafy.io/api/'
 
   const formatDateTime = (dateTimeStr: string) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -24,7 +24,9 @@ export const useFanMeetingStore = defineStore('fanMeeting', () => {
   const goPage = (pageName: string) => {
     router.push({ name: pageName })
   }
+
   return {
+    API_URL,
     formatDateTime,
     goPage
   }

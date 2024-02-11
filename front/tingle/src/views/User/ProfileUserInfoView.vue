@@ -31,7 +31,7 @@
       <input type="file" ref="profileImageInput" />
       <button type="submit">업로드</button>
     </form>
-    <div v-if="fanState.picture">
+    <div v-if="fanState?.picture">
       <img :src="fanState.picture" alt="" />
     </div>
   </main>
@@ -46,7 +46,7 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const { fanState } = useUserStore()
 const profileImageInput = ref<HTMLInputElement | null>(null)
-const fanId = fanState.id
+const fanId = fanState?.id
 
 const uploadProfilePicture = async () => {
   if (
@@ -64,7 +64,7 @@ const uploadProfilePicture = async () => {
     formData.append('fanId', String(fanId))
     formData.append('file', file)
 
-    const response = await axios.post('http://i10d106.p.ssafy.io/api/api/user/profilePicture', formData, {
+    const response = await axios.post('http://i10d106.p.ssafy.io/api/user/profilePicture', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -72,7 +72,9 @@ const uploadProfilePicture = async () => {
 
     if (response.data.resultCode === 'SUCCESS') {
       alert('프로필 사진이 업데이트 되었습니다.')
-      fanState.picture = response.data.data
+      if (fanState) {
+        fanState.picture = response.data.data
+      }
     } else {
       alert('프로필 사진 업데이트에 실패했습니다.')
     }

@@ -1,11 +1,11 @@
 <template>
     <main>
-        <section v-if="fanMeetingInfo && fanMeetingInfo.status === 'closed'" class="pt-5 text-center">
-                <CreateFanMeetingViewVue :fanMeetingInfo="fanMeetingInfo"></CreateFanMeetingViewVue>
+        <!-- <section v-if="fanMeetingInfo && fanMeetingInfo.status === 'closed'" class="pt-5 text-center">
+            <CreateFanMeetingViewVue :fanMeetingInfo="fanMeetingInfo"></CreateFanMeetingViewVue>
         </section>
         <section v-else class="pt-5">
-                <MeetingRoomView4Star :fanMeetingInfo="fanMeetingInfo"></MeetingRoomView4Star>
-        </section>
+            <MeetingRoomView4Star :fanMeetingInfo="fanMeetingInfo"></MeetingRoomView4Star>
+        </section> -->
     </main>
 </template>
 

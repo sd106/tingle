@@ -66,6 +66,7 @@ const loadSnapshots = async (): Promise<void> => {
   }
 }
 
+
 const loadSnapshotsBylikes = async (): Promise<void> => {
   try {
     const response = await axios.get(`http://i10d106.p.ssafy.io/api/snapshot/star/${id.value}/likes`)

@@ -110,6 +110,7 @@ getHotStars()
 
 //상위 10명의 스타 가져오기
 const getTop10Stars = async () => {
+
   const response = await axios.get('http://i10d106.p.ssafy.io/api/star/Top10Stars')
   hotStarsInfo.value = response.data.data
   console.log(response)
@@ -119,6 +120,7 @@ const getStarsByCategory = async (category: number) => {
   const response = await axios.get(`http://i10d106.p.ssafy.io/api/star/${category}`)
   StarsByCategory.value = response.data.data
   console.log(response)
+
 }
 
 onMounted(() => {

@@ -6,7 +6,7 @@ interface SignUp {
 
 interface User {
     id: string;
-    nickName: string;
+    username: string;
     image: string;
 }
 
@@ -33,6 +33,22 @@ interface HotStarInfo {
     picture: string;
 }
 
+interface FanMeetingType {  
+    id: number
+    name: string
+}
+
+interface CreateFanMeetingForm {
+    title: string
+    description: string
+    fanMeetingStartAt: string
+    ticketingStartAt: string
+    ticketingEndAt: string
+    price: number
+    capacity: number
+    availableFanMeetingTypes: FanMeetingType[]
+    starName: string
+}
 interface FanMeeting {
     name: string;
     ticketStartDate: Date | null
@@ -68,6 +84,13 @@ interface FanMeetingMessage {
     text?: string
 }
 
+interface FanMeetingReservation {
+    orderAt: Date
+    userId: number
+    starId: number
+    fanMeetingType: string
+}
+
 interface SocketMessage {
     sender?: string
     data?: string 
@@ -80,13 +103,13 @@ interface SocketMessage {
 interface Star {
     id: string; // tjdah25
     name: string;   // 이성모 
-    nickName: string; // 서옴
+    username: string; // 서옴
     image: string; // 프로필 사진
 }
 
 interface Starinfo {
     id: string;
-    nickName: string;
+    username: string;
     image: string;
 }
 
@@ -205,6 +228,27 @@ interface OrderResponse2 {
 
 
 // 위시
+interface WishInfo {
+    id: number;
+    userId: number;
+    starId: number;
+    status: number;
+    points: number;
+    likedCount: number;
+    contents: string;
+    createTime: Date;
+    deleteTime: Date;
+}
+
+interface LikesInfo {
+    id: number;
+    userId: number;
+    wishId: number;
+    liked: boolean;
+}
+
+
+// 스냅샷
 interface SnapshotType {
     id: number;
     imageUrl: string;
@@ -240,7 +284,10 @@ export type {
     // 스토어
     Goods, ImageUrl, OrderResponse,
     // 팬미팅
-    FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
+    FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket, FanMeetingReservation, CreateFanMeetingForm,
     Product, ProductCreationPayload, OrderResponse2, UserStoreStorageResponse,
+    // 위시
+    LikesInfo, WishInfo,
+    // 스냅샷
     SnapshotType, selectedSnapshotType, CommentType, FanMeetingMessage,SocketMessage
 }

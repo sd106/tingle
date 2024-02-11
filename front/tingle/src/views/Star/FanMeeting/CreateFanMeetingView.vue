@@ -112,16 +112,17 @@ import { useUserStore } from '@/stores/user'
 
 const store = useUserStore()
 const temp1 = async () => {
-  try {
-    const { data } = await axios.post(`${store.API_URL}/fanMeetingRoom/create`, {
-      roomName: '환영환영',
-      starName: '황찬준이다이',
-      maxUserCnt: 8
-    })
-    console.log(data)
-  } catch (e) {
-    console.log(e)
-  }
+    try {
+        const { data } = await axios.post('http://localhost:8080/fanMeetingRoom/create', 
+                            {
+                                roomName: '환영환영',
+                                starName: '황찬준이다이',
+                                maxUserCnt: 8,
+                            })
+        console.log(data)
+    } catch (e) {
+        console.log(e)
+    }
 }
 
 const props = defineProps(['username'])
@@ -156,16 +157,17 @@ const isSelected = (content: FanMeetingContent) => {
 }
 
 const submit = () => {
-  // Submit the meeting
-  axios.post(`${store.API_URL}/fanMeeting`, meeting.value)
-  console.log(meeting.value)
+    // Submit the meeting
+    axios.post('http://localhost:8080/fanMeeting', meeting.value)
+    console.log(meeting.value)
 }
 
 const loadContents = async () => {
-  // Load contents from server
-  const { data } = await axios.get(`${store.API_URL}/fanMeeting/types`)
-  console.log(data)
-  allContents.value = data
+    // Load contents from server
+    const { data }  = await axios.get('http://localhost:8080/fanMeeting/types')
+    
+    console.log(data)
+    allContents.value = data
 }
 
 onMounted(() => {

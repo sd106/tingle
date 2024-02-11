@@ -186,6 +186,7 @@ const getOrderDetail = async () => {
 
 const getOrderByUserId =async () => {
   try {
+
     const response = await axios.get(`http://i10d106.p.ssafy.io/api/order/getUserOrders/${userId.value}`);
     responseMessageGetByUserId.value = response.data
     console.log(response.data)
