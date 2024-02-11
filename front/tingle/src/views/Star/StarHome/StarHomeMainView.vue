@@ -2,7 +2,7 @@
   <main class="container">
     <StarMenu :id="id" />
     <div class="container border">
-      배너사진
+      <img :src="starProfile.banner" alt="사진">
     </div>
     <div class="container border">
       <!-- v-if 걸어서 본인인지 확인해야할듯? -->
@@ -10,26 +10,32 @@
         스타면 설정버튼
       </RouterLink>
       <!-- 프로필 사진 > 누르면 확대-->
-      <div class="container border">
-
-          <img :src="starProfile.banner" alt="사진">
-          <img :src="starProfile.profileImage" alt="사진">
+      <div>
+        <img :src="starProfile.profileImage" alt="사진">
+        <div style="display: inline-block;">
           <!-- 닉네임 -->
           <p>닉네임 {{starProfile.snsUrl}}</p>
           <!-- 구독 여부 창 -->
-        <button @click="checkFollow">{{ buttonText }}</button>
+          <button @click="checkFollow">{{ buttonText }}</button>
           <!-- sns주소 링크 -->
-          <p>sns 주소 {{starProfile.username}} </p>
+        </div>
+      </div>
 
+      <p>sns 주소 {{starProfile.username}} </p>
+
+    </div>
+    <div class="item-wrapper">
+      <div v-for="item in article" :key="item.id" class="item-container">
+        <p>{{ item.content }}</p>
+        <div v-for="picture in item.homePictureDtos" :key="picture.id">
+          <img :src="picture.image" alt="사진">
+        </div>
+        <p>Created At: {{ item.createdAt }}</p>
+        <p v-if="item.updatedAt">Updated At: {{ item.updatedAt }}</p>
       </div>
     </div>
-    <div class=" container border">
-      설명
-    </div>
-    <div class=" container border">
-      추가 블록
-    </div>
   </main>
+
 </template>
 
 <script setup lang="ts">
@@ -47,6 +53,8 @@ const starProfile= ref<StarProfile[]>([]);
 
 let isGood = ref();
 const buttonText = ref('');
+
+const article= ref([]);
 
 const checkFollow = async () => { //처음에 팔로잉 여부 체크
   if (isGood.value === undefined) {
@@ -123,22 +131,47 @@ const getstarProfile = async () => {
   console.log(starProfile.value);
 }
 
-const BooleanFollow= ref();
-const getBooleanFollow = async () => {
-  const response = await axios.get(`http://localhost:8080/follow/create`,
-  {
-    userId: 1,
-    starId: 1
-  });
-}
+const getArticle = () => {
+  axios.get('http://localhost:8080/home/1')
+    .then(response => {
+      article.value = response.data.data;
+    })
+    .catch(error => {
+      console.error(error);
+    });
+};
+
 
 onMounted(() => {
   checkFollow();
   getstarProfile();
-
+  getArticle();
 });
 
 
 
 </script>
 
+<style>
+.item-container {
+  border: 1px solid black;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+
+.container {
+  margin-bottom: 10px;
+}
+
+.border {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.item-wrapper {
+  width: 90%;
+  margin: 30px auto;
+}
+
+</style>
