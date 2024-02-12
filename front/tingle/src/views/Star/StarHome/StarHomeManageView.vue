@@ -26,7 +26,7 @@
           <button class="item-button" @click="deleteArticle(item.id)">삭제</button>
         </div>
         <p>{{ item.content }}</p>
-        <div v-for="picture in item.HomeArticlePictures" :key="picture.image">
+        <div v-for="picture in item.homePictureDtos" :key="picture.id">
           <img :src="picture.image" alt="사진">
         </div>
         <p>Created At: {{ item.createdAt }}</p>
@@ -64,22 +64,20 @@ const starId = ref(props.id);
 
 const starProfile= ref<StarProfile>();
 
-let isGood = ref();
-const buttonText = ref('');
-
 const article= ref<HomeArticle[]>([]);
 
 let files= ref<File[]>([]);
 
 const getstarProfile = async () => {
-  const response = await axios.get(`${store.API_URL}/home/profile/1`);
+  const response = await axios.get(`${store.API_URL}/home/profile/${starId.value}`);
   starProfile.value = response.data.data;
   console.log(starProfile.value);
 }
 
 const getArticle = async () => {
-  axios.get(`${store.API_URL}/home/1`)
+  axios.get(`${store.API_URL}/home/${starId.value}`)
     .then(response => {
+      console.log(response.data.data);
       article.value = response.data.data;
     })
     .catch(error => {
