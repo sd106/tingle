@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@Entity(name = "stars")
+@Entity(name = "star")
 @Getter
 @Builder
 @AllArgsConstructor
@@ -25,18 +25,17 @@ public class StarEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
     @Column(unique = true)
     private String username;
     private String password;
 
     private String picture;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
 
     // OAuth2 로그인 때 구분한 Provider
     private String provider;
+    private String providerId;
 
     @Column(nullable = false)
     private String email;
@@ -63,9 +62,6 @@ public class StarEntity {
         return this;
     }
 
-    public String getRoleKey() {
-        return this.role.getKey();
-    }
 
     public void addOrderEntity(OrderEntity orderEntity) {
         if (orderEntities == null) {
