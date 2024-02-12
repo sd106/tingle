@@ -32,7 +32,7 @@
       <div class="d-flex flex-wrap">
       <div class="storage-item col-3 mx-2" v-for="storage in userStoreStorages" :key="storage.id">
     <div class="storage-image-container">
-      <img class="storage-image" :src="storage.url" :alt="storage.title" data-bs-toggle="modal" data-bs-target="#userStorePictureModal">
+      <img class="storage-image" :src="storage.url" :alt="storage.title">
     </div>
     <div class="storage-info">
       <!-- <p class="fw-bold">{{ storage.title }}</p> -->
@@ -42,7 +42,6 @@
     </div>
   </div>
       </div>
-      <UserStorePictureModal/>
     </main>
   </template>
     
@@ -50,7 +49,6 @@
   import type { UserStoreStorageResponse } from '@/common/types';
   import { ref, onMounted } from 'vue'
   import axios from 'axios';
-  import UserStorePictureModal from '@/components/StarMenu/Store/UserStorePictureModal.vue'
   import { useUserStore } from '@/stores/user';
 import { useRoute } from 'vue-router'
 
