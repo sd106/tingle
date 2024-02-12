@@ -26,6 +26,5 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         } else {
             getRedirectStrategy().sendRedirect(request, response, "http://localhost:5173/selectLoginType");
         }
-
     }
 }

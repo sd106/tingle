@@ -8,8 +8,8 @@
       <div class="col-md-6">
         <!-- 스냅샷 관리 버튼 -->
         <div class="snapshot-actions d-flex justify-content-between">
-          <button class="btn btn-dark" v-if="isLike" @click="dislike(props.selectedSnapshot!.snapshotId, store.fanState!.username)">좋아요 취소 {{ props.selectedSnapshot?.likes }}</button>
-          <button class="btn btn-outline-dark" v-else @click="like(props.selectedSnapshot!.snapshotId, store.fanState!.username)">좋아요 {{ props.selectedSnapshot?.likes }}</button>
+          <button class="btn btn-dark" v-if="isLike" @click="preDislike(props.selectedSnapshot!.snapshotId)">좋아요 취소 {{ props.selectedSnapshot?.likes }}</button>
+          <button class="btn btn-outline-dark" v-else @click="preLike(props.selectedSnapshot!.snapshotId)">좋아요 {{ props.selectedSnapshot?.likes }}</button>
           <span>
             <button class="btn btn-secondary" @click="goToUpdate(props.selectedSnapshot!.snapshotId)">스냅샷 수정</button>
             <button class="btn btn-danger" @click="deleteSnapshot(props.selectedSnapshot!.snapshotId)">스냅샷 삭제</button>
@@ -125,13 +125,34 @@
     }
   };
 
+// -------------------------------------------------------------------- 좋아요 코드
+  const preLike = async (id: number) => {
+  
+    if (!store.fanState && store.starState && (store.starState!.username === props.selectedSnapshot!.starname)) {
+      console.log(store.starState!.username)
+      console.log(props.selectedSnapshot!.starname)
+      console.log("스타가 좋아요 누름!")
+      like(id, store.starState.username, true)
 
+    } else if (store.fanState && !store.starState) {
+      console.log(store.fanState!.username)
+      console.log(props.selectedSnapshot!.starname)
+      console.log("팬이 좋아요 누름!")
+      like(id, store.fanState.username, false)
 
-  const like = async (id: number, username : string) => {
+    } else {
+      console.log("스타나 유저 정보가 없어!")
+    }
+  }
+
+  const like = async (id: number, username : string, isStar: boolean) => {
+    console.log("좋아요 함수 실행")
+    console.log(id, username, isStar)
     if (id) {
       try {
         // 좋아요 API 호출
-        await axios.post(`http://localhost:8080/snapshot/${id}/likes`,{ username: username }, { withCredentials: true })
+        console.log("좋아요 axios 호출")
+        await axios.post(`http://localhost:8080/snapshot/${id}/likes`,{ username: username, isStar: isStar }, { withCredentials: true })
         .then(() => {
           snapshotStore.selectSnapshot(id)
         });
@@ -141,11 +162,23 @@
       }
     }
   };
-  const dislike = async (id: number, username : string) => {
+
+  const preDislike = async (id: number) => {
+    if (!store.fanState && store.starState && (store.starState.username == props.selectedSnapshot!.starname)) {
+      dislike(id, store.starState.username, true)
+      console.log("스타가 좋아요 취소!")
+    } else if (store.fanState && !store.starState) {
+      dislike(id, store.fanState.username, false)
+      console.log("팬이 좋아요 취소!")
+    } else {
+      console.log("스타나 유저 정보가 없어!")
+    }
+  }
+  const dislike = async (id: number, username : string, isStar : boolean) => {
     if (id) {
       try {
         // 좋아요 API 호출
-        await axios.post(`http://localhost:8080/snapshot/${id}/dislikes`,{ username: username }, { withCredentials: true });
+        await axios.post(`http://localhost:8080/snapshot/${id}/dislikes`,{ username: username, isStar: isStar }, { withCredentials: true });
         console.log("싫어요 실행됨")
         // 스토어에서 선택된 스냅샷을 다시 가져온 후 좋아요 수를 갱신
         snapshotStore.selectSnapshot(id)
@@ -155,7 +188,7 @@
     }
   };
 
-
+// ---------------------------------------------------------------------------좋아요 기능 끝
 
 
   const deleteSnapshot = async (id: number) => {

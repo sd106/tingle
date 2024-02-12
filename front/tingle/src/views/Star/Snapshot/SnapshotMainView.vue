@@ -14,7 +14,7 @@
       <button class="btn fs-5 fw-bold text-secondary" @click="loadSnapshotsBylikes">🔥 좋아요순</button>
     </div>
     <div>
-      <RouterLink :to="`/${store.starInfo?.starId}/snapshot/create`" class="btn btn-secondary">글쓰기</RouterLink>
+      <RouterLink :to="`/${id}/snapshot/create`" class="btn btn-secondary">글쓰기</RouterLink>
     </div>
   </div>
 
@@ -63,10 +63,26 @@
   const display = ref<Starinfo[]>([]);
   const containerRef = ref<HTMLElement | null>(null);
 
+  const username = computed(() => {
+    if (userStore.fanState) {
+      return userStore.fanState.username
+    } else {
+      return userStore.starState!.username
+    }
+  })
+
+  const starLogin = computed(() => {
+    if (userStore.fanState) {
+      return false
+    } else {
+      return true
+    }
+  })
+
   const loadSnapshots = async (): Promise<void> => {
     try {
-      console.log(userStore.fanState!.id)
-      const response = await axios.get(`http://localhost:8080/snapshot/star/${userStore.fanState!.id}/created`);
+      console.log(id)
+      const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/created`);
       snapshots.value = response.data.AllSnapShot;
       console.log("최신순");
     } catch (error) {
@@ -76,7 +92,7 @@
 
   const loadSnapshotsBylikes = async (): Promise<void> => {
     try {
-      const response = await axios.get(`http://localhost:8080/snapshot/star/${userStore.fanState!.id}/likes`);
+      const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/likes`);
       snapshots.value = response.data.AllSnapShot;
       console.log("좋아요순");
     } catch (error) {

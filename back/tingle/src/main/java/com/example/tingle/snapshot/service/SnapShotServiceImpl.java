@@ -65,50 +65,57 @@ public class SnapShotServiceImpl implements SnapShotService {
         String content = snapshotRequest.getContent();
         List<String> tags = snapshotRequest.getTags();
         String username = snapshotRequest.getUsername();
-        String starname = snapshotRequest.getStarname();
+        Long starId = snapshotRequest.getStarId();
 
         // 사용자 정보 가져오기 (예: username은 고정된 값)
         UserEntity user = userRepository.findByUsername(username);
 
         // 스타 정보 가져오기 (예: starName은 고정된 값)
-        StarEntity star = starRepository.findByUsername(starname);
+        Optional<StarEntity> optStar = starRepository.findById(starId);
 
-        System.out.println("star.getName() = " + star.getName());
-        System.out.println("user.getname() = " +user.getName());
-        System.out.println("스냅샷 엔티티 생성 직전");
+        if (optStar.isPresent()) {
+            StarEntity star = optStar.get();
+
+            System.out.println("star.getName() = " + star.getUsername());
+            System.out.println("user.getname() = " +user.getName());
+            System.out.println("스냅샷 엔티티 생성 직전");
 
 
-        SnapShotEntity snapshotEntity = SnapShotEntity.builder()
-                .imageUrl(imageUrl)
-                .content(content)
-                .user(user)
-                .star(star)
-                .build();
-
-        System.out.println("스냅샷 엔티티 생성 완료/ 저장 전");
-
-        snapshotRepository.save(snapshotEntity);
-
-        System.out.println("스냅샷 저장 완료");
-        // 해시태그 처리
-        for (String tag : tags) {
-
-            HashTagEntity hashTagEntity = hashTagRepository.findByTag(tag)
-                    .orElseGet(() -> {
-                        // 여기서 Optional이 비어 있을 때 실행될 로직을 정의합니다.
-                        // 새로운 HashTagEntity를 생성하고 저장합니다.
-                        HashTagEntity newTag = HashTagEntity.builder()
-                                .tag(tag)
-                                .build();
-                        return hashTagRepository.save(newTag);
-                    });
-
-            SnapShotTag snapShotTag = SnapShotTag.builder()
-                    .snapShotEntity(snapshotEntity)
-                    .hashTagEntity(hashTagEntity)
+            SnapShotEntity snapshotEntity = SnapShotEntity.builder()
+                    .imageUrl(imageUrl)
+                    .content(content)
+                    .user(user)
+                    .star(star)
                     .build();
 
-            snapShotTagRepository.save(snapShotTag); // SnapShotTag 저장
+            System.out.println("스냅샷 엔티티 생성 완료/ 저장 전");
+
+            snapshotRepository.save(snapshotEntity);
+
+            System.out.println("스냅샷 저장 완료");
+            // 해시태그 처리
+            for (String tag : tags) {
+
+                HashTagEntity hashTagEntity = hashTagRepository.findByTag(tag)
+                        .orElseGet(() -> {
+                            // 여기서 Optional이 비어 있을 때 실행될 로직을 정의합니다.
+                            // 새로운 HashTagEntity를 생성하고 저장합니다.
+                            HashTagEntity newTag = HashTagEntity.builder()
+                                    .tag(tag)
+                                    .build();
+                            return hashTagRepository.save(newTag);
+                        });
+
+                SnapShotTag snapShotTag = SnapShotTag.builder()
+                        .snapShotEntity(snapshotEntity)
+                        .hashTagEntity(hashTagEntity)
+                        .build();
+
+                snapShotTagRepository.save(snapShotTag); // SnapShotTag 저장
+            }
+
+        } else {
+            System.out.println("개발자야..스타 정보가 없다");
         }
     }
 

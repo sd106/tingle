@@ -10,13 +10,14 @@
         </div>
 
         <!-- 유저 이름 입력 -->
-        <div class="input-group mb-3">
+        <!-- <div class="input-group mb-3">
           <input type="text" v-model="username" class="form-control" id="floatingInput" placeholder="유저이름">
-        </div>
+        </div> -->
         <!-- 스타 이름 입력 -->
-        <div class="input-group mb-3">
+        <!-- <div class="input-group mb-3">
           <input type="text" v-model="starname" class="form-control" id="floatingInput" placeholder="스타">
-        </div>
+        </div> -->
+
         <!-- 파일 업로드 -->
         <div class="input-group mb-3">
           <input type="file" @change="onFileChange" class="form-control" id="inputGroupFile02">
@@ -43,17 +44,31 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/user';
 
 const file = ref<File | null>(null);
 const content = ref('');
 const tags = ref<string[]>([]); // 태그 입력 방식에 따라 수정이 필요할 수 있습니다.
 const tagInput = ref<string>('');
-const username = ref('');
-const starname = ref('');
+// const starname = ref('');
 const router = useRouter();
+
+const userStore = useUserStore()
+
+const props = defineProps(['id']);
+const username = computed<string>(() => {
+  if (userStore.fanState && !userStore.starState) {
+    return userStore.fanState.username;
+  } else if (userStore.starState && !userStore.fanState) {
+    return userStore.starState.username;
+  }
+  return '';
+});
+
+
 
 const addTag = () => {
   const newTag = tagInput.value.trim()
@@ -99,7 +114,7 @@ const createSnapshot = async () => {
   formData.append('content', content.value);
   formData.append('tags', tags.value.join(',')); // 태그 형식에 따라 조정 필요
   formData.append('username', username.value);
-  formData.append('starname', starname.value);
+  formData.append('starId', props.id);
   
   for (let [key, value] of formData.entries()) {
     console.log(`${key}: ${value}`);

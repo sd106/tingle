@@ -69,6 +69,15 @@ public class SnapShotEntity {
         return likes.size();
     }
 
+    /**
+     * 스타가 좋아요를 눌렀는지 안 눌렀는지 확인하는 메서드
+     */
+    private boolean isStarLike = false;
+
+    public void starLike(Boolean isStar) {
+        this.isStarLike = isStar;
+    }
+
 
     /**
      * 스타와 팬
