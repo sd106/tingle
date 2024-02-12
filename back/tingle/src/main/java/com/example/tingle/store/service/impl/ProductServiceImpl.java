@@ -40,6 +40,8 @@ public class ProductServiceImpl implements ProductService {
                 .map(imageEntity -> new ProductImageDto(imageEntity.getUrl(), imageEntity.getProduct().getId(), imageEntity.getId()))
                 .collect(Collectors.toList());
         ProductDto productDTO = new ProductDto();
+        productDTO.setStarName(productEntity.getStarName());
+        productDTO.setStarId(productEntity.getStarId().getId());
         productDTO.setProductId(productEntity.getId());
         productDTO.setName(productEntity.getName());
         productDTO.setAmount(productEntity.getAmount());

@@ -3,13 +3,13 @@ package com.example.tingle.auth.controller;
 import com.example.tingle.auth.dto.CustomOAuth2User;
 import com.example.tingle.auth.dto.Request.SignUpRequest;
 import com.example.tingle.auth.dto.Response.BasicSingupLoadResponse;
-import com.example.tingle.auth.repository.MemberRepository;
 import com.example.tingle.auth.service.AuthService;
+import com.example.tingle.star.dto.response.StarDTO;
 import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.star.repository.StarRepository;
+import com.example.tingle.user.dto.UserDto;
 import com.example.tingle.user.entity.UserEntity;
 import com.example.tingle.user.repository.UserRepository;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,14 +34,14 @@ public class AuthController {
         String email = userDetails.getEmail();
 
         UserEntity user = userRepository.findByEmail(email).orElse(null);
-
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("없다 가라");
         }
+        UserDto userDto = UserDto.mapToDTO(user);
 
-        return ResponseEntity.ok(user);
-
+        return ResponseEntity.ok(userDto);
     }
+
 
     @PostMapping("/login/star")
     public ResponseEntity<?> loginStar() {
@@ -52,12 +52,12 @@ public class AuthController {
         String email = userDetails.getEmail();
 
         StarEntity star = starRepository.findByEmail(email).orElse(null);
-
         if (star == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("없다 가라");
         }
+        StarDTO starDTO = StarDTO.mapToDto(star);
 
-        return ResponseEntity.ok(star);
+        return ResponseEntity.ok(starDTO);
     }
 
     @GetMapping("/member/info")
@@ -73,7 +73,7 @@ public class AuthController {
     public ResponseEntity<?> signUp(@RequestBody SignUpRequest signUpRequest) {
         String response = authService.singup(signUpRequest);
 
-        if(response.equals("ok")){
+        if (response.equals("ok")) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);

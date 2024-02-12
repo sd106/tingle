@@ -16,4 +16,6 @@ public interface UserService {
     Optional<UserEntity> findById(Long userId);
 
     UserEntity findByUsername(String username);
+
+    void save(UserEntity userEntity);
 }

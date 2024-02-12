@@ -42,8 +42,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 
+const props = defineProps<{
+  localStream: MediaStream | null
+}>()
 const controlsVisible = ref(false)
 const isVideoOn = ref(true)
 const isAudioOn = ref(true)
@@ -57,8 +60,8 @@ const hideControls = () => {
 }
 
 const toggleVideo = () => {
-  if (localStream) {
-    const videoTrack = localStream.getVideoTracks()[0]
+  if (props.localStream) {
+    const videoTrack = props.localStream.getVideoTracks()[0]
     if (videoTrack) {
       videoTrack.enabled = !videoTrack.enabled
       isVideoOn.value = videoTrack.enabled
@@ -67,8 +70,8 @@ const toggleVideo = () => {
 }
 
 const toggleAudio = () => {
-  if (localStream) {
-    const audioTrack = localStream.getAudioTracks()[0]
+  if (props.localStream) {
+    const audioTrack = props.localStream.getAudioTracks()[0]
     if (audioTrack) {
       audioTrack.enabled = !audioTrack.enabled
       isAudioOn.value = audioTrack.enabled

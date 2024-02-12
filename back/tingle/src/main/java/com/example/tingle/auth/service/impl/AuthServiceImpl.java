@@ -45,6 +45,7 @@ public class AuthServiceImpl implements AuthService {
 
         UserEntity user = UserEntity.builder()
                 .email(signUpRequest.getEmail())
+                .picture("https://tingle-s3.s3.ap-northeast-2.amazonaws.com/basic-profile.png")
                 .name(signUpRequest.getName())
                 .username(signUpRequest.getUsername())
                 .build();
@@ -59,6 +60,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public BasicSingupLoadResponse loadBasicSingup() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getPrincipal());
+        System.out.println(authentication);
         if (authentication != null && authentication.isAuthenticated()) {
             CustomOAuth2User userDetails = (CustomOAuth2User) authentication.getPrincipal();
             System.out.println(userDetails.getEmail());

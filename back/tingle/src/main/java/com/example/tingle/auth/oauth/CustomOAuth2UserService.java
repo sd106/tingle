@@ -49,7 +49,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
         String socialType = userRequest.getClientRegistration().getRegistrationId();
-        System.out.println("socialType = " + socialType);
+        System.out.println("socialType =!! " + socialType);
 
         OAuth2UserInfo oAuth2UserInfo = null;
         if (socialType.equals("google")) {
@@ -57,7 +57,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         } else if (socialType.equals("naver")) {
             oAuth2UserInfo = new NaverUserInfo((Map<String, Object>) oAuth2User.getAttributes().get("response"));
         }
-
+        System.out.println("oAuth2UserInfo = " + oAuth2UserInfo);
         String userNameAttributeName = userRequest.getClientRegistration()
                 .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName(); // OAuth2 로그인 시 키(PK)가 되는 값
 
@@ -77,6 +77,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         }
 
         // DefaultOAuth2User를 구현한 CustomOAuth2User 객체를 생성해서 반환
+        System.out.println(oAuth2User.getAuthorities());
+        System.out.println(attributes);
+        System.out.println(extractAttribute.getNameAttributeKey());
+        System.out.println(createdMember.getEmail());
+        System.out.println(isRealMember);
         return new CustomOAuth2User(
                 oAuth2User.getAuthorities(),
                 attributes,

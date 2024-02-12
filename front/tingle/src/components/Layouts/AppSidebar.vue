@@ -17,7 +17,7 @@
                 <!-- 추가 기능 -->
                 <hr>
                 <!-- n명까지만 표기하고 나머지 더보기 버튼 -->
-                <li calss="nav-item" v-for="star in folloingInfo.slice(0, displayCount)" :key="star.id">
+                <li calss="nav-item" v-for="star in folloingInfo.slice(0,displayCount)" :key="star.id">
                     <RouterLink :to="`/${star.id}/home`" class="text-decoration-none text-dark">
                         <div class="star-card">
                             <div class="star-image">
@@ -40,7 +40,7 @@
                     </div>
                 </button>
                 <!-- 간략히 보기 -->
-                <button v-if="displayCount > 7" @click="showBrief" class="p-0"
+                <button v-if="displayCount  > 7" @click="showBrief" class="p-0"
                     style="background: none; border: none; cursor: pointer;">
                     <div class="star-card">
                         <div class="arrow-image">
@@ -61,13 +61,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 
 import ChatModal from '@/components/ChatModal.vue';
-
 const store = useUserStore()
 
 // 사이드바 더보기
@@ -81,13 +80,14 @@ const showBrief = function (): void {
     displayCount.value = 7;
 }
 
-const folloingInfo = ref<{ id: number, picture: string, userName: string }[]>([]);
-// const hotStarInfo = ref<{ id: number, picture: string, userName: string }[]>([]);
+const folloingInfo= ref<{id: number, picture: string, userName: string}[]>([]);
+const hotStarInfo= ref<{id: number, picture: string, userName: string}[]>([]);
 
 //구독한 스타 가져오기
 const getFolloings = async () => {
-    const response = await axios.get('http://i10d106.p.ssafy.io:8080/follow/1');
-    folloingInfo.value = response.data.data;
+  const response = await axios.get('http://localhost:8080/follow/1');
+  folloingInfo.value = response.data.data;
+  console.log(response);
 }
 
 getFolloings();

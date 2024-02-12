@@ -8,7 +8,12 @@ import HomeView from '@/views/HomeView.vue'
 
 import SignUpView from '@/views/User/SignUpView.vue'
 import LogInView from '@/views/User/LogInView.vue'
+
 import ProfileView from '@/views/User/ProfileView.vue'
+import ProfileUserInfoView from '@/views/User/ProfileUserInfoView.vue'
+import ProfileUserStorageView from '@/views/User/ProfileUserStorageView.vue'
+import ProfileUserOrdersView from '@/views/User/ProfileUserOrdersView.vue'
+import ProfileUserOrdersDetailView from '@/views/User/ProfileUserOrdersDetailView.vue'
 
 import StarHomeMainView from '@/views/Star/StarHome/StarHomeMainView.vue'
 import StarHomeManageView from '@/views/Star/StarHome/StarHomeManageView.vue'
@@ -21,9 +26,13 @@ import WishMainView from '@/views/Star/Wish/WishMainView.vue'
 import WishCreateView from '@/views/Star/Wish/WishCreateView.vue'
 import WishManageView from '@/views/Star/Wish/WishManageView.vue'
 
-import StoreMainView from '@/views/Star/Store/StoreMainView.vue'
-import StoreManageView from '@/views/Star/Store/StoreManageView.vue'
-import StoreDetailView from '@/views/Star/Store/StoreDetailView.vue'
+import StoreUserMainView from '@/views/Star/Store/StoreUserMainView.vue'
+import StoreStarMainView from '@/views/Star/Store/StoreStarMainView.vue'
+import StoreCreateView from '@/views/Star/Store/StoreCreateView.vue'
+import StoreDetailStarView from '@/views/Star/Store/StoreDetailStarView.vue'
+import StoreDetailUserView from '@/views/Star/Store/StoreDetailUserView.vue'
+import StoreUpdateView from '@/views/Star/Store/StoreUpdateView.vue'
+import StoreStarOrderView from '@/views/Star/Store/StoreStarOrderView.vue'
 
 import FanMeetingEntranceView from '@/views/Star/FanMeeting/FanMeetingEntranceView.vue'
 import FanMeetingTicketBoxView from '@/views/Star/FanMeeting/FanMeetingTicketBoxView.vue'
@@ -63,7 +72,7 @@ const router = createRouter({
         {
           path: '/:userid/profile',
           name: 'profile',
-          component: ProfileView,
+          component: ProfileView
           // props: (route) => ({ id: route.params.id }),
         },
         //// 스타 메뉴
@@ -72,14 +81,14 @@ const router = createRouter({
           path: '/:starid/home',
           name: 'starhome',
           component: StarHomeMainView,
-          props: (route) => ({ id: route.params.starid }),
+          props: (route) => ({ id: route.params.starid })
         },
         /////// 설정은 어떻게 만들 지 모르겠음
         {
           path: '/:starid/home/manage',
           name: 'starhomemanage',
           component: StarHomeManageView,
-          props: (route) => ({ id: route.params.starid }),
+          props: (route) => ({ id: route.params.starid })
         },
 
         // 스냅샷
@@ -87,77 +96,122 @@ const router = createRouter({
           path: '/:starid/snapshot',
           name: 'snapshot',
           component: SnapshotMainView,
-          props: (route) => ({ id: route.params.starid }),
+          props: (route) => ({ id: route.params.starid })
         },
         {
           path: '/:starid/snapshot/create',
           name: 'snapshotcreate',
           component: SnapshotCreateView,
-          props: (route) => ({ id: route.params.starid }),
+          props: (route) => ({ id: route.params.starid })
         },
         {
           path: '/:starid/snapshot/update',
           name: 'snapshotupdate',
           component: SnapshotUpdateView,
-          props: (route) => ({ id: route.params.starid }),
+          props: (route) => ({ id: route.params.starid })
         },
         // 위시
         {
           path: '/:starid/wish',
           name: 'wish',
           component: WishMainView,
-          props: (route) => ({ id: route.params.starid }),
+          props: (route) => ({ id: route.params.starid })
         },
         {
           path: '/:starid/wish/create',
           name: 'wishcreate',
           component: WishCreateView,
-          props: (route) => ({ id: route.params.starid }),
+          props: (route) => ({ id: route.params.starid })
         },
         {
           path: '/:starid/wish/manage',
           name: 'wishmanage',
           component: WishManageView,
-          props: (route) => ({ id: route.params.starid }),
+          props: (route) => ({ id: route.params.starid })
         },
-
-
         // 스토어
         {
-          path: '/:starid/store',
-          name: 'store',
-          component: StoreMainView,
-          props: (route) => ({ id: route.params.starid }),
+          path: '/:starid/store/star',
+          name: 'storestarmainview',
+          component: StoreStarMainView,
+          props: (route) => ({ id: route.params.starid })
         },
         {
-          path: '/:starid/store/:productId(\\d+)',
-          name: 'storedetail',
-          component: StoreDetailView,
+          path: '/:starid/store/user',
+          name: 'storestaruserview',
+          component: StoreUserMainView,
+          props: (route) => ({ id: route.params.starid })
+        },
+        {
+          path: '/profile',
+          name: 'profileview',
+          component: ProfileView
+        },
+        {
+          path: '/profile/userinfo',
+          name: 'profileuserinfoview',
+          component: ProfileUserInfoView
+        },
+        {
+          path: '/profile/storage',
+          name: 'profileuserstorageview',
+          component: ProfileUserStorageView
+        },
+        {
+          path: '/profile/orders',
+          name: 'profileuserordersview',
+          component: ProfileUserOrdersView
+        },
+        {
+          path: '/:starid/profile/orders/detail/:productId(\\d+)',
+          name: 'profileuserordersdetailview',
+          component: ProfileUserOrdersDetailView,
           props: true
         },
         {
-          path: '/:starid/store/manage',
-          name: 'storemange',
-          component: StoreManageView,
-          props: (route) => ({ id: route.params.starid }),
+          path: '/store/orders',
+          name: 'storestarorderview',
+          component: StoreStarOrderView
         },
-
-
+        {
+          path: '/:starid/store/user/:productId(\\d+)',
+          name: 'storedetailuserview',
+          component: StoreDetailUserView,
+          props: true
+        },
+        {
+          path: '/:starid/store/star/:productId(\\d+)',
+          name: 'storedetailstarview',
+          component: StoreDetailStarView,
+          props: true
+        },
+        {
+          path: '/:starid/store/create',
+          name: 'storecreate',
+          component: StoreCreateView,
+          props: (route) => ({ id: route.params.starid })
+        },
+        {
+          path: '/:starid/store/update/:productId',
+          name: 'storeupdate',
+          component: StoreUpdateView,
+          props: true
+        },
         {
           path: '/:starid/fanmeeting',
           name: 'fanmeeting',
           component: FanMeetingEntranceView,
-          props: (route) => ({ starid: route.params.starid }),
+          props: (route) => ({ starid: route.params.starid })
         },
         {
           path: '/fanmeeting/create',
           name: 'CreateMeetingView',
-          component: CreateFanMeetingView,
+          component: CreateFanMeetingView
         },
         {
           path: '/profile/:starid/fanmeeting/ticketbox',
           name: 'FanMeetingTicketBoxView',
-          component: FanMeetingTicketBoxView,
+          component: FanMeetingTicketBoxView
         },
         {
           path: '/fanmeeting/:starid/waitingroom',
@@ -167,12 +221,10 @@ const router = createRouter({
         {
           path: '/selectLoginType',
           name: 'SelectLoginTypeView',
-          component: () => import("@/views/User/SelectLoginTypeView.vue")
-        },
-
+          component: () => import('@/views/User/SelectLoginTypeView.vue')
+        }
       ]
     },
-
 
     // 사이드바 제거
     {
@@ -188,17 +240,17 @@ const router = createRouter({
             {
               path: 'normal',
               name: 'NormalFanMeetingView',
-              component: NormalMeetingView,
+              component: NormalMeetingView
             },
             {
               path: 'lifeFourCut',
               name: 'LifeFourCutMeetingView',
-              component: LifeFourCutMeetingView,
+              component: LifeFourCutMeetingView
             },
             {
               path: 'birthday',
               name: 'BirthdayMeetingView',
-              component: BirthdayMeetingView,
+              component: BirthdayMeetingView
             }
           ]
         }
@@ -219,5 +271,5 @@ const router = createRouter({
       ]
     }
   ]
-});
+})
 export default router
