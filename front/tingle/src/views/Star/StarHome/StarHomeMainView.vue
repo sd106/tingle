@@ -2,28 +2,28 @@
   <main class="container">
     <StarMenu :id="starId" />
     <div class="container border">
-      <img :src="starProfile.banner" alt="사진">
+      <img  :src="starProfile?.banner" alt="사진">
     </div>
     <div class="container border">
       <!-- 프로필 사진 > 누르면 확대-->
       <div>
-        <img :src="starProfile.profileImage" alt="사진">
+        <img :src="starProfile?.profileImage" alt="사진">
         <div style="display: inline-block;">
           <!-- 닉네임 -->
-          <p>닉네임 {{starProfile.snsUrl}}</p>
+          <p>닉네임 {{starProfile?.snsUrl}}</p>
           <!-- 구독 여부 창 -->
           <button @click="checkFollow">{{ buttonText }}</button>
           <!-- sns주소 링크 -->
         </div>
       </div>
 
-      <p>sns 주소 {{starProfile.username}} </p>
+      <p>sns 주소 {{starProfile?.username}} </p>
 
     </div>
     <div class="item-wrapper">
       <div v-for="item in article" :key="item.id" class="item-container">
         <p>{{ item.content }}</p>
-        <div v-for="picture in item.homePictureDtos" :key="picture.id">
+        <div v-for="picture in item.HomeArticlePictures" :key="picture.image">
           <img :src="picture.image" alt="사진">
         </div>
         <p>Created At: {{ item.createdAt }}</p>
@@ -43,17 +43,17 @@ import { useUserStore } from '@/stores/user';
 const store = useUserStore();
 
 import StarMenu from '@/components/StarMenu/StarMenu.vue';
-import type { StarProfile } from '@/common/types/index'
+import type { StarProfile, HomeArticle } from '@/common/types/index'
 
 const props = defineProps(['id']);
 const starId = ref(props.id);
 
-const starProfile= ref<StarProfile[]>([]);
+const starProfile= ref<StarProfile>();
 
 let isGood = ref();
 const buttonText = ref('');
 
-const article= ref([]);
+const article= ref<HomeArticle[]>([]);
 
 const checkFollow = async () => { //처음에 팔로잉 여부 체크
   if (isGood.value === undefined) {

@@ -129,6 +129,25 @@ interface StarByCategory {
     picture: string;
 }
 
+
+//홈
+
+interface HomeArticle {
+    starId: number;
+    id: number;
+    ordering: number;
+    createdAt: Date;
+    updatedAt: Date;
+    content: string;
+    HomeArticlePictures: HomeArticlePicture[];
+}
+
+interface HomeArticlePicture {
+    homeId: number;
+    image: string;
+}
+
+
 // 스토어
 interface Product {
     starId: number;
@@ -291,7 +310,7 @@ export type {
     SignUp, FanState, StarState,
     User, Star, Starinfo, HotStarInfo, StarByCategory,
     // 홈
-    StarProfile,
+    StarProfile, HomeArticle, HomeArticlePicture,
     // 스토어
     Goods, ImageUrl, OrderResponse,
     // 팬미팅
