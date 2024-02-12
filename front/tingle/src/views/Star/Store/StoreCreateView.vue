@@ -75,7 +75,7 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/user' 
+import { useUserStore } from '@/stores/user'
 import TiptapTest from '@/components/StarMenu/Store/TiptabTest.vue'
 import StarMenu from '@/components/StarMenu/StarMenu.vue'
 const router = useRouter()
@@ -110,17 +110,20 @@ const createProduct = async (productInfo: any, fileInputs: File[]) => {
   }
 }
 
-
 const createProductNoFile = async (productInfo: any) => {
   try {
     const formData = new FormData()
     formData.append('productDto', JSON.stringify(productInfo))
 
-    const response = await axios.post('http://localhost:8080/product/create/nofile', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+    const response = await axios.post(
+      'https://i10d106.p.ssafy.io/product/create/nofile',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       }
-    })
+    )
     if (response.status === 200) {
       alert('상품이 성공적으로 생성되었습니다.')
       router.go(-1)
@@ -135,8 +138,7 @@ const createProductNoFile = async (productInfo: any) => {
 const submitForm = () => {
   if (files.value.length > 0) {
     createProduct(productcreate.value, files.value)
-  }
-  else {
+  } else {
     createProductNoFile(productcreate.value)
   }
 }
@@ -164,18 +166,18 @@ const handleDragOver = (event: DragEvent) => {
 }
 
 const handleDrop = (event: DragEvent) => {
-  event.preventDefault();
+  event.preventDefault()
   if (event.dataTransfer) {
     // 기존 파일 배열에 새로운 파일들을 추가
-    files.value = files.value.concat(Array.from(event.dataTransfer.files));
+    files.value = files.value.concat(Array.from(event.dataTransfer.files))
   }
-};
+}
 
 const handleFileUpload = (event: Event) => {
-  const target = event.target as HTMLInputElement;
+  const target = event.target as HTMLInputElement
   if (target.files) {
     // 기존 파일 배열에 새로운 파일들을 추가
-    files.value = [...files.value, ...Array.from(target.files)];
+    files.value = [...files.value, ...Array.from(target.files)]
   }
 }
 

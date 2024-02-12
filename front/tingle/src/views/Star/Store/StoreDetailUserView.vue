@@ -45,13 +45,17 @@
         </div>
         <div>
           <!-- ////// 유저일때 -->
-          <button v-if="product.available === true && product.amount > 0"
+          <button
+            v-if="product.available === true && product.amount > 0"
             class="tw-btn tw-btn-active tw-btn-block tw-bg-black tw-text-white tw-py-3 tw-rounded-md tw-mb-2"
             @click="createOrder(fanState!.id, product.productId)"
           >
             구매하기
           </button>
-          <button v-else class="tw-btn tw-btn-active tw-btn-block tw-bg-black tw-text-white tw-py-3 tw-rounded-md tw-mb-2">
+          <button
+            v-else
+            class="tw-btn tw-btn-active tw-btn-block tw-bg-black tw-text-white tw-py-3 tw-rounded-md tw-mb-2"
+          >
             구매할 수 없는 상품입니다.
           </button>
         </div>
@@ -100,16 +104,18 @@ onMounted(() => {
   }
 })
 
-const createOrder = async (fanId:number, productId:number) => {
-    try {
-      const response = await axios.post(`http://localhost:8080/order/create/${fanId}/${productId}`);
-      alert("상품 구매에 성공 하였습니다.")
-      router.go(-1)
-    } catch (error) {
-      alert("상품 구매에 실패 하였습니다.")
-      console.error(error);
-    }
-  };
+const createOrder = async (fanId: number, productId: number) => {
+  try {
+    const response = await axios.post(
+      `https://i10d106.p.ssafy.io/order/create/${fanId}/${productId}`
+    )
+    alert('상품 구매에 성공 하였습니다.')
+    router.go(-1)
+  } catch (error) {
+    alert('상품 구매에 실패 하였습니다.')
+    console.error(error)
+  }
+}
 
 // 사진들 카로셀
 const activeIndex = ref(0)
@@ -136,7 +142,7 @@ function goBack() {
 
 const getProductdelete = async (productId: number) => {
   try {
-    const response = await axios.post(`http://localhost:8080/product/delete/${productId}`)
+    const response = await axios.post(`https://i10d106.p.ssafy.io/product/delete/${productId}`)
     if (response.data === 'SUCCESS') {
       alert('상품 삭제에 성공 하였습니다.')
       router.go(-1)

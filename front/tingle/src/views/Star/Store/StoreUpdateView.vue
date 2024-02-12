@@ -119,9 +119,9 @@ const removeFile = (index: number) => {
   previewFiles.value.splice(index, 1)
 
   // 실제 파일 배열에서도 해당 항목 제거
-  console.log(files.value, "여긴 지우기 전")
+  console.log(files.value, '여긴 지우기 전')
   files.value.splice(index, 1)
-  console.log(files.value, "여긴 지우고 난 후")
+  console.log(files.value, '여긴 지우고 난 후')
 }
 
 // watch(files, (newFiles) => {
@@ -158,13 +158,13 @@ const handleFileUpload = (event: Event) => {
 
 const submitForm = () => {
   if (files.value.length > 0 && previewFiles.value.length > 0) {
-    console.log("첫번째 이프")
+    console.log('첫번째 이프')
     updateProduct(product.value, files.value, previewFiles.value)
-  } else if (previewFiles.value.length > 0 &&  files.value.length === 0) {
-    console.log("두번째 이프")
+  } else if (previewFiles.value.length > 0 && files.value.length === 0) {
+    console.log('두번째 이프')
     updateProductWithOutFile(product.value, previewFiles.value)
-  } else if (previewFiles.value.length === 0 &&  files.value.length === 0){
-    console.log("세번째 이프")
+  } else if (previewFiles.value.length === 0 && files.value.length === 0) {
+    console.log('세번째 이프')
     updateProductWithPreview(product.value)
   }
 }
@@ -177,7 +177,10 @@ const updateProductWithOutFile = async (productInfo: any, previewFiles: string[]
       formData.append('previewFiles', previewFile)
     })
 
-    const response = await axios.post('https://i10d106.p.ssafy.io/api/product/update/nofile', formData)
+    const response = await axios.post(
+      'https://i10d106.p.ssafy.io/api/product/update/nofile',
+      formData
+    )
     if (response.status === 200) {
       alert('상품이 성공적으로 수정되었습니다.')
       router.go(-1)
@@ -194,7 +197,7 @@ const updateProductWithPreview = async (productInfo: any) => {
     const formData = new FormData()
     formData.append('productDto', JSON.stringify(productInfo))
 
-    const response = await axios.post('http://localhost:8080/product/update/nopre', formData)
+    const response = await axios.post('https://i10d106.p.ssafy.io/product/update/nopre', formData)
     if (response.status === 200) {
       alert('상품이 성공적으로 수정되었습니다.')
       router.go(-1)

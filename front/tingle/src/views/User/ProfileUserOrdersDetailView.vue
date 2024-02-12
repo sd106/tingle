@@ -66,7 +66,7 @@ const product = ref<Goods>()
 
 const getProduct = async (productId: number) => {
   try {
-    const response = await axios.get(`http://localhost:8080/product/getById/${productId}`)
+    const response = await axios.get(`https://i10d106.p.ssafy.io/product/getById/${productId}`)
     if (response.data.resultCode === 'SUCCESS') {
       product.value = response.data.data
     } else {
@@ -100,10 +100,7 @@ const nextSlide = () => {
 const formattedPrice = computed(() => {
   return new Intl.NumberFormat('ko-KR', { style: 'decimal' }).format(product.value!.price)
 })
-
-
 </script>
-
 
 <style scoped>
 .close-button {
@@ -134,4 +131,3 @@ const formattedPrice = computed(() => {
   object-fit: contain; /* 비율을 유지하면서 최대한 컨테이너에 맞춤 */
 }
 </style>
-

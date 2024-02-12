@@ -4,15 +4,14 @@
       <div class="d-flex">
         <div class="tw-mb-2 d col-6 d-flex flex-column justify-content-center align-items-center">
           <div class="mx-0">
-          <h2 class="fw-bold p-0 tw-font-medium">구매자 정보</h2>
-          <p>이름: {{ order.fan.username }}</p>
-          <p>이메일: {{ order.fan.email }}</p>
-        </div>
+            <h2 class="fw-bold p-0 tw-font-medium">구매자 정보</h2>
+            <p>이름: {{ order.fan.username }}</p>
+            <p>이메일: {{ order.fan.email }}</p>
+          </div>
           <img :src="order.fan.picture" alt="상품 이미지" class="tw-mt-2 tw-rounded tw-shadow" />
         </div>
-        <div class="col-6" style="margin-top : 100px;">
-          <div class="d-felx flex-column">
-      </div>
+        <div class="col-6" style="margin-top: 100px">
+          <div class="d-felx flex-column"></div>
           <div
             ref="dragArea"
             class="me-5 tw-border-dashed tw-border-2 tw-border-primary tw-p-4 tw-text-center tw-cursor-pointer tw-mb-4 tw-h-72"
@@ -73,14 +72,13 @@ const title = ref<string>('')
 
 const deleteOrder = async (orderId: number) => {
   try {
-    const response = await axios.post(`http://localhost:8080/order/delete/${orderId}`)
+    const response = await axios.post(`https://i10d106.p.ssafy.io/order/delete/${orderId}`)
     console.log(response.data)
     router.go(0)
   } catch (error) {
     console.log(error)
   }
 }
-
 
 const props = defineProps({
   order: {
@@ -143,7 +141,6 @@ watch(files, (newFiles) => {
   previewFiles.value = newFiles.map((file) => URL.createObjectURL(file))
 })
 
-
 const createStorage = async (orderId: Number, fileInputs: File[]) => {
   try {
     const formData = new FormData()
@@ -155,7 +152,6 @@ const createStorage = async (orderId: Number, fileInputs: File[]) => {
     }
 
     const response = await axios.post('https://i10d106.p.ssafy.io/api/order/sendTouser', formData, {
-
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -173,8 +169,8 @@ const createStorage = async (orderId: Number, fileInputs: File[]) => {
 }
 </script>
 
-<style >
- .order-info {
+<style>
+.order-info {
   font-family: 'Arial', sans-serif;
   border-collapse: collapse;
   width: 100%;
