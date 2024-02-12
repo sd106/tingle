@@ -61,7 +61,7 @@ import { useRoute } from 'vue-router'
   
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/order/getStarsPicture/${userId}`);
+      const response = await axios.get(`https://i10d106.p.ssafy.io/api/order/getStarsPicture/${userId}`);
       console.log(response.data.resultCode)
       if (response.data.resultCode === 'SUCCESS') {
         userStoreStorages.value = response.data.data;

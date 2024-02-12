@@ -110,7 +110,7 @@ const updateSnapshot = async () => {
   // API 호출을 통해 스냅샷 데이터를 업데이트하는 로직
   try {
     console.log('axios 직전')
-    await axios.put(`http://localhost:8080/snapshot/${snapshotId}/update`, formData)
+    await axios.put(`https://i10d106.p.ssafy.io/api/snapshot/${snapshotId}/update`, formData)
     console.log('axios 통과')
     router.push(`/${starId}/snapshot`) // 업데이트 후 상세 페이지로 이동
   } catch (error) {

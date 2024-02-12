@@ -81,7 +81,7 @@ const router = useRouter()
 
 const getProduct = async (productId: number) => {
   try {
-    const response = await axios.get(`http://localhost:8080/product/getById/${productId}`)
+    const response = await axios.get(`https://i10d106.p.ssafy.io/api/product/getById/${productId}`)
     if (response.data.resultCode === 'SUCCESS') {
       product.value = response.data.data
     } else {
@@ -100,16 +100,16 @@ onMounted(() => {
   }
 })
 
-const createOrder = async (fanId: number, productId: number) => {
-  try {
-    const response = await axios.post(`http://localhost:8080/order/create/${fanId}/${productId}`)
-    alert('상품 구매에 성공 하였습니다.')
-    router.go(-1)
-  } catch (error) {
-    alert('상품 구매에 실패 하였습니다.')
-    console.error(error)
-  }
-}
+const createOrder = async (fanId:number, productId:number) => {
+    try {
+      const response = await axios.post(`http://localhost:8080/order/create/${fanId}/${productId}`);
+      alert("상품 구매에 성공 하였습니다.")
+      router.go(-1)
+    } catch (error) {
+      alert("상품 구매에 실패 하였습니다.")
+      console.error(error);
+    }
+  };
 
 // 사진들 카로셀
 const activeIndex = ref(0)
@@ -127,6 +127,27 @@ const formattedPrice = computed(() => {
   return new Intl.NumberFormat('ko-KR', { style: 'decimal' }).format(product.value!.price)
 })
 
+// 뒤로가기
+function goBack() {
+  router.go(-1) // 또는 router.back()
+}
+
+// 상품 삭제
+
+const getProductdelete = async (productId: number) => {
+  try {
+    const response = await axios.post(`http://localhost:8080/product/delete/${productId}`)
+    if (response.data === 'SUCCESS') {
+      alert('상품 삭제에 성공 하였습니다.')
+      router.go(-1)
+    } else {
+      console.error(response.data.message)
+      alert('상품 삭제에 실패 하였습니다.')
+    }
+  } catch (error) {
+    console.error('스타의 상품 목록 조회 중 오류 발생', error)
+  }
+}
 </script>
 
 <style scoped>

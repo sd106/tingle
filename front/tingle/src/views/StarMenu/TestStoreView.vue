@@ -210,7 +210,7 @@ const inputProductId = ref(0)
 
 const getProductById = async (productId: number) => {
   try {
-    const response = await axios.get(`http://localhost:8080/product/getById/${productId}`)
+    const response = await axios.get(`https://i10d106.p.ssafy.io/api/product/getById/${productId}`)
     if (response.data.resultCode === 'SUCCESS') {
       productgetById.value = response.data.data
     } else {
@@ -235,7 +235,7 @@ const inputStarName = ref('')
 
 const getProductsByStarName = async (starName: string) => {
   try {
-    const response = await axios.get(`http://localhost:8080/product/getByStarName/${starName}`)
+    const response = await axios.get(`https://i10d106.p.ssafy.io/api/product/getByStarName/${starName}`)
     if (response.data.resultCode === 'SUCCESS') {
       productgetByStarName.value = response.data.data
     } else {
@@ -260,7 +260,8 @@ const inputProductIdDelete = ref(1)
 
 const getProductdelete = async (productId: number) => {
   try {
-    const response = await axios.post(`http://localhost:8080/product/delete/${productId}`)
+    const response = await axios.post(`https://i10d106.p.ssafy.io/api/product/delete/${productId}`)
+
     if (response.data.resultCode === 'SUCCESS') {
       productdelete.value = response.data.data
     } else {
@@ -289,7 +290,7 @@ const createProduct = async (productInfo: any, fileInputs: File[]) => {
       formData.append('files', file)
     })
 
-    const response = await axios.post('http://localhost:8080/product/create', formData, {
+    const response = await axios.post('https://i10d106.p.ssafy.io/api/product/create', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -382,7 +383,7 @@ const productupdate = ref({
 const updateProduct = async (productIdupdate: number, updatedProductDto: any) => {
   try {
     const response = await axios.post(
-      `http://localhost:8080/product/update/${productIdupdate}`,
+      `https://i10d106.p.ssafy.io/api/product/update/${productIdupdate}`,
       updatedProductDto
     )
     if (response.data === 'SUCCESS') {
@@ -419,7 +420,7 @@ const updateProductImage = async (
     formData.append('file', file)
 
     const response = await axios.post(
-      `http://localhost:8080/product/updateImg/${productIdimageupdate}`,
+      `https://i10d106.p.ssafy.io/api/product/updateImg/${productIdimageupdate}`,
       formData,
       {
         headers: {
@@ -464,7 +465,7 @@ const uploadImage = async (productId: number) => {
     formData.append('file', file)
 
     // Axios 요청 보내기
-    const response = await axios.post(`http://localhost:8080/s3/upload/${productId}`, formData, {
+    const response = await axios.post(`https://i10d106.p.ssafy.io/api/s3/upload/${productId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -501,7 +502,7 @@ const updateImage = async (productId: number, imageId: number) => {
     formData.append('file', file)
 
     // Axios 요청 보내기
-    await axios.post(`http://localhost:8080/s3/update/${productId}/${imageId}`, formData, {
+    await axios.post(`https://i10d106.p.ssafy.io/api/s3/update/${productId}/${imageId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -515,7 +516,8 @@ const updateImage = async (productId: number, imageId: number) => {
 
 const deleteImage = async (imageId: number, productId: number) => {
   try {
-    await axios.post(`http://localhost:8080/s3/delete/${imageId}`)
+
+    await axios.post(`https://i10d106.p.ssafy.io/api/s3/delete/${imageId}`)
     getProductById(productId)
   } catch (error) {
     console.error('이미지 삭제 실패:', error)

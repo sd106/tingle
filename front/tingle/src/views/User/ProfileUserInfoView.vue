@@ -29,15 +29,6 @@
       <li></li>
       <li></li>
     </ul>
-    <!-- <div class="container" style="display: flex; justify-content: center; align-items: center; height: 85vh;">
-      <div style="width: 500px; height: 650px;" v-if="fanState!.picture" class="d-flex flex-column justify-content-center align-items-center border">
-        <img class="profile-pic" :src="fanState!.picture" alt="" />
-        <div v-if="fanState!.picture" class="mt-3 d-flex justify-content-between">
-          <button style="width:50%" class="tw-btn me-2" @click="uploadImage"><h2>프로필 수정</h2></button>
-          <button style="width:50%" class="tw-btn ms-2" @click="deleteImage(fanState!.id)"><h2>프로필 삭제</h2></button>
-        </div>
-      </div>
-    </div> -->
 
     <div class="container" style="display: flex; justify-content: center; align-items: center; height: 85vh;">
   <div style="width: 500px; height: 650px; position: relative;" v-if="fanState!.picture" class="p-4 d-flex flex-column justify-content-center align-items-center border">
@@ -45,6 +36,7 @@
     <div style="position: absolute; bottom: 20px; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 20px;">
       <button style="width: 48%;" class="tw-btn" @click="uploadImage"><h2>프로필 수정</h2></button>
       <button style="width: 48%;" class="tw-btn" @click="deleteImage(fanState!.id)"><h2>프로필 삭제</h2></button>
+
     </div>
   </div>
 </div>
@@ -71,7 +63,6 @@ const uploadImage = async () => {
     // 파일 선택하기
     const file = await selectFile2()
     if (!file) return
-
     // FormData 생성
     const formData = new FormData()
     formData.append('file', file)

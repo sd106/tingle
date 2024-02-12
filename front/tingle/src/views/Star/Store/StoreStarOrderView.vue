@@ -40,9 +40,8 @@
               <h2 class="fw-bold">₩ {{ res.goods.price }}</h2>
             </div>
           </div>
-          <div  v-if="expandedProduct === res" @click.stop="">
+          <div v-if="expandedProduct === res" @click.stop="">
             <StoreOrderDetail :order="res" />
-            <!-- {{ res }} -->
           </div>
         </div>
       </div>
@@ -79,7 +78,9 @@ function truncateText(text: string, maxLength: number): string {
 
 const getStarOrder = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/order/getByStarName/${starname}`)
+    const response = await axios.get(
+      `https://i10d106.p.ssafy.io/api/order/getByStarName/${starname}`
+    )
     responseMessageGetByStarName.value = response.data.data
     console.log(response.data.data)
     console.log(response.data)
@@ -95,7 +96,6 @@ const expandedProduct = ref<OrderResponse | null>(null)
 const expandProduct = (order: OrderResponse) => {
   expandedProduct.value = expandedProduct.value === order ? null : order
 }
-
 </script>
 
 <style>

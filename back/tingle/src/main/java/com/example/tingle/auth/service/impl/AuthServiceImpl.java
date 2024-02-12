@@ -60,6 +60,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public BasicSingupLoadResponse loadBasicSingup() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getPrincipal());
+        System.out.println(authentication);
         if (authentication != null && authentication.isAuthenticated()) {
             CustomOAuth2User userDetails = (CustomOAuth2User) authentication.getPrincipal();
             System.out.println(userDetails.getEmail());

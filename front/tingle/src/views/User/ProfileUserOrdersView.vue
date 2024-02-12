@@ -98,7 +98,7 @@ const isActive = (path: string) => {
 
 const getOrderByUserId = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/order/getUserOrders/${userId}`)
+    const response = await axios.get(`https://i10d106.p.ssafy.io/api/order/getUserOrders/${userId}`)
     responseMessageGetByUserId.value = response.data.data
     console.log(response.data.data)
     // var textOnly = responseMessageGetByUserId.replace(/<[^>]*>/g, '');

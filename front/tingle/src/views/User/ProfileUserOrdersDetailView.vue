@@ -63,7 +63,6 @@ const props = defineProps({
 const starid = ref(props.starid)
 const productIdNumber = computed(() => Number(props.productId)) // 숫자로 변환
 const product = ref<Goods>()
-const router = useRouter()
 
 const getProduct = async (productId: number) => {
   try {

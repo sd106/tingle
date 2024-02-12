@@ -33,8 +33,6 @@ public class FanMeeting {
     @ManyToMany
     private List<FanMeetingType> availableFanMeetingTypes;
 
-    @OneToOne
-    private UserEntity fan;
-    @OneToOne
+    @ManyToOne
     private StarEntity star;
 }
