@@ -19,7 +19,6 @@ import SnapshotUpdateView from '@/views/Star/Snapshot/SnapshotUpdateView.vue'
 
 import WishMainView from '@/views/Star/Wish/WishMainView.vue'
 import WishCreateView from '@/views/Star/Wish/WishCreateView.vue'
-import WishUpdateView from '@/views/Star/Wish/WishUpdateView.vue'
 import WishManageView from '@/views/Star/Wish/WishManageView.vue'
 
 import StoreMainView from '@/views/Star/Store/StoreMainView.vue'
@@ -34,9 +33,6 @@ import MeetingRoomView from '@/views/Star/FanMeeting/MeetingRoomView.vue'
 import NormalMeetingView from '@/views/Star/FanMeeting/NormalMeeting.vue'
 import LifeFourCutMeetingView from '@/views/Star/FanMeeting/LifeFourCutMeeting.vue'
 import BirthdayMeetingView from '@/views/Star/FanMeeting/BirthdayMeeting.vue'
-
-import TestStoreViewVue from '@/views/StarMenu/TestStoreView.vue'
-import TestStoreViewOrderVue from '@/views/StarMenu/TestStoreViewOrder.vue'
 
 
 const router = createRouter({
@@ -119,12 +115,6 @@ const router = createRouter({
           props: (route) => ({ id: route.params.starid }),
         },
         {
-          path: '/:starid/wish/update',
-          name: 'wishupdate',
-          component: WishUpdateView,
-          props: (route) => ({ id: route.params.starid }),
-        },
-        {
           path: '/:starid/wish/manage',
           name: 'wishmanage',
           component: WishManageView,
@@ -173,19 +163,6 @@ const router = createRouter({
           path: '/fanmeeting/:starid/waitingroom',
           name: 'WaitingRoomView',
           component: WaitingRoomView
-        },
-        // Store의 test를 위한 View
-        {
-          path: '/profile/:username/teststore',
-          name: 'teststore',
-          component: TestStoreViewVue,
-          props: (route) => ({ username: route.params.username }),
-        },
-        {
-          path: '/profile/:username/teststore2',
-          name: 'teststore2',
-          component: TestStoreViewOrderVue,
-          props: (route) => ({ username: route.params.username }),
         },
         {
           path: '/selectLoginType',

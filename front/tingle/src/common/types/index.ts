@@ -1,9 +1,3 @@
-interface SignUp {
-    username: string;
-    password: string;
-    email: string;
-}
-
 interface User {
     id: string;
     nickName: string;
@@ -70,11 +64,11 @@ interface FanMeetingMessage {
 
 interface SocketMessage {
     sender?: string
-    data?: string 
-    signalType?: string 
-    iceCandidate?: RTCIceCandidateInit 
-    sdp?: RTCSessionDescriptionInit 
-    roomType?: string 
+    data?: string
+    signalType?: string
+    iceCandidate?: RTCIceCandidateInit
+    sdp?: RTCSessionDescriptionInit
+    roomType?: string
 }
 
 interface Star {
@@ -138,6 +132,26 @@ interface ProductCreationPayload {
 }
 
 // 위시
+interface WishInfo {
+    id: number;
+    userId: number;
+    starId: number;
+    status: number;
+    points: number;
+    likedCount: number;
+    contents: string;
+    createTime: Date;
+    deleteTime: Date;
+}
+
+interface LikesInfo {
+    id: number;
+    userId: number;
+    wishId: number;
+    liked: boolean;
+}
+
+
 interface SnapshotType {
     id: number;
     imageUrl: string;
@@ -168,12 +182,13 @@ interface CommentType {
 
 
 export type {
-    SignUp, FanState, StarState,
+    FanState, StarState,
     User, Star, Starinfo, HotStarInfo, StarByCategory,
     // 스토어
     Product, Goods, ProductCreationPayload, ImageUrl, OrderResponse,
     // 팬미팅
     FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket,
-    SnapshotType, selectedSnapshotType, CommentType, FanMeetingMessage,SocketMessage
-
+    SnapshotType, selectedSnapshotType, CommentType, FanMeetingMessage, SocketMessage,
+    // 위시
+    WishInfo, LikesInfo,
 }
