@@ -39,6 +39,9 @@ import { ref,onMounted } from 'vue';
 import { RouterLink } from 'vue-router'
 import axios from 'axios';
 
+import { useUserStore } from '@/stores/user';
+const store = useUserStore();
+
 import StarMenu from '@/components/StarMenu/StarMenu.vue';
 import type { StarProfile } from '@/common/types/index'
 
@@ -74,7 +77,7 @@ const checkFollow = async () => { //처음에 팔로잉 여부 체크
 
 const isFollow = async () => {
   try {
-    const response = await axios.get('http://localhost:8080/follow/isFollowing', {
+    const response = await axios.get(`${store.API_URL}/follow/isFollowing`, {
       params: {
         userId: 1,
         starId: starId.value
@@ -91,7 +94,7 @@ const isFollow = async () => {
 
 const unFollowing = async () => {
   try {
-    const response = await axios.delete('http://localhost:8080/follow/delete', {
+    const response = await axios.delete(`${store.API_URL}/follow/delete`, {
       data: {
         userId: 1,
         starId: starId.value
@@ -108,7 +111,7 @@ const unFollowing = async () => {
 
 const following = async () => {
   try {
-    const response = await axios.post('http://localhost:8080/follow/create', {
+    const response = await axios.post(`${store.API_URL}/follow/create`, {
         userId: 1,
         starId: starId.value
     });
@@ -122,13 +125,13 @@ const following = async () => {
 }
 
 const getstarProfile = async () => {
-  const response = await axios.get(`http://localhost:8080/home/profile/${starId.value}`);
+  const response = await axios.get(`${store.API_URL}/home/profile/${starId.value}`);
   starProfile.value = response.data.data;
   console.log(starProfile.value);
 }
 
 const getArticle = () => {
-  axios.get(`http://localhost:8080/home/${starId.value}`)
+  axios.get(`${store.API_URL}/home/${starId.value}`)
     .then(response => {
       article.value = response.data.data;
     })

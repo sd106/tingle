@@ -53,6 +53,8 @@
 import { ref,onMounted } from 'vue';
 import { RouterLink } from 'vue-router'
 import axios from 'axios';
+import { useUserStore } from '@/stores/user';
+const store = useUserStore();
 
 import StarMenu from '@/components/StarMenu/StarMenu.vue';
 import type { StarProfile } from '@/common/types/index'
@@ -71,13 +73,13 @@ let files= ref([]);
 let newArticle: false;
 
 const getstarProfile = async () => {
-  const response = await axios.get(`http://localhost:8080/home/profile/1`);
+  const response = await axios.get(`${store.API_URL}/home/profile/1`);
   starProfile.value = response.data.data;
   console.log(starProfile.value);
 }
 
 const getArticle = async () => {
-  axios.get('http://localhost:8080/home/1')
+  axios.get(`${store.API_URL}/home/1`)
     .then(response => {
       article.value = response.data.data;
     })
@@ -108,7 +110,7 @@ const insertArticle = async () => {
     }
   }
 
-  axios.post('http://localhost:8080/home/post', formData, {
+  axios.post(`${store.API_URL}/home/post`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
@@ -142,7 +144,7 @@ const updateArticle = async (Long: item.id) => {
     formData.append('files', files[i]);
   }
 
-  axios.post('http://localhost:8080/home/update', formData, {
+  axios.post(`${store.API_URL}/home/update`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
@@ -155,7 +157,7 @@ const updateArticle = async (Long: item.id) => {
 
 const deleteArticle = async (homeid: number) => {
 
-  axios.delete(`http://localhost:8080/home/delete/${homeid}`)
+  axios.delete(`${store.API_URL}/home/delete/${homeid}`)
     .then(response => {
       getArticle();
     console.log(response.data);
