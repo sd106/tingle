@@ -32,6 +32,8 @@ public class QStarEntity extends EntityPathBase<StarEntity> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final StringPath name = createString("name");
+
     public final ListPath<com.example.tingle.store.entity.OrderEntity, com.example.tingle.store.entity.QOrderEntity> orderEntities = this.<com.example.tingle.store.entity.OrderEntity, com.example.tingle.store.entity.QOrderEntity>createList("orderEntities", com.example.tingle.store.entity.OrderEntity.class, com.example.tingle.store.entity.QOrderEntity.class, PathInits.DIRECT2);
 
     public final StringPath password = createString("password");
@@ -40,7 +42,7 @@ public class QStarEntity extends EntityPathBase<StarEntity> {
 
     public final StringPath provider = createString("provider");
 
-    public final EnumPath<com.example.tingle.user.entity.Role> role = createEnum("role", com.example.tingle.user.entity.Role.class);
+    public final StringPath providerId = createString("providerId");
 
     public final StringPath snsUrl = createString("snsUrl");
 

@@ -5,6 +5,7 @@ import com.example.tingle.home.dto.HomeProfileDto;
 import com.example.tingle.home.entity.HomeEntity;
 import com.example.tingle.store.entity.OrderEntity;
 import com.example.tingle.user.entity.Role;
+import com.example.tingle.user.entity.UserStoreStorage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@Entity(name = "stars")
+@Entity(name = "star")
 @Getter
 @Builder
 @AllArgsConstructor
@@ -25,18 +26,15 @@ public class StarEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
     @Column(unique = true)
     private String username;
-    private String password;
 
     private String picture;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
-
     // OAuth2 로그인 때 구분한 Provider
     private String provider;
+    private String providerId;
 
     @Column(nullable = false)
     private String email;
@@ -56,16 +54,12 @@ public class StarEntity {
     @JoinColumn(name = "orders", nullable = true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private List<OrderEntity> orderEntities;
 
-
     public StarEntity update(String name, String picture) {
         this.username = name;
         this.picture = picture;
         return this;
     }
 
-    public String getRoleKey() {
-        return this.role.getKey();
-    }
 
     public void addOrderEntity(OrderEntity orderEntity) {
         if (orderEntities == null) {

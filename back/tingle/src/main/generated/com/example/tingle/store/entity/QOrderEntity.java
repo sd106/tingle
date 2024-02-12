@@ -28,6 +28,8 @@ public class QOrderEntity extends EntityPathBase<OrderEntity> {
 
     public final NumberPath<Long> Id = createNumber("Id", Long.class);
 
+    public final NumberPath<Long> orderId = createNumber("orderId", Long.class);
+
     public QOrderEntity(String variable) {
         this(OrderEntity.class, forVariable(variable), INITS);
     }

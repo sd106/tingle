@@ -26,15 +26,17 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final ListPath<com.example.tingle.store.entity.OrderEntity, com.example.tingle.store.entity.QOrderEntity> orders = this.<com.example.tingle.store.entity.OrderEntity, com.example.tingle.store.entity.QOrderEntity>createList("orders", com.example.tingle.store.entity.OrderEntity.class, com.example.tingle.store.entity.QOrderEntity.class, PathInits.DIRECT2);
+    public final StringPath name = createString("name");
 
-    public final StringPath password = createString("password");
+    public final ListPath<com.example.tingle.store.entity.OrderEntity, com.example.tingle.store.entity.QOrderEntity> orders = this.<com.example.tingle.store.entity.OrderEntity, com.example.tingle.store.entity.QOrderEntity>createList("orders", com.example.tingle.store.entity.OrderEntity.class, com.example.tingle.store.entity.QOrderEntity.class, PathInits.DIRECT2);
 
     public final StringPath picture = createString("picture");
 
     public final StringPath provider = createString("provider");
 
-    public final EnumPath<Role> role = createEnum("role", Role.class);
+    public final StringPath providerId = createString("providerId");
+
+    public final ListPath<UserStoreStorage, QUserStoreStorage> storeStorages = this.<UserStoreStorage, QUserStoreStorage>createList("storeStorages", UserStoreStorage.class, QUserStoreStorage.class, PathInits.DIRECT2);
 
     public final StringPath username = createString("username");
 

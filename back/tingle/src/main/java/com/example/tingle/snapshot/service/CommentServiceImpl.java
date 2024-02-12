@@ -26,6 +26,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void createComment(CommentRequest commentRequest) {
+        System.out.println("댓글 만들러 서비스 들어옴");
+
         Optional<SnapShotEntity> optSnapShot = snapShotRepository.findById(commentRequest.getSnapshotId());
 
 
