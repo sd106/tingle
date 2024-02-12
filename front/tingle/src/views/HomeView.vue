@@ -2,22 +2,17 @@
   <main>
     <!-- /////배경색을 두고 다른걸 다 흰색으로 두는 것도 괜찮을듯 -->
     <!-- 배너사진 -->
-    <div></div>
-    <div class="container p-0" style="height: 250px">
-      <img class="img-fluid w-100 h-100" src="/image/logo.webp" alt="" />
+    <div v-if="hotStarsInfo"></div>
+    <div class="container p-0" style="height: 250px;">
+      <img class="img-fluid w-100 h-100" src="/image/logo.webp" alt="">
     </div>
     <!-- HOT STAR -->
     <div class="section-title">HOT STAR들을 만나보세요!</div>
     <!-- //////슬라이더 좀 더 자연스럽고 부드럽게 회전초밥마냥 라이브러리 쓰든가-->
     <div class="container slider-container">
       <div class="justify-content-between slider-track" ref="sliderTrack">
-        <div
-          v-for="hotstar in hotStarsInfo"
-          :key="hotstar.id"
-          class="p-2 star-card"
-          style="width: 18%"
-        >
-          <RouterLink class="router-link-custom" :to="`/${hotstar.id}/home`">
+        <div v-for="hotstar in hotStarsInfo" :key="hotstar.id" class="p-2 star-card" style="width: 18%;">
+          <RouterLink class="router-link-custom" :to=" hotstar.id===1 ? `/${hotstar.id}/home/manage`: `/${hotstar.id}/home`">
             <div class="hotstar-image">
               <img :src="hotstar.picture" alt="not" class="hotpic" />
             </div>
@@ -37,19 +32,13 @@
       <button class="category-btn" @click="selectCategory(4)">뷰티/패션</button>
       <button class="category-btn" @click="selectCategory(5)">기타</button>
     </div>
-    <div
-      class="container d-flex flex-wrap"
-      style="height: 360px; background-color: lightgoldenrodyellow; border-radius: 20px"
-    >
-      <div v-if="StarsByCategory.length === 0">아직 이 분야 스타가 존재하지 않습니다.</div>
-      <div
-        v-else
-        v-for="star in StarsByCategory"
-        :key="star.id"
-        class="p-2 star-card"
-        style="width: 18%"
-      >
-        <RouterLink class="router-link-custom" :to="`/${star.id}/home`">
+    <div class="container d-flex flex-wrap"
+         style="height: 360px; background-color: lightgoldenrodyellow; border-radius: 20px;">
+      <div v-if="StarsByCategory.length === 0">
+        아직 이 분야 스타가 존재하지 않습니다.
+      </div>
+      <div v-else v-for="star in StarsByCategory" :key="star.id" class="p-2 star-card" style="width: 18%;">
+        <RouterLink class="router-link-custom" :to=" star.id===1 ? `/${star.id}/home/manage`: `/${star.id}/home`">
           <div class="star-image">
             <img :src="star.picture" alt="not" />
           </div>
@@ -66,7 +55,7 @@ import { RouterLink } from 'vue-router'
 // import { useUserStore } from '@/stores/user';
 import axios from 'axios'
 
-import type { StarByCategory, HotStarInfo } from '@/common/types/index'
+import type { Starinfo, HotStarInfo } from '@/common/types/index'
 
 // const store = useUserStore()
 
@@ -84,7 +73,7 @@ const moveSlider = () => {
 }
 
 // 카테고리 디스플레이
-const StarsByCategory = ref<StarByCategory[]>([])
+const StarsByCategory = ref<Starinfo[]>([]);
 
 const loadInitialData = () => {
   getStarsByCategory(0)

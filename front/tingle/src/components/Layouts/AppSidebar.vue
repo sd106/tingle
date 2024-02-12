@@ -94,6 +94,7 @@ import axios from 'axios'
 import ChatModal from '@/components/ChatModal.vue'
 
 const store = useUserStore()
+const starid = store.starInfo?.starId;
 
 // 사이드바 더보기
 const displayCount = ref(7)

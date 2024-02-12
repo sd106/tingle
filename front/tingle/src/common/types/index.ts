@@ -27,10 +27,10 @@ interface FanMeetingContent {
     name: string
 }
 
-interface HotStarInfo {
+interface hotstarInfo {
     id: number;
-    username: string;
     picture: string;
+    userName: string;
 }
 
 interface FanMeetingType {  
@@ -107,17 +107,36 @@ interface Star {
     image: string; // 프로필 사진
 }
 
-interface Starinfo {
-    id: string;
-    username: string;
-    image: string;
-}
-
-
-interface StarByCategory {
+interface HotStarInfo{
     id: number;
     username: string;
     picture: string;
+}
+
+interface Starinfo {
+    id: number;
+    username: string;
+    picture: string;
+}
+
+interface StarProfile{
+
+    banner?: string;
+    profileImage?: string;
+    username: string;
+    snsUrl?: string;
+
+
+}
+
+
+interface StarLogininfo {
+    starId?: number;
+    username: string;
+    picture?: string;
+    email?: string;
+    role?: string;
+    provider?: string;
 }
 
 // 스토어

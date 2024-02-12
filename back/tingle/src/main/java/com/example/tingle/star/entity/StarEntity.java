@@ -1,6 +1,8 @@
 package com.example.tingle.star.entity;
 
 import com.example.tingle.follow.entity.FollowEntity;
+import com.example.tingle.home.dto.HomeProfileDto;
+import com.example.tingle.home.entity.HomeEntity;
 import com.example.tingle.store.entity.OrderEntity;
 import com.example.tingle.user.entity.Role;
 import com.example.tingle.user.entity.UserStoreStorage;
@@ -11,7 +13,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -41,7 +42,9 @@ public class StarEntity {
     @Column(nullable = false)
     private int category;
 
-    private String password;
+    private String snsUrl;
+
+    private String banner;
 
     // Order된 목록 추가
 //    이건 필요 없지 않을까??
@@ -67,6 +70,19 @@ public class StarEntity {
     }
 
     @OneToMany(mappedBy = "starEntity")
-    private Set<FollowEntity> followerUsers= new HashSet<>();
+    private Set<FollowEntity> followerUsers;
+
+    @OneToMany(mappedBy="starEntity")
+    private List<HomeEntity> homes;
+
+    public HomeProfileDto toDto() {
+        return HomeProfileDto.builder()
+                .banner(this.banner)
+                .profileImage(this.picture)
+                .username(this.username)
+                .snsUrl(this.snsUrl)
+                .build();
+    }
+
 
 }
