@@ -1,14 +1,10 @@
 <template>
   <main class="container">
-    <StarMenu :id="id" />
+    <StarMenu :id="starId" />
     <div class="container border">
       <img :src="starProfile.banner" alt="사진">
     </div>
     <div class="container border">
-      <!-- v-if 걸어서 본인인지 확인해야할듯? -->
-      <RouterLink :to="`/${id}/home/manage`">
-        스타면 설정버튼
-      </RouterLink>
       <!-- 프로필 사진 > 누르면 확대-->
       <div>
         <img :src="starProfile.profileImage" alt="사진">
@@ -47,7 +43,7 @@ import StarMenu from '@/components/StarMenu/StarMenu.vue';
 import type { StarProfile } from '@/common/types/index'
 
 const props = defineProps(['id']);
-const id = ref(props.id);
+const starId = ref(props.id);
 
 const starProfile= ref<StarProfile[]>([]);
 
@@ -81,7 +77,7 @@ const isFollow = async () => {
     const response = await axios.get('http://localhost:8080/follow/isFollowing', {
       params: {
         userId: 1,
-        starId: 1
+        starId: starId.value
       }
     });
     console.log(response);
@@ -98,7 +94,7 @@ const unFollowing = async () => {
     const response = await axios.delete('http://localhost:8080/follow/delete', {
       data: {
         userId: 1,
-        starId: 1
+        starId: starId.value
       }
     });
     console.log(response);
@@ -114,7 +110,7 @@ const following = async () => {
   try {
     const response = await axios.post('http://localhost:8080/follow/create', {
         userId: 1,
-        starId: 1
+        starId: starId.value
     });
     console.log(response);
     isGood.value= response.data.data;
@@ -126,13 +122,13 @@ const following = async () => {
 }
 
 const getstarProfile = async () => {
-  const response = await axios.get(`http://localhost:8080/home/profile/1`);
+  const response = await axios.get(`http://localhost:8080/home/profile/${starId.value}`);
   starProfile.value = response.data.data;
   console.log(starProfile.value);
 }
 
 const getArticle = () => {
-  axios.get('http://localhost:8080/home/1')
+  axios.get(`http://localhost:8080/home/${starId.value}`)
     .then(response => {
       article.value = response.data.data;
     })
