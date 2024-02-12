@@ -57,7 +57,7 @@ import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 
 import type { Starinfo, HotStarInfo } from '@/common/types/index'
-
+import type { StarByCategory } from '@/common/types/index'
 
 const store = useUserStore()
 
@@ -75,7 +75,7 @@ const moveSlider = () => {
 };
 
 // 카테고리 디스플레이
-const StarsByCategory = ref<Starinfo[]>([]);
+const StarsByCategory = ref<StarByCategory[]>([]);
 
 const loadInitialData = () => {
   getStarsByCategory(0);

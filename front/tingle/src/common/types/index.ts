@@ -34,6 +34,14 @@ interface HotStarInfo {
     picture: string;
 }
 
+interface StarProfile{
+
+    banner?: string;
+    profileImage?: string;
+    username: string;
+    snsUrl?: string;
+}
+
 interface FanMeetingType {  
     id: number
     name: string
@@ -109,7 +117,7 @@ interface Star {
 }
 
 interface Starinfo {
-    id: string;
+    id: number;
     username: string;
     image: string;
 }
@@ -282,6 +290,8 @@ interface CommentType {
 export type {
     SignUp, FanState, StarState,
     User, Star, Starinfo, HotStarInfo, StarByCategory,
+    // 홈
+    StarProfile,
     // 스토어
     Goods, ImageUrl, OrderResponse,
     // 팬미팅
