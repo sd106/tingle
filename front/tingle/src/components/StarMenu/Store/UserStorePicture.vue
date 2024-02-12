@@ -4,7 +4,7 @@
     <div class="d-flex flex-wrap">
     <div class="storage-item col-3 mx-2" v-for="storage in userStoreStorages" :key="storage.id">
   <div class="storage-image-container">
-    <img class="storage-image" :src="storage.url" :alt="storage.title" data-bs-toggle="modal" data-bs-target="#userStorePictureModal">
+    <img class="storage-image" :src="storage.url" :alt="storage.title">
   </div>
   <div class="storage-info">
     <!-- <p class="fw-bold">{{ storage.title }}</p> -->
@@ -16,7 +16,6 @@
   </div>
 </div>
     </div>
-    <!-- <UserStorePictureModal/> -->
   </main>
 </template>
   
@@ -24,15 +23,16 @@
 import type { UserStoreStorageResponse } from '@/common/types';
 import { ref, onMounted } from 'vue'
 import axios from 'axios';
-import UserStorePictureModal from '@/components/StarMenu/Store/UserStorePictureModal.vue'
+import { useUserStore } from '@/stores/user'
 
+const { fanState } = useUserStore()
+const userId = fanState?.id
 
-const userId = ref<number>(1); // 예시로 사용할 userId, 필요에 따라 변경
 const userStoreStorages = ref<UserStoreStorageResponse[]>([]);
 
 const fetchData = async () => {
   try {
-    const response = await axios.get(`https://i10d106.p.ssafy.io/api/order/getStarsPicture/1`);
+    const response = await axios.get(`https://i10d106.p.ssafy.io/api/order/getStarsPicture/${userId}`);
     console.log(response.data.resultCode)
     if (response.data.resultCode === 'SUCCESS') {
       userStoreStorages.value = response.data.data;
