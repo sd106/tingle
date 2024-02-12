@@ -107,7 +107,7 @@ onMounted(() => {
 const createOrder = async (fanId: number, productId: number) => {
   try {
     const response = await axios.post(
-      `https://i10d106.p.ssafy.io/order/create/${fanId}/${productId}`
+      `https://i10d106.p.ssafy.io/api/order/create/${fanId}/${productId}`
     )
     alert('상품 구매에 성공 하였습니다.')
     router.go(-1)
@@ -142,7 +142,7 @@ function goBack() {
 
 const getProductdelete = async (productId: number) => {
   try {
-    const response = await axios.post(`https://i10d106.p.ssafy.io/product/delete/${productId}`)
+    const response = await axios.post(`https://i10d106.p.ssafy.io/api/product/delete/${productId}`)
     if (response.data === 'SUCCESS') {
       alert('상품 삭제에 성공 하였습니다.')
       router.go(-1)

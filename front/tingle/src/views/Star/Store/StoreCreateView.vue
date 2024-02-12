@@ -116,7 +116,7 @@ const createProductNoFile = async (productInfo: any) => {
     formData.append('productDto', JSON.stringify(productInfo))
 
     const response = await axios.post(
-      'https://i10d106.p.ssafy.io/product/create/nofile',
+      'https://i10d106.p.ssafy.io/api/product/create/nofile',
       formData,
       {
         headers: {

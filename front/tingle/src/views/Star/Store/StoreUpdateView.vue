@@ -197,7 +197,7 @@ const updateProductWithPreview = async (productInfo: any) => {
     const formData = new FormData()
     formData.append('productDto', JSON.stringify(productInfo))
 
-    const response = await axios.post('https://i10d106.p.ssafy.io/product/update/nopre', formData)
+    const response = await axios.post('https://i10d106.p.ssafy.io/api/product/update/nopre', formData)
     if (response.status === 200) {
       alert('상품이 성공적으로 수정되었습니다.')
       router.go(-1)
