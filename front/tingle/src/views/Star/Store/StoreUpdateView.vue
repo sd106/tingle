@@ -2,7 +2,12 @@
   <main class="container">
     <StarMenu :id="starid" />
     <div class="tw-p-8" v-if="product">
-      <h1 class="tw-text-2xl tw-font-bold tw-mb-8">상품 수정</h1>
+      <div class="d-flex align-items-center">
+        <h1 class="tw-text-2xl tw-font-bold">상품 수정</h1>
+        <div class="tw-p-8 tw-mt-3 d-flex align-items-center justify-content-center">
+          <h3>활성화 여부 <input type="checkbox" v-model="product!.available" /></h3>
+        </div>
+      </div>
       <div class="tw-grid tw-gap-4 tsw-mb-8">
         <input
           type="text"
@@ -28,12 +33,12 @@
 
       <div
         ref="dragArea"
-        class="tw-border-dashed tw-border-2 tw-border-primary tw-p-4 tw-text-center tw-cursor-pointer tw-mb-4"
+        class="mt-3 tw-border-dashed tw-border-2 tw-border-primary tw-p-4 tw-text-center tw-cursor-pointer tw-mb-4 tw-h-64 d-flex justify-content-center align-items-center"
         @dragover.prevent="handleDragOver"
         @drop="handleDrop"
         @click="fileInput!.click()"
       >
-        여기에 파일을 드래그 앤 드롭하거나 클릭하여 선택하세요.
+        <p>여기에 파일을 드래그 앤 드롭하거나 클릭하여 선택하세요.</p>
         <input
           type="file"
           multiple
@@ -93,8 +98,6 @@ const getProduct = async (productId: number) => {
         previewFiles.value = product.value.imageUrl.map((url) => url.url)
       }
     } else {
-      console.error(response.data.message)
-      console.log(response.data.data)
       product.value = response.data.data
     }
   } catch (error) {
@@ -116,7 +119,9 @@ const removeFile = (index: number) => {
   previewFiles.value.splice(index, 1)
 
   // 실제 파일 배열에서도 해당 항목 제거
+  console.log(files.value, "여긴 지우기 전")
   files.value.splice(index, 1)
+  console.log(files.value, "여긴 지우고 난 후")
 }
 
 // watch(files, (newFiles) => {
@@ -144,9 +149,7 @@ const handleFileUpload = (event: Event) => {
     const newPreviewFiles = uploadedFiles.map((file) => URL.createObjectURL(file))
 
     // 기존 previewFiles에 새로운 미리보기 URL 추가
-    console.log(newPreviewFiles.values)
     previewFiles.value = [...previewFiles.value, ...newPreviewFiles]
-    console.log(previewFiles.value)
 
     // files 배열 업데이트
     files.value = [...files.value, ...uploadedFiles]
@@ -154,14 +157,19 @@ const handleFileUpload = (event: Event) => {
 }
 
 const submitForm = () => {
-  if (files.value.length > 0) {
+  if (files.value.length > 0 && previewFiles.value.length > 0) {
+    console.log("첫번째 이프")
     updateProduct(product.value, files.value, previewFiles.value)
-  } else {
+  } else if (previewFiles.value.length > 0 &&  files.value.length === 0) {
+    console.log("두번째 이프")
     updateProductWithOutFile(product.value, previewFiles.value)
+  } else if (previewFiles.value.length === 0 &&  files.value.length === 0){
+    console.log("세번째 이프")
+    updateProductWithPreview(product.value)
   }
 }
 
-const updateProductWithOutFile =async (productInfo: any, previewFiles: string[]) => {
+const updateProductWithOutFile = async (productInfo: any, previewFiles: string[]) => {
   try {
     const formData = new FormData()
     formData.append('productDto', JSON.stringify(productInfo))
@@ -181,7 +189,22 @@ const updateProductWithOutFile =async (productInfo: any, previewFiles: string[])
   }
 }
 
+const updateProductWithPreview = async (productInfo: any) => {
+  try {
+    const formData = new FormData()
+    formData.append('productDto', JSON.stringify(productInfo))
 
+    const response = await axios.post('http://localhost:8080/product/update/nopre', formData)
+    if (response.status === 200) {
+      alert('상품이 성공적으로 수정되었습니다.')
+      router.go(-1)
+    } else {
+      alert('상품 수정에 실패했습니다.')
+    }
+  } catch (error) {
+    console.error('상품 생성 중 오류 발생', error)
+  }
+}
 
 const updateProduct = async (productInfo: any, fileInputs: File[], previewFiles: string[]) => {
   try {
@@ -201,6 +224,8 @@ const updateProduct = async (productInfo: any, fileInputs: File[], previewFiles:
     })
     if (response.status === 200) {
       alert('상품이 성공적으로 수정되었습니다.')
+      console.log(formData)
+      console.log(fileInputs.values)
       router.go(-1)
     } else {
       alert('상품 수정에 실패했습니다.')

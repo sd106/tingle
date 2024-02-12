@@ -58,7 +58,6 @@ public class StarProductController {
         try {
             // JSON 문자열을 ProductDto 객체로 변환
             ProductDto productDto = objectMapper.readValue(productDtoJson, ProductDto.class);
-
             StarEntity starEntity = starService.findByUsername(productDto.getStarName());
             if (starEntity == null) {
                 throw new NullPointerException("StarEntity not found");
@@ -69,6 +68,40 @@ public class StarProductController {
                 String imageUrl = s3UploadService.saveFile(file); // S3에 파일 업로드
                 imageEntities.add(new ProductImageEntity(imageUrl, null)); // S3 URL 사용
             }
+
+
+            ProductEntity productEntity = ProductEntity.builder()
+                    .starName(productDto.getStarName())
+                    .starId(starEntity)
+                    .name(productDto.getName())
+                    .amount(productDto.getAmount())
+                    .price(productDto.getPrice())
+                    .imageUrl(imageEntities)
+                    .content(productDto.getContent())
+                    .available(true)
+                    .build();
+
+            imageEntities.forEach(imageEntity -> imageEntity.setProduct(productEntity));
+            productService.save(productEntity);
+            return ResponseEntity.ok("Product created successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Product creation failed: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/create/nofile")
+    public ResponseEntity<?> createProductNoFile(@RequestParam("productDto") String productDtoJson) {
+        try {
+            // JSON 문자열을 ProductDto 객체로 변환
+            ProductDto productDto = objectMapper.readValue(productDtoJson, ProductDto.class);
+            StarEntity starEntity = starService.findByUsername(productDto.getStarName());
+            if (starEntity == null) {
+                throw new NullPointerException("StarEntity not found");
+            }
+
+            List<ProductImageEntity> imageEntities = new ArrayList<>();
+            imageEntities.add(new ProductImageEntity("https://tingle-s3.s3.ap-northeast-2.amazonaws.com/basic-product.png", null)); // S3 URL 사용
+
 
             ProductEntity productEntity = ProductEntity.builder()
                     .starName(productDto.getStarName())
@@ -94,7 +127,6 @@ public class StarProductController {
     public String updateProduct(@RequestParam("productDto") String productDtoJson,
                                 @RequestParam("files") MultipartFile[] files,
                                 @RequestParam("previewFiles") String previewFiles) throws IOException {
-        System.out.println("productDtoJson = " + productDtoJson);
         ProductDto productDto = objectMapper.readValue(productDtoJson, ProductDto.class);
         Long productId = productDto.getProductId();
         Optional<ProductEntity> optionalProductEntity = productService.findById(productId);
@@ -102,8 +134,8 @@ public class StarProductController {
 
         List<ProductImageEntity> imageUrls = product.getImageUrl();
         List<String> previewList = Arrays.asList(previewFiles.split(","));
-        List<ProductImageEntity> filteredImageUrls = new ArrayList<>();
 
+        List<ProductImageEntity> filteredImageUrls = new ArrayList<>();
         List<ProductImageEntity> addfilteredImageUrls = new ArrayList<>();
 
         for (ProductImageEntity imageUrl : imageUrls) {
@@ -116,10 +148,11 @@ public class StarProductController {
 
         // 필터링된 리스트 사용
         for (ProductImageEntity image : filteredImageUrls) {
-            System.out.println(image.getUrl());
             if (image.getId() != null) {
                 productImageService.deleteById(image.getId());
-                s3UploadService.deleteImage(image.getUrl());
+                if (!image.getUrl().equals("https://tingle-s3.s3.ap-northeast-2.amazonaws.com/basic-product.png")) {
+                    s3UploadService.deleteImage(image.getUrl());
+                }
                 product.removeImage(image);
             }
         }
@@ -154,7 +187,6 @@ public class StarProductController {
 
         List<ProductImageEntity> imageUrls = product.getImageUrl();
         List<String> previewList = Arrays.asList(previewFiles.split(","));
-
         List<ProductImageEntity> filteredImageUrls = new ArrayList<>();
 
         for (ProductImageEntity imageUrl : imageUrls) {
@@ -167,15 +199,56 @@ public class StarProductController {
         for (ProductImageEntity image : filteredImageUrls) {
             if (image.getId() != null) {
                 productImageService.deleteById(image.getId());
-                s3UploadService.deleteImage(image.getUrl());
+                if (!image.getUrl().equals("https://tingle-s3.s3.ap-northeast-2.amazonaws.com/basic-product.png")) {
+                    s3UploadService.deleteImage(image.getUrl());
+                }
                 product.removeImage(image);
             }
         }
-        product.setName(productDto.getName());
+
+        System.out.println("previewList = " + previewList);
+        System.out.println("previewFiles = " + previewFiles);
+
         product.setAmount(productDto.getAmount());
         product.setPrice(productDto.getPrice());
         product.setContent(productDto.getContent());
         product.setAvailable(productDto.isAvailable());
+
+        productService.save(product);
+        return "SUCCESS";
+    }
+
+    @PostMapping("/update/nopre")
+    @Transactional
+    public String updateProductNoPre(@RequestParam("productDto") String productDtoJson) throws IOException {
+        ProductDto productDto = objectMapper.readValue(productDtoJson, ProductDto.class);
+        Long productId = productDto.getProductId();
+        Optional<ProductEntity> optionalProductEntity = productService.findById(productId);
+        ProductEntity product = optionalProductEntity.get();
+
+        List<ProductImageEntity> imageUrls = product.getImageUrl();
+        List<ProductImageEntity> toRemove = new ArrayList<>();
+        for (ProductImageEntity image : imageUrls) {
+            if (image.getId() != null) {
+                toRemove.add(image);
+                if (!image.getUrl().equals("https://tingle-s3.s3.ap-northeast-2.amazonaws.com/basic-product.png")) {
+                    s3UploadService.deleteImage(image.getUrl());
+                }
+            }
+        }
+
+        for (ProductImageEntity image : toRemove) {
+            productImageService.deleteById(image.getId());
+            product.removeImage(image);
+        }
+
+        imageUrls.add(new ProductImageEntity("https://tingle-s3.s3.ap-northeast-2.amazonaws.com/basic-product.png", product));
+
+        product.setAmount(productDto.getAmount());
+        product.setPrice(productDto.getPrice());
+        product.setContent(productDto.getContent());
+        product.setAvailable(productDto.isAvailable());
+
 
         productService.save(product);
         return "SUCCESS";
@@ -192,7 +265,9 @@ public class StarProductController {
 
             // S3에서 각 이미지 삭제
             for (ProductImageEntity image : images) {
-                s3UploadService.deleteImage(image.getUrl());
+                if (!image.getUrl().equals("https://tingle-s3.s3.ap-northeast-2.amazonaws.com/basic-product.png")) {
+                    s3UploadService.deleteImage(image.getUrl());
+                }
             }
 
             // 데이터베이스에서 Product 삭제

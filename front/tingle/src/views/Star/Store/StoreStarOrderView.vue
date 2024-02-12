@@ -22,36 +22,27 @@
           @click="expandProduct(res)"
         >
           <div class="d-flex row">
-            <div class="col-2">
-              <img :src="res.goods.imageUrl[0].url" alt="" />
+            <div class="col-3">
+              <div
+                class="tw-flex tw-flex-col img-container"
+                :style="`background-image: url('${res.goods.imageUrl[0].url}');`"
+              >
+                <!-- <img :src="res.goods.imageUrl[0].url" alt="" /> -->
+              </div>
             </div>
-            <div class="p-3 col-8 d-flex flex-column">
-              <span class="my-3">{{ res.goods.name }}</span>
+
+            <div class="p-3 col-7 d-flex flex-column">
+              <h2 class="my-3 fw-bold">{{ res.goods.name }}</h2>
               <span>{{ truncateText(removeHtmlTags(res.goods.content), 30) }}</span>
             </div>
 
             <div class="p-3 col-2 centered-content p-3 col-2">
-              <h3 calss="fw-bold">{{ res.goods.price }}</h3>
+              <h2 class="fw-bold">₩ {{ res.goods.price }}</h2>
             </div>
           </div>
-
-          <!-- <div class="p-3 col-8 d-flex flex-column">
-              <RouterLink
-                :to="`/${res.goods.starId}/store/${res.goods.productId}`"
-                class="tw-flex tw-flex-col d-flex"
-              >
-                <h2 class="my-3">{{ res.goods.name }}</h2>
-                <span class="">{{ truncateText(removeHtmlTags(res.goods.content), 30) }}</span>
-              </RouterLink>
-            </div>
-
-            <div class="centered-content p-3 col-2">
-              <h3 class="fw-bold">$ {{ res.goods.price }}</h3>
-            </div> -->
-
-          <div v-if="expandedProduct === res" @click.stop="">
+          <div  v-if="expandedProduct === res" @click.stop="">
             <StoreOrderDetail :order="res" />
-            <button @click="deleteOrder(res.orderId)">주문 삭제</button>
+            <!-- {{ res }} -->
           </div>
         </div>
       </div>
@@ -105,15 +96,6 @@ const expandProduct = (order: OrderResponse) => {
   expandedProduct.value = expandedProduct.value === order ? null : order
 }
 
-const deleteOrder = async (orderId: number) => {
-  try {
-    const response = await axios.post(`http://localhost:8080/order/delete/${orderId}`)
-    console.log(response.data)
-    getStarOrder()
-  } catch (error) {
-    console.log(error)
-  }
-}
 </script>
 
 <style>
@@ -125,5 +107,13 @@ const deleteOrder = async (orderId: number) => {
   display: flex; /* Flex 컨테이너 설정 */
   justify-content: center; /* 가로 축에서 중앙 정렬 */
   align-items: center; /* 세로 축에서 중앙 정렬 */
+}
+
+.img-container {
+  width: 300px; /* 이미지 컨테이너의 너비 */
+  height: 250px; /* 이미지 컨테이너의 높이 */
+  background-position: center; /* 이미지를 중앙에 위치 */
+  background-size: contain; /* 이미지가 컨테이너를 벗어나지 않도록 함 */
+  background-repeat: no-repeat; /* 이미지 반복 없음 */
 }
 </style>

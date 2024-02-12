@@ -64,7 +64,6 @@
           </button>
         </div>
       </div>
-      {{ store.starState }}
       <!-- 상품 생성 버튼 -->
       <button @click="submitForm" class="tw-btn tw-btn-primary tw-mt-4">상품 생성</button>
     </div>
@@ -111,11 +110,34 @@ const createProduct = async (productInfo: any, fileInputs: File[]) => {
   }
 }
 
+
+const createProductNoFile = async (productInfo: any) => {
+  try {
+    const formData = new FormData()
+    formData.append('productDto', JSON.stringify(productInfo))
+
+    const response = await axios.post('http://localhost:8080/product/create/nofile', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    if (response.status === 200) {
+      alert('상품이 성공적으로 생성되었습니다.')
+      router.go(-1)
+    } else {
+      alert('상품 생성에 실패했습니다.')
+    }
+  } catch (error) {
+    console.error('상품 생성 중 오류 발생', error)
+  }
+}
+
 const submitForm = () => {
   if (files.value.length > 0) {
     createProduct(productcreate.value, files.value)
-  } else {
-    alert('파일을 선택해주세요.')
+  }
+  else {
+    createProductNoFile(productcreate.value)
   }
 }
 

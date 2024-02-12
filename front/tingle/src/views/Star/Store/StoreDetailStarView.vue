@@ -2,10 +2,6 @@
   <main>
     <StarMenu :id="starid" />
     <div v-if="product" class="d-flex row tw-space-x-4 tw-mt-2">
-      <!-- 왼쪽 -->
-      <div class="col-1">
-        <button @click="goBack" class="tw-btn tw-btn-circle tw-glass"></button>
-      </div>
       <div class="col-6">
         <div class="tw-carousel tw-w-full">
           <div
@@ -16,7 +12,7 @@
           >
             <img :src="image.url" alt="" class="tw-w-full" />
             <div
-              v-if="product.imageUrl.length > 2"
+              v-if="product.imageUrl.length > 1"
               class="tw-absolute tw-flex tw-justify-between tw-transform tw--translate-y-1/2 tw-left-5 tw-right-5 tw-top-1/2"
             >
               <button @click="prevSlide" class="tw-btn tw-btn-circle tw-glass">❮</button>
@@ -25,7 +21,6 @@
           </div>
         </div>
       </div>
-      <!-- 오른쪽 -->
       <div class="col-4 tw-ps-6 tw-flex tw-flex-col tw-justify-between">
         <div>
           <p class="tw-text-3xl tw-font-bold tw-text-gray-900 tw-px-2 tw-py-2">
@@ -44,7 +39,6 @@
           <hr class="tw-my-4" />
         </div>
         <div>
-          <!-- /////스타 본인일 때 -->
           <RouterLink :to="`/${props.starid}/store/update/${props.productId}`">
             <button
               class="tw-btn tw-btn-active tw-btn-block tw-bg-black tw-text-white tw-py-3 tw-rounded-md tw-mb-2"
@@ -150,5 +144,23 @@ const getProductdelete = async (productId: number) => {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+/* 가장 외부 컨테이너 중앙 정렬을 위한 스타일 */
+.d-flex.row.tw-space-x-4.tw-mt-2 {
+  display: flex;
+  justify-content: center; /* 가로 중앙 정렬 */
+}
+
+/* 이미지 컨테이너 스타일 */
+.tw-carousel {
+  display: flex;
+  justify-content: center; /* 이미지를 가로 방향으로 중앙에 배치 */
+  align-items: center; /* 이미지를 세로 방향으로 중앙에 배치 */
+  height: 80vh; /* 예시 높이, 실제 사용 조건에 맞게 조정 필요 */
+}
+
+/* 이미지 스타일 */
+.tw-carousel-item img {
+  object-fit: contain; /* 비율을 유지하면서 최대한 컨테이너에 맞춤 */
 }
 </style>

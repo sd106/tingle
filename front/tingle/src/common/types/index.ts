@@ -5,6 +5,7 @@ interface SignUp {
 }
 
 interface User {
+[x: string]: any;
     id: string;
     nickName: string;
     image: string;

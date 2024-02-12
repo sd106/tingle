@@ -16,20 +16,32 @@
 
       <!-- //////정렬기준 수정할 수 있게 row 하나 추가해서 변경 가능하게 -->
       <!-- //////available = false면 비활성화하고 회색처리  -->
-      <div v-if="altProducts" class="tw-grid tw-grid-cols-5 tw-gap-2">
+      <div v-if="altProducts" class="row">
         <div
           v-for="product in altProducts"
           :key="product.productId"
-          class="product-card tw-rounded-lg tw-transition tw-mb-5"
+          class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-4"
         >
           <RouterLink :to="`/${id}/store/star/${product.productId}`" class="tw-flex tw-flex-col">
-            <img :src="product.imageUrl[0]?.url" alt="" class="tw-w-full tw-h-60 tw-object-cover" />
+          <div class="product-card tw-rounded-lg tw-transition tw-mb-5 border p-1"
+          v-if="product.available === true && product.amount > 0">
+            <img :src="product.imageUrl[0]?.url" alt="" class="tw-w-full tw-h-72 tw-object-cover" />
             <div class="product-info tw-text-left tw-py-1">
-              <span class="tw-text-md tw-font-semibold tw-truncate">{{ product.name }}</span>
-              <span class="tw-text-lg tw-font-bold tw-text-gray-800">{{
+              <p class="tw-text-md ms-2 tw-font-semibold tw-truncate">{{ product.name }}</p>
+              <p class="tw-text-lg ms-2 tw-font-bold tw-text-gray-800">{{
                 product.formattedPrice
-              }}</span>
+              }}</p>
             </div>
+          </div>
+          <div class="product-card tw-rounded-lg tw-transition tw-mb-5 border p-1" v-else style="background-color: rgb(177, 171, 171);">
+            <img :src="product.imageUrl[0]?.url" alt="" class="tw-w-full tw-h-72 tw-object-cover" />
+            <div class="product-info tw-text-left tw-py-1">
+              <p class="tw-text-md ms-2 tw-font-semibold tw-truncate">{{ product.name }}</p>
+              <p class="tw-text-lg ms-2 tw-font-bold tw-text-gray-800">{{
+                product.formattedPrice
+              }}</p>
+            </div>
+          </div>
           </RouterLink>
         </div>
       </div>

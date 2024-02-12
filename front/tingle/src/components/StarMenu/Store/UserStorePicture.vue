@@ -7,16 +7,16 @@
     <img class="storage-image" :src="storage.url" :alt="storage.title" data-bs-toggle="modal" data-bs-target="#userStorePictureModal">
   </div>
   <div class="storage-info">
-    <p class="fw-bold">{{ storage.title }}</p>
-    <p>{{ storage.content }}</p>
-    <p>from {{ storage.starname }}ddddddddddddddddddddddddddddddddddddddddddddddddddddd</p>
+    <!-- <p class="fw-bold">{{ storage.title }}</p> -->
+    <!-- <p>{{ storage.content }}</p> -->
+    <p>from {{ storage.starname }}</p>
     <div>
         <button class="delete-button">삭제하기</button> <!-- 삭제 버튼 추가 -->
     </div>
   </div>
 </div>
     </div>
-    <UserStorePictureModal/>
+    <!-- <UserStorePictureModal/> -->
   </main>
 </template>
   
