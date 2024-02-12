@@ -19,10 +19,20 @@
       <p>sns 주소 {{starProfile?.username}} </p>
 
     </div>
+
+    <div class="container border" v-show="showInputArticle">
+      <input type="file" id="image-upload" multiple>
+      <input v-model="homeCreateRequest.content" placeholder="입력해주세요">
+      <button @click="insertArticle()">완료</button>
+    </div>
+
+
     <div class="item-wrapper">
       <div v-for="item in article" :key="item.id" class="item-container">
         <div class="item-header">
-          <button class="item-button" @click="updateArticle(item.id)">수정</button>
+          <button class="menu-btn" type="button" data-bs-toggle="modal" data-bs-target="#chatModal"
+                  style="height: 50px; width: 50px;">수정
+          </button>
           <button class="item-button" @click="deleteArticle(item.id)">삭제</button>
         </div>
         <p>{{ item.content }}</p>
@@ -34,16 +44,18 @@
       </div>
     </div>
 
-      <div class="item-header">
-        <button class="item-button">저장</button>
+    <div v-if="selectedArticleId?.valueOf() !== -1" class="modal">
+      <div class="modal-content">
+        <h2>게시물 수정</h2>
+        <button>수정 확인</button>
+        <button @click="selectedArticleId = -1">취소</button>
       </div>
-      <input type="file" id="image-upload" multiple>
-      <input v-model="homeCreateRequest.content" placeholder="입력해주세요">
-
+    </div>
 
   </main>
+
   <div class="fixed-button">
-    <img src="/public/image/articlePlus.png" @click="insertArticle" />
+    <img src="/image/articlePlus.png" @click="IsInputArticle" />
   </div>
 
 
@@ -54,10 +66,12 @@ import { ref,onMounted } from 'vue';
 import axios from 'axios';
 import { useUserStore } from '@/stores/user';
 const store = useUserStore();
+let showInputArticle= ref(false);
 
 import StarMenu from '@/components/StarMenu/StarMenu.vue';
 
 import type { StarProfile, HomeArticle } from '@/common/types/index'
+import starHomeUpdate from '@/components/StarHomeUpdate.vue';
 
 const props = defineProps(['id']);
 const starId = ref(props.id);
@@ -67,6 +81,8 @@ const starProfile= ref<StarProfile>();
 const article= ref<HomeArticle[]>([]);
 
 let files= ref<File[]>([]);
+
+const selectedArticleId = ref<number>(-1);
 
 const getstarProfile = async () => {
   const response = await axios.get(`${store.API_URL}/home/profile/${starId.value}`);
@@ -113,6 +129,7 @@ const insertArticle = async () => {
     }
   }).then(response => {
     getArticle();
+    showInputArticle.value= false;
     console.log(response.data);
   }).catch(error => {
     console.error(error);
@@ -156,6 +173,10 @@ const deleteArticle = async (homeid: number) => {
     console.error(error);
   });
 
+}
+
+const IsInputArticle= ()=> {
+  showInputArticle.value= true;
 }
 
 
