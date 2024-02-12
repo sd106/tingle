@@ -11,6 +11,8 @@ import com.example.tingle.user.entity.UserEntity;
 import com.example.tingle.star.repository.StarRepository;
 import com.example.tingle.user.repository.UserRepository;
 import com.example.tingle.user.service.impl.UserServiceImpl;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +44,6 @@ public class OrderServiceImpl implements OrderService {
         this.userService = userService;
         this.productService = productService;
     }
-
 
     @Override
     public boolean processOrder(Long productId, Long fanId, String starName) {
@@ -105,7 +106,8 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto convertToDto(OrderEntity order) {
         OrderDto dto = new OrderDto();
 
-        dto.setFanId((long) order.getFan().getId());
+        dto.setOrderId(order.getOrderId());
+        dto.setFanId(order.getFan().getId());
         dto.setFan(userService.mapToDTO(order.getFan()));
         dto.setGoods(productService.mapToDTO(order.getGoods()));
         return dto;

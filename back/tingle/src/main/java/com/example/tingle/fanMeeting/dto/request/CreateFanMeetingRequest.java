@@ -16,6 +16,5 @@ public class CreateFanMeetingRequest {
     private Integer price;
     private Integer capacity;
     private List<FanMeetingType> availableFanMeetingTypes;
-    private String fanName;
     private String starName;
 }

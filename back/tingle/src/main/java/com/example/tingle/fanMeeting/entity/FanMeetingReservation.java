@@ -22,12 +22,12 @@ public class FanMeetingReservation {
 
     private LocalDateTime orderAt;
 
-    @OneToOne
+    @ManyToOne
     private UserEntity user;
 
-    @OneToOne
+    @ManyToOne
     private StarEntity star;
 
-    @OneToOne
+    @ManyToOne
     private FanMeeting fanMeeting;
 }
