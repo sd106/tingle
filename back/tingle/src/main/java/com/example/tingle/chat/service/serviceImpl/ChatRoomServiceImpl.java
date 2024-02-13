@@ -2,8 +2,10 @@ package com.example.tingle.chat.service.serviceImpl;
 
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.tingle.chat.dto.ChatEnterDto;
+import com.example.tingle.chat.dto.ChatMessageDto;
 import com.example.tingle.chat.dto.ChatRoomDto;
 import com.example.tingle.chat.entity.ChatEnterEntity;
+import com.example.tingle.chat.entity.ChatMessageEntity;
 import com.example.tingle.chat.entity.ChatRoomEntity;
 import com.example.tingle.chat.repository.ChatEnterRepository;
 import com.example.tingle.chat.repository.ChatMessageRepository;
@@ -18,6 +20,7 @@ import com.example.tingle.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,10 +55,27 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         List<ChatRoomDto> chatRoomDtos = new ArrayList<>();
 
         for(ChatEnterEntity entity : chatEnterEntities) {
+
+            List<ChatMessageDto> chatMessageDtos = new ArrayList<>();
+            ChatMessageEntity chatMessage = chatMessageRepository.findTheMessageByChatRoom(entity.getChatRoom().getId());
+
+            if (chatMessage != null) {
+                ChatMessageDto chatMessageDto = ChatMessageDto.builder()
+                        .id(chatMessage.getId())
+                        .userId(chatMessage.getUser().getId())
+                        .message(chatMessage.getMessage())
+                        .direction(chatMessage.getDirection())
+                        .createdDate(chatMessage.getCreatedDate())
+                        .roomId(chatMessage.getChatRoom().getId())
+                        .build();
+
+                chatMessageDtos.add(chatMessageDto);
+            }
+
             ChatRoomDto chatRoomDto = ChatRoomDto.builder()
                     .id(entity.getChatRoom().getId())
                     .starId(entity.getChatRoom().getStar().getId())
-                    .chatMessageList(entity.getChatRoom().getChatMessageList())
+                    .chatMessage(chatMessageDtos)
                     .build();
 
             chatRoomDtos.add(chatRoomDto);
@@ -73,10 +93,26 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         ChatRoomEntity chatroom = chatRoomRepository.findTheRoomByStarId(star.getId());
                 //.orElseThrow(() -> new NotFoundException("Could not found star id : " + starId));\
 
+        List<ChatMessageDto> chatMessageDtos = new ArrayList<>();
+        ChatMessageEntity chatMessage = chatMessageRepository.findTheMessageByChatRoom(chatroom.getId());
+
+        if (chatMessage != null) {
+            ChatMessageDto chatMessageDto = ChatMessageDto.builder()
+                    .id(chatMessage.getId())
+                    .userId(chatMessage.getUser().getId())
+                    .message(chatMessage.getMessage())
+                    .direction(chatMessage.getDirection())
+                    .createdDate(chatMessage.getCreatedDate())
+                    .roomId(chatMessage.getChatRoom().getId())
+                    .build();
+
+            chatMessageDtos.add(chatMessageDto);
+        }
+
         ChatRoomDto chatRoomDto = ChatRoomDto.builder()
                 .id(chatroom.getId())
-                .starId(chatroom.getId())
-                .chatMessageList(chatroom.getChatMessageList())
+                .starId(chatroom.getStar().getId())
+                .chatMessage(chatMessageDtos)
                 .build();
 
         return chatRoomDto;
@@ -123,12 +159,17 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Could not found user id : " + userId));
 
+        // 채탕방 상태 확인
+        ChatRoomEntity chatRoom = chatRoomRepository.findTheRoomByStarId (star.getId());
+        //.orElseThrow(() -> new NotFoundException("Could not found IDs"));
+
         // 팔로우 상태 확인
         FollowEntity follow = followRepository.findByUserEntityIdAndStarEntityId(user.getId(), star.getId());
                 //.orElseThrow(() -> new NotFoundException("Could not found IDs"));
 
-        // 채팅 추가
+        // 스타 추가
         ChatEnterEntity chatEnterEntity = ChatEnterEntity.builder()
+                .chatRoom(chatRoom)
                 .follow(follow)
                 .build();
 

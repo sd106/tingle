@@ -2,6 +2,7 @@ package com.example.tingle.chat.service.serviceImpl;
 
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.tingle.chat.dto.ChatMessageDto;
+import com.example.tingle.chat.dto.request.ChatMessageRequest;
 import com.example.tingle.chat.entity.ChatMessageEntity;
 import com.example.tingle.chat.entity.ChatRoomEntity;
 import com.example.tingle.chat.repository.ChatMessageRepository;
@@ -34,22 +35,22 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 
     @Override
     public List<ChatMessageDto> findMessagesByStarId(Long starId) {
-        StarEntity star = starRepository.findById(starId)
-                .orElseThrow(() -> new NotFoundException("Could not found star id : " + starId));
+        ChatRoomEntity chatRoom = chatRoomRepository.findTheRoomByStarId(starId);
+        //.orElseThrow(() -> new NotFoundException("Could not found user id : " + chatMessageDto.getUserId()));
 
-        List<ChatMessageEntity> chatMessageEntities = chatMessageRepository.findMessagesByChatRoom(star.getId());
+        List<ChatMessageEntity> chatMessageEntities = chatMessageRepository.findMessagesByChatRoom(chatRoom.getId());
 
         List<ChatMessageDto> chatMessageDtos = new ArrayList<>();
 
         for(ChatMessageEntity entity : chatMessageEntities) {
-            ChatMessageDto chatMessageDto = new ChatMessageDto();
-
-            chatMessageDto.setId(entity.getId());
-            chatMessageDto.setMessage(entity.getMessage());
-            chatMessageDto.setCreatedDate(entity.getCreatedDate());
-            chatMessageDto.setDirection(entity.getDirection());
-            chatMessageDto.setUserId(entity.getUser().getId());
-            chatMessageDto.setRoomId(entity.getChatRoom().getId());
+            ChatMessageDto chatMessageDto = ChatMessageDto.builder()
+                    .id(entity.getId())
+                    .roomId(entity.getChatRoom().getId())
+                    .createdDate(entity.getCreatedDate())
+                    .userId(entity.getUser().getId())
+                    .message(entity.getMessage())
+                    .direction(entity.getDirection())
+                    .build();
 
             chatMessageDtos.add(chatMessageDto);
         }
@@ -58,18 +59,17 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     }
 
     @Override
-    public void saveMessages(ChatMessageDto chatMessageDto) {
-        UserEntity user = userRepository.findById(chatMessageDto.getUserId())
-                .orElseThrow(() -> new NotFoundException("Could not found user id : " + chatMessageDto.getUserId()));
+    public void saveMessages(ChatMessageRequest chatMessageRequest) {
+        UserEntity user = userRepository.findById(chatMessageRequest.getUserId())
+                .orElseThrow(() -> new NotFoundException("Could not found user id : " + chatMessageRequest.getUserId()));
 
-        ChatRoomEntity chatRoomEntity = chatRoomRepository.findTheRoomByStarId(chatMessageDto.getRoomId());
+        ChatRoomEntity chatRoom = chatRoomRepository.findTheRoomByRoomId(chatMessageRequest.getRoomId());
                 //.orElseThrow(() -> new NotFoundException("Could not found user id : " + chatMessageDto.getUserId()));
 
         ChatMessageEntity chatMessageEntity = ChatMessageEntity.builder()
-                .id(chatMessageDto.getId())
-                .message(chatMessageDto.getMessage())
-                .chatRoom(chatRoomEntity)
-                .direction(chatMessageDto.getDirection())
+                .message(chatMessageRequest.getMessage())
+                .chatRoom(chatRoom)
+                .direction(chatMessageRequest.getDirection())
                 .user(user)
                 .build();
 
@@ -81,6 +81,9 @@ public class ChatMessageServiceImpl implements ChatMessageService {
         StarEntity star = starRepository.findById(starId)
                 .orElseThrow(() -> new NotFoundException("Could not found star id : " + starId));
 
-        chatMessageRepository.deleteMessagesByChatRoom(star.getId());
+        ChatRoomEntity chatRoom = chatRoomRepository.findTheRoomByStarId(star.getId());
+        //.orElseThrow(() -> new NotFoundException("Could not found user id : " + chatMessageDto.getUserId()));
+
+        chatMessageRepository.deleteMessagesByChatRoom(chatRoom.getId());
     }
 }

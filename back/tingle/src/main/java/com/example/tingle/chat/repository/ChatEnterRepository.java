@@ -12,11 +12,11 @@ import java.util.List;
 public interface ChatEnterRepository extends JpaRepository<ChatEnterEntity, Long> {
 
     /*** 팬 ***/
-    // 구독 상태 & 추가한 스타 채팅 방 리스트를 반환
+    // 구독 상태 & 추가한 스타 채팅방 리스트를 반환
     @Query("SELECT ce FROM ChatEnterEntity ce WHERE ce.follow.userEntity.id = :userId")
     List<ChatEnterEntity> findEntersByUserId(Long userId);
 
-    // 구독 상태 & 추가한 스타 채팅 방을 반환
+    // 구독 상태 & 추가한 스타 채팅방을 반환
     @Query("SELECT ce FROM ChatEnterEntity ce WHERE ce.follow.userEntity.id = :userId AND ce.follow.starEntity.id = :starId")
     ChatEnterEntity findEntersByIds(Long userId, Long starId);
 

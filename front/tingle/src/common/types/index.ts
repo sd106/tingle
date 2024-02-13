@@ -201,7 +201,6 @@ interface selectedSnapshotType {
     isLiked: boolean; // 사용자의 좋아요 상태
 }
 
-
 interface CommentType {
     id: number;
     context: string;
@@ -244,7 +243,6 @@ interface ChatMessageInfo {
     createDate: Date;
     roomId: number;
 }
-
 
 export type {
     SignUp, FanState, StarState,

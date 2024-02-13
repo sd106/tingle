@@ -47,6 +47,10 @@ import TestStoreViewOrderVue from '@/views/StarMenu/TestStoreViewOrder.vue'
 import StoreStarOrderView from '@/views/Star/Store/StoreStarOrderView.vue'
 import ProfileUserOrdersDetailView from '@/views/User/ProfileUserOrdersDetailView.vue'
 
+import ChatModalVue from '@/components/StarMenu/Chat/ChatModal.vue'
+import ChatMainVue from '@/components/StarMenu/Chat/ChatMain.vue'
+import ChatRoomVue from '@/components/StarMenu/Chat/ChatRoom.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -244,7 +248,27 @@ const router = createRouter({
           path: '/selectLoginType',
           name: 'SelectLoginTypeView',
           component: () => import('@/views/User/SelectLoginTypeView.vue')
-        }
+        },
+
+        // 채팅
+        {
+          path: '/chat/:userid/chatmodal',
+          name: 'ChatModalVue',
+          component: ChatModalVue,
+          props: true
+        },
+        {
+          path: '/chat/:userid/chatroom',
+          name: 'ChatRoomVue',
+          component: ChatRoomVue,
+          props: true
+        },
+        {
+          path: '/chat/:userid/chatmain',
+          name: 'ChatMainVue',
+          component: ChatMainVue,
+          props: true
+        },
       ]
     },
 

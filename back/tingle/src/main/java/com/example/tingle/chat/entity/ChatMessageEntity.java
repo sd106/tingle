@@ -36,4 +36,10 @@ public class ChatMessageEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private ChatRoomEntity chatRoom; // 방 아이디
+
+    @PrePersist
+    public void setTime() {
+        this.createdDate = LocalDateTime.now();
+    }
+
 }

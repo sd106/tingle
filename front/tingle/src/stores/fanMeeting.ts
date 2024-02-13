@@ -6,7 +6,7 @@ import axios from 'axios'
 export const useFanMeetingStore = defineStore('fanMeeting', () => {
   const router = useRouter()
 
-  const API_URL = 'http://i10d106.p.ssafy.io:8080/'
+  const API_URL = 'http://localhost:8080/'
 
   const formatDateTime = (dateTimeStr: string) => {
     const options: Intl.DateTimeFormatOptions = {

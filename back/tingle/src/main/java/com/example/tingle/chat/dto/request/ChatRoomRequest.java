@@ -14,5 +14,4 @@ import java.util.List;
 public class ChatRoomRequest {
     private Long id;
     private Long starId;
-    private List<ChatMessageEntity> chatMessageList;
 }

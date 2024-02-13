@@ -13,6 +13,9 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, Long> 
 
     /*** 스타 ***/
     // ChatRoom 조회
-    @Query("SELECT cr FROM ChatRoomEntity cr WHERE cr.star.id = :starId ORDER BY cr.star.id DESC")
+    @Query("SELECT cr FROM ChatRoomEntity cr WHERE cr.id = :roomId")
+    ChatRoomEntity findTheRoomByRoomId(Long roomId);
+
+    @Query("SELECT cr FROM ChatRoomEntity cr WHERE cr.star.id = :starId")
     ChatRoomEntity findTheRoomByStarId(Long starId);
 }
