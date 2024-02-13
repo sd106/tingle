@@ -19,31 +19,43 @@
       <p>sns 주소 {{ starProfile?.username }} </p>
 
     </div>
+
+    <div class="container border" v-show="showInputArticle">
+      <input type="file" id="image-upload" multiple>
+      <input v-model="homeCreateRequest.content" placeholder="입력해주세요">
+      <button @click="insertArticle()">완료</button>
+    </div>
+
+
     <div class="item-wrapper">
       <div v-for="item in article" :key="item.id" class="item-container">
         <div class="item-header">
-          <button class="item-button" @click="updateArticle(item.id)">수정</button>
+          <button class="menu-btn" type="button" data-bs-toggle="modal" data-bs-target="#chatModal"
+            style="height: 50px; width: 50px;">수정
+          </button>
           <button class="item-button" @click="deleteArticle(item.id)">삭제</button>
         </div>
         <p>{{ item.content }}</p>
-        <div v-for="picture in item.HomeArticlePictures" :key="picture.image">
+        <div v-for="picture in item.homePictureDtos" :key="picture.id">
           <img :src="picture.image" alt="사진">
         </div>
         <p>Created At: {{ item.createdAt }}</p>
         <p v-if="item.updatedAt">Updated At: {{ item.updatedAt }}</p>
       </div>
     </div>
-
-    <div class="item-header">
-      <button class="item-button">저장</button>
+    <div v-if="selectedArticleId?.valueOf() !== -1" class="modal">
+      <div class="modal-content">
+        <h2>게시물 수정</h2>
+        <button>수정 확인</button>
+        <button @click="selectedArticleId = -1">취소</button>
+      </div>
     </div>
-    <input type="file" id="image-upload" multiple>
-    <input v-model="homeCreateRequest.content" placeholder="입력해주세요">
-
 
   </main>
+
   <div class="fixed-button">
-    <img src="/image/articlePlus.png" @click="insertArticle" />
+
+    <img src="/image/articlePlus.png" @click="IsInputArticle" />
   </div>
 </template>
 
@@ -52,6 +64,7 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useUserStore } from '@/stores/user';
 const store = useUserStore();
+let showInputArticle = ref(false);
 
 import StarMenu from '@/components/StarMenu/StarMenu.vue';
 
@@ -61,22 +74,22 @@ const starId = store.starState!.id;
 
 const starProfile = ref<StarProfile>();
 
-// let isGood = ref();
-// const buttonText = ref('');
 
 const article = ref<HomeArticle[]>([]);
-
 let files = ref<File[]>([]);
 
+const selectedArticleId = ref<number>(-1);
+
 const getstarProfile = async () => {
-  const response = await axios.get(`${store.API_URL}/home/profile/1`);
+  const response = await axios.get(`${store.API_URL}/home/profile/${starId.value}`);
   starProfile.value = response.data.data;
   console.log(starProfile.value);
 }
 
 const getArticle = async () => {
-  axios.get(`${store.API_URL}/home/1`)
+  axios.get(`${store.API_URL}/home/${starId.value}`)
     .then(response => {
+      console.log(response.data.data);
       article.value = response.data.data;
     })
     .catch(error => {
@@ -112,6 +125,7 @@ const insertArticle = async () => {
     }
   }).then(response => {
     getArticle();
+    showInputArticle.value = false;
     console.log(response.data);
   }).catch(error => {
     console.error(error);
@@ -124,29 +138,30 @@ let homeUpdateRequest = {
   content: "입력해주세요"
 };
 
-const updateArticle = async (homeid: number) => {
-  ////////////////////////////// 오류 제거용
-  console.log(homeid)
-  ///////////////////////////////
+// const updateArticle = async (homeid: number) => {
+//   ////////////////////////////// 오류 제거용
+//   console.log(homeid)
+//   ///////////////////////////////
 
-  let formData = new FormData();
-  formData.append('homeUpdateRequest', JSON.stringify(homeUpdateRequest)); // JSON 문자열로 변환하여 추가
+//   let formData = new FormData();
+//   formData.append('homeUpdateRequest', JSON.stringify(homeUpdateRequest)); // JSON 문자열로 변환하여 추가
 
-  // 파일이 여러 개인 경우, 각각의 파일을 추가
-  for (let i = 0; i < files.value.length; i++) {
-    formData.append('files', files.value[i]);
-  }
+//   // 파일이 여러 개인 경우, 각각의 파일을 추가
+//   for (let i = 0; i < files.value.length; i++) {
+//     formData.append('files', files.value[i]);
+//   }
 
-  axios.post(`${store.API_URL}/home/update`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  }).then(response => {
-    console.log(response.data);
-  }).catch(error => {
-    console.error(error);
-  });
-}
+//   axios.post(`${store.API_URL}/home/update`, formData, {
+//     headers: {
+//       'Content-Type': 'multipart/form-data'
+//     }
+//   }).then(response => {
+//     console.log(response.data);
+//   }).catch(error => {
+//     console.error(error);
+//   });
+// }
+
 
 const deleteArticle = async (homeid: number) => {
 
@@ -158,6 +173,10 @@ const deleteArticle = async (homeid: number) => {
       console.error(error);
     });
 
+}
+
+const IsInputArticle = () => {
+  showInputArticle.value = true;
 }
 
 

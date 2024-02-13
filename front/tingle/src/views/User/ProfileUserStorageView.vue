@@ -1,6 +1,6 @@
 <template>
   <main class="container">
-    <ul class="d-flex justify-content-around nav nav-underline">
+    <ul class="mb-5 d-flex justify-content-around nav nav-underline">
       <li class="nav-item">
         <RouterLink :to="`/profile/userinfo`" class="nav-link router-link-custom"
           :class="{ active: isActive('/userInfo') }">회원 정보</RouterLink>
@@ -20,7 +20,7 @@
     <div class="d-flex flex-wrap">
       <div class="storage-item col-3 mx-2" v-for="storage in userStoreStorages" :key="storage.id">
         <div class="storage-image-container">
-          <img class="storage-image" :src="storage.url" :alt="storage.title">
+          <img class="storage-image" :src="storage.url" :alt="storage.title" />
         </div>
         <div class="storage-info">
           <!-- <p class="fw-bold">{{ storage.title }}</p> -->
@@ -32,12 +32,12 @@
     </div>
   </main>
 </template>
-    
+
 <script setup lang="ts">
-import type { UserStoreStorageResponse } from '@/common/types';
+import type { UserStoreStorageResponse } from '@/common/types'
 import { ref, onMounted } from 'vue'
-import axios from 'axios';
-import { useUserStore } from '@/stores/user';
+import axios from 'axios'
+import { useUserStore } from '@/stores/user'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -175,4 +175,3 @@ const isActive = (path: string) => {
   /* 마우스 오버 시 배경색 변경 */
 }
 </style>
-  

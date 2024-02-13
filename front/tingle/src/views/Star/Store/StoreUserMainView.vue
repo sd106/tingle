@@ -1,9 +1,9 @@
 <template>
   <main class="container">
-    <StarMenu :id="props.id" />
+    <StarMenu :id="props.id" class="mb-5" />
     <div class="container">
       <div class="d-flex justify-content-between my-2">
-        <h1 class="fw-bold">상품 목록</h1>
+        <h1 class="fw-bold"></h1>
       </div>
       <div v-if="altProducts" class="row">
         <div v-for="product in altProducts" :key="product.productId" class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-4">

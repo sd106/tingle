@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router'
 
 export const useFanMeetingStore = defineStore('fanMeeting', () => {
   const API_URL = 'http://localhost:8080'
-
   const router = useRouter()
 
 

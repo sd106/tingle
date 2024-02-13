@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
 public class UserProfileController {
 
     private final UserServiceImpl userService;

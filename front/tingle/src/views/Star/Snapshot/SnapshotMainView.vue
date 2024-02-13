@@ -62,7 +62,6 @@ const loadSnapshots = async (): Promise<void> => {
   }
 }
 
-
 const loadSnapshotsBylikes = async (): Promise<void> => {
   try {
     const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/likes`)

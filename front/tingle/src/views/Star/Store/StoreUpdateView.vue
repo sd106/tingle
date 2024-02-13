@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import TiptapTest from '@/components/StarMenu/Store/TiptabTest.vue'
@@ -150,11 +150,7 @@ const updateProductWithOutFile = async (productInfo: any, previewFiles: string[]
     previewFiles.forEach((previewFile) => {
       formData.append('previewFiles', previewFile)
     })
-
-    const response = await axios.post(
-      'http://localhost:8080/product/update/nofile',
-      formData
-    )
+    const response = await axios.post('http://localhost:8080/product/update/nofile', formData)
     if (response.status === 200) {
       alert('상품이 성공적으로 수정되었습니다.')
       router.go(-1)

@@ -13,7 +13,6 @@
     <section v-else class="pt-5 text-center">
       <FanMeetingClosed></FanMeetingClosed>
     </section>
-
   </main>
 </template>
 
@@ -21,10 +20,10 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import type { FanMeetingInfo } from '@/common/types/index'
-import FanMeetingOpen from '@/components/StarMenu/FanMeeting/FanMeetingOpen.vue';
-import FanMeetingTicketing from '@/components/StarMenu/FanMeeting/FanMeetingTicketing.vue';
-import FanMeetingClosed from '@/components/StarMenu/FanMeeting/FanMeetingClosed.vue';
-import StarMenu from '@/components/StarMenu/StarMenu.vue';
+import FanMeetingOpen from '@/components/StarMenu/FanMeeting/FanMeetingOpen.vue'
+import FanMeetingTicketing from '@/components/StarMenu/FanMeeting/FanMeetingTicketing.vue'
+import FanMeetingClosed from '@/components/StarMenu/FanMeeting/FanMeetingClosed.vue'
+import StarMenu from '@/components/StarMenu/StarMenu.vue'
 
 const props = defineProps(['username', 'starid'])
 const name = ref('')
@@ -32,7 +31,7 @@ name.value = props.username
 
 const fanMeetingInfo = ref<FanMeetingInfo>()
 
-// fanMeetingInfo.value = 
+// fanMeetingInfo.value =
 // {
 //   "id": 1,
 //   "status": "open",
@@ -45,7 +44,6 @@ const fanMeetingInfo = ref<FanMeetingInfo>()
 //   "imgURL": '/image/fan-meeting-img.webp',
 // }
 
-
 const getFanMeetingInfo = async () => {
   try {
     const response = await axios.get(`http://localhost:8080/fanMeeting/info/${props.starid}`)
@@ -54,7 +52,6 @@ const getFanMeetingInfo = async () => {
     console.log(error)
   }
 }
-
 
 onMounted(() => {
   getFanMeetingInfo()

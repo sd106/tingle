@@ -133,10 +133,11 @@ interface HomeArticle {
     createdAt: Date;
     updatedAt: Date;
     content: string;
-    HomeArticlePictures: HomeArticlePicture[];
+    homePictureDtos: homePictureDtos[];
 }
 
-interface HomeArticlePicture {
+interface homePictureDtos {
+    id: number;
     homeId: number;
     image: string;
 }
@@ -301,7 +302,7 @@ export type {
     FanState, StarState,
     User, Star, Starinfo, HotStarInfo, StarByCategory,
     // 홈
-    StarProfile, HomeArticle, HomeArticlePicture,
+    StarProfile, HomeArticle, homePictureDtos,
     // 스토어
     Goods, ImageUrl, OrderResponse,
     // 팬미팅

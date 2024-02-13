@@ -1,6 +1,6 @@
 <template>
   <main class="container">
-    <ul class="d-flex justify-content-around nav nav-underline">
+    <ul class="mb-5 d-flex justify-content-around nav nav-underline">
       <li class="nav-item">
         <RouterLink :to="`/profile/userinfo`" class="nav-link router-link-custom"
           :class="{ active: isActive('/userInfo') }">회원 정보</RouterLink>

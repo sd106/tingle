@@ -67,9 +67,9 @@ const getOrderByUserId = async () => {
 }
 
 function removeHtmlTags(html: string): string {
-  const div = document.createElement('div');
-  div.innerHTML = html;
-  return div.textContent || div.innerText || '';
+  const div = document.createElement('div')
+  div.innerHTML = html
+  return div.textContent || div.innerText || ''
 }
 
 onMounted(() => {
@@ -78,9 +78,9 @@ onMounted(() => {
 
 function truncateText(text: string, maxLength: number): string {
   if (text.length > maxLength) {
-    return text.substring(0, maxLength) + "...";
+    return text.substring(0, maxLength) + '...'
   } else {
-    return text;
+    return text
   }
 }
 
@@ -103,7 +103,6 @@ const expandProduct = (order: OrderResponse2) => {
 }
 </script>
 
-
 <style>
 .centered-content {
   display: flex;
@@ -114,3 +113,4 @@ const expandProduct = (order: OrderResponse2) => {
   /* 세로 축에서 중앙 정렬 */
 }
 </style>
+

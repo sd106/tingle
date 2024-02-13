@@ -54,7 +54,6 @@ const store = useUserStore()
 const router = useRouter()
 
 const logOut = function (): void {
-
   window.location.href = 'http://localhost:8080/logout'
   router.push({ name: 'home' })
   store.starState = null

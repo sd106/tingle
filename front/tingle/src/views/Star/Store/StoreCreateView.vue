@@ -18,7 +18,6 @@
           class="tw-input tw-input-bordered tw-w-full" />
         <input type="number" v-model.number="productcreate.price" placeholder="가격"
           class="tw-input tw-input-bordered tw-w-full" />
-
         <TiptapTest v-model="productcreate.content" />
       </div>
 
@@ -90,15 +89,11 @@ const createProductNoFile = async (productInfo: any) => {
     const formData = new FormData()
     formData.append('productDto', JSON.stringify(productInfo))
 
-    const response = await axios.post(
-      'http://localhost:8080/product/create/nofile',
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+    const response = await axios.post('http://localhost:8080/product/create/nofile', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
       }
-    )
+    })
     if (response.status === 200) {
       alert('상품이 성공적으로 생성되었습니다.')
       router.go(-1)

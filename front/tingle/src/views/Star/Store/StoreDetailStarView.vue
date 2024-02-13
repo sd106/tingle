@@ -1,6 +1,6 @@
 <template>
   <main>
-    <StarMenu :id="starid" />
+    <StarMenu :id="starid" class="mb-5" />
     <div v-if="product" class="d-flex row tw-space-x-4 tw-mt-2">
       <div class="col-6">
         <div class="tw-carousel tw-w-full">

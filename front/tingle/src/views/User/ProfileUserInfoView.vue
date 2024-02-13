@@ -17,13 +17,13 @@
       <li></li>
       <li></li>
     </ul>
-
     <div class="container" style="display: flex; justify-content: center; align-items: center; height: 85vh">
       <div style="width: 500px; height: 650px; position: relative" v-if="fanState!.picture"
         class="p-4 d-flex flex-column justify-content-center align-items-center border">
         <img class="mb-5 mx-0 profile-pic" :src="fanState!.picture" alt=""
           style="max-height: 80%; object-fit: contain; width: auto" />
         <div style="
+
             position: absolute;
             bottom: 20px;
             left: 0;
@@ -47,6 +47,7 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
 import axios from 'axios'
+import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -56,6 +57,12 @@ const fanId = fanState!.id
 const isActive = (path: string) => {
   return route.path.includes(path)
 }
+
+onMounted(() => {
+  if (!fanState?.picture) {
+    fanState!.picture = '/image/basic-profile.png'
+  }
+})
 
 const uploadImage = async () => {
   try {
@@ -68,19 +75,16 @@ const uploadImage = async () => {
     formData.append('fanId', String(fanId))
 
     // Axios 요청 보내기
-    const response = await axios.post(
-      'http://localhost:8080/user/profilePicture',
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+    const response = await axios.post('http://localhost:8080/user/profilePicture', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
       }
-    )
+    })
     if (response.data.resultCode === 'SUCCESS') {
       alert('프로필 사진이 업데이트 되었습니다.')
       fanState!.picture = response.data.data
     } else {
+      console.log(formData)
       alert('프로필 사진 업데이트에 실패했습니다.')
     }
   } catch (error) {
@@ -103,14 +107,14 @@ const selectFile2 = () => {
 
 const deleteImage = async (fanId: number) => {
   try {
-    const response = await axios.post(
-      `http://localhost:8080/user/profilePicture/delete/${fanId}`
-    )
+    const response = await axios.post(`http://localhost:8080/user/profilePicture/delete/${fanId}`)
     fanState!.picture = response.data.data
     if (response.data.resultCode === 'SUCCESS') {
       alert('프로필 사진이 삭제 되었습니다.')
       fanState!.picture = response.data.data
+      console.log(fanState)
     } else {
+      console.log(fanState)
       alert('프로필 사진 삭제에 실패했습니다.')
     }
   } catch (error) {
