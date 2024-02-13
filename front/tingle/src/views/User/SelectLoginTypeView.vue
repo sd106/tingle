@@ -77,7 +77,7 @@ const selectLoginType = async (type: string) => {
       store.starState = { id, username, picture }
       store.isStar = true
       await expandAndRefresh('star')
-      router.push('/')
+      router.push('/forstar/home/manage')
     }
 
   } catch (error) {

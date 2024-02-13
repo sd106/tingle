@@ -7,6 +7,7 @@
         aria-controls="offcanvasNavbar" aria-label="Toggle navigation"
         @click="store.isSidebarOpen = !store.isSidebarOpen">
         <img src="/image/ham.png" alt="" />
+        <h1 class="fw-bold">TINGLE</h1>
       </button>
       <RouterLink to="/">
         <img class="" src="/image/nav_logo.webp" alt="" style="height: 50px" />
