@@ -24,7 +24,7 @@
     <div class="item-wrapper">
       <div v-for="item in article" :key="item.id" class="item-container">
         <p>{{ item.content }}</p>
-        <div v-for="picture in item.HomeArticlePictures" :key="picture.image">
+        <div v-for="picture in item.homePictureDtos" :key="picture.image">
           <img :src="picture.image" alt="사진">
         </div>
         <p>Created At: {{ item.createdAt }}</p>

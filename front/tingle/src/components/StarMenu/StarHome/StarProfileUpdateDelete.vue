@@ -1,8 +1,11 @@
 <template>
     <main>
         <div>
-          <button @click="updateImage" class="tw-btn m-2">수정</button>
-          <button @click="deleteImage" class="tw-btn m-2">삭제</button>
+          <RouterLink :to="`/forstar/home/profile/update`">
+            <button class="tw-btn m-2">수정</button>
+          </RouterLink>
+
+<!--          <button @click="deleteImage" class="tw-btn m-2">삭제</button>-->
         </div>
     </main>
 </template>
@@ -11,7 +14,7 @@
 import { useUserStore } from '@/stores/user'
 import axios from 'axios'
 import { onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 
 const router = useRouter()
 const { starState } = useUserStore()
@@ -23,6 +26,26 @@ onMounted(() => {
     starState!.picture = '/image/basic-profile.png'
   }
 })
+
+
+const updateProfile= () =>{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
 
 const updateImage = async () => {
   try {

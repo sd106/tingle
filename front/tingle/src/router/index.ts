@@ -6,6 +6,7 @@ import LayoutOnlyHeader from '@/views/Layout/LayoutOnlyHeader.vue'
 import LayoutOffView from '@/views/Layout/LayoutOffView.vue'
 
 import HomeView from '@/views/HomeView.vue'
+import StarProfileUpdateView from '@/views/Star/StarHome/StarProfileUpdateView.vue'
 
 import SignUpView from '@/views/User/SignUpView.vue'
 
@@ -116,6 +117,12 @@ const router = createRouter({
           path: '/forstar/wish',
           name: 'wishmanage',
           component: WishManageView,
+          props: (route) => ({ id: route.params.starid })
+        },
+        { //스타 프로필 수정기능
+          path: '/forstar/home/profile/update',
+          name: 'starhomeprofileupdate',
+          component: StarProfileUpdateView,
           props: (route) => ({ id: route.params.starid })
         },
         {
