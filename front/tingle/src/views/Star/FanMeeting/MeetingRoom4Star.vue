@@ -30,7 +30,7 @@
             </section>
         </div>
         <div>
-            <FanMeetingBoard/>
+            <FanMeetingBoard @finish-fan="finishFan" @finish-meeting="finishMeeting"/>
         </div>
     </div>
 </template>
@@ -60,6 +60,14 @@ const loadReservation = async () => {
     } catch (error) {
         console.log(error)
     }
+}
+
+const finishFan = () => {
+    console.log("finishFan")
+}
+
+const finishMeeting = () => {
+    console.log("finishMeeting")
 }
 // 주소로 연결할 웹소켓
 let socket: WebSocket | undefined;
@@ -129,6 +137,11 @@ const initializeWebSocket = () => {
             case "Join":
                 console.log('Client is starting to ' + (message.data === "true)" ? 'negotiate' : 'wait for a peer'))
                 handleJoinMessage(message)
+                break;
+
+            case "Accept":
+                console.log('Signal ACCEPT received')
+                handleAcceptMessage(message)
                 break;
 
             default:
@@ -269,6 +282,10 @@ const handleJoinMessage = async (message: SocketMessage) => {
 
 }
 
+const handleAcceptMessage = (message: SocketMessage) => {
+    message.sdp
+    console.log('Signal ACCEPT received')
+}
 
 const handleErrorMessage = (message: SocketMessage) => {
     console.error("에러발생!: ", message)

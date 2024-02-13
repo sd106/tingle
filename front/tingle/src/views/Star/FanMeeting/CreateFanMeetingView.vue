@@ -100,6 +100,11 @@
       <button @click="submit" class="btn btn-primary btn-lg">Submit</button>
     </div>
   </main>
+
+  <button @click="temp1">임시로 팬미팅 만들기 이름: 황찬준이다이 접속</button>
+
+
+
 </template>
 
 
@@ -108,16 +113,16 @@ import { ref, onMounted } from 'vue'
 import VueDatePicker from '@vuepic/vue-datepicker' // https://vuepic.github.io/vue-datepicker/
 import '@vuepic/vue-datepicker/dist/main.css' // https://vue3datepicker.com/
 import axios from 'axios'
-import type { FanMeeting, FanMeetingContent, CreateFanMeetingForm } from '@/common/types/index'
+import type { FanMeetingType, CreateFanMeetingForm } from '@/common/types/index'
 import { useUserStore } from '@/stores/user'
 
 const store = useUserStore()
 const temp1 = async () => {
     try {
-        const { data } = await axios.post('https://i10d106.p.ssafy.io/fanMeetingRoom/create', 
+        const { data } = await axios.post('https://i10d106.p.ssafy.io/api/fanMeetingRoom/create', 
                             {
                                 roomName: '환영환영',
-                                starName: '황찬준이다이',
+                                starName: store.starState?.username,
                                 maxUserCnt: 8,
                             })
         console.log(data)
@@ -144,32 +149,31 @@ let meeting = ref<CreateFanMeetingForm>({
 
 
     
-const toggleContent = (content: FanMeetingContent) => {
-  const indexInMeeting = meeting.value.contents.findIndex((c) => c === content.name)
-  const indexInAllContents = allContents.value.findIndex((c) => c.name === content.name)
+const toggleContent = (content: FanMeetingType) => {
+  const indexInMeeting = meeting.value.availableFanMeetingTypes.findIndex((c) => c.name === content.name)
 
   if (indexInMeeting !== -1) {
-    meeting.value.contents.splice(indexInMeeting, 1)
-  } else if (indexInAllContents !== -1) {
-    meeting.value.contents.push(content.name)
+    meeting.value.availableFanMeetingTypes.splice(indexInMeeting, 1)
+  } else {
+    meeting.value.availableFanMeetingTypes.push(content)
   }
 }
 
-const allContents = ref<FanMeeting[]>([])
+const allContents = ref<FanMeetingType[]>([])
 
-const isSelected = (content: FanMeetingContent) => {
-  return meeting.value.contents.includes(content.name)
+const isSelected = (content: FanMeetingType) => {
+  return meeting.value.availableFanMeetingTypes.includes(content)
 }
 
 const submit = () => {
     // Submit the meeting
-    axios.post('https://i10d106.p.ssafy.io/fanMeeting', meeting.value)
+    axios.post('https://i10d106.p.ssafy.io/api/fanMeeting', meeting.value)
     console.log(meeting.value)
 }
 
 const loadContents = async () => {
     // Load contents from server
-    const { data }  = await axios.get('https://i10d106.p.ssafy.io/fanMeeting/types')
+    const { data }  = await axios.get('https://i10d106.p.ssafy.io/api/fanMeeting/types')
     
     console.log(data)
     allContents.value = data

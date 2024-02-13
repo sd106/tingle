@@ -17,4 +17,6 @@ public class CreateFanMeetingRequest {
     private Integer capacity;
     private List<FanMeetingType> availableFanMeetingTypes;
     private String starName;
+    private String imgURL1;
+    private String imgURL2;
 }

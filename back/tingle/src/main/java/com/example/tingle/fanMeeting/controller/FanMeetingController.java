@@ -8,6 +8,7 @@ import com.example.tingle.fanMeeting.entity.FanMeetingType;
 import com.example.tingle.fanMeeting.service.FanMeetingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,9 +26,9 @@ public class FanMeetingController {
     }
 
     @PostMapping("/")
-    public FanMeeting createFanMeeting(@RequestBody CreateFanMeetingRequest request) {
+    public FanMeeting createFanMeeting(@RequestBody CreateFanMeetingRequest request, @RequestParam MultipartFile file1, @RequestParam MultipartFile file2) {
         System.out.println("makeFanMeeting");
-        return fanMeetingService.createFanMeeting(request);
+        return fanMeetingService.createFanMeeting(request, file1, file2);
     }
 
     @GetMapping("/info/{starId}")

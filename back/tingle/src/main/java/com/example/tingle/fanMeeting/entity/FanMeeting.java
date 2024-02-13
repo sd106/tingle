@@ -24,7 +24,8 @@ public class FanMeeting {
     private String description;
     private Integer capacity;
     private Integer price;
-    private String imgURL;
+    private String imgURL1;
+    private String imgURL2;
     private LocalDateTime ticketingStartAt;
     private LocalDateTime ticketingEndAt;
     private LocalDateTime fanMeetingStartAt;
