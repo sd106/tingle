@@ -218,4 +218,5 @@ const redirectToNaver = () => {
   width: 20px;
   object-fit: contain;
 }
+
 </style>
