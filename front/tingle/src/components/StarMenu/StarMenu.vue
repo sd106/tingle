@@ -46,9 +46,8 @@
   <ul v-else class="d-flex justify-content-around nav nav-underline">
     <li class="nav-item">
       <RouterLink
-        :to="`/forstar/home/manage/`"
+        :to="`/forstar/home/manage`"
         class="nav-link router-link-custom"
-        :class="{ active: isActive('/home') }"
         >Home</RouterLink
       >
     </li>
@@ -57,9 +56,9 @@
         :to="`/forstar/snapshot`"
         class="nav-link router-link-custom"
         :class="{ active: isActive('/snapshot') }"
-        >Snapshot</RouterLink
-      >
+        >Snapshot</RouterLink>
     </li>
+    
     <li class="nav-item">
       <RouterLink
         :to="`/forstar/wish/manage/`"

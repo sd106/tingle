@@ -33,7 +33,9 @@ interface StarProfile {
     banner?: string;
     profileImage?: string;
     username: string;
+    category: number;
     snsUrl?: string;
+
 }
 
 interface FanMeetingType {
@@ -297,6 +299,7 @@ interface CommentType {
     username: string;
     snapshotId: number;
     isStar: boolean;
+    createdAt: string;
 };
 
 export type {

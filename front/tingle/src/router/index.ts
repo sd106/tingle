@@ -102,18 +102,18 @@ const router = createRouter({
         ////////////////////////스타 메뉴
         ///////////// 스타 전용
         {
-          path: '/forstar/home/manage/',
+          path: '/forstar/home/manage',
           name: 'starhomemanage',
           component: StarHomeManageView,
-          props: (route) => ({ id: route.params.starid })
         },
         {
           path: '/forstar/snapshot',
-          name: 'snapshot',
+          name: 'starSnapshot',
           component: SnapshotMain4StarView
         },
+        
         {
-          path: '/forstar/wish/manage/',
+          path: '/forstar/wish',
           name: 'wishmanage',
           component: WishManageView,
           props: (route) => ({ id: route.params.starid })
@@ -163,6 +163,7 @@ const router = createRouter({
           name: 'CreateMeetingView',
           component: CreateFanMeetingView
         },
+        //////////////////////////////////////////// 스타 메뉴 끝
 
         // 홈
         {

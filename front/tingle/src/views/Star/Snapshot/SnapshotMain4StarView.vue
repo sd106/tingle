@@ -1,5 +1,5 @@
 <template>
-  <StarMenu />
+  <StarMenu :id="id" />
   <div class="main-layout pt-5">
     <!-- 상단 메뉴 -->
     <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
@@ -14,9 +14,7 @@
         🔥 좋아요순
       </button>
     </div>
-    <div>
-      <RouterLink :to="`/${id}/snapshot/create`" class="btn btn-secondary">글쓰기</RouterLink>
-    </div>
+  
   </div>
 
   <div class="main-layout">
@@ -89,7 +87,8 @@ import SnapShotDetail from '../../../components/StarMenu/SnapShot/SnapShotDetail
 
 const store = useUserStore()
 const wishStore = useSnapshotStore()
-const id = store.starState!.id
+
+const id = ref(store.starState!.id);
 
 const snapshots = ref<SnapshotType[]>([])
 const display = ref<Starinfo[]>([])
@@ -97,8 +96,8 @@ const containerRef = ref<HTMLElement | null>(null)
 
 const loadSnapshots = async (): Promise<void> => {
   try {
-    console.log(id)
-    const response = await axios.get(`http://localhost:8080/snapshot/star/${id}/created`)
+    console.log(id.value)
+    const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/created`)
     snapshots.value = response.data.AllSnapShot
     console.log('최신순')
   } catch (error) {
@@ -108,7 +107,7 @@ const loadSnapshots = async (): Promise<void> => {
 
 const loadSnapshotsBylikes = async (): Promise<void> => {
   try {
-    const response = await axios.get(`http://localhost:8080/snapshot/star/${id}/likes`)
+    const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/likes`)
     snapshots.value = response.data.AllSnapShot
     console.log('좋아요순')
   } catch (error) {

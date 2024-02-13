@@ -1,25 +1,26 @@
 <template>
   <main class="container">
     <StarMenu :id="starId" />
-    <div class="container border">
-
       <img :src="starProfile?.banner" alt="사진">
-    </div>
-    <div class="container border">
-      <!-- 프로필 사진 > 누르면 확대-->
-      <div>
-        <img :src="starProfile?.profileImage" alt="사진">
-        <StarProfileUpdateDeleteVue/>
-        <div style="display: inline-block;">
-          <!-- 닉네임 -->
-          <p>닉네임 {{ starProfile?.snsUrl }}</p>
-          <!-- sns주소 링크 -->
+
+    <div class="container border d-flex">
+      <div class>
+        <img :src="starProfile?.profileImage" alt="사진" class="w-75 h-75">
+        <!-- sns주소 링크 -->
+        <span>SNS주소 {{ starProfile?.snsUrl }}</span>
+      </div>
+      <div class="d-flex justify-content-between w-100">
+        <div class="d-flex inline-block m-lg-2 align-items-center">
+          <span>닉네임 {{ starProfile?.username }}</span>
+          <span>카테고리 {{ starProfile?.category }}</span>
+        </div>
+        <div class>
+          <StarProfileUpdateDeleteVue/>
         </div>
       </div>
 
-      <p>sns 주소 {{ starProfile?.username }} </p>
-
     </div>
+
 
     <div class="container border" v-show="showInputArticle">
       <input type="file" id="image-upload" multiple>
