@@ -26,6 +26,8 @@
 // import type { Fan } from '@/common/types/index.ts';
 // const fans = ref<Fan[]>([])
 
+const emit = defineEmits(['finish'])
+
 const finishFan = async () => {
     
 }

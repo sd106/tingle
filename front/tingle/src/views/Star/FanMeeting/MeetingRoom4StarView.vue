@@ -5,7 +5,6 @@
                 <NormalMeeting 
                 :localVideo="localVideo"
                 :remoteVideo="remoteVideo"
-                :starName="starName"
                 :localStream="localStream"
                 />
             </section>
@@ -13,7 +12,6 @@
                 <LifeFourCutMeeting 
                 :localVideo="localVideo"
                 :remoteVideo="remoteVideo"
-                :starName="starName"
                 :localStream="localStream"
                 />
             </section>
@@ -21,7 +19,6 @@
                 <BirthdayMeeting 
                 :localVideo="localVideo"
                 :remoteVideo="remoteVideo"
-                :starName="starName"
                 :localStream="localStream"
                 />
             </section>
@@ -38,7 +35,6 @@
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useUserStore } from '@/stores/user'
-import { useRoute } from 'vue-router'
 import axios from 'axios'
 import type { SocketMessage, FanMeetingReservation } from '@/common/types/index'
 import NormalMeeting from '@/views/Star/FanMeeting/NormalMeeting.vue'
@@ -46,10 +42,8 @@ import LifeFourCutMeeting from '@/views/Star/FanMeeting/LifeFourCutMeeting.vue'
 import BirthdayMeeting from '@/views/Star/FanMeeting/BirthdayMeeting.vue'
 import FanMeetingBoard from '@/components/StarMenu/FanMeeting/FanMeetingBoard.vue'
 
-const route = useRoute()
-
-const starName = ref(route.params.starid.toString())
 const store = useUserStore()
+const starName = store.starState?.username
 
 const fanMeetingReservation = ref<FanMeetingReservation>()
 
@@ -154,9 +148,10 @@ const initializeWebSocket = () => {
     socket.onopen = () => {
         console.log('소켓 열렸는디요')
         sendToServer({
-            sender: localUserName.value,
+            sender: starName,
             signalType: 'Join',
-            data: starName.value,
+            roomType: 'Meeting',
+            data: starName,
         })
     }
 

@@ -19,15 +19,16 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import { useUserStore } from '@/stores/user'
 import type { FanMeetingInfo } from '@/common/types/index'
 import FanMeetingOpen from '@/components/StarMenu/FanMeeting/FanMeetingOpen.vue'
 import FanMeetingTicketing from '@/components/StarMenu/FanMeeting/FanMeetingTicketing.vue'
 import FanMeetingClosed from '@/components/StarMenu/FanMeeting/FanMeetingClosed.vue'
 import StarMenu from '@/components/StarMenu/StarMenu.vue'
 
-const props = defineProps(['username', 'starid'])
-const name = ref('')
-name.value = props.username
+const store = useUserStore()
+const props = defineProps(['starid'])
+const name = ref(store.fanState?.username)
 
 const fanMeetingInfo = ref<FanMeetingInfo>()
 

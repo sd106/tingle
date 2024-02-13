@@ -26,9 +26,9 @@ public class FanMeetingController {
     }
 
     @PostMapping("/")
-    public FanMeeting createFanMeeting(@RequestBody CreateFanMeetingRequest request, @RequestParam MultipartFile file1, @RequestParam MultipartFile file2) {
+    public FanMeeting createFanMeeting(@RequestParam String requestJson, @RequestParam(required = false) MultipartFile file1, @RequestParam(required = false) MultipartFile file2) {
         System.out.println("makeFanMeeting");
-        return fanMeetingService.createFanMeeting(request, file1, file2);
+        return fanMeetingService.createFanMeeting(requestJson, file1, file2);
     }
 
     @GetMapping("/info/{starId}")
