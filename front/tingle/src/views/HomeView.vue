@@ -18,7 +18,7 @@
       <div class="justify-content-between slider-track" ref="sliderTrack">
         <div v-for="hotstar in hotStarsInfo" :key="hotstar.id" class="p-2 star-card" style="width: 18%;">
           <RouterLink class="router-link-custom"
-            :to="hotstar.id === 1 ? `/${hotstar.id}/home/manage` : `/${hotstar.id}/home`">
+            :to="`/${hotstar.id}/home`">
             <div class="hotstar-image">
               <img :src="hotstar.picture" alt="not" class="hotpic">
             </div>

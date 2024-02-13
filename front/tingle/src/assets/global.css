@@ -19,3 +19,7 @@ body {
   h1 {
     font-family: 'TheJamsil5Bold', sans-serif;
   }
+
+  .no-custom-font {
+    font-family: inherit; /* 또는 'initial' 또는 구체적인 글씨체 */
+  }

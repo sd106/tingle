@@ -297,6 +297,7 @@ interface CommentType {
     username: string;
     snapshotId: number;
     isStar: boolean;
+    createdAt: string;
 };
 
 export type {

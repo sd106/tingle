@@ -143,6 +143,7 @@ public class SnapShotController {
                 commentMap.put("username", comment.getUsername());
                 commentMap.put("snapshotId", comment.getSnapShotEntity().getId());
                 commentMap.put("isStar", comment.getIsStar());
+                commentMap.put("createdAt", comment.getCreatedAt());
                 commentMaps.add(0, commentMap);
             }
             /**
