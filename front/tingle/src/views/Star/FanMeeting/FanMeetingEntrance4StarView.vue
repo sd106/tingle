@@ -13,8 +13,6 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import type { FanMeetingInfo } from '@/common/types/index'
-import CreateFanMeetingViewVue from '@/views/Star/FanMeeting/CreateFanMeetingView.vue'
-import MeetingRoomView4Star from '@/views/Star/FanMeeting/MeetingRoom4StarView.vue'
 
 const props = defineProps(['username', 'starid'])
 

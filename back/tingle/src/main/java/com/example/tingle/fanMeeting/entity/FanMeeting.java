@@ -35,4 +35,8 @@ public class FanMeeting {
 
     @ManyToOne
     private StarEntity star;
+
+    public void finish() {
+        this.isFinished = true;
+    }
 }

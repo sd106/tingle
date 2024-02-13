@@ -53,7 +53,7 @@ const localUserName = ref(store.fanState?.username)
 const roomType = 'Waiting'
 
 // 메시지 관련
-const invited = ref(true)
+const invited = ref(false)
 
 const messages = ref<FanMeetingMessage[]>([])
 const newMessage = ref('')
@@ -81,7 +81,7 @@ const sendToServer = (msg: SocketMessage) => {
 }
 
 const initializeWebSocket = () => {
-  socket = new WebSocket('ws://i10d106.p.ssafy.io/api/signal')
+  socket = new WebSocket('wss://i10d106.p.ssafy.io/api/signal')
 
 
   socket.onmessage = (msg) => {

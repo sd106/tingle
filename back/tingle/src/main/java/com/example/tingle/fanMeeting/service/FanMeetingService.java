@@ -105,4 +105,10 @@ public class FanMeetingService {
         UserEntity fan = userRepository.findById(fanId).orElseThrow(() -> new IllegalArgumentException("해당하는 fan이 없습니다."));
         return fanMeetingReservationRepository.findByUser(fan);
     }
+
+    public void finishFanMeeting(Long starId) {
+        FanMeeting fanMeeting = recentFanMeeting(starId);
+
+        fanMeeting.finish();
+    }
 }

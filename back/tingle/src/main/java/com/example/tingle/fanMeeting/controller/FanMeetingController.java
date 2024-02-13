@@ -42,4 +42,9 @@ public class FanMeetingController {
         return fanMeetingService.getFanMeetingReservation(fanId);
     }
 
+    @PostMapping("/finish/{starId}")
+    public void finishFanMeeting(@PathVariable Long starId) {
+        System.out.println("finishFanMeeting");
+        fanMeetingService.finishFanMeeting(starId);
+    }
 }

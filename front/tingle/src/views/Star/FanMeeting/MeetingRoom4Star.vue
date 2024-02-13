@@ -1,31 +1,38 @@
 <template>
-    <section v-if="fanMeetingReservation?.fanMeetingType == 'normal'">
-        <NormalMeeting 
-        :localVideo="localVideo"
-        :remoteVideo="remoteVideo"
-        :starName="starName"
-        :localStream="localStream"
-        />
-    </section>
-    <section v-else-if="fanMeetingReservation?.fanMeetingType == 'lifefourcut'">
-        <LifeFourCutMeeting 
-        :localVideo="localVideo"
-        :remoteVideo="remoteVideo"
-        :starName="starName"
-        :localStream="localStream"
-        />
-    </section>
-    <section v-else-if="fanMeetingReservation?.fanMeetingType== 'birthday'">
-        <BirthdayMeeting 
-        :localVideo="localVideo"
-        :remoteVideo="remoteVideo"
-        :starName="starName"
-        :localStream="localStream"
-        />
-    </section>
-    <section v-else>
-        <h1>연결중입니다...</h1>
-    </section>
+    <div>
+        <div>
+            <section v-if="fanMeetingReservation?.fanMeetingType == 'normal'">
+                <NormalMeeting 
+                :localVideo="localVideo"
+                :remoteVideo="remoteVideo"
+                :starName="starName"
+                :localStream="localStream"
+                />
+            </section>
+            <section v-else-if="fanMeetingReservation?.fanMeetingType == 'lifefourcut'">
+                <LifeFourCutMeeting 
+                :localVideo="localVideo"
+                :remoteVideo="remoteVideo"
+                :starName="starName"
+                :localStream="localStream"
+                />
+            </section>
+            <section v-else-if="fanMeetingReservation?.fanMeetingType== 'birthday'">
+                <BirthdayMeeting 
+                :localVideo="localVideo"
+                :remoteVideo="remoteVideo"
+                :starName="starName"
+                :localStream="localStream"
+                />
+            </section>
+            <section v-else>
+                <h1>연결중입니다...</h1>
+            </section>
+        </div>
+        <div>
+            <FanMeetingBoard/>
+        </div>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -37,6 +44,7 @@ import type { SocketMessage, FanMeetingReservation } from '@/common/types/index'
 import NormalMeeting from '@/views/Star/FanMeeting/NormalMeeting.vue'
 import LifeFourCutMeeting from '@/views/Star/FanMeeting/LifeFourCutMeeting.vue'
 import BirthdayMeeting from '@/views/Star/FanMeeting/BirthdayMeeting.vue'
+import FanMeetingBoard from '@/components/StarMenu/FanMeeting/FanMeetingBoard.vue'
 
 const route = useRoute()
 
@@ -90,7 +98,7 @@ const sendToServer = (msg: SocketMessage) => {
 // WebSocket
 const initializeWebSocket = () => {
     // 소켓 초기화
-    socket = new WebSocket("ws://i10d106.p.ssafy.io/api/signal")
+    socket = new WebSocket("wss://i10d106.p.ssafy.io/api/signal")
 
     // 소켓이 message를 받을 때 이벤트 함수
     socket.onmessage = (msg) => {
