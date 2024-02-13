@@ -19,7 +19,7 @@
          <div class="content mx-0 mt-2">
           <p class="d-flex justify-content-between">
             <span>{{ props.selectedSnapshot!.username }}</span>
-            <span class="text-body-tertiary">{{ time }}</span>
+            <span class="text-body-tertiary">{{ createdTime }} // {{ time }}</span>
           </p>
           <h3>{{ props.selectedSnapshot!.content }}</h3>
         </div>
@@ -50,7 +50,8 @@
             <div v-else>
               <p class="d-flex justify-content-between align-items-center">
                 <span>
-                  <span class="fw-bold me-3">{{ comment.username }}</span>
+                  <span v-if="comment.isStar" class="fw-bold me-3 text-danger">{{ comment.username }}</span>
+                  <span v-else class="fw-bold me-3">{{ comment.username }}</span>
                   <span class="">{{ comment.context }}</span>
                 </span>
                 <span class="">
@@ -74,7 +75,7 @@
 </template>
   
 <script lang="ts" setup>
-  import { ref, watch } from 'vue';
+  import { ref, watch, computed } from 'vue';
   import { formatDistanceToNow } from 'date-fns';
   import { ko } from 'date-fns/locale';
   import { useUserStore } from '@/stores/user';
@@ -82,6 +83,7 @@
   import axios from 'axios';
   import { useRouter } from 'vue-router';
   import type { selectedSnapshotType, CommentType } from '@/common/types/index'
+import { isConstructorDeclaration } from 'typescript';
 
 
   // const snapshot = ref<SnapshotType | null>(null);
@@ -90,30 +92,67 @@
   
   const store = useUserStore();
   const snapshotStore = useSnapshotStore();
-  const username = store.fanState?.username
+  const username = ref<string>('') 
   
-  const starid = store.starInfo?.starId;
+  watch(
+    () => store.fanState,
+    (newVal, oldVal) => {
+      if (newVal) {
+        username.value = newVal!.username;
+      } else if (store.starState) {
+        username.value = store.starState.username;
+      }
+    },
+    { immediate: true } // 컴포넌트 마운트 시 바로 실행
+  );
+
+  watch(
+    () => store.starState,
+    (newVal, oldVal) => {
+      if (!store.fanState && newVal) {
+        username.value = newVal.username;
+      }
+    },
+    { immediate: true } // 컴포넌트 마운트 시 바로 실행
+  );
+  
+  const starid = ref(store.starInfo?.starId);
   
   const props = defineProps({
     selectedSnapshot: Object as () => selectedSnapshotType
   });
 
   const time = formatDistanceToNowFromLocalDateTime(props.selectedSnapshot!.updatedAt)
+  const createdTime = formatDistanceToNowFromLocalDateTime(props.selectedSnapshot!.createdAt)
   const isLike = ref(props.selectedSnapshot!.isLiked);
+
+  const isStar = ref<boolean>(false)
+
+  watch (
+    () => store.starState,
+    (newVal, oldVal) => {
+      if (newVal?.username === props.selectedSnapshot!.starname) {
+        isStar.value = true
+      }
+    },
+    { immediate: true }
+  )
 
   watch(
     () => props.selectedSnapshot!.isLiked,
     (newVal, oldVal) => {
       // isLike 상태 업데이트
       isLike.value = newVal;
-    }
+    },
+    { immediate: true }
   );
 
   const goToUpdate = (id: number) => {
     if (id && props.selectedSnapshot) {
+      console.log("업데이트로 가자", starid)
       router.push({
         name: 'snapshotupdate',
-        params: { starid: starid, snapshotid: id },
+        params: { starid: starid.value, snapshotid: id },
         query: {
           file: props.selectedSnapshot.imageUrl,
           content: props.selectedSnapshot.content,
@@ -175,6 +214,7 @@
     }
   }
   const dislike = async (id: number, username : string, isStar : boolean) => {
+    console.log("dislike 함수 시작")
     if (id) {
       try {
         // 좋아요 API 호출
@@ -218,10 +258,13 @@
   const postComment = async () => {
     try {
       console.log(props.selectedSnapshot?.snapshotId)
+      console.log(isStar.value)
+      console.log(starid)
       await axios.post(`http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/new`, {
         context: newCommentContent.value,
-        username: username,
-        snapshotId: props.selectedSnapshot?.snapshotId
+        username: username.value,
+        snapshotId: props.selectedSnapshot?.snapshotId,
+        isStar: isStar.value
         // 필요하다면 여기에 더 많은 필드 추가
       });
       newCommentContent.value = ''; // 입력 필드 초기화
@@ -249,8 +292,9 @@
     try {
       const response = await axios.post(`http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${commentId}/update`, {
         context: editingCommentContent.value,
-        username: username,
-        snapshotId: props.selectedSnapshot?.snapshotId
+        username: username.value,
+        snapshotId: props.selectedSnapshot?.snapshotId,
+        isStar: isStar.value
         // 기타 필요한 데이터
       });
       console.log(response.data);

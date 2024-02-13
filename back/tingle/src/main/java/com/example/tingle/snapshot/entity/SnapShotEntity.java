@@ -4,6 +4,8 @@ import com.example.tingle.snapshot.dto.request.SnapShotUpdateRequest;
 import com.example.tingle.snapshot.repository.HashTagRepository;
 import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.user.entity.UserEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +42,7 @@ public class SnapShotEntity {
      */
     @Builder.Default
     @OneToMany(mappedBy = "snapShotEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<SnapShotTag> snapShotTags = new ArrayList<>();
 
     /**
@@ -83,15 +86,18 @@ public class SnapShotEntity {
      * 스타와 팬
      */
     @ManyToOne(targetEntity = UserEntity.class, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private UserEntity user;
 
     @ManyToOne(targetEntity = StarEntity.class, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private StarEntity star;
 
     /**
      * 코멘트
      */
     @OneToMany(mappedBy = "snapShotEntity", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<CommentEntity> comments = new ArrayList<>();
 
 

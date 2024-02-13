@@ -63,21 +63,6 @@
   const display = ref<Starinfo[]>([]);
   const containerRef = ref<HTMLElement | null>(null);
 
-  const username = computed(() => {
-    if (userStore.fanState) {
-      return userStore.fanState.username
-    } else {
-      return userStore.starState!.username
-    }
-  })
-
-  const starLogin = computed(() => {
-    if (userStore.fanState) {
-      return false
-    } else {
-      return true
-    }
-  })
 
   const loadSnapshots = async (): Promise<void> => {
     try {

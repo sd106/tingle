@@ -27,17 +27,31 @@ public class LikeServiceimpl implements LikeService {
     private final StarRepository starRepository;
     private final SnapShotRepository snapShotRepository;
 
-    public boolean findLike(String username, SnapShotEntity snapShot) {
-        UserEntity user = userRepository.findByUsername(username);
+    public boolean findLike(Boolean isStarLogin, String username, SnapShotEntity snapShot) {
+        if (isStarLogin) {
+            StarEntity star = starRepository.findByUsername(username);
 
-        boolean isLike = false;
+            boolean isLike = false;
 
-        Optional<LikeEntity> optlike = likeRepository.findByUserAndSnapShot(user, snapShot);
-        if (optlike.isPresent()) {
-            LikeEntity like = optlike.get();
-            isLike = true;
+            Optional<LikeEntity> optlike = likeRepository.findByStarAndSnapShot(star, snapShot);
+            if (optlike.isPresent()) {
+                LikeEntity like = optlike.get();
+                isLike = true;
+            }
+            return isLike;
+
+        } else {
+            UserEntity user = userRepository.findByUsername(username);
+
+            boolean isLike = false;
+
+            Optional<LikeEntity> optlike = likeRepository.findByUserAndSnapShot(user, snapShot);
+            if (optlike.isPresent()) {
+                LikeEntity like = optlike.get();
+                isLike = true;
+            }
+            return isLike;
         }
-        return isLike;
     };
     @Override
     public void addLike(Boolean isStar, String username, Long snapshotId) {

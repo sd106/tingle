@@ -15,7 +15,9 @@ export const useSnapshotStore = defineStore('snapshot', () => {
     const selectedSnapshot = ref<selectedSnapshotType | null>(null);
 
     const username = ref<string>('');
-    const isStar = ref<boolean>(false);
+
+    const isStarLogin = ref<boolean>(false);
+   
 
     const selectSnapshot = async (id: number) => {
 
@@ -29,12 +31,13 @@ export const useSnapshotStore = defineStore('snapshot', () => {
         } else if (!userStore.fanState) {
           console.log("현재 유저는 스타")
           username.value = userStore.starState!.username
-          
+          isStarLogin.value = true
+          console.log(isStarLogin.value)
         } else {
           console.log("유저가 대체 누구야?")
         }
         console.log(username.value)
-        const response = await axios.post(`${API_URL}/snapshot/${id}`, { username: username }, { withCredentials: true });
+        const response = await axios.post(`${API_URL}/snapshot/${id}`, { username: username.value, isStarLogin: isStarLogin.value }, { withCredentials: true });
         console.log(response.data)
         selectedSnapshot.value = response.data;
         console.log(selectedSnapshot.value?.isLiked)
