@@ -21,20 +21,18 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-
     public UserDto mapToDTO(UserEntity userEntity) {
         if (userEntity == null) {
             return null;
         }
-        UserDto userDto = UserDto.builder()
+
+        return UserDto.builder()
                 .id(userEntity.getId())
                 .username(userEntity.getUsername())
                 .picture(userEntity.getPicture())
                 .provider(userEntity.getProvider())
                 .email(userEntity.getEmail())
                 .build();
-
-        return userDto;
     }
 
     @Override
@@ -45,5 +43,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public void save(UserEntity userEntity) {
+        userRepository.save(userEntity);
     }
 }

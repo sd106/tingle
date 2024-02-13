@@ -61,13 +61,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/stores/user';
 import axios from 'axios';
 
 import ChatModal from '@/components/ChatModal.vue';
-
 const store = useUserStore()
 
 // 사이드바 더보기
@@ -82,12 +81,13 @@ const showBrief = function (): void {
 }
 
 const folloingInfo = ref<{ id: number, picture: string, userName: string }[]>([]);
-const hotStarInfo = ref<{ id: number, picture: string, userName: string }[]>([]);
+// const hotStarInfo= ref<{id: number, picture: string, userName: string}[]>([]);
 
 //구독한 스타 가져오기
 const getFolloings = async () => {
     const response = await axios.get('http://localhost:8080/follow/1');
     folloingInfo.value = response.data.data;
+    console.log(response);
 }
 
 getFolloings();

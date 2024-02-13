@@ -15,8 +15,8 @@
             <button class="btn btn-danger" @click="deleteSnapshot(props.selectedSnapshot!.snapshotId)">스냅샷 삭제</button>
           </span>
         </div>
-         <!-- 본문 내용 -->
-         <div class="content mx-0 mt-2">
+        <!-- 본문 내용 -->
+        <div class="content mx-0 mt-2">
           <p class="d-flex justify-content-between">
             <span>{{ props.selectedSnapshot!.username }}</span>
             <span class="text-body-tertiary">{{ createdTime }} // {{ time }}</span>
@@ -32,7 +32,7 @@
         <!-- 댓글 목록 -->
         <div class="comments-list">
           <p class="mb-2">💬 댓글 {{ props.selectedSnapshot?.comments.length }}</p>
-          
+
           <div v-for="comment in props.selectedSnapshot!.comments" :key="comment.id" class="">
             <!-- 수정 중인 댓글의 UI 변경 -->
             <div v-if="editingCommentId === comment.id">
@@ -55,8 +55,15 @@
                   <span class="">{{ comment.context }}</span>
                 </span>
                 <span class="">
-                  <button class="btn btn-outline-danger btn-sm" @click="deleteComment(comment.id)">삭제</button>
-                  <button class="btn btn-outline-secondary btn-sm mx-2" @click="startEditComment(comment)">수정</button>
+                  <button class="btn btn-outline-danger btn-sm" @click="deleteComment(comment.id)">
+                    삭제
+                  </button>
+                  <button
+                    class="btn btn-outline-secondary btn-sm mx-2"
+                    @click="startEditComment(comment)"
+                  >
+                    수정
+                  </button>
                 </span>
               </p>
             </div>
@@ -65,7 +72,12 @@
         <!-- 댓글 작성 폼 -->
         <form @submit.prevent="postComment" class="me-1 row rounded comment-form rounded-lg bg-body-secondary">
           <div class="col-sm-10">
-            <input class="form-control" type="text" v-model="newCommentContent" placeholder="댓글을 남겨보세요!">
+            <input
+              class="form-control"
+              type="text"
+              v-model="newCommentContent"
+              placeholder="댓글을 남겨보세요!"
+            />
           </div>
           <button type="submit" class="col-sm-2 btn btn-success">작성</button>
         </form>
@@ -73,22 +85,21 @@
     </div>
   </div>
 </template>
-  
+
 <script lang="ts" setup>
-  import { ref, watch, computed } from 'vue';
-  import { formatDistanceToNow } from 'date-fns';
-  import { ko } from 'date-fns/locale';
-  import { useUserStore } from '@/stores/user';
-  import { useSnapshotStore } from '@/stores/snapshot'
-  import axios from 'axios';
-  import { useRouter } from 'vue-router';
-  import type { selectedSnapshotType, CommentType } from '@/common/types/index'
+
+import { ref, watch, computed } from 'vue';
+import { formatDistanceToNow } from 'date-fns';
+import { ko } from 'date-fns/locale';
+import { useUserStore } from '@/stores/user';
+import { useSnapshotStore } from '@/stores/snapshot'
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+import type { selectedSnapshotType, CommentType } from '@/common/types/index'
 import { isConstructorDeclaration } from 'typescript';
 
-
-  // const snapshot = ref<SnapshotType | null>(null);
-  const router = useRouter();
-
+// const snapshot = ref<SnapshotType | null>(null);
+const router = useRouter()
   
   const store = useUserStore();
   const snapshotStore = useSnapshotStore();
@@ -116,12 +127,13 @@ import { isConstructorDeclaration } from 'typescript';
     { immediate: true } // 컴포넌트 마운트 시 바로 실행
   );
   
-  const starid = ref(store.starInfo?.starId);
   
   const props = defineProps({
-    selectedSnapshot: Object as () => selectedSnapshotType
+    selectedSnapshot: Object as () => selectedSnapshotType,
+    starid: String
   });
-
+  
+  const starid = Number(props.starid);
   const time = formatDistanceToNowFromLocalDateTime(props.selectedSnapshot!.updatedAt)
   const createdTime = formatDistanceToNowFromLocalDateTime(props.selectedSnapshot!.createdAt)
   const isLike = ref(props.selectedSnapshot!.isLiked);
@@ -149,16 +161,12 @@ import { isConstructorDeclaration } from 'typescript';
 
   const goToUpdate = (id: number) => {
     if (id && props.selectedSnapshot) {
-      console.log("업데이트로 가자", starid)
+      console.log("업데이트로 가자",id, starid)
       router.push({
         name: 'snapshotupdate',
-        params: { starid: starid.value, snapshotid: id },
-        query: {
-          file: props.selectedSnapshot.imageUrl,
-          content: props.selectedSnapshot.content,
-          tags: props.selectedSnapshot.tags
-        }
+        params: { starid: starid.toString(), snapshotid: id.toString() },
       });
+      console.log()
     } else {
       console.error('No snapshot selected or invalid ID');
     }
@@ -275,22 +283,25 @@ import { isConstructorDeclaration } from 'typescript';
     }
   };
 
-  // 댓글 수정 시작
-  const startEditComment = (comment: CommentType) => {
-    editingCommentId.value = comment.id;
-    editingCommentContent.value = comment.context;
-  };
 
-  // 수정 취소
-  const cancelEdit = () => {
-    editingCommentId.value = null;
-    editingCommentContent.value = '';
-  };
+// 댓글 수정 시작
+const startEditComment = (comment: CommentType) => {
+  editingCommentId.value = comment.id
+  editingCommentContent.value = comment.context
+}
 
-  // 수정된 댓글 전송
-  const submitCommentEdit = async (commentId: number) => {
-    try {
-      const response = await axios.post(`http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${commentId}/update`, {
+// 수정 취소
+const cancelEdit = () => {
+  editingCommentId.value = null
+  editingCommentContent.value = ''
+}
+
+// 수정된 댓글 전송
+const submitCommentEdit = async (commentId: number) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${commentId}/update`,
+      {
         context: editingCommentContent.value,
         username: username.value,
         snapshotId: props.selectedSnapshot?.snapshotId,
@@ -321,14 +332,13 @@ import { isConstructorDeclaration } from 'typescript';
   function formatDistanceToNowFromLocalDateTime(isoString: string) {
     // 배열에서 연, 월, 일, 시, 분, 초를 추출합니다.
     // JavaScript의 Date 월은 0부터 시작하므로 월에서 1을 빼줍니다.
-    const date = new Date(isoString);
-    
-    // 현재 시간으로부터의 거리 계산
-    const distance = formatDistanceToNow(date, { addSuffix: true, locale: ko });
-    
-    return distance;
-  }
+    const date = new Date(isoString)
 
+    // 현재 시간으로부터의 거리 계산
+    const distance = formatDistanceToNow(date, { addSuffix: true, locale: ko })
+
+    return distance
+  }
 </script>
 
 <style>
@@ -360,8 +370,6 @@ import { isConstructorDeclaration } from 'typescript';
   padding: 16px; /* 패딩 설정 */
 }
 
-
-
 .content-section {
   flex-basis: 50%; /* 나머지 50% 공간 차지 */
   padding: 1em; /* 내용과 테두리 사이의 여백 */
@@ -381,7 +389,7 @@ import { isConstructorDeclaration } from 'typescript';
   align-items: center; /* 요소들을 세로 중앙 정렬 */
 }
 
-.comment-form input[type="text"] {
+.comment-form input[type='text'] {
   flex-grow: 1; /* 입력 필드가 가능한 모든 공간을 차지하도록 설정 */
   margin-right: 8px; /* 버튼과의 여백 설정 */
 }
@@ -401,7 +409,6 @@ import { isConstructorDeclaration } from 'typescript';
 
 .snapshot-actions {
   padding: 16px;
-  
 }
 
 .snapshot-actions button {
@@ -415,14 +422,14 @@ import { isConstructorDeclaration } from 'typescript';
 }
 
 .download-link {
-    display: block;
-    margin-top: 10px;
-    text-align: center;
-    background: #007bff;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
-    text-decoration: none;
-  }
+  display: block;
+  margin-top: 10px;
+  text-align: center;
+  background: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+}
 </style>
 @/stores/snapshot

@@ -1,17 +1,18 @@
-
 <template>
   <StarMenu :id="id" />
   <div class="main-layout pt-5">
     <!-- 상단 메뉴 -->
     <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
     <section v-if="wishStore.selectedSnapshot" class="detail-section cont mb-5">
-      <SnapShotDetail :selectedSnapshot="wishStore.selectedSnapshot"/>
+      <SnapShotDetail :selectedSnapshot="wishStore.selectedSnapshot" :starid="id"/>
     </section>
   </div>
   <div class="d-flex justify-content-between align-items-center my-4 mx-3">
     <div>
       <button class="btn me-2 fs-5 fw-bold text-secondary" @click="loadSnapshots">✧ 최신순</button>
-      <button class="btn fs-5 fw-bold text-secondary" @click="loadSnapshotsBylikes">🔥 좋아요순</button>
+      <button class="btn fs-5 fw-bold text-secondary" @click="loadSnapshotsBylikes">
+        🔥 좋아요순
+      </button>
     </div>
     <div>
       <RouterLink :to="`/${id}/snapshot/create`" class="btn btn-secondary">글쓰기</RouterLink>
@@ -57,7 +58,6 @@
   const props = defineProps(['id']);
   const id = ref(props.id);
 
-  const userStore = useUserStore()
 
   const snapshots = ref<SnapshotType[]>([]);
   const display = ref<Starinfo[]>([]);
@@ -85,11 +85,11 @@
     }
   };
 
-  const loadMore = function (): void {
-    // 스크롤 관련 로딩 로직
-    const newData = store.allstarinfo.slice(display.value.length, display.value.length + 10);
-    display.value = [...display.value, ...newData];
-  };
+  // const loadMore = function (): void {
+  //   // 스크롤 관련 로딩 로직
+  //   const newData = store.allstarinfo.slice(display.value.length, display.value.length + 10);
+  //   display.value = [...display.value, ...newData];
+  // };
 
 
   const handleScroll = function (): void {
@@ -98,7 +98,7 @@
     if (container) {
       // 스크롤이 하단에 도달했을 때 추가 데이터 로딩
       if (container.scrollTop + container.clientHeight >= container.scrollHeight) {
-        loadMore();
+        // loadMore();
       }
     }
   };
@@ -141,8 +141,8 @@
 }
 
 .image-container img {
-  width: 100%;       /* 이미지 컨테이너의 너비에 맞춥니다 */
-  height: auto;     /* 모든 이미지의 높이를 150px로 설정합니다 */
+  width: 100%; /* 이미지 컨테이너의 너비에 맞춥니다 */
+  height: auto; /* 모든 이미지의 높이를 150px로 설정합니다 */
   object-fit: cover; /* 이미지 비율을 유지하면서 컨테이너를 채웁니다 */
 }
 
@@ -164,7 +164,6 @@
 
 .detail-section {
   width: 100%;
-  
   /* 상세 페이지가 가능한 많은 공간을 차지하게 함 */
   /* 추가 스타일링 */
 }
@@ -196,5 +195,5 @@
   object-fit: cover; /* 이미지가 비율을 유지하면서 항목을 꽉 채우도록 함 */
   transition: opacity 0.3s ease; /* 부드러운 효과를 위한 전환 */
 }
+</style>
 
-</style>@/stores/snapshot

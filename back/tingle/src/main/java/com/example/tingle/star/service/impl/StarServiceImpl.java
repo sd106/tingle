@@ -7,10 +7,8 @@ import com.example.tingle.star.repository.StarRepository;
 import com.example.tingle.star.service.StarService;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class StarServiceImpl implements StarService {
@@ -27,11 +25,19 @@ public class StarServiceImpl implements StarService {
     }
 
     @Override
+    public Optional<StarEntity> findById(Long starId) {
+        return starRepository.findById(starId);
+    }
+
+    @Override
     public List<ReadStarByCategory> findStarsByCategory(int category) {
         return starRepository.findStarsByCategory(category);
     }
 
     @Override
+    public void save(StarEntity starEntity) {
+        starRepository.save(starEntity);
+    }
     public List<ReadStarRequest> find10Stars() {
        return starRepository.find10Stars();
     }
