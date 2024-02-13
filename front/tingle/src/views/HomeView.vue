@@ -4,7 +4,12 @@
     <!-- 배너사진 -->
     <div v-if="hotStarsInfo"></div>
     <div class="container p-0" style="height: 250px;">
-      <img class="img-fluid w-100 h-100" src="/image/logo.webp" alt="">
+      <img class="star1" src="/image/star1.png">
+      <img class="star2" src="/image/star2.png">
+      <img class="star3" src="/image/star3.png">
+      <img class="star4" src="/image/star4.png">
+      <img class="star5" src="/image/star1.png">
+
     </div>
     <!-- HOT STAR -->
     <div class="section-title">HOT STAR들을 만나보세요!</div>
@@ -56,6 +61,7 @@ import { ref, onMounted } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import { useUserStore } from '@/stores/user';
 import axios from 'axios';
+
 
 import type { HotStarInfo } from '@/common/types/index'
 import type { StarByCategory } from '@/common/types/index'
@@ -170,6 +176,12 @@ onMounted(() => {
   background-color: #dddddd;
 }
 
+.container {
+  overflow: hidden;
+  position: relative;
+  background: midnightblue;
+}
+
 .slider-container {
   overflow: hidden;
   width: 100%;
@@ -206,4 +218,81 @@ onMounted(() => {
   width: 100%;
   height: 100%;
 }
+
+@keyframes star-fall {
+  0% {
+    transform: translate(80vw,-10vh);
+  }
+  100% {
+    transform: translate(30vw,40vh);
+  }
+}
+
+@keyframes star-fall2 {
+  0% {
+    transform: translate(70vw,-20vh);
+  }
+  100% {
+    transform: translate(20vw,30vh);
+  }
+}
+
+@keyframes star-fall3 {
+  0% {
+    transform: translate(50vw,-20vh);
+  }
+  100% {
+    transform: translate(15vw,30vh);
+  }
+}
+
+@keyframes star-fall4 {
+  0% {
+    transform: translate(40vw,-20vh);
+  }
+  100% {
+    transform: translate(0vw,30vh);
+  }
+}
+
+@keyframes star-fall5 {
+  0% {
+    transform: translate(30vw,-20vh);
+  }
+  100% {
+    transform: translate(-30vw,30vh);
+  }
+}
+
+
+.star1 {
+  position: absolute;
+  top: 0px;
+  animation: star-fall 2.2s linear infinite;
+}
+
+.star2 {
+  position: absolute;
+  top: -10px;
+  animation: star-fall2 2.5s linear infinite;
+}
+
+.star3 {
+  position: absolute;
+  top: -3px;
+  animation: star-fall3 1.3s linear infinite;
+}
+
+.star4 {
+  position: absolute;
+  top: -8px;
+  animation: star-fall4 2.5s linear infinite;
+}
+
+.star5 {
+  position: absolute;
+  top: -8px;
+  animation: star-fall5 1.7s linear infinite;
+}
+
 </style>
