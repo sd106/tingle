@@ -33,7 +33,9 @@ interface StarProfile {
     banner?: string;
     profileImage?: string;
     username: string;
+    category: number;
     snsUrl?: string;
+
 }
 
 interface FanMeetingType {

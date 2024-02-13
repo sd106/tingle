@@ -3,16 +3,18 @@
     <!-- 배경색을 두고 다른걸 다 흰색으로 두는 것도 괜찮을듯 -->
     <!-- 배너사진 -->
     <div v-if="hotStarsInfo"></div>
-    <div class="container p-0" style="height: 250px;">
-      <img class="star1" src="/image/star1.png">
-      <img class="star2" src="/image/star2.png">
-      <img class="star3" src="/image/star3.png">
-      <img class="star4" src="/image/star4.png">
-      <img class="star5" src="/image/star1.png">
-
+    <div class="container-banner full-width-fixed p-0">
+      <img class="star1" src="/image/star1.png" />
+      <img class="star2" src="/image/star2.png" />
+      <img class="star3" src="/image/star3.png" />
+      <img class="star4" src="/image/star4.png" />
+      <img class="star5" src="/image/star1.png" />
+      <img src="/image/cat-banner.png" style="margin-left:40%; margin-top: 94px; z-index: 2147483948;" alt="">
     </div>
     <!-- HOT STAR -->
-    <div class="section-title">HOT STAR들을 만나보세요!</div>
+    <img src="/image/wood.png" class="container-img" style="margin-left: 39%; margin-top: 60px;" alt="">
+    <div class="section-title" style="padding-top: 500px;">HOT STAR들을 만나보세요!</div>
+    <!-- <img src="/image/cat-banner.png" style="padding-top: 1000px;" alt=""> -->
     <!-- 슬라이더 좀 더 자연스럽고 부드럽게 회전초밥마냥 라이브러리 쓰든가-->
     <div class="container slider-container">
       <div class="justify-content-between slider-track" ref="sliderTrack">
@@ -20,7 +22,7 @@
           <RouterLink class="router-link-custom"
             :to="`/${hotstar.id}/home`">
             <div class="hotstar-image">
-              <img :src="hotstar.picture" alt="not" class="hotpic">
+              <img :src="hotstar.picture" alt="not" class="hotpic" />
             </div>
             <div class="hotstar-nickName">{{ hotstar.username }}</div>
           </RouterLink>
@@ -38,15 +40,24 @@
       <button class="category-btn" @click="selectCategory(4)">뷰티/패션</button>
       <button class="category-btn" @click="selectCategory(5)">기타</button>
     </div>
-    <div class="container d-flex flex-wrap"
-      style="height: 360px; background-color: lightgoldenrodyellow; border-radius: 20px;">
-      <div v-if="StarsByCategory.length === 0">
-        아직 이 분야 스타가 존재하지 않습니다.
-      </div>
-      <div v-else v-for="star in StarsByCategory" :key="star.id" class="p-2 star-card" style="width: 18%;">
-        <RouterLink class="router-link-custom" :to="star.id === 1 ? `/${star.id}/home/manage` : `/${star.id}/home`">
+    <div
+      class="container d-flex flex-wrap"
+      style="height: 360px; background-color: lightgoldenrodyellow; border-radius: 20px"
+    >
+      <div v-if="StarsByCategory.length === 0">아직 이 분야 스타가 존재하지 않습니다.</div>
+      <div
+        v-else
+        v-for="star in StarsByCategory"
+        :key="star.id"
+        class="p-2 star-card"
+        style="width: 18%"
+      >
+        <RouterLink
+          class="router-link-custom"
+          :to="star.id === 1 ? `/${star.id}/home/manage` : `/${star.id}/home`"
+        >
           <div class="star-image">
-            <img :src="star.picture" alt="not">
+            <img :src="star.picture" alt="not" />
           </div>
           <div class="star-nickName">{{ star.username }}</div>
         </RouterLink>
@@ -57,11 +68,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { useUserStore } from '@/stores/user';
-import axios from 'axios';
-
+import { useUserStore } from '@/stores/user'
+import axios from 'axios'
 
 import type { HotStarInfo } from '@/common/types/index'
 import type { StarByCategory } from '@/common/types/index'
@@ -69,66 +79,84 @@ import type { StarByCategory } from '@/common/types/index'
 const store = useUserStore()
 
 // 슬라이드
-const sliderTrack = ref<HTMLDivElement | null>(null);
+const sliderTrack = ref<HTMLDivElement | null>(null)
 
 const moveSlider = () => {
   setInterval(() => {
     if (sliderTrack.value) {
-      const firstStar = sliderTrack.value.children[0] as HTMLElement;
-      sliderTrack.value.appendChild(firstStar.cloneNode(true));
-      sliderTrack.value.removeChild(firstStar);
+      const firstStar = sliderTrack.value.children[0] as HTMLElement
+      sliderTrack.value.appendChild(firstStar.cloneNode(true))
+      sliderTrack.value.removeChild(firstStar)
     }
-  }, 3000);
-};
+  }, 3000)
+}
 
 // 카테고리 디스플레이
-const StarsByCategory = ref<StarByCategory[]>([]);
+const StarsByCategory = ref<StarByCategory[]>([])
 
 const loadInitialData = () => {
-  getStarsByCategory(0);
-};
+  getStarsByCategory(0)
+}
 
 const selectCategory = (category: number): void => {
-  getStarsByCategory(category);
-};
+  getStarsByCategory(category)
+}
 
-const hotStarsInfo = ref<HotStarInfo[]>([]);
+const hotStarsInfo = ref<HotStarInfo[]>([])
 
 //최근 인기상승 핫스타 가져오기
 const getHotStars = async () => {
-  const response = await axios.get(`${store.API_URL}/follow/hotStars`);
-  hotStarsInfo.value = response.data.data;
-  if (hotStarsInfo.value.length === 0) //만약 핫스타가 없으면 구독자수가 많은 스타를 가져온다
-    getTop10Stars();
-  console.log(response);
+  const response = await axios.get(`${store.API_URL}/follow/hotStars`)
+  hotStarsInfo.value = response.data.data
+  if (hotStarsInfo.value.length === 0)
+    //만약 핫스타가 없으면 구독자수가 많은 스타를 가져온다
+    getTop10Stars()
+  console.log(response)
 }
 
-getHotStars();
+getHotStars()
 
 //상위 10명의 스타 가져오기
 const getTop10Stars = async () => {
-  const response = await axios.get(`${store.API_URL}/star/Top10Stars`);
-  hotStarsInfo.value = response.data.data;
-  console.log(response);
+  const response = await axios.get(`${store.API_URL}/star/Top10Stars`)
+  hotStarsInfo.value = response.data.data
+  console.log(response)
 }
 
-
 const getStarsByCategory = async (category: number) => {
-  const response = await axios.get(`${store.API_URL}/star/${category}`);
-  StarsByCategory.value = response.data.data;
-  console.log(response);
+  const response = await axios.get(`${store.API_URL}/star/${category}`)
+  StarsByCategory.value = response.data.data
+  console.log(response)
 }
 
 onMounted(() => {
-
-  loadInitialData();
-  moveSlider();
-});
-
-
+  loadInitialData()
+  moveSlider()
+})
 </script>
 
 <style scoped>
+.full-width-fixed {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 300px; /* 필요한 높이 값 */
+  z-index: 999; /* 필요한 경우 z-index 값 설정 */
+}
+
+.container-img {
+  position: absolute;
+  top: 256px;
+  left: 0;
+  right: 0;
+  height: 240px; /* 필요한 높이 값 */
+  z-index: 1000; /* 필요한 경우 z-index 값 설정 */
+}
+
+.container-banner {
+  overflow: hidden;
+  background: midnightblue;
+}
 .star-card {
   display: flex;
   flex-direction: column;
@@ -182,6 +210,7 @@ onMounted(() => {
   background: midnightblue;
 }
 
+
 .slider-container {
   overflow: hidden;
   width: 100%;
@@ -221,49 +250,48 @@ onMounted(() => {
 
 @keyframes star-fall {
   0% {
-    transform: translate(80vw,-10vh);
+    transform: translate(80vw, -10vh);
   }
   100% {
-    transform: translate(30vw,40vh);
+    transform: translate(30vw, 40vh);
   }
 }
 
 @keyframes star-fall2 {
   0% {
-    transform: translate(70vw,-20vh);
+    transform: translate(70vw, -20vh);
   }
   100% {
-    transform: translate(20vw,30vh);
+    transform: translate(20vw, 30vh);
   }
 }
 
 @keyframes star-fall3 {
   0% {
-    transform: translate(50vw,-20vh);
+    transform: translate(50vw, -20vh);
   }
   100% {
-    transform: translate(15vw,30vh);
+    transform: translate(15vw, 30vh);
   }
 }
 
 @keyframes star-fall4 {
   0% {
-    transform: translate(40vw,-20vh);
+    transform: translate(40vw, -20vh);
   }
   100% {
-    transform: translate(0vw,30vh);
+    transform: translate(0vw, 30vh);
   }
 }
 
 @keyframes star-fall5 {
   0% {
-    transform: translate(30vw,-20vh);
+    transform: translate(30vw, -20vh);
   }
   100% {
-    transform: translate(-30vw,30vh);
+    transform: translate(-30vw, 30vh);
   }
 }
-
 
 .star1 {
   position: absolute;
@@ -294,5 +322,4 @@ onMounted(() => {
   top: -8px;
   animation: star-fall5 1.7s linear infinite;
 }
-
 </style>

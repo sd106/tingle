@@ -39,7 +39,7 @@ public class StarEntity {
     private String email;
 
     @Column(nullable = false)
-    private int category;
+    private int category= -1;
 
     private String snsUrl;
 
@@ -80,6 +80,7 @@ public class StarEntity {
                 .banner(this.banner)
                 .profileImage(this.picture)
                 .username(this.username)
+                .category(this.category)
                 .snsUrl(this.snsUrl)
                 .build();
     }
