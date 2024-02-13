@@ -6,8 +6,8 @@
                 :class="{ active: isActive('/home') }">Home</RouterLink>
         </li>
         <li class="nav-item">
-            <RouterLink :to="`/${props.id}/snapshot`" class="nav-link router-link-custom"
-                :class="{ active: isActive('/snapshot') }">Snapshot</RouterLink>
+            <RouterLink :to="`/${props!.id}/snapshot`" class="nav-link router-link-custom"
+                :class="{ 'active': isActive('/snapshot') }">Snapshot</RouterLink>
         </li>
         <li class="nav-item">
             <RouterLink :to="`/${props.id}/wish`" class="nav-link router-link-custom"

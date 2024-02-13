@@ -48,21 +48,23 @@ const id = ref(props.id);
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import axios from 'axios'
-import { useRouter, useRoute } from 'vue-router'
+import { ref } from 'vue';
+import axios from 'axios';
+import { useRouter, useRoute } from 'vue-router';
+import { useSnapshotStore } from '@/stores/snapshot'
 
 // 라우터와 라우트 객체 접근
 const router = useRouter()
 const route = useRoute()
-const snapshotId = route.params.snapshotid as string // params는 반응형 객체이므로 as를 사용하여 타입 단언
-const starId = route.params.starid as String
+const snapshotId = Number(route.params.snapshotid)// params는 반응형 객체이므로 as를 사용하여 타입 단언
+const starId = Number(route.params.starid)
 const file = ref<File | null>(null)
 const content = ref('')
 const tags = ref<string[]>([]) // 태그 상태 초기화
 const tagInput = ref<string>('')
 
-const imagePreview = ref<string | null>(null)
+const snapshotStore = useSnapshotStore()
+const imagePreview = ref<string | null>(null);
 
 // onFileChange 함수는 Event 타입의 이벤트 객체를 매개변수로 받습니다.
 const onFileChange = (event: Event) => {
@@ -95,12 +97,16 @@ const updateSnapshot = async () => {
   console.log(content.value)
   console.log(tags.value)
   console.log(snapshotId)
+  console.log(starId)
   // API 호출을 통해 스냅샷 데이터를 업데이트하는 로직
   try {
-    console.log('axios 직전')
-    await axios.put(`http://localhost:8080/snapshot/${snapshotId}/update`, formData)
-    console.log('axios 통과')
-    router.push(`/${starId}/snapshot`) // 업데이트 후 상세 페이지로 이동
+    console.log("axios 직전")
+    await axios.put(`http://localhost:8080/snapshot/${snapshotId}/update`, formData);
+    console.log("axios 통과")
+
+    router.push(`/${starId}/snapshot`); // 업데이트 후 상세 페이지로 이동
+    console.log(snapshotStore.selectedSnapshot!.snapshotId)
+    snapshotStore.selectSnapshot(snapshotStore.selectedSnapshot!.snapshotId)
   } catch (error) {
     console.error(error)
   }

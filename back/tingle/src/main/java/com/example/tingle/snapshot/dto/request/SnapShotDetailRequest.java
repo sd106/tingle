@@ -5,9 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CommentRequest {
-    private String context;
+public class SnapShotDetailRequest {
     private String username;
-    private Long snapshotId;
-    private Boolean isStar;
+
+    private Boolean isStarLogin;
 }

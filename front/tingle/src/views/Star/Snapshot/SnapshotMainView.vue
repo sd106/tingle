@@ -1,5 +1,12 @@
 <template>
   <StarMenu :id="id" />
+  <div class="main-layout pt-5">
+    <!-- 상단 메뉴 -->
+    <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
+    <section v-if="wishStore.selectedSnapshot" class="detail-section cont mb-5">
+      <SnapShotDetail :selectedSnapshot="wishStore.selectedSnapshot" :starid="id" />
+    </section>
+  </div>
   <div class="d-flex justify-content-between align-items-center my-4 mx-3">
     <div>
       <button class="btn me-2 fs-5 fw-bold text-secondary" @click="loadSnapshots">✧ 최신순</button>
@@ -13,64 +20,75 @@
   </div>
 
   <div class="main-layout">
-    <!-- 상단 메뉴 -->
-    <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
-    <section v-if="wishStore.selectedSnapshot" class="detail-section cont mb-5">
-      <SnapShotDetail :selectedSnapshot="wishStore.selectedSnapshot" />
-    </section>
-
     <!-- 스냅샷 목록 섹션 (파란색 부분) -->
     <section class="snapshot-list-section">
-      <!-- @scroll="handleScroll" -->
-      <div class="snapshot-list-container" ref="containerRef">
-        <div v-for="snapshot in snapshots" :key="snapshot.id" @click="wishStore.selectSnapshot(snapshot.id)"
-          class="snapshot-item">
-          <img :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image" />
-        </div>
+      <div class="snapshot-list-container" ref="containerRef" @scroll="handleScroll">
+        <span class="snapshot-item">
+          <img v-for="snapshot in filteredSnapshot1" :key="snapshot.id" @click="wishStore.selectSnapshot(snapshot.id)"
+            :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
+        </span>
+        <span class="snapshot-item">
+          <img v-for="snapshot in filteredSnapshot2" :key="snapshot.id" @click="wishStore.selectSnapshot(snapshot.id)"
+            :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
+        </span>
+        <span class="snapshot-item">
+          <img v-for="snapshot in filteredSnapshot3" :key="snapshot.id" @click="wishStore.selectSnapshot(snapshot.id)"
+            :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
+        </span>
+        <span class="snapshot-item">
+          <img v-for="snapshot in filteredSnapshot4" :key="snapshot.id" @click="wishStore.selectSnapshot(snapshot.id)"
+            :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
+        </span>
+        <span class="snapshot-item">
+          <img v-for="snapshot in filteredSnapshot5" :key="snapshot.id" @click="wishStore.selectSnapshot(snapshot.id)"
+            :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
+        </span>
       </div>
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
-import { useUserStore } from '@/stores/user'
-import { useWishStore } from '@/stores/wish'
-import StarMenu from '@/components/StarMenu/StarMenu.vue'
-import type { Starinfo, SnapshotType } from '@/common/types'
+import { ref, onMounted, computed } from 'vue';
+import axios from 'axios';
+import { useUserStore } from '@/stores/user';
+import { useSnapshotStore } from '@/stores/snapshot'
+import StarMenu from '@/components/StarMenu/StarMenu.vue';
+import type { Starinfo, SnapshotType } from '@/common/types';
 import SnapShotDetail from '../../../components/StarMenu/SnapShot/SnapShotDetail.vue'
 
-const wishStore = useWishStore()
-const props = defineProps(['id'])
-const id = ref(props.id)
 
-const userStore = useUserStore()
+const store = useUserStore();
+const wishStore = useSnapshotStore();
+const props = defineProps(['id']);
+const id = ref(props.id);
 
-const snapshots = ref<SnapshotType[]>([])
-const display = ref<Starinfo[]>([])
-const containerRef = ref<HTMLElement | null>(null)
+
+const snapshots = ref<SnapshotType[]>([]);
+const display = ref<Starinfo[]>([]);
+const containerRef = ref<HTMLElement | null>(null);
+
 
 const loadSnapshots = async (): Promise<void> => {
   try {
     console.log(id)
-    const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/created`)
-    snapshots.value = response.data.AllSnapShot
-    console.log('최신순')
+    const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/created`);
+    snapshots.value = response.data.AllSnapShot;
+    console.log("최신순");
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
 
 const loadSnapshotsBylikes = async (): Promise<void> => {
   try {
-    const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/likes`)
-    snapshots.value = response.data.AllSnapShot
-    console.log('좋아요순')
+    const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/likes`);
+    snapshots.value = response.data.AllSnapShot;
+    console.log("좋아요순");
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
 
 // const loadMore = function (): void {
 //   // 스크롤 관련 로딩 로직
@@ -78,21 +96,40 @@ const loadSnapshotsBylikes = async (): Promise<void> => {
 //   display.value = [...display.value, ...newData];
 // };
 
-// const handleScroll = function (): void {
-//   // 스크롤 이벤트 처리 로직
-//   const container = containerRef.value;
-//   if (container) {
-//     // 스크롤이 하단에 도달했을 때 추가 데이터 로딩
-//     if (container.scrollTop + container.clientHeight >= container.scrollHeight) {
-//       loadMore();
-//     }
-//   }
-// };
+
+const handleScroll = function (): void {
+  // 스크롤 이벤트 처리 로직
+  const container = containerRef.value;
+  if (container) {
+    // 스크롤이 하단에 도달했을 때 추가 데이터 로딩
+    if (container.scrollTop + container.clientHeight >= container.scrollHeight) {
+      // loadMore();
+    }
+  }
+};
 
 onMounted(() => {
-  wishStore.selectedSnapshot = null
-  loadSnapshots()
-})
+  wishStore.selectedSnapshot = null;
+  loadSnapshots();
+});
+
+const filteredSnapshot1 = computed(() => {
+  return snapshots.value.filter((_, index) => index % 5 === 0);
+});
+const filteredSnapshot2 = computed(() => {
+  return snapshots.value.filter((_, index) => index % 5 === 1);
+});
+const filteredSnapshot3 = computed(() => {
+  return snapshots.value.filter((_, index) => index % 5 === 2);
+});
+const filteredSnapshot4 = computed(() => {
+  return snapshots.value.filter((_, index) => index % 5 === 3);
+});
+const filteredSnapshot5 = computed(() => {
+  return snapshots.value.filter((_, index) => index % 5 === 4);
+});
+
+
 </script>
 
 <style>
@@ -145,8 +182,7 @@ onMounted(() => {
 }
 
 .detail-section {
-  flex: 1;
-
+  width: 100%;
   /* 상세 페이지가 가능한 많은 공간을 차지하게 함 */
   /* 추가 스타일링 */
 }
@@ -154,34 +190,27 @@ onMounted(() => {
 .snapshot-list-container {
   display: flex;
   flex-wrap: wrap;
-  /* 항목들이 여러 줄로 나눠지도록 함 */
-  overflow-x: auto;
-  /* 가로 스크롤 가능 */
+
   align-items: flex-start;
-  /* 항목들이 위에서부터 시작되도록 함 */
-  height: auto;
-  /* 컨테이너의 높이를 자동으로 설정 */
+  overflow-x: auto;
 }
 
 .snapshot-item {
-  flex: 0 0 19%;
-  /* flex-grow: 0, flex-shrink: 0, flex-basis: 20% */
-  box-sizing: border-box;
-  /* padding과 border가 너비에 포함되도록 함 */
+
+  flex: 0 0 calc(19% - 10px);
   margin: 5px;
-  /* 각 항목 사이의 간격 */
-  width: calc(20% - 10px);
-  /* margin을 고려한 실제 너비 */
   cursor: pointer;
+  width: 100%;
+  /* 이미지 컨테이너가 갖는 실제 너비 */
+  box-sizing: border-box;
 }
 
-.snapshot-item:hover .snapshot-image {
+.snapshot-image:hover .snapshot-image {
   opacity: 0.6;
   /* 이미지 어두워짐 효과 */
 }
 
 .snapshot-image {
-  display: inline-block;
   width: 100%;
   /* 이미지가 항목의 너비를 꽉 채우도록 함 */
   height: auto;
@@ -190,5 +219,5 @@ onMounted(() => {
   /* 이미지가 비율을 유지하면서 항목을 꽉 채우도록 함 */
   transition: opacity 0.3s ease;
   /* 부드러운 효과를 위한 전환 */
-}
-</style>
+}</style>
+
