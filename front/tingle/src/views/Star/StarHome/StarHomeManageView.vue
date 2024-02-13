@@ -11,12 +11,12 @@
         <img :src="starProfile?.profileImage" alt="사진">
         <div style="display: inline-block;">
           <!-- 닉네임 -->
-          <p>닉네임 {{starProfile?.snsUrl}}</p>
+          <p>닉네임 {{ starProfile?.snsUrl }}</p>
           <!-- sns주소 링크 -->
         </div>
       </div>
 
-      <p>sns 주소 {{starProfile?.username}} </p>
+      <p>sns 주소 {{ starProfile?.username }} </p>
 
     </div>
 
@@ -31,7 +31,7 @@
       <div v-for="item in article" :key="item.id" class="item-container">
         <div class="item-header">
           <button class="menu-btn" type="button" data-bs-toggle="modal" data-bs-target="#chatModal"
-                  style="height: 50px; width: 50px;">수정
+            style="height: 50px; width: 50px;">수정
           </button>
           <button class="item-button" @click="deleteArticle(item.id)">삭제</button>
         </div>
@@ -43,7 +43,6 @@
         <p v-if="item.updatedAt">Updated At: {{ item.updatedAt }}</p>
       </div>
     </div>
-
     <div v-if="selectedArticleId?.valueOf() !== -1" class="modal">
       <div class="modal-content">
         <h2>게시물 수정</h2>
@@ -55,42 +54,40 @@
   </main>
 
   <div class="fixed-button">
+
     <img src="/image/articlePlus.png" @click="IsInputArticle" />
   </div>
-
-
 </template>
 
 <script setup lang="ts">
-import { ref,onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useUserStore } from '@/stores/user';
 const store = useUserStore();
-let showInputArticle= ref(false);
+let showInputArticle = ref(false);
 
 import StarMenu from '@/components/StarMenu/StarMenu.vue';
 
 import type { StarProfile, HomeArticle } from '@/common/types/index'
 
-const props = defineProps(['id']);
-const starId = ref(props.id);
+const starId = store.starState!.id;
 
-const starProfile= ref<StarProfile>();
+const starProfile = ref<StarProfile>();
 
-const article= ref<HomeArticle[]>([]);
 
-let files= ref<File[]>([]);
+const article = ref<HomeArticle[]>([]);
+let files = ref<File[]>([]);
 
 const selectedArticleId = ref<number>(-1);
 
 const getstarProfile = async () => {
-  const response = await axios.get(`${store.API_URL}/home/profile/${starId.value}`);
+  const response = await axios.get(`${store.API_URL}/home/profile/${starId}`);
   starProfile.value = response.data.data;
   console.log(starProfile.value);
 }
 
 const getArticle = async () => {
-  axios.get(`${store.API_URL}/home/${starId.value}`)
+  axios.get(`${store.API_URL}/home/${starId}`)
     .then(response => {
       console.log(response.data.data);
       article.value = response.data.data;
@@ -105,7 +102,7 @@ const handleFileSelection = (event: any) => {
 }
 
 let homeCreateRequest = {
-  starId: starId.value,
+  starId: starId,
   ordering: 3,
   content: "입력해주세요"
 };
@@ -128,12 +125,42 @@ const insertArticle = async () => {
     }
   }).then(response => {
     getArticle();
-    showInputArticle.value= false;
+    showInputArticle.value = false;
     console.log(response.data);
   }).catch(error => {
     console.error(error);
   });
 }
+
+let homeUpdateRequest = {
+  homeId: 1,
+  ordering: 3,
+  content: "입력해주세요"
+};
+
+// const updateArticle = async (homeid: number) => {
+//   ////////////////////////////// 오류 제거용
+//   console.log(homeid)
+//   ///////////////////////////////
+
+//   let formData = new FormData();
+//   formData.append('homeUpdateRequest', JSON.stringify(homeUpdateRequest)); // JSON 문자열로 변환하여 추가
+
+//   // 파일이 여러 개인 경우, 각각의 파일을 추가
+//   for (let i = 0; i < files.value.length; i++) {
+//     formData.append('files', files.value[i]);
+//   }
+
+//   axios.post(`${store.API_URL}/home/update`, formData, {
+//     headers: {
+//       'Content-Type': 'multipart/form-data'
+//     }
+//   }).then(response => {
+//     console.log(response.data);
+//   }).catch(error => {
+//     console.error(error);
+//   });
+// }
 
 
 const deleteArticle = async (homeid: number) => {
@@ -141,15 +168,15 @@ const deleteArticle = async (homeid: number) => {
   axios.delete(`${store.API_URL}/home/delete/${homeid}`)
     .then(response => {
       getArticle();
-    console.log(response.data);
-  }).catch(error => {
-    console.error(error);
-  });
+      console.log(response.data);
+    }).catch(error => {
+      console.error(error);
+    });
 
 }
 
-const IsInputArticle= ()=> {
-  showInputArticle.value= true;
+const IsInputArticle = () => {
+  showInputArticle.value = true;
 }
 
 
@@ -193,8 +220,10 @@ onMounted(() => {
 
 .fixed-button {
   position: fixed;
-  bottom: 10px; /* 버튼을 화면 밑에서 얼마나 떨어지게 할지 설정 */
-  right: 10px; /* 버튼을 화면 오른쪽에서 얼마나 떨어지게 할지 설정 */
+  bottom: 10px;
+  /* 버튼을 화면 밑에서 얼마나 떨어지게 할지 설정 */
+  right: 10px;
+  /* 버튼을 화면 오른쪽에서 얼마나 떨어지게 할지 설정 */
 }
 
 .fixed-button img {
@@ -215,6 +244,4 @@ onMounted(() => {
 .item-button {
   margin: 0 5px;
 }
-
-
 </style>

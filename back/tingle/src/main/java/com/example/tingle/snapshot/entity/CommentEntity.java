@@ -34,6 +34,8 @@ public class CommentEntity {
      */
     private String username;
 
+    private Boolean isStar;
+
     @ManyToOne
     @JoinColumn(name = "snapshot_id")
     private SnapShotEntity snapShotEntity;
@@ -46,6 +48,10 @@ public class CommentEntity {
 
     public void update(String context) {
         this.context = context;
+    }
+
+    public void changeIsStar(Boolean isStar) {
+        this.isStar = isStar;
     }
 
 }

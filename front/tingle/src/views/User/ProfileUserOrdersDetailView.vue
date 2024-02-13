@@ -36,17 +36,11 @@
       </div> -->
       <div class="col-6">
         <div class="tw-carousel tw-w-full">
-          <div
-            v-for="(image, index) in product.imageUrl"
-            :key="image.id"
-            class="tw-carousel-item tw-relative tw-w-full"
-            :class="{ 'tw-hidden': index !== activeIndex }"
-          >
+          <div v-for="(image, index) in product.imageUrl" :key="image.id" class="tw-carousel-item tw-relative tw-w-full"
+            :class="{ 'tw-hidden': index !== activeIndex }">
             <img :src="image.url" alt="" class="tw-w-full" />
-            <div
-              v-if="product.imageUrl.length > 2"
-              class="tw-absolute tw-flex tw-justify-between tw-transform tw--translate-y-1/2 tw-left-5 tw-right-5 tw-top-1/2"
-            >
+            <div v-if="product.imageUrl.length > 2"
+              class="tw-absolute tw-flex tw-justify-between tw-transform tw--translate-y-1/2 tw-left-5 tw-right-5 tw-top-1/2">
               <button @click="prevSlide" class="tw-btn tw-btn-circle tw-glass">❮</button>
               <button @click="nextSlide" class="tw-btn tw-btn-circle tw-glass">❯</button>
             </div>
@@ -143,22 +137,28 @@ const formattedPrice = computed(() => {
   height: 100%;
   object-fit: cover;
 }
+
 /* 가장 외부 컨테이너 중앙 정렬을 위한 스타일 */
 .d-flex.row.tw-space-x-4.tw-mt-2 {
   display: flex;
-  justify-content: center; /* 가로 중앙 정렬 */
+  justify-content: center;
+  /* 가로 중앙 정렬 */
 }
 
 /* 이미지 컨테이너 스타일 */
 .tw-carousel {
   display: flex;
-  justify-content: center; /* 이미지를 가로 방향으로 중앙에 배치 */
-  align-items: center; /* 이미지를 세로 방향으로 중앙에 배치 */
-  height: 80vh; /* 예시 높이, 실제 사용 조건에 맞게 조정 필요 */
+  justify-content: center;
+  /* 이미지를 가로 방향으로 중앙에 배치 */
+  align-items: center;
+  /* 이미지를 세로 방향으로 중앙에 배치 */
+  height: 80vh;
+  /* 예시 높이, 실제 사용 조건에 맞게 조정 필요 */
 }
 
 /* 이미지 스타일 */
 .tw-carousel-item img {
-  object-fit: contain; /* 비율을 유지하면서 최대한 컨테이너에 맞춤 */
+  object-fit: contain;
+  /* 비율을 유지하면서 최대한 컨테이너에 맞춤 */
 }
 </style>

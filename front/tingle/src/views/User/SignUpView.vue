@@ -24,6 +24,7 @@
         <button type="submit" class="submit-button">회원 가입</button>
       </form>
     </div>
+
   </div>
 </template>
 

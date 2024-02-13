@@ -12,21 +12,11 @@
         </div>
         <div class="col-6" style="margin-top: 100px">
           <div class="d-felx flex-column"></div>
-          <div
-            ref="dragArea"
+          <div ref="dragArea"
             class="me-5 tw-border-dashed tw-border-2 tw-border-primary tw-p-4 tw-text-center tw-cursor-pointer tw-mb-4 tw-h-72"
-            @dragover.prevent="handleDragOver"
-            @drop="handleDrop"
-            @click="fileInput!.click()"
-          >
+            @dragover.prevent="handleDragOver" @drop="handleDrop" @click="fileInput!.click()">
             여기에 파일을 드래그 앤 드롭하거나 클릭하여 선택하세요.
-            <input
-              type="file"
-              multiple
-              ref="fileInput"
-              @change="handleFileUpload"
-              style="display: none"
-            />
+            <input type="file" multiple ref="fileInput" @change="handleFileUpload" style="display: none" />
           </div>
 
           <div class="text-end me-5">
@@ -41,10 +31,7 @@
       <div class="tw-grid tw-grid-cols-3 tw-gap-4 d-flex justify-content-center align-items-center">
         <div v-for="(file, index) in previewFiles" :key="index" class="tw-relative tw-mb-4">
           <img :src="file" height="200px;" width="200px;" class="tw-rounded tw-shadow-md" />
-          <button
-            @click="removeFile(index)"
-            class="tw-btn tw-btn-sm tw-absolute tw-right-1 tw-bottom-1"
-          >
+          <button @click="removeFile(index)" class="tw-btn tw-btn-sm tw-absolute tw-right-1 tw-bottom-1">
             삭제
           </button>
         </div>
@@ -175,14 +162,17 @@ const createStorage = async (orderId: Number, fileInputs: File[]) => {
   border-collapse: collapse;
   width: 100%;
 }
+
 .order-info td,
 .order-info th {
   border: 1px solid #ddd;
   padding: 8px;
 }
+
 .order-info tr:nth-child(even) {
   background-color: #f2f2f2;
 }
+
 .order-info th {
   padding-top: 12px;
   padding-bottom: 12px;
@@ -190,6 +180,7 @@ const createStorage = async (orderId: Number, fileInputs: File[]) => {
   background-color: #4caf50;
   color: white;
 }
+
 .order-info img {
   width: 50px;
   height: auto;

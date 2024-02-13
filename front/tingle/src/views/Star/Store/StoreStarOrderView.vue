@@ -15,18 +15,12 @@
           </div>
         </div>
         <hr />
-        <div
-          class="border-bottom container p-0 justify-content-between"
-          v-for="res in responseMessageGetByStarName"
-          :key="res.fan.id"
-          @click="expandProduct(res)"
-        >
+        <div class="border-bottom container p-0 justify-content-between" v-for="res in responseMessageGetByStarName"
+          :key="res.fan.id" @click="expandProduct(res)">
           <div class="d-flex row">
             <div class="col-3">
-              <div
-                class="tw-flex tw-flex-col img-container"
-                :style="`background-image: url('${res.goods.imageUrl[0].url}');`"
-              >
+              <div class="tw-flex tw-flex-col img-container"
+                :style="`background-image: url('${res.goods.imageUrl[0].url}');`">
                 <!-- <img :src="res.goods.imageUrl[0].url" alt="" /> -->
               </div>
             </div>
@@ -100,20 +94,29 @@ const expandProduct = (order: OrderResponse) => {
 
 <style>
 .custom-hr {
-  border-top: 3px solid #000000; /* 굵기를 3px로 조정하고 색상은 검정으로 설정 */
+  border-top: 3px solid #000000;
+  /* 굵기를 3px로 조정하고 색상은 검정으로 설정 */
 }
 
 .centered-content {
-  display: flex; /* Flex 컨테이너 설정 */
-  justify-content: center; /* 가로 축에서 중앙 정렬 */
-  align-items: center; /* 세로 축에서 중앙 정렬 */
+  display: flex;
+  /* Flex 컨테이너 설정 */
+  justify-content: center;
+  /* 가로 축에서 중앙 정렬 */
+  align-items: center;
+  /* 세로 축에서 중앙 정렬 */
 }
 
 .img-container {
-  width: 300px; /* 이미지 컨테이너의 너비 */
-  height: 250px; /* 이미지 컨테이너의 높이 */
-  background-position: center; /* 이미지를 중앙에 위치 */
-  background-size: contain; /* 이미지가 컨테이너를 벗어나지 않도록 함 */
-  background-repeat: no-repeat; /* 이미지 반복 없음 */
+  width: 300px;
+  /* 이미지 컨테이너의 너비 */
+  height: 250px;
+  /* 이미지 컨테이너의 높이 */
+  background-position: center;
+  /* 이미지를 중앙에 위치 */
+  background-size: contain;
+  /* 이미지가 컨테이너를 벗어나지 않도록 함 */
+  background-repeat: no-repeat;
+  /* 이미지 반복 없음 */
 }
 </style>

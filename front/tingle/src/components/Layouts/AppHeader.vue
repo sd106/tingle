@@ -3,15 +3,9 @@
   <nav class="navbar fixed-top custom-navbar">
     <div class="container-fluid">
       <!-- 사이드바 여는 버튼 -->
-      <button
-        class="menu-btn"
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasNavbar"
-        aria-controls="offcanvasNavbar"
-        aria-label="Toggle navigation"
-        @click="store.isSidebarOpen = !store.isSidebarOpen"
-      >
+      <button class="menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+        aria-controls="offcanvasNavbar" aria-label="Toggle navigation"
+        @click="store.isSidebarOpen = !store.isSidebarOpen">
         <img src="/image/ham.png" alt="" />
       </button>
       <RouterLink to="/">
@@ -19,12 +13,7 @@
       </RouterLink>
       <!-- 검색창 -->
       <form class="search-box" action="" method="get">
-        <input
-          class="search-txt"
-          type="search"
-          placeholder="검색어를 입력하세요"
-          aria-label="Search"
-        />
+        <input class="search-txt" type="search" placeholder="검색어를 입력하세요" aria-label="Search" />
         <button class="search-btn" type="submit">
           <img src="/image/magnifier.png" alt="" />
         </button>
@@ -35,27 +24,9 @@
       </div>
 
       <div v-if="store.isLogin" class="dropdown dropstart">
-        <div
-          class="dropdown-toggle user-image"
-          href="#"
-          role="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <img
-            v-if="store.isStar"
-            class=""
-            :src="`${store.starState?.picture}`"
-            alt="starimage"
-            style="height: 50px"
-          />
-          <img
-            v-if="!store.isStar"
-            class=""
-            :src="`${store.fanState?.picture}`"
-            alt="userimage"
-            style="height: 50px"
-          />
+        <div class="dropdown-toggle user-image" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img v-if="store.isStar" class="" :src="`${store.starState?.picture}`" alt="starimage" style="height: 50px" />
+          <img v-if="!store.isStar" class="" :src="`${store.fanState?.picture}`" alt="userimage" style="height: 50px" />
         </div>
         <ul class="dropdown-menu">
           <li>

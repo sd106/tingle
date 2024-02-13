@@ -296,6 +296,7 @@ interface CommentType {
     context: string;
     username: string;
     snapshotId: number;
+    isStar: boolean;
 };
 
 export type {

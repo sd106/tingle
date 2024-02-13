@@ -7,11 +7,8 @@
       <!-- //////정렬기준 수정할 수 있게 row 하나 추가해서 변경 가능하게 -->
       <!-- //////available = false면 비활성화하고 회색처리  -->
       <div v-if="altProducts" class="tw-grid tw-grid-cols-5 tw-gap-2">
-        <div
-          v-for="product in altProducts"
-          :key="product.productId"
-          class="product-card tw-rounded-lg tw-transition tw-mb-5"
-        >
+        <div v-for="product in altProducts" :key="product.productId"
+          class="product-card tw-rounded-lg tw-transition tw-mb-5">
           <RouterLink :to="`/${id}/store/${product.productId}`" class="tw-flex tw-flex-col">
             <img :src="product.imageUrl[0].url" alt="" class="tw-w-full tw-h-60 tw-object-cover" />
             <div class="product-info tw-text-left tw-py-1">
@@ -49,7 +46,7 @@ const starName = 'l2esm24'
 
 const getAllProducts = async (starName: string) => {
   try {
-    const response = await axios.get(`http://localhost:8080/product/getByStarName/${starName}`)
+    const response = await axios.get(`http://localhost:8080/product/getByStarName/${starName}`);
     if (response.data.resultCode === 'SUCCESS') {
       products.value = response.data.data
     }

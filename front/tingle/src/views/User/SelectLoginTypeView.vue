@@ -66,11 +66,7 @@ const showWelcomeMessage = ref(false)
 
 const selectLoginType = async (type: string) => {
   try {
-    const { data } = await axios.post(
-      `http://localhost:8080/auth/login/${type}`,
-      {},
-      { withCredentials: true }
-    )
+    const { data } = await axios.post(`http://localhost:8080/auth/login/${type}`, {}, { withCredentials: true })
     if (type === 'fan') {
       const { id, username, picture, follwingStars } = data
       store.fanState = { id, username, picture, follwingStars }
@@ -83,6 +79,7 @@ const selectLoginType = async (type: string) => {
       await expandAndRefresh('star')
       router.push('/')
     }
+
   } catch (error) {
     console.log('error', error)
   }

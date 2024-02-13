@@ -2,28 +2,16 @@
   <main class="container">
     <ul class="mb-5 d-flex justify-content-around nav nav-underline">
       <li class="nav-item">
-        <RouterLink
-          :to="`/profile/userinfo`"
-          class="nav-link router-link-custom"
-          :class="{ active: isActive('/userInfo') }"
-          >회원 정보</RouterLink
-        >
+        <RouterLink :to="`/profile/userinfo`" class="nav-link router-link-custom"
+          :class="{ active: isActive('/userInfo') }">회원 정보</RouterLink>
       </li>
       <li class="nav-item">
-        <RouterLink
-          :to="`/profile/storage`"
-          class="nav-link router-link-custom"
-          :class="{ active: isActive('/storage') }"
-          >보관함</RouterLink
-        >
+        <RouterLink :to="`/profile/storage`" class="nav-link router-link-custom"
+          :class="{ active: isActive('/storage') }">보관함</RouterLink>
       </li>
       <li class="nav-item">
-        <RouterLink
-          :to="`/profile/orders`"
-          class="nav-link router-link-custom"
-          :class="{ active: isActive('/orders') }"
-          >주문 목록</RouterLink
-        >
+        <RouterLink :to="`/profile/orders`" class="nav-link router-link-custom" :class="{ active: isActive('/orders') }">
+          주문 목록</RouterLink>
       </li>
       <li></li>
       <li></li>
@@ -43,27 +31,19 @@
           </div>
         </div>
         <hr />
-        <div
-          class="border-bottom container p-0 justify-content-between"
-          v-for="res in responseMessageGetByUserId"
-          :key="res.fanId"
-          @click="expandProduct(res)"
-        >
+        <div class="border-bottom container p-0 justify-content-between" v-for="res in responseMessageGetByUserId"
+          :key="res.fanId" @click="expandProduct(res)">
           <div class="d-flex row">
             <div class="col-3">
-              <RouterLink
-                :to="`/${res.goods.starId}/profile/orders/detail/${res.goods.productId}`"
+              <RouterLink :to="`/${res.goods.starId}/profile/orders/detail/${res.goods.productId}`"
                 class="tw-flex tw-flex-col img-container"
-                :style="`background-image: url('${res.goods.imageUrl[0].url}');`"
-              >
+                :style="`background-image: url('${res.goods.imageUrl[0].url}');`">
               </RouterLink>
             </div>
 
             <div class="p-3 col-7 d-flex flex-column">
-              <RouterLink
-                :to="`/${res.goods.starId}/profile/orders/detail/${res.goods.productId}`"
-                class="tw-flex tw-flex-col d-flex"
-              >
+              <RouterLink :to="`/${res.goods.starId}/profile/orders/detail/${res.goods.productId}`"
+                class="tw-flex tw-flex-col d-flex">
                 <h2 class="my-3 fw-bold">{{ res.goods.name }}</h2>
                 <span>{{ truncateText(removeHtmlTags(res.goods.content), 30) }}</span>
               </RouterLink>
@@ -135,16 +115,24 @@ const expandProduct = (order: OrderResponse2) => {
 
 <style>
 .centered-content {
-  display: flex; /* Flex 컨테이너 설정 */
-  justify-content: center; /* 가로 축에서 중앙 정렬 */
-  align-items: center; /* 세로 축에서 중앙 정렬 */
+  display: flex;
+  /* Flex 컨테이너 설정 */
+  justify-content: center;
+  /* 가로 축에서 중앙 정렬 */
+  align-items: center;
+  /* 세로 축에서 중앙 정렬 */
 }
 
 .img-container {
-  width: 300px; /* 이미지 컨테이너의 너비 */
-  height: 250px; /* 이미지 컨테이너의 높이 */
-  background-position: center; /* 이미지를 중앙에 위치 */
-  background-size: contain; /* 이미지가 컨테이너를 벗어나지 않도록 함 */
-  background-repeat: no-repeat; /* 이미지 반복 없음 */
+  width: 300px;
+  /* 이미지 컨테이너의 너비 */
+  height: 250px;
+  /* 이미지 컨테이너의 높이 */
+  background-position: center;
+  /* 이미지를 중앙에 위치 */
+  background-size: contain;
+  /* 이미지가 컨테이너를 벗어나지 않도록 함 */
+  background-repeat: no-repeat;
+  /* 이미지 반복 없음 */
 }
 </style>

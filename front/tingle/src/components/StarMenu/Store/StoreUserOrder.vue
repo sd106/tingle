@@ -16,28 +16,18 @@
           </div>
         </div>
         <hr />
-        <div
-          class="border-bottom container p-0 justify-content-between"
-          v-for="res in responseMessageGetByUserId"
-          :key="res.fanId"
-          @click="expandProduct(res)"
-        >
+        <div class="border-bottom container p-0 justify-content-between" v-for="res in responseMessageGetByUserId"
+          :key="res.fanId" @click="expandProduct(res)">
           <div class="d-flex row">
             <div class="col-2">
               <!-- <img  :src="res.goods.imageUrl[0].url" alt="" style="width: 100px;"> -->
-              <RouterLink
-                :to="`/${res.goods.starId}/store/${res.goods.productId}`"
-                class="tw-flex tw-flex-col"
-              >
+              <RouterLink :to="`/${res.goods.starId}/store/${res.goods.productId}`" class="tw-flex tw-flex-col">
                 <img :src="res.goods.imageUrl[0].url" alt="" />
               </RouterLink>
             </div>
 
             <div class="p-3 col-8 d-flex flex-column">
-              <RouterLink
-                :to="`/${res.goods.starId}/store/${res.goods.productId}`"
-                class="tw-flex tw-flex-col d-flex"
-              >
+              <RouterLink :to="`/${res.goods.starId}/store/${res.goods.productId}`" class="tw-flex tw-flex-col d-flex">
                 <h2 class="my-3">{{ res.goods.name }}</h2>
                 <span class="">{{ truncateText(removeHtmlTags(res.goods.content), 30) }}</span>
               </RouterLink>
@@ -115,8 +105,12 @@ const expandProduct = (order: OrderResponse2) => {
 
 <style>
 .centered-content {
-  display: flex; /* Flex 컨테이너 설정 */
-  justify-content: center; /* 가로 축에서 중앙 정렬 */
-  align-items: center; /* 세로 축에서 중앙 정렬 */
+  display: flex;
+  /* Flex 컨테이너 설정 */
+  justify-content: center;
+  /* 가로 축에서 중앙 정렬 */
+  align-items: center;
+  /* 세로 축에서 중앙 정렬 */
 }
 </style>
+

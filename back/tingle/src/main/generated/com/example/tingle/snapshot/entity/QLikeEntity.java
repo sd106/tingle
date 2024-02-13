@@ -26,6 +26,8 @@ public class QLikeEntity extends EntityPathBase<LikeEntity> {
 
     public final QSnapShotEntity snapShot;
 
+    public final com.example.tingle.star.entity.QStarEntity star;
+
     public final com.example.tingle.user.entity.QUserEntity user;
 
     public QLikeEntity(String variable) {
@@ -47,6 +49,7 @@ public class QLikeEntity extends EntityPathBase<LikeEntity> {
     public QLikeEntity(Class<? extends LikeEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.snapShot = inits.isInitialized("snapShot") ? new QSnapShotEntity(forProperty("snapShot"), inits.get("snapShot")) : null;
+        this.star = inits.isInitialized("star") ? new com.example.tingle.star.entity.QStarEntity(forProperty("star")) : null;
         this.user = inits.isInitialized("user") ? new com.example.tingle.user.entity.QUserEntity(forProperty("user")) : null;
     }
 

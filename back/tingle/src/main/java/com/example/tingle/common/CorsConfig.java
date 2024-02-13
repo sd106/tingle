@@ -17,3 +17,5 @@ public class CorsConfig implements WebMvcConfigurer {
     }
 
 }
+
+// , "http://my-tingle.us/", "https://my-tingle.us/", "http://localhost:8080/", "http://localhost:8080:8080"

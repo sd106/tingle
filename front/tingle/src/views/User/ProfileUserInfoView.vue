@@ -2,50 +2,28 @@
   <main class="container">
     <ul class="d-flex justify-content-around nav nav-underline">
       <li class="nav-item">
-        <RouterLink
-          :to="`/profile/userinfo`"
-          class="nav-link router-link-custom"
-          :class="{ active: isActive('/userInfo') }"
-          >회원 정보</RouterLink
-        >
+        <RouterLink :to="`/profile/userinfo`" class="nav-link router-link-custom"
+          :class="{ active: isActive('/userInfo') }">회원 정보</RouterLink>
       </li>
       <li class="nav-item">
-        <RouterLink
-          :to="`/profile/storage`"
-          class="nav-link router-link-custom"
-          :class="{ active: isActive('/storage') }"
-          >보관함</RouterLink
-        >
+        <RouterLink :to="`/profile/storage`" class="nav-link router-link-custom"
+          :class="{ active: isActive('/storage') }">보관함</RouterLink>
       </li>
       <li class="nav-item">
-        <RouterLink
-          :to="`/profile/orders`"
-          class="nav-link router-link-custom"
-          :class="{ active: isActive('/orders') }"
-          >주문 목록</RouterLink
-        >
+        <RouterLink :to="`/profile/orders`" class="nav-link router-link-custom" :class="{ active: isActive('/orders') }">
+          주문 목록</RouterLink>
       </li>
       <li></li>
       <li></li>
       <li></li>
     </ul>
-    <div
-      class="container"
-      style="display: flex; justify-content: center; align-items: center; height: 85vh"
-    >
-      <div
-        style="width: 450px; height: 550px; position: relative"
-        v-if="fanState!.picture"
-        class="p-1 d-flex flex-column justify-content-center align-items-center border"
-      >
-        <img
-          class="mb-5 mx-0 profile-pic"
-          :src="fanState!.picture"
-          alt=""
-          style="max-height: 80%; object-fit: contain; width: auto"
-        />
-        <div
-          style="
+    <div class="container" style="display: flex; justify-content: center; align-items: center; height: 85vh">
+      <div style="width: 500px; height: 650px; position: relative" v-if="fanState!.picture"
+        class="p-4 d-flex flex-column justify-content-center align-items-center border">
+        <img class="mb-5 mx-0 profile-pic" :src="fanState!.picture" alt=""
+          style="max-height: 80%; object-fit: contain; width: auto" />
+        <div style="
+
             position: absolute;
             bottom: 20px;
             left: 0;
@@ -53,8 +31,7 @@
             display: flex;
             justify-content: space-between;
             padding: 0 20px;
-          "
-        >
+          ">
           <button style="width: 48%" class="tw-btn" @click="uploadImage">
             <h2>프로필 수정</h2>
           </button>
@@ -148,8 +125,11 @@ const deleteImage = async (fanId: number) => {
 
 <style scoped>
 .profile-pic {
-  max-height: auto; /* 최대 높이 설정 */
-  width: 400px; /* 너비 자동 조절 */
-  object-fit: cover; /* 이미지 비율 유지 */
+  max-height: auto;
+  /* 최대 높이 설정 */
+  width: 400px;
+  /* 너비 자동 조절 */
+  object-fit: cover;
+  /* 이미지 비율 유지 */
 }
 </style>
