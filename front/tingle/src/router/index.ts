@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 
-
 import LayoutOnView from '@/views/Layout/LayoutOnView.vue'
 import LayoutOnlyHeader from '@/views/Layout/LayoutOnlyHeader.vue'
 import LayoutOffView from '@/views/Layout/LayoutOffView.vue'
@@ -21,6 +20,7 @@ import StarHomeMainView from '@/views/Star/StarHome/StarHomeMainView.vue'
 import StarHomeManageView from '@/views/Star/StarHome/StarHomeManageView.vue'
 
 import SnapshotMainView from '@/views/Star/Snapshot/SnapshotMainView.vue'
+import SnapshotMain4StarView from '@/views/Star/Snapshot/SnapshotMain4StarView.vue'
 import SnapshotCreateView from '@/views/Star/Snapshot/SnapshotCreateView.vue'
 import SnapshotUpdateView from '@/views/Star/Snapshot/SnapshotUpdateView.vue'
 
@@ -108,6 +108,11 @@ const router = createRouter({
           props: (route) => ({ id: route.params.starid })
         },
         {
+          path: '/forstar/snapshot',
+          name: 'snapshot',
+          component: SnapshotMain4StarView
+        },
+        {
           path: '/forstar/wish/manage/',
           name: 'wishmanage',
           component: WishManageView,
@@ -158,7 +163,6 @@ const router = createRouter({
           name: 'CreateMeetingView',
           component: CreateFanMeetingView
         },
-
 
         // 홈
         {
@@ -230,7 +234,7 @@ const router = createRouter({
           path: '/fanmeeting/:starid/waitingroom',
           name: 'WaitingRoomView',
           component: WaitingRoomView
-        },
+        }
       ]
     },
 
@@ -286,21 +290,21 @@ const router = createRouter({
   ]
 })
 
-// 전역 
+// 전역
 router.beforeEach((to, from, next) => {
   const store = useUserStore()
-  const isForStarRoute = to.path.includes('forstar');
+  const isForStarRoute = to.path.includes('forstar')
   // 스타가 아닌데 스타 전용 페이지를 들어가려고 하면
   if (!store.isStar && isForStarRoute) {
     window.alert('접근할 수 없습니다.')
-    next('/'); // 홈으로 돌려보내기
+    next('/') // 홈으로 돌려보내기
     // 스타인데 스타 전용 이외의 페이지로 들어가려고 하면
   } else if (store.isStar && !isForStarRoute) {
     window.alert('접근할 수 없습니다.')
     next('/forstar/home/manage') //스타 홈으로 돌려보냄
   } else {
-    next();
+    next()
   }
-});
+})
 
 export default router
