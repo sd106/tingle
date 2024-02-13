@@ -1,6 +1,34 @@
 <template>
   <main>
-    <StarMenu :id="starid" />
+    <ul class="mb-5 d-flex justify-content-around nav nav-underline">
+      <li class="nav-item">
+        <RouterLink
+          :to="`/profile/userinfo`"
+          class="nav-link router-link-custom"
+          :class="{ active: isActive('/userInfo') }"
+          >회원 정보</RouterLink
+        >
+      </li>
+      <li class="nav-item">
+        <RouterLink
+          :to="`/profile/storage`"
+          class="nav-link router-link-custom"
+          :class="{ active: isActive('/storage') }"
+          >보관함</RouterLink
+        >
+      </li>
+      <li class="nav-item">
+        <RouterLink
+          :to="`/profile/orders`"
+          class="nav-link router-link-custom"
+          :class="{ active: isActive('/orders') }"
+          >주문 목록</RouterLink
+        >
+      </li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
     <div v-if="product" class="d-flex row tw-space-x-4 tw-mt-2">
       <!-- 왼쪽 -->
       <!-- <div class="col-1">
@@ -8,17 +36,11 @@
       </div> -->
       <div class="col-6">
         <div class="tw-carousel tw-w-full">
-          <div
-            v-for="(image, index) in product.imageUrl"
-            :key="image.id"
-            class="tw-carousel-item tw-relative tw-w-full"
-            :class="{ 'tw-hidden': index !== activeIndex }"
-          >
+          <div v-for="(image, index) in product.imageUrl" :key="image.id" class="tw-carousel-item tw-relative tw-w-full"
+            :class="{ 'tw-hidden': index !== activeIndex }">
             <img :src="image.url" alt="" class="tw-w-full" />
-            <div
-              v-if="product.imageUrl.length > 2"
-              class="tw-absolute tw-flex tw-justify-between tw-transform tw--translate-y-1/2 tw-left-5 tw-right-5 tw-top-1/2"
-            >
+            <div v-if="product.imageUrl.length > 2"
+              class="tw-absolute tw-flex tw-justify-between tw-transform tw--translate-y-1/2 tw-left-5 tw-right-5 tw-top-1/2">
               <button @click="prevSlide" class="tw-btn tw-btn-circle tw-glass">❮</button>
               <button @click="nextSlide" class="tw-btn tw-btn-circle tw-glass">❯</button>
             </div>
@@ -43,6 +65,7 @@
           <div v-html="product.content" class="tw-py-4 tw-px-2"></div>
           <hr class="tw-my-4" />
         </div>
+        <button></button>
       </div>
     </div>
   </main>
@@ -50,23 +73,25 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import type { Goods } from '@/common/types'
 import axios from 'axios'
-import StarMenu from '@/components/StarMenu/StarMenu.vue'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const props = defineProps({
   starid: String,
   productId: String // URL에서 받은 값은 문자열이므로 String으로 받음
 })
+const isActive = (path: string) => {
+  return route.path.includes(path)
+}
 
-const starid = ref(props.starid)
 const productIdNumber = computed(() => Number(props.productId)) // 숫자로 변환
 const product = ref<Goods>()
 
 const getProduct = async (productId: number) => {
   try {
-    const response = await axios.get(`https://i10d106.p.ssafy.io/api/product/getById/${productId}`)
+    const response = await axios.get(`http://localhost:8080/product/getById/${productId}`)
     if (response.data.resultCode === 'SUCCESS') {
       product.value = response.data.data
     } else {
@@ -112,22 +137,28 @@ const formattedPrice = computed(() => {
   height: 100%;
   object-fit: cover;
 }
+
 /* 가장 외부 컨테이너 중앙 정렬을 위한 스타일 */
 .d-flex.row.tw-space-x-4.tw-mt-2 {
   display: flex;
-  justify-content: center; /* 가로 중앙 정렬 */
+  justify-content: center;
+  /* 가로 중앙 정렬 */
 }
 
 /* 이미지 컨테이너 스타일 */
 .tw-carousel {
   display: flex;
-  justify-content: center; /* 이미지를 가로 방향으로 중앙에 배치 */
-  align-items: center; /* 이미지를 세로 방향으로 중앙에 배치 */
-  height: 80vh; /* 예시 높이, 실제 사용 조건에 맞게 조정 필요 */
+  justify-content: center;
+  /* 이미지를 가로 방향으로 중앙에 배치 */
+  align-items: center;
+  /* 이미지를 세로 방향으로 중앙에 배치 */
+  height: 80vh;
+  /* 예시 높이, 실제 사용 조건에 맞게 조정 필요 */
 }
 
 /* 이미지 스타일 */
 .tw-carousel-item img {
-  object-fit: contain; /* 비율을 유지하면서 최대한 컨테이너에 맞춤 */
+  object-fit: contain;
+  /* 비율을 유지하면서 최대한 컨테이너에 맞춤 */
 }
 </style>

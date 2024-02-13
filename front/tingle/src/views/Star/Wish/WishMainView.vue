@@ -240,7 +240,7 @@ import StarMenu from '@/components/StarMenu/StarMenu.vue';
 // 스타 id 정보
 const props = defineProps(['id']);
 const id = ref(props.id);
-const myid = store.fanState!.id;
+const myid = store.fanState?.id;
 
 // 위시 리스트
 const wishNS = ref<WishInfo[]>([]);

@@ -1,20 +1,14 @@
 <template>
   <main>
-    <StarMenu :id="starid" />
+    <StarMenu :id="starid" class="mb-5" />
     <div v-if="product" class="d-flex row tw-space-x-4 tw-mt-2">
       <div class="col-6">
         <div class="tw-carousel tw-w-full">
-          <div
-            v-for="(image, index) in product.imageUrl"
-            :key="image.id"
-            class="tw-carousel-item tw-relative tw-w-full"
-            :class="{ 'tw-hidden': index !== activeIndex }"
-          >
+          <div v-for="(image, index) in product.imageUrl" :key="image.id" class="tw-carousel-item tw-relative tw-w-full"
+            :class="{ 'tw-hidden': index !== activeIndex }">
             <img :src="image.url" alt="" class="tw-w-full" />
-            <div
-              v-if="product.imageUrl.length > 1"
-              class="tw-absolute tw-flex tw-justify-between tw-transform tw--translate-y-1/2 tw-left-5 tw-right-5 tw-top-1/2"
-            >
+            <div v-if="product.imageUrl.length > 1"
+              class="tw-absolute tw-flex tw-justify-between tw-transform tw--translate-y-1/2 tw-left-5 tw-right-5 tw-top-1/2">
               <button @click="prevSlide" class="tw-btn tw-btn-circle tw-glass">❮</button>
               <button @click="nextSlide" class="tw-btn tw-btn-circle tw-glass">❯</button>
             </div>
@@ -39,17 +33,13 @@
           <hr class="tw-my-4" />
         </div>
         <div>
-          <RouterLink :to="`/${props.starid}/store/update/${props.productId}`">
-            <button
-              class="tw-btn tw-btn-active tw-btn-block tw-bg-black tw-text-white tw-py-3 tw-rounded-md tw-mb-2"
-            >
+          <RouterLink :to="`/forstar/store/update/${props.productId}`">
+            <button class="tw-btn tw-btn-active tw-btn-block tw-bg-black tw-text-white tw-py-3 tw-rounded-md tw-mb-2">
               수정하기
             </button>
           </RouterLink>
-          <button
-            @click="getProductdelete(product.productId)"
-            class="tw-btn tw-btn-active tw-btn-block tw-bg-error tw-btn-white tw-text-white tw-py-3 tw-rounded-md tw-mb-2"
-          >
+          <button @click="getProductdelete(product.productId)"
+            class="tw-btn tw-btn-active tw-btn-block tw-bg-error tw-btn-white tw-text-white tw-py-3 tw-rounded-md tw-mb-2">
             삭제하기
           </button>
         </div>
@@ -61,23 +51,25 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 import type { Goods } from '@/common/types'
 import axios from 'axios'
 import StarMenu from '@/components/StarMenu/StarMenu.vue'
 
 const props = defineProps({
-  starid: String,
   productId: String // URL에서 받은 값은 문자열이므로 String으로 받음
 })
 
-const starid = ref(props.starid)
+
+const store = useUserStore()
+const starid = store.starState!.id
 const productIdNumber = computed(() => Number(props.productId)) // 숫자로 변환
 const product = ref<Goods>()
 const router = useRouter()
 
 const getProduct = async (productId: number) => {
   try {
-    const response = await axios.get(`https://i10d106.p.ssafy.io/api/product/getById/${productId}`)
+    const response = await axios.get(`http://localhost:8080/product/getById/${productId}`)
     if (response.data.resultCode === 'SUCCESS') {
       product.value = response.data.data
     } else {
@@ -113,15 +105,15 @@ const formattedPrice = computed(() => {
 })
 
 // 뒤로가기
-function goBack() {
-  router.go(-1) // 또는 router.back()
-}
+// function goBack() {
+//   router.go(-1) // 또는 router.back()
+// }
 
 // 상품 삭제
 
 const getProductdelete = async (productId: number) => {
   try {
-    const response = await axios.post(`https://i10d106.p.ssafy.io/api/product/delete/${productId}`)
+    const response = await axios.post(`http://localhost:8080/product/delete/${productId}`)
     if (response.data === 'SUCCESS') {
       alert('상품 삭제에 성공 하였습니다.')
       router.go(-1)
@@ -145,22 +137,28 @@ const getProductdelete = async (productId: number) => {
   height: 100%;
   object-fit: cover;
 }
+
 /* 가장 외부 컨테이너 중앙 정렬을 위한 스타일 */
 .d-flex.row.tw-space-x-4.tw-mt-2 {
   display: flex;
-  justify-content: center; /* 가로 중앙 정렬 */
+  justify-content: center;
+  /* 가로 중앙 정렬 */
 }
 
 /* 이미지 컨테이너 스타일 */
 .tw-carousel {
   display: flex;
-  justify-content: center; /* 이미지를 가로 방향으로 중앙에 배치 */
-  align-items: center; /* 이미지를 세로 방향으로 중앙에 배치 */
-  height: 80vh; /* 예시 높이, 실제 사용 조건에 맞게 조정 필요 */
+  justify-content: center;
+  /* 이미지를 가로 방향으로 중앙에 배치 */
+  align-items: center;
+  /* 이미지를 세로 방향으로 중앙에 배치 */
+  height: 80vh;
+  /* 예시 높이, 실제 사용 조건에 맞게 조정 필요 */
 }
 
 /* 이미지 스타일 */
 .tw-carousel-item img {
-  object-fit: contain; /* 비율을 유지하면서 최대한 컨테이너에 맞춤 */
+  object-fit: contain;
+  /* 비율을 유지하면서 최대한 컨테이너에 맞춤 */
 }
 </style>

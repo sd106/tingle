@@ -1,7 +1,7 @@
 <template>
   <main class="container">
+    <StarMenu :id="starid" class="mb-5" />
     <div>
-      <h2>스타 모든 주문 조회</h2>
       <div v-if="responseMessageGetByStarName">
         <p class="fw-bold mt-3 mb-1">주문 상품</p>
         <hr class="m-0 mb-3" style="border: 0; height: 3px; background: #000" />
@@ -15,18 +15,12 @@
           </div>
         </div>
         <hr />
-        <div
-          class="border-bottom container p-0 justify-content-between"
-          v-for="res in responseMessageGetByStarName"
-          :key="res.fan.id"
-          @click="expandProduct(res)"
-        >
+        <div class="border-bottom container p-0 justify-content-between" v-for="res in responseMessageGetByStarName"
+          :key="res.fan.id" @click="expandProduct(res)">
           <div class="d-flex row">
             <div class="col-3">
-              <div
-                class="tw-flex tw-flex-col img-container"
-                :style="`background-image: url('${res.goods.imageUrl[0].url}');`"
-              >
+              <div class="tw-flex tw-flex-col img-container"
+                :style="`background-image: url('${res.goods.imageUrl[0].url}');`">
                 <!-- <img :src="res.goods.imageUrl[0].url" alt="" /> -->
               </div>
             </div>
@@ -54,10 +48,12 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useUserStore } from '@/stores/user'
 import type { OrderResponse } from '@/common/types/index.ts'
+import StarMenu from '@/components/StarMenu/StarMenu.vue'
 
 const { starState } = useUserStore()
 const responseMessageGetByStarName = ref<OrderResponse[]>([])
 const starname = starState!.username
+const starid = starState!.id
 
 onMounted(() => {
   getStarOrder()
@@ -78,9 +74,7 @@ function truncateText(text: string, maxLength: number): string {
 
 const getStarOrder = async () => {
   try {
-    const response = await axios.get(
-      `https://i10d106.p.ssafy.io/api/order/getByStarName/${starname}`
-    )
+    const response = await axios.get(`http://localhost:8080/order/getByStarName/${starname}`)
     responseMessageGetByStarName.value = response.data.data
     console.log(response.data.data)
     console.log(response.data)
@@ -100,20 +94,29 @@ const expandProduct = (order: OrderResponse) => {
 
 <style>
 .custom-hr {
-  border-top: 3px solid #000000; /* 굵기를 3px로 조정하고 색상은 검정으로 설정 */
+  border-top: 3px solid #000000;
+  /* 굵기를 3px로 조정하고 색상은 검정으로 설정 */
 }
 
 .centered-content {
-  display: flex; /* Flex 컨테이너 설정 */
-  justify-content: center; /* 가로 축에서 중앙 정렬 */
-  align-items: center; /* 세로 축에서 중앙 정렬 */
+  display: flex;
+  /* Flex 컨테이너 설정 */
+  justify-content: center;
+  /* 가로 축에서 중앙 정렬 */
+  align-items: center;
+  /* 세로 축에서 중앙 정렬 */
 }
 
 .img-container {
-  width: 300px; /* 이미지 컨테이너의 너비 */
-  height: 250px; /* 이미지 컨테이너의 높이 */
-  background-position: center; /* 이미지를 중앙에 위치 */
-  background-size: contain; /* 이미지가 컨테이너를 벗어나지 않도록 함 */
-  background-repeat: no-repeat; /* 이미지 반복 없음 */
+  width: 300px;
+  /* 이미지 컨테이너의 너비 */
+  height: 250px;
+  /* 이미지 컨테이너의 높이 */
+  background-position: center;
+  /* 이미지를 중앙에 위치 */
+  background-size: contain;
+  /* 이미지가 컨테이너를 벗어나지 않도록 함 */
+  background-repeat: no-repeat;
+  /* 이미지 반복 없음 */
 }
 </style>

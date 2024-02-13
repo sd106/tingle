@@ -1,31 +1,18 @@
 <template>
-    <section v-if="fanMeetingReservation?.fanMeetingType == 'normal'">
-        <NormalMeeting 
-        :localVideo="localVideo"
-        :remoteVideo="remoteVideo"
-        :starName="starName"
-        :localStream="localStream"
-        />
-    </section>
-    <section v-else-if="fanMeetingReservation?.fanMeetingType == 'lifefourcut'">
-        <LifeFourCutMeeting 
-        :localVideo="localVideo"
-        :remoteVideo="remoteVideo"
-        :starName="starName"
-        :localStream="localStream"
-        />
-    </section>
-    <section v-else-if="fanMeetingReservation?.fanMeetingType == 'birthday'">
-        <BirthdayMeeting 
-        :localVideo="localVideo"
-        :remoteVideo="remoteVideo"
-        :starName="starName"
-        :localStream="localStream"
-        />
-    </section>
-    <section v-else>
-        <h1>연결중입니다...</h1>
-    </section>
+  <section v-if="fanMeetingReservation?.fanMeetingType == 'normal'">
+    <NormalMeeting :localVideo="localVideo" :remoteVideo="remoteVideo" :starName="starName" :localStream="localStream" />
+  </section>
+  <section v-else-if="fanMeetingReservation?.fanMeetingType == 'lifefourcut'">
+    <LifeFourCutMeeting :localVideo="localVideo" :remoteVideo="remoteVideo" :starName="starName"
+      :localStream="localStream" />
+  </section>
+  <section v-else-if="fanMeetingReservation?.fanMeetingType == 'birthday'">
+    <BirthdayMeeting :localVideo="localVideo" :remoteVideo="remoteVideo" :starName="starName"
+      :localStream="localStream" />
+  </section>
+  <section v-else>
+    <h1>연결중입니다...</h1>
+  </section>
 </template>
 
 <script lang="ts" setup>
@@ -46,12 +33,12 @@ const store = useUserStore()
 const fanMeetingReservation = ref<FanMeetingReservation>()
 
 const loadReservation = async () => {
-    try {
-        const response = await axios.get(`${store.API_URL}/fanMeeting/reservation/${store.fanState?.id}`)
-        fanMeetingReservation.value = response.data
-    } catch (error) {
-        console.log(error)
-    }
+  try {
+    const response = await axios.get(`${store.API_URL}/fanMeeting/reservation/${store.fanState?.id}`)
+    fanMeetingReservation.value = response.data
+  } catch (error) {
+    console.log(error)
+  }
 }
 // 주소로 연결할 웹소켓
 let socket: WebSocket | undefined
@@ -87,11 +74,11 @@ const sendToServer = (msg: SocketMessage) => {
 }
 
 
-const API_URL = 'https://i10d106.p.ssafy.io/api'
+const API_URL = 'http://localhost:8080'
 // WebSocket
 const initializeWebSocket = () => {
   // 소켓 초기화
-  socket = new WebSocket('ws://i10d106.p.ssafy.io/api/signal')
+  socket = new WebSocket('ws://localhost:8080/signal')
 
   // 소켓이 message를 받을 때 이벤트 함수
   socket.onmessage = (msg) => {
@@ -162,7 +149,7 @@ const initializeWebRTC = async () => {
     // Define the type of localVideo.value to include the srcObject property
     const localVideoElement = localVideo.value as HTMLVideoElement
     localVideoElement.srcObject = localStream
-    ;(localVideo.value as HTMLVideoElement).play()
+      ; (localVideo.value as HTMLVideoElement).play()
   }
   console.log('야호')
 
@@ -189,7 +176,7 @@ const initializeWebRTC = async () => {
       // Define the type of remoteVideo.value to include the srcObject property
       const remoteVideoElement = remoteVideo.value as HTMLVideoElement
       remoteVideoElement.srcObject = event.streams[0]
-      ;(remoteVideo.value as HTMLVideoElement).play()
+        ; (remoteVideo.value as HTMLVideoElement).play()
     }
   }
 
@@ -264,10 +251,10 @@ const handleErrorMessage = (message: SocketMessage) => {
   console.error('에러발생!: ', message)
 }
 
-onMounted(async() => {
-    loadReservation()
-    await initializeWebRTC()
-    initializeWebSocket()
+onMounted(async () => {
+  loadReservation()
+  await initializeWebRTC()
+  initializeWebSocket()
 })
 
 onUnmounted(() => {

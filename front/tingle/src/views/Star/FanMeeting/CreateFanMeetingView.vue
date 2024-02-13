@@ -16,12 +16,7 @@
               <label for="participants" class="form-label">참여 인원</label>
             </div>
             <div class="col-md-6 d-flex">
-              <input
-                type="number"
-                id="participants"
-                class="form-control me-3"
-                v-model="meeting.participants"
-              />
+              <input type="number" id="participants" class="form-control me-3" v-model="meeting.participants" />
               <span>명</span>
             </div>
           </div>
@@ -42,12 +37,8 @@
             <label class="form-label">입장권 구매 시작</label>
           </div>
           <div class="col-md-8 d-flex">
-            <VueDatePicker
-              v-model="meeting.ticketStartDate"
-              locale="ko"
-              :time-picker-inline="true"
-              :is-24="false"
-            ></VueDatePicker>
+            <VueDatePicker v-model="meeting.ticketStartDate" locale="ko" :time-picker-inline="true" :is-24="false">
+            </VueDatePicker>
           </div>
         </div>
         <div class="row mb-2">
@@ -55,12 +46,8 @@
             <label class="form-label">입장권 구매 종료</label>
           </div>
           <div class="col-md-8 d-flex">
-            <VueDatePicker
-              v-model="meeting.ticketEndDate"
-              locale="ko"
-              :time-picker-inline="true"
-              :is-24="false"
-            ></VueDatePicker>
+            <VueDatePicker v-model="meeting.ticketEndDate" locale="ko" :time-picker-inline="true" :is-24="false">
+            </VueDatePicker>
           </div>
         </div>
         <div class="row">
@@ -68,12 +55,7 @@
             <label class="form-label">팬미팅 시작</label>
           </div>
           <div class="col-md-8 d-flex mb-4">
-            <VueDatePicker
-              v-model="meeting.startDate"
-              locale="ko"
-              :time-picker-inline="true"
-              :is-24="false"
-            >
+            <VueDatePicker v-model="meeting.startDate" locale="ko" :time-picker-inline="true" :is-24="false">
             </VueDatePicker>
           </div>
         </div>
@@ -85,11 +67,8 @@
     <div class="text-center">컨텐츠 선택</div>
     <hr />
     <div class="d-inline" v-for="(content, index) in allContents" :key="index">
-      <button
-        @click="toggleContent(content)"
-        class="btn btn-outline-primary m-1"
-        :class="{ 'bg-primary text-white': isSelected(content) }"
-      >
+      <button @click="toggleContent(content)" class="btn btn-outline-primary m-1"
+        :class="{ 'bg-primary text-white': isSelected(content) }">
         {{ content.name }}
       </button>
     </div>
@@ -113,7 +92,7 @@ import { useUserStore } from '@/stores/user'
 const store = useUserStore()
 const temp1 = async () => {
   try {
-    const { data } = await axios.post('https://i10d106.p.ssafy.io/fanMeetingRoom/create', {
+    const { data } = await axios.post('http://localhost:8080/fanMeetingRoom/create', {
       roomName: '환영환영',
       starName: '황찬준이다이',
       maxUserCnt: 8
@@ -157,13 +136,13 @@ const isSelected = (content: FanMeetingContent) => {
 
 const submit = () => {
   // Submit the meeting
-  axios.post('https://i10d106.p.ssafy.io/fanMeeting', meeting.value)
+  axios.post('http://localhost:8080/fanMeeting', meeting.value)
   console.log(meeting.value)
 }
 
 const loadContents = async () => {
   // Load contents from server
-  const { data } = await axios.get('https://i10d106.p.ssafy.io/fanMeeting/types')
+  const { data } = await axios.get('http://localhost:8080/fanMeeting/types')
 
   console.log(data)
   allContents.value = data

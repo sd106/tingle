@@ -1,23 +1,15 @@
 <template>
   <main class="container">
-    <StarMenu :id="props.id" />
+    <StarMenu :id="props.id" class="mb-5" />
     <div class="container">
       <div class="d-flex justify-content-between my-2">
-        <h1 class="fw-bold">상품 목록</h1>
+        <h1 class="fw-bold"></h1>
       </div>
       <div v-if="altProducts" class="row">
-        <div
-          v-for="product in altProducts"
-          :key="product.productId"
-          class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-4"
-        >
+        <div v-for="product in altProducts" :key="product.productId" class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-4">
           <RouterLink :to="`/${id}/store/user/${product.productId}`" class="d-flex flex-column">
             <div class="border p-1" v-if="product.available === true && product.amount > 0">
-              <img
-                :src="product.imageUrl[0]?.url"
-                alt=""
-                class="tw-w-full tw-h-72 tw-object-cover"
-              />
+              <img :src="product.imageUrl[0]?.url" alt="" class="tw-w-full tw-h-72 tw-object-cover" />
               <div class="product-info tw-text-left tw-py-1">
                 <p class="tw-text-md ms-2 tw-font-semibold tw-truncate">{{ product.name }}</p>
                 <p class="tw-text-lg ms-2 tw-font-bold tw-text-gray-800">
@@ -26,11 +18,7 @@
               </div>
             </div>
             <div v-else style="background-color: rgb(177, 171, 171)">
-              <img
-                :src="product.imageUrl[0]?.url"
-                alt=""
-                class="tw-w-full tw-h-72 tw-object-cover"
-              />
+              <img :src="product.imageUrl[0]?.url" alt="" class="tw-w-full tw-h-72 tw-object-cover" />
               <div class="product-info tw-text-left tw-py-1">
                 <p class="tw-text-md ms-2 tw-font-semibold tw-truncate">{{ product.name }}</p>
                 <p class="tw-text-lg ms-2 tw-font-bold tw-text-gray-800">
@@ -64,7 +52,7 @@ const products = ref<Goods[] | null>(null)
 
 const getAllProducts = async (id: number) => {
   try {
-    const response = await axios.get(`https://i10d106.p.ssafy.io/api/product/getByStarId/${id}`)
+    const response = await axios.get(`http://localhost:8080/product/getByStarId/${id}`)
     if (response.data.resultCode === 'SUCCESS') {
       products.value = response.data.data
     }

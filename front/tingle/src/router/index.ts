@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+
 
 import LayoutOnView from '@/views/Layout/LayoutOnView.vue'
 import LayoutOnlyHeader from '@/views/Layout/LayoutOnlyHeader.vue'
@@ -7,7 +9,6 @@ import LayoutOffView from '@/views/Layout/LayoutOffView.vue'
 import HomeView from '@/views/HomeView.vue'
 
 import SignUpView from '@/views/User/SignUpView.vue'
-import LogInView from '@/views/User/LogInView.vue'
 
 import ProfileView from '@/views/User/ProfileView.vue'
 import ProfileUserInfoView from '@/views/User/ProfileUserInfoView.vue'
@@ -16,6 +17,7 @@ import ProfileUserOrdersView from '@/views/User/ProfileUserOrdersView.vue'
 import ProfileUserOrdersDetailView from '@/views/User/ProfileUserOrdersDetailView.vue'
 
 import StarHomeMainView from '@/views/Star/StarHome/StarHomeMainView.vue'
+
 import StarHomeManageView from '@/views/Star/StarHome/StarHomeManageView.vue'
 
 import SnapshotMainView from '@/views/Star/Snapshot/SnapshotMainView.vue'
@@ -35,14 +37,15 @@ import StoreUpdateView from '@/views/Star/Store/StoreUpdateView.vue'
 import StoreStarOrderView from '@/views/Star/Store/StoreStarOrderView.vue'
 
 import FanMeetingEntranceView from '@/views/Star/FanMeeting/FanMeetingEntranceView.vue'
+import FanMeetingEntrance4StarView from '@/views/Star/FanMeeting/FanMeetingEntrance4StarView.vue'
 import FanMeetingTicketBoxView from '@/views/Star/FanMeeting/FanMeetingTicketBoxView.vue'
 import CreateFanMeetingView from '@/views/Star/FanMeeting/CreateFanMeetingView.vue'
 import WaitingRoomView from '@/views/Star/FanMeeting/WaitingRoomView.vue'
 import MeetingRoomView from '@/views/Star/FanMeeting/MeetingRoomView.vue'
+import MeetingRoom4StarView from '@/views/Star/FanMeeting/MeetingRoom4StarView.vue'
 import NormalMeetingView from '@/views/Star/FanMeeting/NormalMeeting.vue'
 import LifeFourCutMeetingView from '@/views/Star/FanMeeting/LifeFourCutMeeting.vue'
 import BirthdayMeetingView from '@/views/Star/FanMeeting/BirthdayMeeting.vue'
-
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -65,83 +68,11 @@ const router = createRouter({
           component: SignUpView
         },
         {
-          path: '/login',
-          name: 'login',
-          component: LogInView
+          path: '/selectLoginType',
+          name: 'SelectLoginTypeView',
+          component: () => import('@/views/User/SelectLoginTypeView.vue')
         },
-        {
-          path: '/:userid/profile',
-          name: 'profile',
-          component: ProfileView
-          // props: (route) => ({ id: route.params.id }),
-        },
-        //// 스타 메뉴
-        // 홈
-        {
-          path: '/:starid/home',
-          name: 'starhome',
-          component: StarHomeMainView,
-          props: (route) => ({ id: route.params.starid })
-        },
-        /////// 설정은 어떻게 만들 지 모르겠음
-        {
-          path: '/:starid/home/manage',
-          name: 'starhomemanage',
-          component: StarHomeManageView,
-          props: (route) => ({ id: route.params.starid })
-        },
-
-        // 스냅샷
-        {
-          path: '/:starid/snapshot',
-          name: 'snapshot',
-          component: SnapshotMainView,
-          props: (route) => ({ id: route.params.starid })
-        },
-        {
-          path: '/:starid/snapshot/create',
-          name: 'snapshotcreate',
-          component: SnapshotCreateView,
-          props: (route) => ({ id: route.params.starid })
-        },
-        {
-          path: '/:starid/snapshot/update',
-          name: 'snapshotupdate',
-          component: SnapshotUpdateView,
-          props: (route) => ({ id: route.params.starid })
-        },
-        // 위시
-        {
-          path: '/:starid/wish',
-          name: 'wish',
-          component: WishMainView,
-          props: (route) => ({ id: route.params.starid })
-        },
-        {
-          path: '/:starid/wish/create',
-          name: 'wishcreate',
-          component: WishCreateView,
-          props: (route) => ({ id: route.params.starid })
-        },
-        {
-          path: '/:starid/wish/manage',
-          name: 'wishmanage',
-          component: WishManageView,
-          props: (route) => ({ id: route.params.starid })
-        },
-        // 스토어
-        {
-          path: '/:starid/store/star',
-          name: 'storestarmainview',
-          component: StoreStarMainView,
-          props: (route) => ({ id: route.params.starid })
-        },
-        {
-          path: '/:starid/store/user',
-          name: 'storestaruserview',
-          component: StoreUserMainView,
-          props: (route) => ({ id: route.params.starid })
-        },
+        // 프로필
         {
           path: '/profile',
           name: 'profileview',
@@ -168,45 +99,127 @@ const router = createRouter({
           component: ProfileUserOrdersDetailView,
           props: true
         },
+        ////////////////////////스타 메뉴
+        ///////////// 스타 전용
         {
-          path: '/store/orders',
-          name: 'storestarorderview',
-          component: StoreStarOrderView
+          path: '/forstar/home/manage/',
+          name: 'starhomemanage',
+          component: StarHomeManageView,
+          props: (route) => ({ id: route.params.starid })
         },
         {
-          path: '/:starid/store/user/:productId(\\d+)',
-          name: 'storedetailuserview',
-          component: StoreDetailUserView,
-          props: true
+          path: '/forstar/wish/manage/',
+          name: 'wishmanage',
+          component: WishManageView,
+          props: (route) => ({ id: route.params.starid })
         },
         {
-          path: '/:starid/store/star/:productId(\\d+)',
+          path: '/forstar/store/',
+          name: 'storestarmainview',
+          component: StoreStarMainView,
+          props: (route) => ({ id: route.params.starid })
+        },
+        {
+          path: '/forstar/store/star/:productId(\\d+)',
           name: 'storedetailstarview',
           component: StoreDetailStarView,
           props: true
         },
         {
-          path: '/:starid/store/create',
+          path: '/forstar/store/create',
           name: 'storecreate',
           component: StoreCreateView,
           props: (route) => ({ id: route.params.starid })
         },
         {
-          path: '/:starid/store/update/:productId',
+          path: '/forstar/store/update/:productId',
           name: 'storeupdate',
           component: StoreUpdateView,
           props: true
         },
         {
+          path: '/forstar/store/orders',
+          name: 'storestarorderview',
+          component: StoreStarOrderView
+        },
+        {
+          path: '/forstar/fanmeeting',
+          name: 'fanmeeting4star',
+          component: FanMeetingEntrance4StarView,
+          props: (route) => ({ starid: route.params.starid })
+        },
+        {
+          path: '/forstar/fanmeeting/waitingroom',
+          name: 'MeetingRoom4StarView',
+          component: MeetingRoom4StarView
+        },
+        {
+          path: '/forstar/fanmeeting/create',
+          name: 'CreateMeetingView',
+          component: CreateFanMeetingView
+        },
+
+
+        // 홈
+        {
+          path: '/:starid/home',
+          name: 'starhome',
+          component: StarHomeMainView,
+          props: (route) => ({ id: route.params.starid })
+        },
+
+        // 스냅샷
+        {
+          path: '/:starid/snapshot',
+          name: 'snapshot',
+          component: SnapshotMainView,
+          props: (route) => ({ id: route.params.starid })
+        },
+        {
+          path: '/:starid/snapshot/create',
+          name: 'snapshotcreate',
+          component: SnapshotCreateView,
+          props: (route) => ({ id: route.params.starid })
+        },
+        {
+          path: '/:starid/snapshot/:snapshotid/update',
+          name: 'snapshotupdate',
+          component: SnapshotUpdateView,
+          props: true
+        },
+        // 위시
+        {
+          path: '/:starid/wish',
+          name: 'wish',
+          component: WishMainView,
+          props: (route) => ({ id: route.params.starid })
+        },
+        {
+          path: '/:starid/wish/create',
+          name: 'wishcreate',
+          component: WishCreateView,
+          props: (route) => ({ id: route.params.starid })
+        },
+        // 스토어
+        {
+          path: '/:starid/store/user',
+          name: 'storeuserview',
+          component: StoreUserMainView,
+          props: (route) => ({ id: route.params.starid })
+        },
+        {
+          path: '/:starid/store/:productId(\\d+)',
+          name: 'storedetailuserview',
+          component: StoreDetailUserView,
+          props: true
+        },
+
+        // 팬미팅
+        {
           path: '/:starid/fanmeeting',
           name: 'fanmeeting',
           component: FanMeetingEntranceView,
           props: (route) => ({ starid: route.params.starid })
-        },
-        {
-          path: '/fanmeeting/create',
-          name: 'CreateMeetingView',
-          component: CreateFanMeetingView
         },
         {
           path: '/profile/:starid/fanmeeting/ticketbox',
@@ -218,11 +231,6 @@ const router = createRouter({
           name: 'WaitingRoomView',
           component: WaitingRoomView
         },
-        {
-          path: '/selectLoginType',
-          name: 'SelectLoginTypeView',
-          component: () => import('@/views/User/SelectLoginTypeView.vue')
-        }
       ]
     },
 
@@ -268,8 +276,31 @@ const router = createRouter({
         //   name: '',
         //   component: ??.View,
         // }
+        {
+          path: '/selectLoginType',
+          name: 'SelectLoginTypeView',
+          component: () => import('@/views/User/SelectLoginTypeView.vue')
+        }
       ]
     }
   ]
 })
+
+// 전역 
+router.beforeEach((to, from, next) => {
+  const store = useUserStore()
+  const isForStarRoute = to.path.includes('forstar');
+  // 스타가 아닌데 스타 전용 페이지를 들어가려고 하면
+  if (!store.isStar && isForStarRoute) {
+    window.alert('접근할 수 없습니다.')
+    next('/'); // 홈으로 돌려보내기
+    // 스타인데 스타 전용 이외의 페이지로 들어가려고 하면
+  } else if (store.isStar && !isForStarRoute) {
+    window.alert('접근할 수 없습니다.')
+    next('/forstar/home/manage') //스타 홈으로 돌려보냄
+  } else {
+    next();
+  }
+});
+
 export default router

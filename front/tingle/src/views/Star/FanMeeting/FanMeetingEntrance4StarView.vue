@@ -1,12 +1,12 @@
 <template>
-    <main>
-        <!-- <section v-if="fanMeetingInfo && fanMeetingInfo.status === 'closed'" class="pt-5 text-center">
+  <main>
+    <!-- <section v-if="fanMeetingInfo && fanMeetingInfo.status === 'closed'" class="pt-5 text-center">
             <CreateFanMeetingViewVue :fanMeetingInfo="fanMeetingInfo"></CreateFanMeetingViewVue>
         </section>
         <section v-else class="pt-5">
             <MeetingRoomView4Star :fanMeetingInfo="fanMeetingInfo"></MeetingRoomView4Star>
         </section> -->
-    </main>
+  </main>
 </template>
 
 <script lang="ts" setup>
@@ -21,19 +21,18 @@ const props = defineProps(['username', 'starid'])
 const fanMeetingInfo = ref<FanMeetingInfo>()
 
 const getFanMeetingInfo = async () => {
-    try {
-        const response = await axios.get(`https://i10d106.p.ssafy.io/api/fanMeeting/info/${props.starid}`)
-        fanMeetingInfo.value = response.data
-    } catch (error) {
-        console.log(error)
-    }
+  try {
+    const response = await axios.get(`http://localhost:8080/fanMeeting/info/${props.starid}`)
+    fanMeetingInfo.value = response.data
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 onMounted(() => {
-    getFanMeetingInfo()
+  getFanMeetingInfo()
 })
 </script>
 
-<style scoped>
 
-</style>
+<style scoped></style>

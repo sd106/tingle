@@ -8,17 +8,11 @@
       </div> -->
       <div class="col-6">
         <div class="tw-carousel tw-w-full">
-          <div
-            v-for="(image, index) in product.imageUrl"
-            :key="image.id"
-            class="tw-carousel-item tw-relative tw-w-full"
-            :class="{ 'tw-hidden': index !== activeIndex }"
-          >
+          <div v-for="(image, index) in product.imageUrl" :key="image.id" class="tw-carousel-item tw-relative tw-w-full"
+            :class="{ 'tw-hidden': index !== activeIndex }">
             <img :src="image.url" alt="" class="tw-w-full" />
-            <div
-              v-if="product.imageUrl.length > 1"
-              class="tw-absolute tw-flex tw-justify-between tw-transform tw--translate-y-1/2 tw-left-5 tw-right-5 tw-top-1/2"
-            >
+            <div v-if="product.imageUrl.length > 1"
+              class="tw-absolute tw-flex tw-justify-between tw-transform tw--translate-y-1/2 tw-left-5 tw-right-5 tw-top-1/2">
               <button @click="prevSlide" class="tw-btn tw-btn-circle tw-glass">❮</button>
               <button @click="nextSlide" class="tw-btn tw-btn-circle tw-glass">❯</button>
             </div>
@@ -45,17 +39,13 @@
         </div>
         <div>
           <!-- ////// 유저일때 -->
-          <button
-            v-if="product.available === true && product.amount > 0"
+          <button v-if="product.available === true && product.amount > 0"
             class="tw-btn tw-btn-active tw-btn-block tw-bg-black tw-text-white tw-py-3 tw-rounded-md tw-mb-2"
-            @click="createOrder(fanState!.id, product.productId)"
-          >
+            @click="createOrder(fanState!.id, product.productId)">
             구매하기
           </button>
-          <button
-            v-else
-            class="tw-btn tw-btn-active tw-btn-block tw-bg-black tw-text-white tw-py-3 tw-rounded-md tw-mb-2"
-          >
+          <button v-else
+            class="tw-btn tw-btn-active tw-btn-block tw-bg-black tw-text-white tw-py-3 tw-rounded-md tw-mb-2">
             구매할 수 없는 상품입니다.
           </button>
         </div>
@@ -85,7 +75,7 @@ const router = useRouter()
 
 const getProduct = async (productId: number) => {
   try {
-    const response = await axios.get(`https://i10d106.p.ssafy.io/api/product/getById/${productId}`)
+    const response = await axios.get(`http://localhost:8080/product/getById/${productId}`)
     if (response.data.resultCode === 'SUCCESS') {
       product.value = response.data.data
     } else {
@@ -106,9 +96,7 @@ onMounted(() => {
 
 const createOrder = async (fanId: number, productId: number) => {
   try {
-    const response = await axios.post(
-      `https://i10d106.p.ssafy.io/api/order/create/${fanId}/${productId}`
-    )
+    await axios.post(`http://localhost:8080/order/create/${fanId}/${productId}`)
     alert('상품 구매에 성공 하였습니다.')
     router.go(-1)
   } catch (error) {
@@ -133,27 +121,27 @@ const formattedPrice = computed(() => {
   return new Intl.NumberFormat('ko-KR', { style: 'decimal' }).format(product.value!.price)
 })
 
-// 뒤로가기
-function goBack() {
-  router.go(-1) // 또는 router.back()
-}
+// // 뒤로가기
+// function goBack() {
+//   router.go(-1) // 또는 router.back()
+// }
 
-// 상품 삭제
+// // 상품 삭제
 
-const getProductdelete = async (productId: number) => {
-  try {
-    const response = await axios.post(`https://i10d106.p.ssafy.io/api/product/delete/${productId}`)
-    if (response.data === 'SUCCESS') {
-      alert('상품 삭제에 성공 하였습니다.')
-      router.go(-1)
-    } else {
-      console.error(response.data.message)
-      alert('상품 삭제에 실패 하였습니다.')
-    }
-  } catch (error) {
-    console.error('스타의 상품 목록 조회 중 오류 발생', error)
-  }
-}
+// const getProductdelete = async (productId: number) => {
+//   try {
+//     const response = await axios.post(`http://localhost:8080/product/delete/${productId}`)
+//     if (response.data === 'SUCCESS') {
+//       alert('상품 삭제에 성공 하였습니다.')
+//       router.go(-1)
+//     } else {
+//       console.error(response.data.message)
+//       alert('상품 삭제에 실패 하였습니다.')
+//     }
+//   } catch (error) {
+//     console.error('스타의 상품 목록 조회 중 오류 발생', error)
+//   }
+// }
 </script>
 
 <style scoped>
@@ -166,22 +154,28 @@ const getProductdelete = async (productId: number) => {
   height: 100%;
   object-fit: cover;
 }
+
 /* 가장 외부 컨테이너 중앙 정렬을 위한 스타일 */
 .d-flex.row.tw-space-x-4.tw-mt-2 {
   display: flex;
-  justify-content: center; /* 가로 중앙 정렬 */
+  justify-content: center;
+  /* 가로 중앙 정렬 */
 }
 
 /* 이미지 컨테이너 스타일 */
 .tw-carousel {
   display: flex;
-  justify-content: center; /* 이미지를 가로 방향으로 중앙에 배치 */
-  align-items: center; /* 이미지를 세로 방향으로 중앙에 배치 */
-  height: 80vh; /* 예시 높이, 실제 사용 조건에 맞게 조정 필요 */
+  justify-content: center;
+  /* 이미지를 가로 방향으로 중앙에 배치 */
+  align-items: center;
+  /* 이미지를 세로 방향으로 중앙에 배치 */
+  height: 80vh;
+  /* 예시 높이, 실제 사용 조건에 맞게 조정 필요 */
 }
 
 /* 이미지 스타일 */
 .tw-carousel-item img {
-  object-fit: contain; /* 비율을 유지하면서 최대한 컨테이너에 맞춤 */
+  object-fit: contain;
+  /* 비율을 유지하면서 최대한 컨테이너에 맞춤 */
 }
 </style>
