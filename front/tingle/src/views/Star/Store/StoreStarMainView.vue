@@ -1,6 +1,6 @@
 <template>
   <main class="container">
-    <StarMenu :id="props.id" class="mb-5" />
+    <StarMenu class="mb-5" />
     <div class="container">
       <div class="d-flex justify-content-between my-2">
         <!-- 원래 상품 목록이라는 글 있던 자리 -->
@@ -61,7 +61,8 @@ const store = useUserStore()
 // 전체 상품 출력
 import type { Goods } from '@/common/types'
 const products = ref<Goods[] | null>(null)
-////// props로 받은거 나오게 설정해야함
+
+const id = store.starState!.id
 const starName = store.starState!.username
 
 const getAllProducts = async (starName: string) => {

@@ -81,13 +81,13 @@ let files = ref<File[]>([]);
 const selectedArticleId = ref<number>(-1);
 
 const getstarProfile = async () => {
-  const response = await axios.get(`${store.API_URL}/home/profile/${starId.value}`);
+  const response = await axios.get(`${store.API_URL}/home/profile/${starId}`);
   starProfile.value = response.data.data;
   console.log(starProfile.value);
 }
 
 const getArticle = async () => {
-  axios.get(`${store.API_URL}/home/${starId.value}`)
+  axios.get(`${store.API_URL}/home/${starId}`)
     .then(response => {
       console.log(response.data.data);
       article.value = response.data.data;
