@@ -11,12 +11,12 @@
         <img :src="starProfile?.profileImage" alt="사진">
         <div style="display: inline-block;">
           <!-- 닉네임 -->
-          <p>닉네임 {{starProfile?.snsUrl}}</p>
+          <p>닉네임 {{ starProfile?.snsUrl }}</p>
           <!-- sns주소 링크 -->
         </div>
       </div>
 
-      <p>sns 주소 {{starProfile?.username}} </p>
+      <p>sns 주소 {{ starProfile?.username }} </p>
 
     </div>
     <div class="item-wrapper">
@@ -34,23 +34,21 @@
       </div>
     </div>
 
-      <div class="item-header">
-        <button class="item-button">저장</button>
-      </div>
-      <input type="file" id="image-upload" multiple>
-      <input v-model="homeCreateRequest.content" placeholder="입력해주세요">
+    <div class="item-header">
+      <button class="item-button">저장</button>
+    </div>
+    <input type="file" id="image-upload" multiple>
+    <input v-model="homeCreateRequest.content" placeholder="입력해주세요">
 
 
   </main>
   <div class="fixed-button">
-    <img src="/public/image/articlePlus.png" @click="insertArticle" />
+    <img src="/image/articlePlus.png" @click="insertArticle" />
   </div>
-
-
 </template>
 
 <script setup lang="ts">
-import { ref,onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useUserStore } from '@/stores/user';
 const store = useUserStore();
@@ -59,17 +57,16 @@ import StarMenu from '@/components/StarMenu/StarMenu.vue';
 
 import type { StarProfile, HomeArticle } from '@/common/types/index'
 
-const props = defineProps(['id']);
-const starId = ref(props.id);
+const starId = store.starState!.id;
 
-const starProfile= ref<StarProfile>();
+const starProfile = ref<StarProfile>();
 
-let isGood = ref();
-const buttonText = ref('');
+// let isGood = ref();
+// const buttonText = ref('');
 
-const article= ref<HomeArticle[]>([]);
+const article = ref<HomeArticle[]>([]);
 
-let files= ref<File[]>([]);
+let files = ref<File[]>([]);
 
 const getstarProfile = async () => {
   const response = await axios.get(`${store.API_URL}/home/profile/1`);
@@ -92,7 +89,7 @@ const handleFileSelection = (event: any) => {
 }
 
 let homeCreateRequest = {
-  starId: starId.value,
+  starId: starId,
   ordering: 3,
   content: "입력해주세요"
 };
@@ -128,11 +125,14 @@ let homeUpdateRequest = {
 };
 
 const updateArticle = async (homeid: number) => {
+  ////////////////////////////// 오류 제거용
+  console.log(homeid)
+  ///////////////////////////////
 
   let formData = new FormData();
   formData.append('homeUpdateRequest', JSON.stringify(homeUpdateRequest)); // JSON 문자열로 변환하여 추가
 
-// 파일이 여러 개인 경우, 각각의 파일을 추가
+  // 파일이 여러 개인 경우, 각각의 파일을 추가
   for (let i = 0; i < files.value.length; i++) {
     formData.append('files', files.value[i]);
   }
@@ -153,10 +153,10 @@ const deleteArticle = async (homeid: number) => {
   axios.delete(`${store.API_URL}/home/delete/${homeid}`)
     .then(response => {
       getArticle();
-    console.log(response.data);
-  }).catch(error => {
-    console.error(error);
-  });
+      console.log(response.data);
+    }).catch(error => {
+      console.error(error);
+    });
 
 }
 
@@ -201,8 +201,10 @@ onMounted(() => {
 
 .fixed-button {
   position: fixed;
-  bottom: 10px; /* 버튼을 화면 밑에서 얼마나 떨어지게 할지 설정 */
-  right: 10px; /* 버튼을 화면 오른쪽에서 얼마나 떨어지게 할지 설정 */
+  bottom: 10px;
+  /* 버튼을 화면 밑에서 얼마나 떨어지게 할지 설정 */
+  right: 10px;
+  /* 버튼을 화면 오른쪽에서 얼마나 떨어지게 할지 설정 */
 }
 
 .fixed-button img {
@@ -223,6 +225,4 @@ onMounted(() => {
 .item-button {
   margin: 0 5px;
 }
-
-
 </style>

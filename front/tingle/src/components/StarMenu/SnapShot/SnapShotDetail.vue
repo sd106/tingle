@@ -8,31 +8,19 @@
       <div class="col-md-6">
         <!-- 스냅샷 관리 버튼 -->
         <div class="snapshot-actions d-flex justify-content-between">
-          <button
-            class="btn btn-dark"
-            v-if="isLike"
-            @click="dislike(props.selectedSnapshot!.snapshotId, store.fanState!.username)"
-          >
+          <button class="btn btn-dark" v-if="isLike"
+            @click="dislike(props.selectedSnapshot!.snapshotId, store.fanState!.username)">
             좋아요 취소 {{ props.selectedSnapshot?.likes }}
           </button>
-          <button
-            class="btn btn-outline-dark"
-            v-else
-            @click="like(props.selectedSnapshot!.snapshotId, store.fanState!.username)"
-          >
+          <button class="btn btn-outline-dark" v-else
+            @click="like(props.selectedSnapshot!.snapshotId, store.fanState!.username)">
             좋아요 {{ props.selectedSnapshot?.likes }}
           </button>
           <span>
-            <button
-              class="btn btn-secondary"
-              @click="goToUpdate(props.selectedSnapshot!.snapshotId)"
-            >
+            <button class="btn btn-secondary" @click="goToUpdate(props.selectedSnapshot!.snapshotId)">
               스냅샷 수정
             </button>
-            <button
-              class="btn btn-danger"
-              @click="deleteSnapshot(props.selectedSnapshot!.snapshotId)"
-            >
+            <button class="btn btn-danger" @click="deleteSnapshot(props.selectedSnapshot!.snapshotId)">
               스냅샷 삭제
             </button>
           </span>
@@ -73,10 +61,7 @@
                   <button class="btn btn-outline-danger btn-sm" @click="deleteComment(comment.id)">
                     삭제
                   </button>
-                  <button
-                    class="btn btn-outline-secondary btn-sm mx-2"
-                    @click="startEditComment(comment)"
-                  >
+                  <button class="btn btn-outline-secondary btn-sm mx-2" @click="startEditComment(comment)">
                     수정
                   </button>
                 </span>
@@ -87,12 +72,7 @@
         <!-- 댓글 작성 폼 -->
         <form @submit.prevent="postComment" class="row comment-form bg-body-secondary">
           <div class="col-sm-10">
-            <input
-              class="form-control"
-              type="text"
-              v-model="newCommentContent"
-              placeholder="댓글을 남겨보세요!"
-            />
+            <input class="form-control" type="text" v-model="newCommentContent" placeholder="댓글을 남겨보세요!" />
           </div>
           <button type="submit" class="col-sm-2 btn btn-success">작성</button>
         </form>
@@ -156,7 +136,7 @@ const like = async (id: number, username: string) => {
     try {
       // 좋아요 API 호출
       await axios.post(
-        `https://i10d106.p.ssafy.io/api/snapshot/${id}/likes`,
+        `http://localhost:8080/snapshot/${id}/likes`,
         { username: username },
         { withCredentials: true }
       )
@@ -174,7 +154,7 @@ const dislike = async (id: number, username: string) => {
     try {
       // 좋아요 API 호출
       await axios.post(
-        `https://i10d106.p.ssafy.io/api/snapshot/${id}/dislikes`,
+        `http://localhost:8080/snapshot/${id}/dislikes`,
 
         { username: username },
         { withCredentials: true }
@@ -190,7 +170,7 @@ const dislike = async (id: number, username: string) => {
 const deleteSnapshot = async (id: number) => {
   console.log('삭제 시작할게요')
   if (id && props.selectedSnapshot) {
-    const response = await axios.delete(`https://i10d106.p.ssafy.io/api/snapshot/${id}/delete`)
+    const response = await axios.delete(`http://localhost:8080/snapshot/${id}/delete`)
     console.log(response.data) // 성공 응답 로그
     console.log('삭제 성공!')
     // 성공적으로 삭제 후 필요한 추가 작업을 여기에 작성하세요.
@@ -213,7 +193,7 @@ const postComment = async () => {
   try {
     console.log(props.selectedSnapshot?.snapshotId)
     await axios.post(
-      `https://i10d106.p.ssafy.io/api/snapshot/${props.selectedSnapshot?.snapshotId}/comment/new`,
+      `http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/new`,
       {
         context: newCommentContent.value,
         username: username,
@@ -245,7 +225,7 @@ const cancelEdit = () => {
 const submitCommentEdit = async (commentId: number) => {
   try {
     const response = await axios.post(
-      `https://i10d106.p.ssafy.io/api/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${commentId}/update`,
+      `http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${commentId}/update`,
       {
         context: editingCommentContent.value,
         username: username,
@@ -266,7 +246,7 @@ const submitCommentEdit = async (commentId: number) => {
 const deleteComment = async (id: number) => {
   try {
     await axios.post(
-      `https://i10d106.p.ssafy.io/api/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${id}/delete`
+      `http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${id}/delete`
     )
     // 댓글 목록을 다시 불러오는 로직 필요
     router.go(0)
@@ -290,23 +270,35 @@ function formatDistanceToNowFromLocalDateTime(isoString: string) {
 
 <style>
 .off-canvas {
-  display: flex; /* Flex 컨테이너 설정 */
-  flex-direction: row; /* 자식 요소들을 세로로 나열 */
+  display: flex;
+  /* Flex 컨테이너 설정 */
+  flex-direction: row;
+  /* 자식 요소들을 세로로 나열 */
   flex: 1;
   align-items: center;
-  width: 100%; /* 컨테이너 너비 설정 */
-  max-width: 100vh; /* 최대 너비 설정 */
-  margin: auto; /* 페이지 중앙 정렬 */
-  background: white; /* 배경색 */
-  overflow-y: auto; /* 내용이 길어지면 스크롤바 생성 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  width: 100%;
+  /* 컨테이너 너비 설정 */
+  max-width: 100vh;
+  /* 최대 너비 설정 */
+  margin: auto;
+  /* 페이지 중앙 정렬 */
+  background: white;
+  /* 배경색 */
+  overflow-y: auto;
+  /* 내용이 길어지면 스크롤바 생성 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* 그림자 효과 */
 }
 
 .image-container img {
-  width: 100%; /* 이미지 너비 설정 */
-  height: auto; /* 이미지 높이 자동 설정 */
-  object-fit: cover; /* 이미지 비율을 유지하면서 컨테이너를 채움 */
-  max-height: 50vh; /* 이미지 최대 높이를 화면 높이의 반으로 설정 */
+  width: 100%;
+  /* 이미지 너비 설정 */
+  height: auto;
+  /* 이미지 높이 자동 설정 */
+  object-fit: cover;
+  /* 이미지 비율을 유지하면서 컨테이너를 채움 */
+  max-height: 50vh;
+  /* 이미지 최대 높이를 화면 높이의 반으로 설정 */
 }
 
 /* 본문, 태그, 댓글 작성창, 댓글 목록 스타일링 */
@@ -314,44 +306,61 @@ function formatDistanceToNowFromLocalDateTime(isoString: string) {
 .tags-list,
 .comment-form,
 .comments-list {
-  padding: 16px; /* 패딩 설정 */
+  padding: 16px;
+  /* 패딩 설정 */
 }
 
 .content-section {
-  flex-basis: 50%; /* 나머지 50% 공간 차지 */
-  padding: 1em; /* 내용과 테두리 사이의 여백 */
-  overflow-y: auto; /* 필요한 경우 스크롤바 표시 */
+  flex-basis: 50%;
+  /* 나머지 50% 공간 차지 */
+  padding: 1em;
+  /* 내용과 테두리 사이의 여백 */
+  overflow-y: auto;
+  /* 필요한 경우 스크롤바 표시 */
 }
 
 .tags-list li {
-  display: inline-block; /* 태그를 인라인 블록으로 표시 */
-  margin-right: 8px; /* 태그 사이의 여백 설정 */
-  padding: 5px 10px; /* 태그 패딩 설정 */
-  background-color: #f0f0f0; /* 태그 배경색 */
-  border-radius: 16px; /* 태그 둥근 모서리 */
+  display: inline-block;
+  /* 태그를 인라인 블록으로 표시 */
+  margin-right: 8px;
+  /* 태그 사이의 여백 설정 */
+  padding: 5px 10px;
+  /* 태그 패딩 설정 */
+  background-color: #f0f0f0;
+  /* 태그 배경색 */
+  border-radius: 16px;
+  /* 태그 둥근 모서리 */
 }
 
 .comment-form {
-  display: flex; /* Flex 컨테이너 설정 */
-  align-items: center; /* 요소들을 세로 중앙 정렬 */
+  display: flex;
+  /* Flex 컨테이너 설정 */
+  align-items: center;
+  /* 요소들을 세로 중앙 정렬 */
 }
 
 .comment-form input[type='text'] {
-  flex-grow: 1; /* 입력 필드가 가능한 모든 공간을 차지하도록 설정 */
-  margin-right: 8px; /* 버튼과의 여백 설정 */
+  flex-grow: 1;
+  /* 입력 필드가 가능한 모든 공간을 차지하도록 설정 */
+  margin-right: 8px;
+  /* 버튼과의 여백 설정 */
 }
 
 .comments-list {
-  flex-direction: column; /* 댓글을 세로로 나열 */
+  flex-direction: column;
+  /* 댓글을 세로로 나열 */
 }
 
 .comment {
-  padding: 8px 0; /* 댓글의 상하 패딩 설정 */
-  border-bottom: 1px solid #eee; /* 댓글 하단에 경계선 설정 */
+  padding: 8px 0;
+  /* 댓글의 상하 패딩 설정 */
+  border-bottom: 1px solid #eee;
+  /* 댓글 하단에 경계선 설정 */
 }
 
 .comment:last-child {
-  border-bottom: none; /* 마지막 댓글 하단 경계선 제거 */
+  border-bottom: none;
+  /* 마지막 댓글 하단 경계선 제거 */
 }
 
 .snapshot-actions {
@@ -359,13 +368,17 @@ function formatDistanceToNowFromLocalDateTime(isoString: string) {
 }
 
 .snapshot-actions button {
-  margin: 0 8px; /* 버튼 사이의 여백 */
+  margin: 0 8px;
+  /* 버튼 사이의 여백 */
 }
 
 .snapshot-image {
-  width: 100%; /* 이미지가 섹션 너비를 꽉 채우도록 함 */
-  height: auto; /* 이미지 높이 자동 조절 */
-  object-fit: cover; /* 이미지 비율 유지 */
+  width: 100%;
+  /* 이미지가 섹션 너비를 꽉 채우도록 함 */
+  height: auto;
+  /* 이미지 높이 자동 조절 */
+  object-fit: cover;
+  /* 이미지 비율 유지 */
 }
 
 .download-link {

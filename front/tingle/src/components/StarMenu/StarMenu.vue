@@ -25,7 +25,7 @@
     <!-- 스타일 때 -->
     <ul v-else class="d-flex justify-content-around nav nav-underline">
         <li class="nav-item">
-            <RouterLink :to="`/${props.id}/home`" class="nav-link router-link-custom"
+            <RouterLink :to="`/forstar/home/manage/`" class="nav-link router-link-custom"
                 :class="{ active: isActive('/home') }">Home</RouterLink>
         </li>
         <li class="nav-item">
@@ -33,15 +33,15 @@
                 :class="{ active: isActive('/snapshot') }">Snapshot</RouterLink>
         </li>
         <li class="nav-item">
-            <RouterLink :to="`/${props.id}/wish/manage`" class="nav-link router-link-custom"
+            <RouterLink :to="`/forstar/wish/manage/`" class="nav-link router-link-custom"
                 :class="{ active: isActive('/wish') }">Wish</RouterLink>
         </li>
         <li class="nav-item">
-            <RouterLink :to="`/${props.id}/store/star`" class="nav-link router-link-custom"
-                :class="{ active: isActive('/store') }">Store</RouterLink>
+            <RouterLink :to="`/forstar/store/`" class="nav-link router-link-custom" :class="{ active: isActive('/store') }">
+                Store</RouterLink>
         </li>
         <li class="nav-item">
-            <RouterLink :to="`/${props.id}/fanmeeting`" class="nav-link router-link-custom"
+            <RouterLink :to="`/forstar/fanmeeting`" class="nav-link router-link-custom"
                 :class="{ active: isActive('/fanmeeting') }">Fanmeeting</RouterLink>
         </li>
     </ul>

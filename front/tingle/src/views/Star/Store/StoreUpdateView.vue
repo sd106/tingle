@@ -9,52 +9,26 @@
         </div>
       </div>
       <div class="tw-grid tw-gap-4 tsw-mb-8">
-        <input
-          type="text"
-          v-model="product!.name"
-          placeholder="상품 이름"
-          class="tw-input tw-input-bordered tw-w-full"
-        />
-        <input
-          type="number"
-          v-model.number="product!.amount"
-          placeholder="수량"
-          class="tw-input tw-input-bordered tw-w-full"
-        />
-        <input
-          type="number"
-          v-model.number="product!.price"
-          placeholder="가격"
-          class="tw-input tw-input-bordered tw-w-full"
-        />
+        <input type="text" v-model="product!.name" placeholder="상품 이름" class="tw-input tw-input-bordered tw-w-full" />
+        <input type="number" v-model.number="product!.amount" placeholder="수량"
+          class="tw-input tw-input-bordered tw-w-full" />
+        <input type="number" v-model.number="product!.price" placeholder="가격"
+          class="tw-input tw-input-bordered tw-w-full" />
 
         <TiptapTest v-model="product!.content" />
       </div>
 
-      <div
-        ref="dragArea"
+      <div ref="dragArea"
         class="mt-3 tw-border-dashed tw-border-2 tw-border-primary tw-p-4 tw-text-center tw-cursor-pointer tw-mb-4 tw-h-64 d-flex justify-content-center align-items-center"
-        @dragover.prevent="handleDragOver"
-        @drop="handleDrop"
-        @click="fileInput!.click()"
-      >
+        @dragover.prevent="handleDragOver" @drop="handleDrop" @click="fileInput!.click()">
         <p>여기에 파일을 드래그 앤 드롭하거나 클릭하여 선택하세요.</p>
-        <input
-          type="file"
-          multiple
-          ref="fileInput"
-          @change="handleFileUpload"
-          style="display: none"
-        />
+        <input type="file" multiple ref="fileInput" @change="handleFileUpload" style="display: none" />
       </div>
 
       <div class="tw-grid tw-grid-cols-3 tw-gap-4">
         <div v-for="(file, index) in previewFiles" :key="index" class="tw-relative tw-mb-4">
           <img :src="file" class="tw-rounded tw-shadow-md" />
-          <button
-            @click="removeFile(index)"
-            class="tw-btn tw-btn-error tw-btn-sm tw-absolute tw-right-0 tw-top-0"
-          >
+          <button @click="removeFile(index)" class="tw-btn tw-btn-error tw-btn-sm tw-absolute tw-right-0 tw-top-0">
             삭제
           </button>
         </div>
@@ -90,7 +64,7 @@ const fileInput = ref<HTMLInputElement | null>(null)
 
 const getProduct = async (productId: number) => {
   try {
-    const response = await axios.get(`https://i10d106.p.ssafy.io/api/product/getById/${productId}`)
+    const response = await axios.get(`http://localhost:8080/product/getById/${productId}`)
     if (response.data.resultCode === 'SUCCESS') {
       product.value = response.data.data
       if (product.value && product.value.imageUrl) {
@@ -178,7 +152,7 @@ const updateProductWithOutFile = async (productInfo: any, previewFiles: string[]
     })
 
     const response = await axios.post(
-      'https://i10d106.p.ssafy.io/api/product/update/nofile',
+      'http://localhost:8080/product/update/nofile',
       formData
     )
     if (response.status === 200) {
@@ -197,7 +171,7 @@ const updateProductWithPreview = async (productInfo: any) => {
     const formData = new FormData()
     formData.append('productDto', JSON.stringify(productInfo))
 
-    const response = await axios.post('https://i10d106.p.ssafy.io/api/product/update/nopre', formData)
+    const response = await axios.post('http://localhost:8080/product/update/nopre', formData)
     if (response.status === 200) {
       alert('상품이 성공적으로 수정되었습니다.')
       router.go(-1)
@@ -220,7 +194,7 @@ const updateProduct = async (productInfo: any, fileInputs: File[], previewFiles:
       formData.append('previewFiles', previewFile)
     })
 
-    const response = await axios.post('https://i10d106.p.ssafy.io/api/product/update', formData, {
+    const response = await axios.post('http://localhost:8080/product/update', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -241,7 +215,8 @@ const updateProduct = async (productInfo: any, fileInputs: File[], previewFiles:
 
 <style lang="scss">
 h1 {
-  font-size: 2em; /* 예시 */
+  font-size: 2em;
+  /* 예시 */
   color: #333;
 }
 
@@ -254,6 +229,7 @@ h2 {
   font-size: 1.5em;
   color: #333;
 }
+
 /* h3 등에 대해서도 필요한 스타일을 추가 */
 
 /* Basic editor styles */
@@ -265,7 +241,7 @@ h2 {
 }
 
 .tiptap {
-  > * + * {
+  >*+* {
     margin-top: 0.75em;
   }
 

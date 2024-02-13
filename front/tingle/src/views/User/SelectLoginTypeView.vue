@@ -23,16 +23,18 @@ const store = useUserStore()
 
 const selectLoginType = async (type: string) => {
   try {
-    const { data } = await axios.post(`https://i10d106.p.ssafy.io/api/auth/login/${type}`, {}, { withCredentials: true })
+    const { data } = await axios.post(`http://localhost:8080/auth/login/${type}`, {}, { withCredentials: true })
     if (type === 'fan') {
       const { id, username, picture, follwingStars } = data
       store.fanState = { id, username, picture, follwingStars }
+      router.push('/')
     } else if (type === 'star') {
       const { id, username, picture } = data
       store.starState = { id, username, picture }
       store.isStar = true
+      router.push('/forstar/home/manage')
     }
-    router.push('/')
+
   } catch (error) {
     console.log('error', error)
   }

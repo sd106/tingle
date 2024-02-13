@@ -21,13 +21,7 @@ const id = ref(props.id);
     <div class="col-12 col-md-8 col-lg-6">
       <h1 class="text-center mb-5">스냅샷 수정</h1>
       <div class="input-group mb-3">
-        <input
-          type="text"
-          v-model="content"
-          class="form-control"
-          id="floatingInput"
-          placeholder="간단한 내용을 입력해주세요."
-        />
+        <input type="text" v-model="content" class="form-control" id="floatingInput" placeholder="간단한 내용을 입력해주세요." />
       </div>
       <div class="input-group mb-3">
         <input type="file" @change="onFileChange" class="form-control" id="inputGroupFile02" />
@@ -36,14 +30,8 @@ const id = ref(props.id);
         <img :src="imagePreview" class="img-thumbnail" />
       </div>
       <div class="input-group mb-3">
-        <input
-          type="text"
-          v-model="tagInput"
-          @keyup.enter="addTag"
-          class="form-control"
-          placeholder="태그 입력 후 엔터를 눌러주세요."
-          id="floatingInput"
-        />
+        <input type="text" v-model="tagInput" @keyup.enter="addTag" class="form-control" placeholder="태그 입력 후 엔터를 눌러주세요."
+          id="floatingInput" />
       </div>
       <!-- 태그 목록 -->
       <ul>
@@ -110,7 +98,7 @@ const updateSnapshot = async () => {
   // API 호출을 통해 스냅샷 데이터를 업데이트하는 로직
   try {
     console.log('axios 직전')
-    await axios.put(`https://i10d106.p.ssafy.io/api/snapshot/${snapshotId}/update`, formData)
+    await axios.put(`http://localhost:8080/snapshot/${snapshotId}/update`, formData)
     console.log('axios 통과')
     router.push(`/${starId}/snapshot`) // 업데이트 후 상세 페이지로 이동
   } catch (error) {

@@ -1,6 +1,6 @@
 <template>
   <main class="container">
-    <StarMenu :id="id" />
+    <StarMenu />
     <div class="container tw-flex tw-justify-between my-4">
       <!-- {{ selectedSort }} -->
       <div>
@@ -209,8 +209,7 @@ import type { WishInfo } from '@/common/types/index'
 import StarMenu from '@/components/StarMenu/StarMenu.vue';
 
 // 스타 본인의 id 정보
-const props = defineProps(['id']);
-const id = ref(props.id);
+const id = store.starState!.id;
 
 // 위시 리스트
 const wishNS = ref<WishInfo[]>([]);
@@ -349,10 +348,7 @@ const getCurrentPageItemsNS = computed(() => {
 const fetchData = async (status: number, sorting: number): Promise<void> => {
 
   try {
-    /* test */
-    id.value = parseInt('1');
-
-    const res = await axios.get(`${store.API_URL}/wish/read/${id.value}/${sorting}/${status}`);
+    const res = await axios.get(`${store.API_URL}/wish/read/${id}/${sorting}/${status}`);
 
     if (status === 0) {
       wishNS.value = res.data.data;
@@ -393,7 +389,7 @@ const getSortingWish = function (sorting: number): void {
 // 해당 위시를 미채택/채택 상태로 변경
 const updateWishStatus = async (wishId: number, wishStatus: number): Promise<void> => {
   try {
-    const res = await axios.post(`${store.API_URL}/wish/update/status/star/${id.value}/${wishId}/${wishStatus}`)
+    const res = await axios.post(`${store.API_URL}/wish/update/status/star/${id}/${wishId}/${wishStatus}`)
 
     console.log('Wish status updated:', res);
 

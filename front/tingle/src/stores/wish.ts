@@ -7,7 +7,7 @@ import { useUserStore } from '@/stores/user'
 export const useWishStore = defineStore('wish', () => {
   const userStore = useUserStore()
 
-  const API_URL = 'https://i10d106.p.ssafy.io/api'
+  const API_URL = 'http://localhost:8080'
 
   const selectedSnapshot = ref<selectedSnapshotType | null>(null)
 
