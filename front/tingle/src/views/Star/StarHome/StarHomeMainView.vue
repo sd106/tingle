@@ -8,6 +8,7 @@
       <!-- 프로필 사진 > 누르면 확대-->
       <div>
         <img :src="starProfile?.profileImage" alt="사진">
+        <!-- 프로필 수정, 삭제 컴포넌트 -->
         <div style="display: inline-block;">
           <!-- 닉네임 -->
           <p>닉네임 {{starProfile?.snsUrl}}</p>
@@ -146,7 +147,6 @@ onMounted(() => {
   getstarProfile();
   getArticle();
 });
-
 
 
 </script>
