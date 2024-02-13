@@ -21,7 +21,8 @@
         <img src="/image/ham.png" alt="" />
       </button>
       <RouterLink to="/">
-        <img class="" src="/image/nav_logo.webp" alt="" style="height: 50px" />
+        <img v-if="isStar" class="logo" src="/image/star-logo.gif" alt="" style="height: 60px" />
+        <img v-else class="logo" src="/image/boat-logo.gif" alt="" style="height: 60px" />
       </RouterLink>
     </div>
     <div class="offcanvas-body">
@@ -93,7 +94,7 @@ import axios from 'axios'
 
 import ChatModal from '@/components/ChatModal.vue'
 const store = useUserStore()
-
+const isStar = store.isStar
 // 사이드바 더보기
 const displayCount = ref(7)
 
@@ -119,4 +120,12 @@ getFolloings()
 </script>
 
 <style>
+
+.logo {
+  position: fixed;
+  top: 10px;
+  left: 140px;
+  right: 0;
+}
+
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="main-background">
     <!-- 배경색을 두고 다른걸 다 흰색으로 두는 것도 괜찮을듯 -->
     <!-- 배너사진 -->
     <div v-if="hotStarsInfo"></div>
@@ -9,65 +9,64 @@
       <img class="star3" src="/image/star3.png" />
       <img class="star4" src="/image/star4.png" />
       <img class="star5" src="/image/star1.png" />
-      <img src="/image/cat-banner.png" style="margin-left:40%; margin-top: 94px; z-index: 2147483948;" alt="">
+      <img src="/image/cat-banner.png" style="margin-left: 40%; margin-top: 94px" alt="" />
     </div>
     <!-- HOT STAR -->
-    <img src="/image/wood.png" class="container-img" style="margin-left: 39%; margin-top: 60px;" alt="">
-    <div class="section-title" style="padding-top: 500px;">HOT STAR들을 만나보세요!</div>
+    <img src="/image/wood.png" class="container-img" style="margin-left: 39%" alt="" />
     <!-- <img src="/image/cat-banner.png" style="padding-top: 1000px;" alt=""> -->
-    <!-- 슬라이더 좀 더 자연스럽고 부드럽게 회전초밥마냥 라이브러리 쓰든가-->
+    <h1 class="container" style="padding-top: 500px">HOT STAR들을 만나보세요!</h1>
     <div class="container slider-container">
       <div class="justify-content-between slider-track" ref="sliderTrack">
-        <div
-          v-for="hotstar in hotStarsInfo"
-          :key="hotstar.id"
-          class="p-2 star-card"
-          style="width: 18%"
-        >
-          <RouterLink
-            class="router-link-custom"
-            :to="hotstar.id === 1 ? `/${hotstar.id}/home/manage` : `/${hotstar.id}/home`"
-          >
-            <div class="hotstar-image">
-              <img :src="hotstar.picture" alt="not" class="hotpic" />
+        <div v-for="hotstar in hotStarsInfo" :key="hotstar.id" class="p-2 star-card-hotstar">
+          <RouterLink :to="`/${hotstar.id}/home`">
+            <div class="d-flex">
+              <div class="p-0 me-5 align-items center" style="width: 80px">
+                <img :src="hotstar.picture" alt="not" style="border-radius: 50%" />
+              </div>
+              <div class="d-flex justify-content-center align-items-center me-5">
+                <span class="fw-bold long-text">{{ truncateText(hotstar.username, 4) }}</span>
+              </div>
             </div>
-            <div class="hotstar-nickName">{{ hotstar.username }}</div>
           </RouterLink>
         </div>
       </div>
     </div>
     <!-- 카테고리별 인기순 정렬 -->
-    <div class="section-title">카테고리별 상위 10명!</div>
-    <div class="container d-flex justify-content-around m-2">
+    <h1 class="container">카테고리별 상위 10명!</h1>
+    <div class="container d-flex">
       <!-- 카테고리 버튼 > 누르면 v-for에 들어갈 displaystarinfo 기준이 바뀜 -->
-      <button class="category-btn" @click="selectCategory(0)">일상/토크</button>
-      <button class="category-btn" @click="selectCategory(1)">동물</button>
-      <button class="category-btn" @click="selectCategory(2)">게임/스포츠</button>
-      <button class="category-btn" @click="selectCategory(3)">미술/음악</button>
-      <button class="category-btn" @click="selectCategory(4)">뷰티/패션</button>
-      <button class="category-btn" @click="selectCategory(5)">기타</button>
+      <button class="category-btn m-2" @click="selectCategory(0)">일상/토크</button>
+      <button class="category-btn m-2" @click="selectCategory(1)">동물</button>
+      <button class="category-btn m-2" @click="selectCategory(2)">게임/스포츠</button>
+      <button class="category-btn m-2" @click="selectCategory(3)">미술/음악</button>
+      <button class="category-btn m-2" @click="selectCategory(4)">뷰티/패션</button>
+      <button class="category-btn m-2" @click="selectCategory(5)">기타</button>
     </div>
-    <div
-      class="container d-flex flex-wrap"
-      style="height: 360px; background-color: lightgoldenrodyellow; border-radius: 20px"
-    >
-      <div v-if="StarsByCategory.length === 0">아직 이 분야 스타가 존재하지 않습니다.</div>
-      <div
-        v-else
-        v-for="star in StarsByCategory"
-        :key="star.id"
-        class="p-2 star-card"
-        style="width: 18%"
-      >
-        <RouterLink
-          class="router-link-custom"
-          :to="star.id === 1 ? `/${star.id}/home/manage` : `/${star.id}/home`"
+    
+    <div class="container tw-mx-auto">
+      <div class="tw-grid tw-grid-cols-5 tw-gap-0" style="margin-bottom: 100px">
+        <div v-if="StarsByCategory.length === 0">아직 이 분야 스타가 존재하지 않습니다.</div>
+        <div
+          v-else
+          v-for="star in StarsByCategory"
+          :key="star.id"
+          class="tw-border tw-rounded-lg star-card"
         >
-          <div class="star-image">
-            <img :src="star.picture" alt="not" />
-          </div>
-          <div class="star-nickName">{{ star.username }}</div>
-        </RouterLink>
+          <RouterLink
+            :to="`/${star.id}/home`"
+            class="tw-flex tw-flex-col tw-items-center tw-justify-center"
+          >
+            <div
+              class="tw-basis-4/5 tw-overflow-hidden"
+              style="object-fit:; border-top-left-radius: 20px; border-top-right-radius: 20px"
+            >
+              <img :src="star.picture" alt="not" style="object-fit:" />
+            </div>
+            <div class="tw-flex tw-text-center tw-items-center tw-basis-1/5">
+              <span class="tw-text-xl tw-font-bold long-text">{{ truncateText(star.username, 6) }}</span>
+            </div>
+          </RouterLink>
+        </div>
       </div>
     </div>
   </main>
@@ -84,9 +83,16 @@ import type { HotStarInfo } from '@/common/types/index'
 import type { StarByCategory } from '@/common/types/index'
 
 const store = useUserStore()
-
 // 슬라이드
 const sliderTrack = ref<HTMLDivElement | null>(null)
+
+const truncateText = (text: string, maxLength: number) => {
+  if (text.length > maxLength) {
+    return text.substring(0, maxLength) + '...'
+  } else {
+    return text
+  }
+}
 
 const moveSlider = () => {
   setInterval(() => {
@@ -143,17 +149,29 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.long-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.main-background {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: #eef1ff;
+}
+
 .full-width-fixed {
   position: absolute;
   left: 0;
   right: 0;
-  height: 300px; /* 필요한 높이 값 */
-  z-index: 999; /* 필요한 경우 z-index 값 설정 */
+  height: 300px;
 }
 
 .container-img {
   position: absolute;
-  top: 256px;
+  top: 219px;
   left: 0;
   right: 0;
   height: 240px; /* 필요한 높이 값 */
@@ -168,11 +186,23 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 20px;
   margin: 10px;
   transition: transform 0.3s ease;
-  background: none;
-  height: 160px;
-  width: 110px;
+  background: white;
+  height: 240px;
+  width: 200px;
+}
+
+.star-card-hotstar {
+  display: flex;
+  margin: 10px;
+  transition: transform 0.3s ease;
+  background: white;
+  border-radius: 100px;
+  padding: 2px;
+  height: 100px;
+  width: auto;
 }
 
 .star-card:hover {
@@ -183,7 +213,6 @@ onMounted(() => {
 .star-image {
   width: 100px;
   height: 100px;
-  border-radius: 50%;
   overflow: hidden;
   margin-bottom: 5px;
 }
@@ -203,27 +232,20 @@ onMounted(() => {
   width: 100px;
   height: 36px;
   border: none;
-  background: whitesmoke;
+  background: white;
+
   border-radius: 30px;
 }
 
 .category-btn:hover {
-  background-color: #dddddd;
+  background-color: #ede7e7;
 }
-
-.container {
-  overflow: hidden;
-  position: relative;
-  background: midnightblue;
-}
-
 
 .slider-container {
   overflow: hidden;
   width: 100%;
   height: 180px;
-  background-color: bisque;
-  border-radius: 100px;
+  background-color: #eef1ff;
 }
 
 .slider-track {
@@ -239,7 +261,6 @@ onMounted(() => {
 .hotpic {
   width: 100px;
   height: 100px;
-  border-radius: 50%;
   overflow: hidden;
   margin-bottom: 5px;
 }
