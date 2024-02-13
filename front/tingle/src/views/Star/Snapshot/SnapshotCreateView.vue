@@ -6,35 +6,17 @@
       <div class="col-12 col-md-8 col-lg-6">
         <!-- 최대 가로 길이가 화면의 60%를 차지하도록 설정 -->
         <div class="input-group mb-3">
-          <input
-            type="text"
-            v-model="content"
-            class="form-control"
-            id="floatingInput"
-            placeholder="간단한 내용을 입력해주세요."
-          />
+          <input type="text" v-model="content" class="form-control" id="floatingInput" placeholder="간단한 내용을 입력해주세요." />
         </div>
 
         <!-- 유저 이름 입력 -->
-        <div class="input-group mb-3">
-          <input
-            type="text"
-            v-model="username"
-            class="form-control"
-            id="floatingInput"
-            placeholder="유저이름"
-          />
-        </div>
+        <!-- <div class="input-group mb-3">
+          <input type="text" v-model="username" class="form-control" id="floatingInput" placeholder="유저이름">
+        </div> -->
         <!-- 스타 이름 입력 -->
-        <div class="input-group mb-3">
-          <input
-            type="text"
-            v-model="starname"
-            class="form-control"
-            id="floatingInput"
-            placeholder="스타"
-          />
-        </div>
+        <!-- <div class="input-group mb-3">
+          <input type="text" v-model="starname" class="form-control" id="floatingInput" placeholder="스타">
+        </div> -->
         <!-- 파일 업로드 -->
         <div class="input-group mb-3">
           <input type="file" @change="onFileChange" class="form-control" id="inputGroupFile02" />
@@ -44,14 +26,8 @@
         </div>
 
         <div class="input-group mb-3">
-          <input
-            type="text"
-            v-model="tagInput"
-            @keyup.enter="addTag"
-            class="form-control"
-            placeholder="태그 입력 후 엔터를 눌러주세요."
-            id="floatingInput"
-          />
+          <input type="text" v-model="tagInput" @keyup.enter="addTag" class="form-control"
+            placeholder="태그 입력 후 엔터를 눌러주세요." id="floatingInput" />
         </div>
         <!-- 태그 목록 -->
         <ul>
@@ -69,17 +45,31 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import axios from 'axios'
-import { useRouter } from 'vue-router'
+import { ref, computed } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/user';
 
-const file = ref<File | null>(null)
-const content = ref('')
-const tags = ref<string[]>([]) // 태그 입력 방식에 따라 수정이 필요할 수 있습니다.
-const tagInput = ref<string>('')
-const username = ref('')
-const starname = ref('')
-const router = useRouter()
+const file = ref<File | null>(null);
+const content = ref('');
+const tags = ref<string[]>([]); // 태그 입력 방식에 따라 수정이 필요할 수 있습니다.
+const tagInput = ref<string>('');
+// const starname = ref('');
+const router = useRouter();
+
+const userStore = useUserStore()
+
+const props = defineProps(['id']);
+const username = computed<string>(() => {
+  if (userStore.fanState && !userStore.starState) {
+    return userStore.fanState.username;
+  } else if (userStore.starState && !userStore.fanState) {
+    return userStore.starState.username;
+  }
+  return '';
+});
+
+
 
 const addTag = () => {
   const newTag = tagInput.value.trim()
@@ -119,12 +109,12 @@ const onFileChange = (event: Event) => {
 const createSnapshot = async () => {
   const formData = new FormData()
   if (file.value) {
-    formData.append('file', file.value)
+    formData.append('file', file.value);
   }
-  formData.append('content', content.value)
-  formData.append('tags', tags.value.join(',')) // 태그 형식에 따라 조정 필요
-  formData.append('username', username.value)
-  formData.append('starname', starname.value)
+  formData.append('content', content.value);
+  formData.append('tags', tags.value.join(',')); // 태그 형식에 따라 조정 필요
+  formData.append('username', username.value);
+  formData.append('starId', props.id);
 
   for (let [key, value] of formData.entries()) {
     console.log(`${key}: ${value}`)
@@ -132,7 +122,7 @@ const createSnapshot = async () => {
 
   try {
     console.log('post직전')
-    axios.post('https://i10d106.p.ssafy.io/api/snapshot/new', formData, { withCredentials: true })
+    axios.post('http://localhost:8080/snapshot/new', formData, { withCredentials: true })
     console.log('post끝')
     router.go(-1) // 메인 뷰로 이동
   } catch (error) {

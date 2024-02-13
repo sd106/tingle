@@ -10,10 +10,7 @@
       <div id="chat-room">
         <ul id="message-list">
           <li v-for="message in messages" :key="message.sender">
-            <div
-              v-if="message.sender !== localUserName"
-              class="message-content other-message-content"
-            >
+            <div v-if="message.sender !== localUserName" class="message-content other-message-content">
               <div class="profile-image">
                 <img src="/image/fan-meeting-img.webp" alt="프로필 이미지" />
               </div>
@@ -81,7 +78,7 @@ const sendToServer = (msg: SocketMessage) => {
 }
 
 const initializeWebSocket = () => {
-  socket = new WebSocket('wss://i10d106.p.ssafy.io/api/signal')
+  socket = new WebSocket('ws://localhost:8080/signal')
 
 
   socket.onmessage = (msg) => {

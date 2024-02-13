@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
 public class UserProfileController {
 
     private final UserServiceImpl userService;
@@ -35,10 +34,29 @@ public class UserProfileController {
         if (optionalUserEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();
             String picture = userEntity.getPicture();
-            if (picture != null) {
+            if (picture != null && picture.equals("https://tingle-s3.s3.ap-northeast-2.amazonaws.com/basic-profile.png")) {
                 s3UploadService.deleteImage(picture);
             }
             String s = s3UploadService.saveFile(file);
+            userEntity.setPicture(s);
+            userService.save(userEntity);
+            return ResultDTO.of("SUCCESS", "정상작동", s);
+        } else {
+            return ResultDTO.of("FAIL", "안됨", "안됨!!!!");
+        }
+    }
+
+    @PostMapping("/user/profilePicture/delete/{fanId}")
+    public ResultDTO<String> profilePictureDelete(@PathVariable("fanId") Long fanId) throws IOException {
+        System.out.println("fanId = " + fanId);
+        Optional<UserEntity> optionalUserEntity = userService.findById(fanId);
+        if (optionalUserEntity.isPresent()) {
+            UserEntity userEntity = optionalUserEntity.get();
+            String picture = userEntity.getPicture();
+            if (picture != null && !picture.equals("https://tingle-s3.s3.ap-northeast-2.amazonaws.com/basic-profile.png")) {
+                s3UploadService.deleteImage(picture);
+            }
+            String s = "https://tingle-s3.s3.ap-northeast-2.amazonaws.com/basic-profile.png";
             userEntity.setPicture(s);
             userService.save(userEntity);
             return ResultDTO.of("SUCCESS", "정상작동", s);

@@ -16,28 +16,18 @@
           </div>
         </div>
         <hr />
-        <div
-          class="border-bottom container p-0 justify-content-between"
-          v-for="res in responseMessageGetByUserId"
-          :key="res.fanId"
-          @click="expandProduct(res)"
-        >
+        <div class="border-bottom container p-0 justify-content-between" v-for="res in responseMessageGetByUserId"
+          :key="res.fanId" @click="expandProduct(res)">
           <div class="d-flex row">
             <div class="col-2">
               <!-- <img  :src="res.goods.imageUrl[0].url" alt="" style="width: 100px;"> -->
-              <RouterLink
-                :to="`/${res.goods.starId}/store/${res.goods.productId}`"
-                class="tw-flex tw-flex-col"
-              >
-                <img :src="res.goods.imageUrl[0].url" alt=""  />
+              <RouterLink :to="`/${res.goods.starId}/store/${res.goods.productId}`" class="tw-flex tw-flex-col">
+                <img :src="res.goods.imageUrl[0].url" alt="" />
               </RouterLink>
             </div>
 
             <div class="p-3 col-8 d-flex flex-column">
-              <RouterLink
-                :to="`/${res.goods.starId}/store/${res.goods.productId}`"
-                class="tw-flex tw-flex-col d-flex"
-              >
+              <RouterLink :to="`/${res.goods.starId}/store/${res.goods.productId}`" class="tw-flex tw-flex-col d-flex">
                 <h2 class="my-3">{{ res.goods.name }}</h2>
                 <span class="">{{ truncateText(removeHtmlTags(res.goods.content), 30) }}</span>
               </RouterLink>
@@ -66,7 +56,7 @@ const userId = fanState?.id
 
 const getOrderByUserId = async () => {
   try {
-    const response = await axios.get(`https://i10d106.p.ssafy.io/api/order/getUserOrders/${userId}`)
+    const response = await axios.get(`http://localhost:8080/order/getUserOrders/${userId}`)
     responseMessageGetByUserId.value = response.data.data
     console.log(response.data.data)
     // var textOnly = responseMessageGetByUserId.replace(/<[^>]*>/g, '');
@@ -77,9 +67,9 @@ const getOrderByUserId = async () => {
 }
 
 function removeHtmlTags(html: string): string {
-  const div = document.createElement('div');
-  div.innerHTML = html;
-  return div.textContent || div.innerText || '';
+  const div = document.createElement('div')
+  div.innerHTML = html
+  return div.textContent || div.innerText || ''
 }
 
 onMounted(() => {
@@ -88,15 +78,15 @@ onMounted(() => {
 
 function truncateText(text: string, maxLength: number): string {
   if (text.length > maxLength) {
-    return text.substring(0, maxLength) + "...";
+    return text.substring(0, maxLength) + '...'
   } else {
-    return text;
+    return text
   }
 }
 
 const deleteOrder = async (orderId: number) => {
   try {
-    const response = await axios.post(`https://i10d106.p.ssafy.io/api/order/delete/${orderId}`)
+    const response = await axios.post(`http://localhost:8080/order/delete/${orderId}`)
     console.log(response.data)
     getOrderByUserId()
   } catch (error) {
@@ -113,12 +103,14 @@ const expandProduct = (order: OrderResponse2) => {
 }
 </script>
 
-
 <style>
 .centered-content {
-  display: flex; /* Flex 컨테이너 설정 */
-  justify-content: center; /* 가로 축에서 중앙 정렬 */
-  align-items: center; /* 세로 축에서 중앙 정렬 */
+  display: flex;
+  /* Flex 컨테이너 설정 */
+  justify-content: center;
+  /* 가로 축에서 중앙 정렬 */
+  align-items: center;
+  /* 세로 축에서 중앙 정렬 */
 }
-
 </style>
+

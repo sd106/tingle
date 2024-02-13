@@ -17,6 +17,6 @@ public class SnapShotRequest {
 
     private String username;
 
-    private String starname;
+    private Long starId;
 
 }

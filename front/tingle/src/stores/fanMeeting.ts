@@ -3,8 +3,7 @@ import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 
 export const useFanMeetingStore = defineStore('fanMeeting', () => {
-  const API_URL = 'https://i10d106.p.ssafy.io/api'
-  
+  const API_URL = 'http://localhost:8080'
   const router = useRouter()
 
 

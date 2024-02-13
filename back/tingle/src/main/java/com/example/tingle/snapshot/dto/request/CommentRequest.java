@@ -9,4 +9,5 @@ public class CommentRequest {
     private String context;
     private String username;
     private Long snapshotId;
+    private Boolean isStar;
 }

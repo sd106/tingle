@@ -1,16 +1,10 @@
 <template>
   <main>
     <div class="d-flex">
-      <button
-        @click="selectLoginType('fan')"
-        :class="{ signin__btn: true, is_selected: selectedType === 'fan' }"
-      >
+      <button @click="selectLoginType('fan')" :class="{ signin__btn: true, is_selected: selectedType === 'fan' }">
         <span>팬이에요!</span>
       </button>
-      <button
-        @click="selectLoginType('star')"
-        :class="{ signin__btn2: true, is_selected: selectedType === 'star' }"
-      >
+      <button @click="selectLoginType('star')" :class="{ signin__btn2: true, is_selected: selectedType === 'star' }">
         <span>스타에요!</span>
       </button>
     </div>
@@ -29,27 +23,18 @@ const store = useUserStore()
 
 const selectLoginType = async (type: string) => {
   try {
-    const { data } = await axios.post(
-      `https://i10d106.p.ssafy.io/api/auth/login/${type}`,
-      {},
-      { withCredentials: true }
-    )
-
-    // const { data } = await axios.post(`https://i10d106.p.ssafy.io/api/auth/login/${type}`, {}, { withCredentials: true })
-    console.log('▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼')
-    console.log(data)
-    console.log('▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲')
+    const { data } = await axios.post(`http://localhost:8080/auth/login/${type}`, {}, { withCredentials: true })
     if (type === 'fan') {
       const { id, username, picture, follwingStars } = data
       store.fanState = { id, username, picture, follwingStars }
-      console.log(store.fanState)
+      router.push('/')
     } else if (type === 'star') {
       const { id, username, picture } = data
       store.starState = { id, username, picture }
       store.isStar = true
+      router.push('/forstar/home/manage')
     }
 
-    router.push('/')
   } catch (error) {
     console.log('error', error)
   }

@@ -1,31 +1,22 @@
 <template>
-  <ul class="d-flex justify-content-around nav nav-underline">
-    <li class="nav-item">
-      <RouterLink
-        :to="`/profile/userinfo`"
-        class="nav-link router-link-custom"
-        :class="{ active: isActive('/userInfo') }"
-        >회원 정보</RouterLink
-      >
-    </li>
-    <li class="nav-item">
-      <RouterLink
-        :to="`/profile/storage`"
-        class="nav-link router-link-custom"
-        :class="{ active: isActive('/storage') }"
-        >보관함</RouterLink
-      >
-    </li>
-    <li class="nav-item">
-      <RouterLink
-        :to="`/profile/orders`"
-        class="nav-link router-link-custom"
-        :class="{ active: isActive('/orders') }"
-        >주문 목록</RouterLink
-      >
-    </li>
-  </ul>
   <main class="container">
+    <ul class="mb-5 d-flex justify-content-around nav nav-underline">
+      <li class="nav-item">
+        <RouterLink :to="`/profile/userinfo`" class="nav-link router-link-custom"
+          :class="{ active: isActive('/userInfo') }">회원 정보</RouterLink>
+      </li>
+      <li class="nav-item">
+        <RouterLink :to="`/profile/storage`" class="nav-link router-link-custom"
+          :class="{ active: isActive('/storage') }">보관함</RouterLink>
+      </li>
+      <li class="nav-item">
+        <RouterLink :to="`/profile/orders`" class="nav-link router-link-custom" :class="{ active: isActive('/orders') }">
+          주문 목록</RouterLink>
+      </li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
     <div>
       <div v-if="responseMessageGetByUserId">
         <p class="fw-bold mt-3 mb-1">주문 상품</p>
@@ -40,34 +31,26 @@
           </div>
         </div>
         <hr />
-        <div
-          class="border-bottom container p-0 justify-content-between"
-          v-for="res in responseMessageGetByUserId"
-          :key="res.fanId"
-          @click="expandProduct(res)"
-        >
+        <div class="border-bottom container p-0 justify-content-between" v-for="res in responseMessageGetByUserId"
+          :key="res.fanId" @click="expandProduct(res)">
           <div class="d-flex row">
-            <div class="col-2">
-              <RouterLink
-                :to="`/${res.goods.starId}/profile/orders/detail/${res.goods.productId}`"
-                class="tw-flex tw-flex-col"
-              >
-                <img :src="res.goods.imageUrl[0].url" alt="" />
+            <div class="col-3">
+              <RouterLink :to="`/${res.goods.starId}/profile/orders/detail/${res.goods.productId}`"
+                class="tw-flex tw-flex-col img-container"
+                :style="`background-image: url('${res.goods.imageUrl[0].url}');`">
               </RouterLink>
             </div>
 
-            <div class="p-3 col-8 d-flex flex-column">
-              <RouterLink
-                :to="`/${res.goods.starId}/profile/orders/detail/${res.goods.productId}`"
-                class="tw-flex tw-flex-col d-flex"
-              >
-                <h2 class="my-3">{{ res.goods.name }}</h2>
-                <span class="">{{ truncateText(removeHtmlTags(res.goods.content), 30) }}</span>
+            <div class="p-3 col-7 d-flex flex-column">
+              <RouterLink :to="`/${res.goods.starId}/profile/orders/detail/${res.goods.productId}`"
+                class="tw-flex tw-flex-col d-flex">
+                <h2 class="my-3 fw-bold">{{ res.goods.name }}</h2>
+                <span>{{ truncateText(removeHtmlTags(res.goods.content), 30) }}</span>
               </RouterLink>
             </div>
 
             <div class="centered-content p-3 col-2">
-              <h3 class="fw-bold">$ {{ res.goods.price }}</h3>
+              <h2 class="fw-bold">₩ {{ res.goods.price }}</h2>
             </div>
           </div>
         </div>
@@ -95,7 +78,7 @@ const isActive = (path: string) => {
 
 const getOrderByUserId = async () => {
   try {
-    const response = await axios.get(`https://i10d106.p.ssafy.io/api/order/getUserOrders/${userId}`)
+    const response = await axios.get(`http://localhost:8080/order/getUserOrders/${userId}`)
     responseMessageGetByUserId.value = response.data.data
     console.log(response.data.data)
     // var textOnly = responseMessageGetByUserId.replace(/<[^>]*>/g, '');
@@ -123,18 +106,6 @@ function truncateText(text: string, maxLength: number): string {
   }
 }
 
-const deleteOrder = async (orderId: number) => {
-  try {
-    const response = await axios.post(`https://i10d106.p.ssafy.io/api/order/delete/${orderId}`)
-    console.log(response.data)
-    getOrderByUserId()
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-import StoreOrderDetail2 from '@/components/StarMenu/Store/StoreOrderDetailUser.vue'
-
 const expandedProduct = ref<OrderResponse2 | null>(null)
 
 const expandProduct = (order: OrderResponse2) => {
@@ -144,8 +115,24 @@ const expandProduct = (order: OrderResponse2) => {
 
 <style>
 .centered-content {
-  display: flex; /* Flex 컨테이너 설정 */
-  justify-content: center; /* 가로 축에서 중앙 정렬 */
-  align-items: center; /* 세로 축에서 중앙 정렬 */
+  display: flex;
+  /* Flex 컨테이너 설정 */
+  justify-content: center;
+  /* 가로 축에서 중앙 정렬 */
+  align-items: center;
+  /* 세로 축에서 중앙 정렬 */
+}
+
+.img-container {
+  width: 300px;
+  /* 이미지 컨테이너의 너비 */
+  height: 250px;
+  /* 이미지 컨테이너의 높이 */
+  background-position: center;
+  /* 이미지를 중앙에 위치 */
+  background-size: contain;
+  /* 이미지가 컨테이너를 벗어나지 않도록 함 */
+  background-repeat: no-repeat;
+  /* 이미지 반복 없음 */
 }
 </style>

@@ -80,8 +80,8 @@ const remoteVideo = ref(null)
 // WebRTC STUN servers 
 const peerConnectionConfig = {
     'iceServers': [
-        {'urls': 'stun:stun.stunprotocol.org:3478'},
-        {'urls': 'stun:stun.l.google.com:19302'},
+        { 'urls': 'stun:stun.stunprotocol.org:3478' },
+        { 'urls': 'stun:stun.l.google.com:19302' },
     ]
 }
 
@@ -106,7 +106,7 @@ const sendToServer = (msg: SocketMessage) => {
 // WebSocket
 const initializeWebSocket = () => {
     // 소켓 초기화
-    socket = new WebSocket("wss://i10d106.p.ssafy.io/api/signal")
+    socket = new WebSocket("ws://localhost:8080/signal")
 
     // 소켓이 message를 받을 때 이벤트 함수
     socket.onmessage = (msg) => {
@@ -165,7 +165,7 @@ const initializeWebSocket = () => {
         console.log('소켓 닫혔는디요')
     }
 
-    
+
     // 소켓에 에러나면 이벤트 함수
     socket.onerror = (error) => {
         console.error(error)
@@ -187,9 +187,9 @@ const initializeWebRTC = async () => {
 
     // 다른 peer들을 위한 RTCPeerConnection을 만듬
     myPeerConnection = new RTCPeerConnection(peerConnectionConfig)
-    
+
     // 
-    myPeerConnection.onicecandidate = (event) =>{
+    myPeerConnection.onicecandidate = (event) => {
         // ICE Candidate 정보를 서버로 보냄
         if (event.candidate) {
             sendToServer({
@@ -203,7 +203,7 @@ const initializeWebRTC = async () => {
     // 원격 스트림을 받을 때 처리
     myPeerConnection.ontrack = (event) => {
         console.log('Track Event: set stream to remote video element')
-        console.log('remoteVideo: ',event.streams[0])
+        console.log('remoteVideo: ', event.streams[0])
         if (remoteVideo.value) {
             // Define the type of remoteVideo.value to include the srcObject property
             const remoteVideoElement = remoteVideo.value as HTMLVideoElement;
@@ -259,7 +259,7 @@ const handleJoinMessage = async (message: SocketMessage) => {
     if (message.data === "true") {
         console.log("11")
         myPeerConnection.onnegotiationneeded = async () => {
-            try {   
+            try {
                 console.log("22")
 
                 const offer = await myPeerConnection.createOffer()
@@ -292,16 +292,16 @@ const handleErrorMessage = (message: SocketMessage) => {
 }
 
 
-onMounted(async() => {
+onMounted(async () => {
     loadReservation()
     await initializeWebRTC()
     initializeWebSocket()
 })
 
 onUnmounted(() => {
-  if (socket) {
-    socket.close();
-  }
+    if (socket) {
+        socket.close();
+    }
 })
 
 

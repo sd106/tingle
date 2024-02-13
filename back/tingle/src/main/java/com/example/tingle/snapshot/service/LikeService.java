@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface LikeService {
-    void addLike(String username, Long snapshotId);
+    void addLike(Boolean isStar, String username, Long snapshotId);
 
-    void removeLike(String username, Long snapshotId);
+    void removeLike(Boolean isStar, String username, Long snapshotId);
 }

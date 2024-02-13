@@ -1,5 +1,7 @@
 package com.example.tingle.snapshot.controller;
 
+import com.example.tingle.snapshot.dto.request.LikeRequest;
+import com.example.tingle.snapshot.dto.request.SnapShotDetailRequest;
 import com.example.tingle.snapshot.dto.request.SnapShotRequest;
 import com.example.tingle.snapshot.dto.request.SnapShotUpdateRequest;
 import com.example.tingle.snapshot.entity.CommentEntity;
@@ -93,33 +95,36 @@ public class SnapShotController {
     }
 
     @PostMapping("/{snapshotId}")
-    public ResponseEntity<Map<String, Object>> SnapShotDetail(@PathVariable Long snapshotId, @RequestBody String username)
+    public ResponseEntity<Map<String, Object>> SnapShotDetail(@PathVariable Long snapshotId,
+                                                              @RequestBody SnapShotDetailRequest snapShotDetailRequest)
             throws IOException {
-
-        String json = username;
-
-// ObjectMapper 인스턴스 생성
-        ObjectMapper mapper = new ObjectMapper();
-
-// JSON 문자열을 JsonNode 객체로 변환
-        JsonNode rootNode = mapper.readTree(json);
-
-// "username" 필드의 값을 추출
-        String name = rootNode.get("username").asText();
-
-        System.out.println("username = " + name);
-
+        System.out.println("snapShotDetailRequest = " + snapShotDetailRequest.getUsername());
+        System.out.println("snapShotDetailRequest = " + snapShotDetailRequest.getIsStarLogin());
+//        String json = username;
+//
+//// ObjectMapper 인스턴스 생성
+//        ObjectMapper mapper = new ObjectMapper();
+//
+//// JSON 문자열을 JsonNode 객체로 변환
+//        JsonNode rootNode = mapper.readTree(json);
+//
+//// "username" 필드의 값을 추출
+//        String name = rootNode.get("username").asText();
+//
+//        System.out.println("상세 스냅샷의 username = " + name);
+//
         System.out.println("상세 스냅샷 불러올게요");
         HttpStatus status = HttpStatus.ACCEPTED;
         Map<String, Object> resultMap = new HashMap<String, Object>();
 
+        String name = snapShotDetailRequest.getUsername();
         Optional<SnapShotEntity> optSnapShotEntity = snapShotServiceImpl.getSnapShotById(snapshotId);
         System.out.println("optSnapShotEntity = " + optSnapShotEntity.get().getId());
         if (optSnapShotEntity.isPresent()) {
 
             SnapShotEntity snapShot = optSnapShotEntity.get();
-
-            boolean isLike = likeServiceimpl.findLike(name, snapShot);
+            Boolean isStarLogin = snapShotDetailRequest.getIsStarLogin();
+            boolean isLike = likeServiceimpl.findLike(isStarLogin, name, snapShot);
 
             List<String> tags = snapShot.getSnapShotTags().stream()
                     .map(SnapShotTag::getHashTagEntity)
@@ -131,13 +136,13 @@ public class SnapShotController {
 
 
             List<Map<String, Object>> commentMaps = new ArrayList<>();
-            for (CommentEntity comment : snapShot.getComments()) {
+            for (CommentEntity comment : comments) {
                 Map<String, Object> commentMap = new HashMap<>();
                 commentMap.put("id", comment.getId());
                 commentMap.put("context", comment.getContext());
                 commentMap.put("username", comment.getUsername());
                 commentMap.put("snapshotId", comment.getSnapShotEntity().getId());
-
+                commentMap.put("isStar", comment.getIsStar());
                 commentMaps.add(0, commentMap);
             }
             /**
@@ -167,7 +172,7 @@ public class SnapShotController {
                                                            @RequestParam("content") String content,
                                                            @RequestParam("tags") List<String> tags,
                                                            @RequestParam("username") String username,
-                                                           @RequestParam("starname") String starname)
+                                                           @RequestParam("starId") Long starId)
             throws IOException {
 
         HttpStatus status = HttpStatus.ACCEPTED;
@@ -179,7 +184,7 @@ public class SnapShotController {
                 .content(content)
                 .tags(tags)
                 .username(username)
-                .starname(starname)
+                .starId(starId)
                 .build();
 
         snapShotServiceImpl.uploadSnapshot(snapShotRequest, file);
@@ -190,46 +195,27 @@ public class SnapShotController {
     }
 
     @PostMapping("/{snapshotId}/likes")
-    public ResponseEntity<Map<String, Object>> LikeSnapShot(@PathVariable Long snapshotId, @RequestBody String username)
+    public ResponseEntity<Map<String, Object>> LikeSnapShot(@PathVariable Long snapshotId,
+                                                            @RequestBody LikeRequest likeRequest)
             throws IOException {
-        System.out.println("username = " + username);
-        // JSON 문자열
-        String json = username;
+        System.out.println("좋아요 시작");
+        System.out.println("isStar = " + likeRequest.getIsStar());
+        System.out.println("username = " + likeRequest.getUsername());
 
-// ObjectMapper 인스턴스 생성
-        ObjectMapper mapper = new ObjectMapper();
-
-// JSON 문자열을 JsonNode 객체로 변환
-        JsonNode rootNode = mapper.readTree(json);
-
-// "username" 필드의 값을 추출
-        String name = rootNode.get("username").asText();
-
-        System.out.println("username = " + name);
-
-        likeServiceimpl.addLike(name, snapshotId);
+        likeServiceimpl.addLike(likeRequest.getIsStar(), likeRequest.getUsername(), snapshotId);
         return ResponseEntity.ok().build();
 
     }
 
     @PostMapping("/{snapshotId}/dislikes")
-    public ResponseEntity<?> dislikeSnapshot(@PathVariable Long snapshotId, @RequestBody String username)
+    public ResponseEntity<?> dislikeSnapshot(@PathVariable Long snapshotId,
+                                             @RequestBody LikeRequest likeRequest)
             throws IOException {
-        String json = username;
+        System.out.println("좋아요 취소 시작");
+        System.out.println("isStar = " + likeRequest.getIsStar());
+        System.out.println("username = " + likeRequest.getUsername());
 
-    // ObjectMapper 인스턴스 생성
-        ObjectMapper mapper = new ObjectMapper();
-
-    // JSON 문자열을 JsonNode 객체로 변환
-        JsonNode rootNode = mapper.readTree(json);
-
-    // "username" 필드의 값을 추출
-        String name = rootNode.get("username").asText();
-
-        System.out.println("username = " + name);
-
-
-        likeServiceimpl.removeLike(name, snapshotId);
+        likeServiceimpl.removeLike(likeRequest.getIsStar(), likeRequest.getUsername(), snapshotId);
         return ResponseEntity.ok().build();
     }
 

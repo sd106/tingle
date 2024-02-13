@@ -44,12 +44,8 @@
             <label class="form-label">입장권 구매 시작</label>
           </div>
           <div class="col-md-8 d-flex">
-            <VueDatePicker
-              v-model="meeting.ticketingStartAt"
-              locale="ko"
-              :time-picker-inline="true"
-              :is-24="false"
-            ></VueDatePicker>
+            <VueDatePicker v-model="meeting.ticketingStartAt" locale="ko" :time-picker-inline="true" :is-24="false">
+            </VueDatePicker>
           </div>
         </div>
         <div class="row mb-2">
@@ -57,12 +53,8 @@
             <label class="form-label">입장권 구매 종료</label>
           </div>
           <div class="col-md-8 d-flex">
-            <VueDatePicker
-              v-model="meeting.ticketingEndAt"
-              locale="ko"
-              :time-picker-inline="true"
-              :is-24="false"
-            ></VueDatePicker>
+            <VueDatePicker v-model="meeting.ticketingEndAt" locale="ko" :time-picker-inline="true" :is-24="false">
+            </VueDatePicker>
           </div>
         </div>
         <div class="row">
@@ -70,12 +62,7 @@
             <label class="form-label">팬미팅 시작</label>
           </div>
           <div class="col-md-8 d-flex mb-4">
-            <VueDatePicker
-              v-model="meeting.fanMeetingStartAt"
-              locale="ko"
-              :time-picker-inline="true"
-              :is-24="false"
-            >
+            <VueDatePicker v-model="meeting.fanMeetingStartAt" locale="ko" :time-picker-inline="true" :is-24="false">
             </VueDatePicker>
           </div>
         </div>
@@ -87,11 +74,8 @@
     <div class="text-center">컨텐츠 선택</div>
     <hr />
     <div class="d-inline" v-for="(content, index) in allContents" :key="index">
-      <button
-        @click="toggleContent(content)"
-        class="btn btn-outline-primary m-1"
-        :class="{ 'bg-primary text-white': isSelected(content) }"
-      >
+      <button @click="toggleContent(content)" class="btn btn-outline-primary m-1"
+        :class="{ 'bg-primary text-white': isSelected(content) }">
         {{ content.name }}
       </button>
     </div>
@@ -166,17 +150,17 @@ const isSelected = (content: FanMeetingType) => {
 }
 
 const submit = () => {
-    // Submit the meeting
-    axios.post('https://i10d106.p.ssafy.io/api/fanMeeting', meeting.value)
-    console.log(meeting.value)
+  // Submit the meeting
+  axios.post('http://localhost:8080/fanMeeting', meeting.value)
+  console.log(meeting.value)
 }
 
 const loadContents = async () => {
-    // Load contents from server
-    const { data }  = await axios.get('https://i10d106.p.ssafy.io/api/fanMeeting/types')
-    
-    console.log(data)
-    allContents.value = data
+  // Load contents from server
+  const { data } = await axios.get('http://localhost:8080/fanMeeting/types')
+
+  console.log(data)
+  allContents.value = data
 }
 
 onMounted(() => {
