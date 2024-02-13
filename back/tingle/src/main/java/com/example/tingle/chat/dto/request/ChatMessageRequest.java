@@ -15,10 +15,8 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class ChatMessageRequest {
-    private Long id;
     private Long userId;
     private int direction;
     private String message;
-    private LocalDateTime createdDate;
     private Long starId;
 }

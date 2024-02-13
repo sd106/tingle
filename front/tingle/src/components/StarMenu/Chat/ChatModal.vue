@@ -1,135 +1,68 @@
 <template>
     <div class="modal" tabindex="-1" data-bs-backdrop="static" id="chatModal">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                
-                <!-- 네비바 -->
-                <div>
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <div class="container-fluid">
-                        <a class="navbar-brand" href="#">Chat ({{chatRoomInfo.length}}/5)</a>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
-                    </div>
-                </nav>
-                </div>
-
-                <!-- 배너 -->
-                <div class="card bg-dark text-white">
-                <img src="" class="card-img" alt="" height="100">
-                <div class="card-img-overlay">
-                    <h5 class="card-title">대충 광고</h5>
-                </div>
-                </div>
-
-                <!-- 채팅 목록 -->
-                <div class="chat-list-items scrollable-container">
-                    <div class="scrollable-content">
-                        <div v-if="chatRoomInfo.length == 0">
-                            채팅할 스타를 하단의 버튼으로 추가해 보세요.
-                        </div>
-                        <div v-else>
-                            <div v-for="room in chatRoomInfo" :key="room.id" :roomInfo="chatRoomInfo">
-                                <div class="card mt-3 mb-3" style="max-width: 540px;">
-                                    <div class="row g-0">
-                                        <div class="col-md-4">
-                                            <img src="/image/yoo.png" class="img-fluid rounded-start" alt="">
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="card-body">
-                                                <h5 class="card-title">{{ room.starId }}</h5>
-                                                <p class="card-text">{{ room.chatMessages[room.chatMessages.length-1].message }}</p>
-                                                <p class="card-text"><small class="text-muted">{{ room.chatMessages[room.chatMessages.length-1].createDate }} </small></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 채팅 관련 버튼 -->
-                <div>
-                <button type="button" class="btn btn-primary" @click="openModal">Add</button>
-                    <div>
-                        <!-- 중첩 모달 => 스타 추가 페이지 -->
-                        <div v-if="isModalOpen">
-                            <ChatAddStar></ChatAddStar>
-
-                            <!-- 중첩 모달 닫기 버튼 -->
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closeModal">X</button>
-                        </div>
-                    </div>
-                <button type="button" class="btn btn-primary m-3">Delete</button>
-                </div>
-            </div>
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <!-- ChatMain 컴포넌트 -->
+          <ChatMain v-if="status==='chatmain'" :chatRoomInfo="chatRoomInfo"></ChatMain>
+          
+          <!-- ChatRoom 컴포넌트 -->
+          <ChatRoom v-if="status==='chatroom'" :selectedStarInfo="selectedStarInfo"></ChatRoom>
         </div>
+      </div>
     </div>
-</template>
-
-<script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+  </template>
+  <!-- emits('selectBack', room); -->
+  <script setup lang="ts">
+  import { ref, computed, onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
-  import type { ChatMessageInfo, ChatRoomInfo } from '@/common/types/index'
+import type { ChatMessageInfo, ChatRoomInfo } from '@/common/types/index'
 import axios from "axios";
 import ChatAddStar from './ChatAddStar.vue';
+import { defineProps, defineEmits } from 'vue';
+  import ChatMain from '@/components/ChatMain.vue';
+  import ChatRoom from '@/components/ChatRoom.vue';
+  
+  const store = useUserStore()
 
-//const myid = store.fanState!.id;
-// NotStatus, ProgressStatus, DoneStatus
-const store = useUserStore()
+  const myid = 1; //store.fanState!.id;
 
-// 모달 열기 
-const isModalOpen = ref(false);
+  // 현재 모달의 상태
+  const status = ref<string>('chatmain');
 
-// 채팅방 리스트 (ChatMessageInfo 리스트를 포함)
+  // 채팅방 정보 (ChatMessageInfo 리스트를 포함)
 const chatRoomInfo = ref<ChatRoomInfo[]>([]);
+const selectedStarInfo = ref<ChatRoomInfo>();
+
+//   // ChatMain에서 채팅방을 선택하면 호출되는 함수
+//   const openChatRoom = (room: ChatRoomInfo) => {
+//     selectedStarInfo.value = room;
+//     status.value = 'chatroom'; // ChatRoom으로 진입 상태 변경
+//   };
+
+//   // ChatMain에서 채팅방을 선택하면 호출되는 함수
+//   const backChatMain = () => {
+//     status.value = 'chatmain'; // ChatMain으로 진입 상태 변경
+//   };
 
 // 데이터 가져오기 함수
-const fetchData = async (): Promise<void> => {
+const getChatRooms = async (): Promise<void> => {
+    try {
+    const res = await axios.get(`${store.API_URL}/chatRoom/readRooms/${myid}`);
+    chatRoomInfo.value = res.data.data;
 
-try {
-  const res = await axios.get(`${store.API_URL}/chat/read/rooms/${store.fanState!.id}`);
+    console.log(`${res.data.message}: ${res.data.code}`);
 
-  chatRoomInfo.value = res.data.data;
-
-  } catch (error) {
-    console.error(`Error fetching chatRoom: `, error);
-  }
-};
-
-// 중첩 모달을 열기
-const openModal = () => {
-  isModalOpen.value = true;
-};
-
-// 중첩 모달을 닫기
-const closeModal = () => {
-  isModalOpen.value = false;
-
-  // 상태 invalidate
-  fetchData();
+    } catch (error) {
+    console.error(`Error fetching getChatRooms: `, error);
+    }
 };
 
   // 시작될 때 초기화 및 데이터 가져오기
-  onMounted(() => {
-    fetchData();
-  });
-  
-  </script>
+onMounted(() => {
+  getChatRooms();
+});
+
+</script>
 
 <style scoped>
-    .scrollable-container {
-    /* width: 300px; /* 네모의 너비 */
-    height: 800px; /* 네모의 높이 */
-    overflow-y: auto; /* 세로 스크롤이 필요할 때만 표시 */
-    border: 1px solid #ccc; /* 테두리 스타일 */
-    }
-
-    .scrollable-content {
-    padding: 10px; /* 스크롤 영역의 여백 */
-    }
-
-    .scrollable-content p {
-    margin: 0; /* 단락 사이의 여백 제거 */
-    }
 </style>

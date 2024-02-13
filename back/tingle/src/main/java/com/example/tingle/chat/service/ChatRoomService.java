@@ -16,12 +16,12 @@ public interface ChatRoomService {
     // 해당 스타의 채팅 방 생성 (스타 가입 시)
     public void saveTheRoomByStarId(Long starId);
 
-    // 해당 스타의 채팅 방 삭제 (스타 탈퇴 시)
+    // 해당 스타의 채팅방 삭제 (스타 탈퇴 시)
     public void deleteByStarId(Long starId);
 
-    // 해당 스타의 채팅방에서 퇴장 (팬)
+    // 해당 스타의 채팅방 삭제 (팬)
     public void ExitByUserId(Long starId, Long userId);
 
-    // 해당 스타의 채팅방으로 입장 (팬)
+    // 해당 스타의 채팅방 추가 (팬)
     public void EnterByUserId(Long starId, Long userId);
 }

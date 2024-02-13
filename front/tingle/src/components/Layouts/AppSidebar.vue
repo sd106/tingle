@@ -91,7 +91,7 @@ import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import axios from 'axios'
 
-import ChatModal from '@/components/ChatModal.vue'
+import ChatModal from '@/components/StarMenu/Chat/ChatModal.vue'
 
 const store = useUserStore()
 
@@ -111,7 +111,7 @@ const folloingInfo = ref<{ id: number; picture: string; userName: string }[]>([]
 
 //구독한 스타 가져오기
 const getFolloings = async () => {
-  const response = await axios.get(`http://i10d106.p.ssafy.io:8080/follow/1`)
+  const response = await axios.get(`http://localhost:8080/follow/1`)
   folloingInfo.value = response.data.data
 }
 

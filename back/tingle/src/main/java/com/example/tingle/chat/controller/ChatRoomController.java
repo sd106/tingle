@@ -2,26 +2,23 @@ package com.example.tingle.chat.controller;
 
 import com.example.tingle.chat.dto.ChatRoomDto;
 import com.example.tingle.chat.service.ChatRoomService;
-import com.example.tingle.wish.dto.WishDto;
 import com.example.tingle.wish.dto.response.Response;
-import com.example.tingle.wish.service.WishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("/chatRoom")
 public class ChatRoomController {
 
     @Autowired
     private ChatRoomService chatRoomService;
 
-    // 구독 & 추가한 스타들의 채팅 방 조회
+    // 구독 & 추가한 스타들의 채팅방 조회
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/read/addingRooms/{userId}")
+    @GetMapping("/readRooms/{userId}")
     public Response/*List<ChatRomDto>*/ findAddingRoomsByUserId(@PathVariable Long userId) {
         try {
             List<ChatRoomDto> list = chatRoomService.findRoomsByUserId(userId);
@@ -36,45 +33,87 @@ public class ChatRoomController {
         }
     }
 
-    // 구독한 스타들의 채팅 방 조회
+    // 해당 스타 추가 (팬)
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/read/followingRooms/{userId}")
-    public Response/*List<ChatRoomDto>*/ findfollowingRoomsByUserId(Long userId) {
+    @GetMapping("/addTheStar/{userId}/{starId}")
+    public Response enterTheStarChatByIds(@PathVariable Long userId, @PathVariable Long starId) {
         try {
-            List<ChatRoomDto> list = chatRoomService.findRoomsByUserId(userId);
+            chatRoomService.EnterByUserId(starId, userId);
 
-            if(list.isEmpty())
-                return new Response("success", "findAddingRoomsByUserId", list);
-            else
-                return new Response("success", "findAddingRoomsByUserId", list);
+            return new Response("success", "enterTheStarChatByIds", null);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Response("fail", "findAddingRoomsByUserId", null);
+            return new Response("fail", "enterTheStarChatByIds", null);
         }
     }
-//
-//    // 해당 채팅 방 조회 (스타)
-//    public ChatRoomDto findTheRoomByStarId(Long starId) {
-//
-//    }
-//
-//    // 해당 스타의 채팅 방 생성 (스타 가입 시)
-//    public void saveTheRoomByStarId(Long starId) {
-//
-//    }
-//
-//    // 해당 스타의 채팅 방 삭제 (스타 탈퇴 시)
-//    public void deleteByStarId(Long starId) {
-//
-//    }
-//
-//    // 해당 스타의 채팅방으로 입장 (팬)
-//    public void EnterByUserId(Long starId, Long userId) {
-//
-//    }
-//
-//    // 해당 스타의 채팅방에서 퇴장 (팬)
-//    public void ExitByUserId(Long starId, Long userId) {
-//
-//    }
+
+    // 해당 채팅방 조회 (스타)
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/readTheRoom/{starId}")
+    public Response findTheRoomByStarId(@PathVariable Long starId) {
+        try {
+            ChatRoomDto chatRoomDto = chatRoomService.findTheRoomByStarId(starId);
+
+            return new Response("success", "findTheRoomByStarId", chatRoomDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Response("fail", "findTheRoomByStarId", null);
+        }
+    }
+
+    // 해당 스타의 채팅 방 생성 (스타 가입 시)
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/saveTheRoom/{starId}")
+    public Response saveTheRoomByStarId(@PathVariable Long starId) {
+        try {
+            chatRoomService.saveTheRoomByStarId(starId);
+
+            return new Response("success", "saveTheRoomByStarId", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Response("fail", "saveTheRoomByStarId", null);
+        }
+    }
+
+    // 해당 스타의 채팅방 삭제 (스타 탈퇴 시)
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/deleteTheRoom/{starId}")
+    public Response deleteByStarId(@PathVariable Long starId) {
+        try {
+            chatRoomService.deleteByStarId(starId);
+
+            return new Response("success", "deleteByStarId", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Response("fail", "deleteByStarId", null);
+        }
+    }
+
+    // 해당 스타의 채팅방으로 입장 (팬)
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/enterTheRoom/{userId}/{starId}")
+    public Response EnterByUserId(@PathVariable Long starId, @PathVariable Long userId) {
+        try {
+            chatRoomService.EnterByUserId(starId, userId);
+
+            return new Response("success", "EnterByUserId", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Response("fail", "EnterByUserId", null);
+        }
+    }
+
+    // 해당 스타의 채팅방에서 퇴장 (팬)
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/exitTheRoom/{userId}/{starId}")
+    public Response ExitByUserId(@PathVariable Long starId, @PathVariable Long userId) {
+        try {
+            chatRoomService.ExitByUserId(starId,userId);
+
+            return new Response("success", "ExitByUserId", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Response("fail", "ExitByUserId", null);
+        }
+    }
 }

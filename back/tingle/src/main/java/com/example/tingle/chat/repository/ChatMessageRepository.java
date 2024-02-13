@@ -1,11 +1,17 @@
 package com.example.tingle.chat.repository;
 
+import com.example.tingle.chat.dto.ChatRoomDto;
 import com.example.tingle.chat.entity.ChatMessageEntity;
 import com.example.tingle.chat.entity.ChatRoomEntity;
+import com.example.tingle.wish.dto.response.Response;
 import com.example.tingle.wish.entity.LikesEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
@@ -19,7 +25,7 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessageEntity, 
 //    @Query("SELECT cm FROM ChatMessageEntity cm WHERE cm.id = :starId AND cm.message = :message ORDER BY cm.createdDate DESC") `
 //    List<ChatMessageEntity> findAllByMessageContaining(Long starId, String message);
 
-    // 메시지 삭제
+    // 해당 스타의 모든 메시지 삭제
     @Query("DELETE FROM ChatMessageEntity cm WHERE cm.chatRoom.star.id = :starId")
     void deleteMessagesByChatRoom(Long starId);
 }

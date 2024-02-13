@@ -2,6 +2,7 @@ package com.example.tingle.chat.service.serviceImpl;
 
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.tingle.chat.dto.ChatMessageDto;
+import com.example.tingle.chat.dto.request.ChatMessageRequest;
 import com.example.tingle.chat.entity.ChatMessageEntity;
 import com.example.tingle.chat.entity.ChatRoomEntity;
 import com.example.tingle.chat.repository.ChatMessageRepository;
@@ -58,18 +59,17 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     }
 
     @Override
-    public void saveMessages(ChatMessageDto chatMessageDto) {
-        UserEntity user = userRepository.findById(chatMessageDto.getUserId())
-                .orElseThrow(() -> new NotFoundException("Could not found user id : " + chatMessageDto.getUserId()));
+    public void saveMessages(ChatMessageRequest chatMessageRequest) {
+        UserEntity user = userRepository.findById(chatMessageRequest.getUserId())
+                .orElseThrow(() -> new NotFoundException("Could not found user id : " + chatMessageRequest.getUserId()));
 
-        ChatRoomEntity chatRoomEntity = chatRoomRepository.findTheRoomByStarId(chatMessageDto.getRoomId());
+        ChatRoomEntity chatRoomEntity = chatRoomRepository.findTheRoomByStarId(chatMessageRequest.getStarId());
                 //.orElseThrow(() -> new NotFoundException("Could not found user id : " + chatMessageDto.getUserId()));
 
         ChatMessageEntity chatMessageEntity = ChatMessageEntity.builder()
-                .id(chatMessageDto.getId())
-                .message(chatMessageDto.getMessage())
+                .message(chatMessageRequest.getMessage())
                 .chatRoom(chatRoomEntity)
-                .direction(chatMessageDto.getDirection())
+                .direction(chatMessageRequest.getDirection())
                 .user(user)
                 .build();
 

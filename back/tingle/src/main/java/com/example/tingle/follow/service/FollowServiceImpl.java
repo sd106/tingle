@@ -39,7 +39,6 @@ public class FollowServiceImpl implements FollowService{
     public ArrayList<FollowReadRequest> getFollowList(Long userId) throws Exception {
 
         List<FollowEntity> followEntities = followRepository.findByUserEntityId(userId);
-
         ArrayList<FollowReadRequest> followReadRequests = new ArrayList<>();
         followEntities.forEach(follow -> followReadRequests.add(FollowReadRequest.toDto(follow)));
         return followReadRequests;

@@ -244,7 +244,19 @@ const router = createRouter({
           path: '/selectLoginType',
           name: 'SelectLoginTypeView',
           component: () => import('@/views/User/SelectLoginTypeView.vue')
-        }
+        },
+
+        // 채팅
+        {
+          path: '/chat/:starid/chatroom',
+          name: 'WaitingRoomView',
+          component: WaitingRoomView
+        },
+        {
+          path: '/chat/:starid/chatmodal',
+          name: 'WaitingRoomView',
+          component: WaitingRoomView
+        },
       ]
     },
 

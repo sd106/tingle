@@ -123,12 +123,17 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Could not found user id : " + userId));
 
+        // 채탕방 상태 확인
+        ChatRoomEntity chatRoom = chatRoomRepository.findTheRoomByStarId (star.getId());
+        //.orElseThrow(() -> new NotFoundException("Could not found IDs"));
+
         // 팔로우 상태 확인
         FollowEntity follow = followRepository.findByUserEntityIdAndStarEntityId(user.getId(), star.getId());
                 //.orElseThrow(() -> new NotFoundException("Could not found IDs"));
 
-        // 채팅 추가
+        // 스타 추가
         ChatEnterEntity chatEnterEntity = ChatEnterEntity.builder()
+                .chatRoom(chatRoom)
                 .follow(follow)
                 .build();
 
