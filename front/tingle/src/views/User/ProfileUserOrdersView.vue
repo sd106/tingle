@@ -1,6 +1,6 @@
 <template>
   <main class="container">
-    <ul class="d-flex justify-content-around nav nav-underline">
+    <ul class="mb-5 d-flex justify-content-around nav nav-underline">
       <li class="nav-item">
         <RouterLink
           :to="`/profile/userinfo`"
@@ -98,7 +98,7 @@ const isActive = (path: string) => {
 
 const getOrderByUserId = async () => {
   try {
-    const response = await axios.get(`https://i10d106.p.ssafy.io/api/order/getUserOrders/${userId}`)
+    const response = await axios.get(`http://localhost:8080/order/getUserOrders/${userId}`)
     responseMessageGetByUserId.value = response.data.data
     console.log(response.data.data)
     // var textOnly = responseMessageGetByUserId.replace(/<[^>]*>/g, '');
@@ -134,7 +134,6 @@ const expandProduct = (order: OrderResponse2) => {
 </script>
 
 <style>
-
 .centered-content {
   display: flex; /* Flex 컨테이너 설정 */
   justify-content: center; /* 가로 축에서 중앙 정렬 */
@@ -148,5 +147,4 @@ const expandProduct = (order: OrderResponse2) => {
   background-size: contain; /* 이미지가 컨테이너를 벗어나지 않도록 함 */
   background-repeat: no-repeat; /* 이미지 반복 없음 */
 }
-
 </style>

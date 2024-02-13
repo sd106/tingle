@@ -71,7 +71,6 @@ let showInputArticle= ref(false);
 import StarMenu from '@/components/StarMenu/StarMenu.vue';
 
 import type { StarProfile, HomeArticle } from '@/common/types/index'
-import starHomeUpdate from '@/components/StarHomeUpdate.vue';
 
 const props = defineProps(['id']);
 const starId = ref(props.id);
@@ -136,32 +135,6 @@ const insertArticle = async () => {
   });
 }
 
-let homeUpdateRequest = {
-  homeId: 1,
-  ordering: 3,
-  content: "입력해주세요"
-};
-
-const updateArticle = async (homeid: number) => {
-
-  let formData = new FormData();
-  formData.append('homeUpdateRequest', JSON.stringify(homeUpdateRequest)); // JSON 문자열로 변환하여 추가
-
-// 파일이 여러 개인 경우, 각각의 파일을 추가
-  for (let i = 0; i < files.value.length; i++) {
-    formData.append('files', files.value[i]);
-  }
-
-  axios.post(`${store.API_URL}/home/update`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  }).then(response => {
-    console.log(response.data);
-  }).catch(error => {
-    console.error(error);
-  });
-}
 
 const deleteArticle = async (homeid: number) => {
 

@@ -40,6 +40,7 @@ public class AuthServiceImpl implements AuthService {
         StarEntity star = StarEntity.builder()
                 .email(signUpRequest.getEmail())
                 .name(signUpRequest.getName())
+                .picture("https://tingle-s3.s3.ap-northeast-2.amazonaws.com/basic-profile.png")
                 .username(signUpRequest.getUsername())
                 .build();
 

@@ -2,55 +2,53 @@
   <main>
     <h1>사진 목록</h1>
     <div class="d-flex flex-wrap">
-    <div class="storage-item col-3 mx-2" v-for="storage in userStoreStorages" :key="storage.id">
-  <div class="storage-image-container">
-    <img class="storage-image" :src="storage.url" :alt="storage.title">
-  </div>
-  <div class="storage-info">
-    <!-- <p class="fw-bold">{{ storage.title }}</p> -->
-    <!-- <p>{{ storage.content }}</p> -->
-    <p>from {{ storage.starname }}</p>
-    <div>
-        <button class="delete-button">삭제하기</button> <!-- 삭제 버튼 추가 -->
-    </div>
-  </div>
-</div>
+      <div class="storage-item col-3 mx-2" v-for="storage in userStoreStorages" :key="storage.id">
+        <div class="storage-image-container">
+          <img class="storage-image" :src="storage.url" :alt="storage.title" />
+        </div>
+        <div class="storage-info">
+          <!-- <p class="fw-bold">{{ storage.title }}</p> -->
+          <!-- <p>{{ storage.content }}</p> -->
+          <p>from {{ storage.starname }}</p>
+          <div>
+            <button class="delete-button">삭제하기</button>
+            <!-- 삭제 버튼 추가 -->
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 </template>
-  
+
 <script setup lang="ts">
-import type { UserStoreStorageResponse } from '@/common/types';
+import type { UserStoreStorageResponse } from '@/common/types'
 import { ref, onMounted } from 'vue'
-import axios from 'axios';
+import axios from 'axios'
 import { useUserStore } from '@/stores/user'
 
 const { fanState } = useUserStore()
 const userId = fanState?.id
 
-const userStoreStorages = ref<UserStoreStorageResponse[]>([]);
+const userStoreStorages = ref<UserStoreStorageResponse[]>([])
 
 const fetchData = async () => {
   try {
-    const response = await axios.get(`https://i10d106.p.ssafy.io/api/order/getStarsPicture/${userId}`);
+    const response = await axios.get(`http://localhost:8080/order/getStarsPicture/${userId}`)
     console.log(response.data.resultCode)
     if (response.data.resultCode === 'SUCCESS') {
-      userStoreStorages.value = response.data.data;
-    //   console.log(userStoreStorages)
+      userStoreStorages.value = response.data.data
+      //   console.log(userStoreStorages)
     } else {
-      console.error('데이터를 불러오는 데 실패했습니다.');
+      console.error('데이터를 불러오는 데 실패했습니다.')
     }
   } catch (error) {
-    console.error('API 요청 중 오류가 발생했습니다.', error);
+    console.error('API 요청 중 오류가 발생했습니다.', error)
   }
-};
-
+}
 
 onMounted(() => {
-  fetchData();
-});
-
-
+  fetchData()
+})
 </script>
 
 <style scoped>
@@ -61,7 +59,7 @@ onMounted(() => {
   background-color: #f9f9f9;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column; /* 세로 방향 배치 */
   position: relative;
@@ -83,7 +81,7 @@ onMounted(() => {
   margin: auto; /* 이미지를 컨테이너 내에서 중앙에 배치 */
 }
 .storage-info {
-    padding: 15px;
+  padding: 15px;
   padding-bottom: 50px; /* 삭제 버튼 공간 확보를 위한 하단 패딩 추가 */
   margin-top: auto; /* 정보 영역을 하단에 고정 */
   background: #f9f9f9; /* 배경색 설정 */
@@ -122,5 +120,4 @@ onMounted(() => {
 .delete-button:hover {
   background-color: #ff3333; /* 마우스 오버 시 배경색 변경 */
 }
-
 </style>

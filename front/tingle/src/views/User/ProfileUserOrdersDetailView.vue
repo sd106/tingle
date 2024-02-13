@@ -1,6 +1,34 @@
 <template>
   <main>
-    <StarMenu :id="starid" />
+    <ul class="mb-5 d-flex justify-content-around nav nav-underline">
+      <li class="nav-item">
+        <RouterLink
+          :to="`/profile/userinfo`"
+          class="nav-link router-link-custom"
+          :class="{ active: isActive('/userInfo') }"
+          >회원 정보</RouterLink
+        >
+      </li>
+      <li class="nav-item">
+        <RouterLink
+          :to="`/profile/storage`"
+          class="nav-link router-link-custom"
+          :class="{ active: isActive('/storage') }"
+          >보관함</RouterLink
+        >
+      </li>
+      <li class="nav-item">
+        <RouterLink
+          :to="`/profile/orders`"
+          class="nav-link router-link-custom"
+          :class="{ active: isActive('/orders') }"
+          >주문 목록</RouterLink
+        >
+      </li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
     <div v-if="product" class="d-flex row tw-space-x-4 tw-mt-2">
       <!-- 왼쪽 -->
       <!-- <div class="col-1">
@@ -43,6 +71,7 @@
           <div v-html="product.content" class="tw-py-4 tw-px-2"></div>
           <hr class="tw-my-4" />
         </div>
+        <button></button>
       </div>
     </div>
   </main>
@@ -50,23 +79,25 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import type { Goods } from '@/common/types'
 import axios from 'axios'
-import StarMenu from '@/components/StarMenu/StarMenu.vue'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const props = defineProps({
   starid: String,
   productId: String // URL에서 받은 값은 문자열이므로 String으로 받음
 })
+const isActive = (path: string) => {
+  return route.path.includes(path)
+}
 
-const starid = ref(props.starid)
 const productIdNumber = computed(() => Number(props.productId)) // 숫자로 변환
 const product = ref<Goods>()
 
 const getProduct = async (productId: number) => {
   try {
-    const response = await axios.get(`https://i10d106.p.ssafy.io/api/product/getById/${productId}`)
+    const response = await axios.get(`http://localhost:8080/product/getById/${productId}`)
     if (response.data.resultCode === 'SUCCESS') {
       product.value = response.data.data
     } else {

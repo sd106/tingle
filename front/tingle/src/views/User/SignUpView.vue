@@ -6,7 +6,6 @@
       <div>
         <label for="email">이메일</label>
         <input id="email" v-model="signupData.email" type="email" disabled />
-       
       </div>
       <div>
         <label for="name">이름</label>
@@ -42,7 +41,7 @@ const signupData = reactive({
 
 const starSignup = async () => {
   try {
-    const response = await axios.post('https://i10d106.p.ssafy.io/api/auth/member/signup', signupData, {
+    const response = await axios.post('http://localhost:8080/auth/member/signup', signupData, {
       withCredentials: true
     })
 
@@ -55,7 +54,7 @@ const starSignup = async () => {
 
 const loadMemeber = async () => {
   try {
-    const response = await axios.get('https://i10d106.p.ssafy.io/api/auth/member/info', {
+    const response = await axios.get('http://localhost:8080/auth/member/info', {
       withCredentials: true
     })
 

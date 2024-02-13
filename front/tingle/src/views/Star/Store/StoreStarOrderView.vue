@@ -1,7 +1,7 @@
 <template>
   <main class="container">
+    <StarMenu :id="starid" class="mb-5" />
     <div>
-      <h2>스타 모든 주문 조회</h2>
       <div v-if="responseMessageGetByStarName">
         <p class="fw-bold mt-3 mb-1">주문 상품</p>
         <hr class="m-0 mb-3" style="border: 0; height: 3px; background: #000" />
@@ -54,10 +54,12 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useUserStore } from '@/stores/user'
 import type { OrderResponse } from '@/common/types/index.ts'
+import StarMenu from '@/components/StarMenu/StarMenu.vue'
 
 const { starState } = useUserStore()
 const responseMessageGetByStarName = ref<OrderResponse[]>([])
 const starname = starState!.username
+const starid = starState!.id
 
 onMounted(() => {
   getStarOrder()
@@ -78,9 +80,7 @@ function truncateText(text: string, maxLength: number): string {
 
 const getStarOrder = async () => {
   try {
-    const response = await axios.get(
-      `https://i10d106.p.ssafy.io/api/order/getByStarName/${starname}`
-    )
+    const response = await axios.get(`http://localhost:8080/order/getByStarName/${starname}`)
     responseMessageGetByStarName.value = response.data.data
     console.log(response.data.data)
     console.log(response.data)

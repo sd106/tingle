@@ -6,12 +6,6 @@
 
       <!-- 상품 정보 입력 폼 -->
       <div class="tw-grid tw-gap-4 tw-mb-8">
-        <!-- <input
-          type="text"
-          v-model="productcreate.starName"
-          placeholder="스타 이름"
-          class="tw-input tw-input-bordered tw-w-full"
-        /> -->
         <input
           type="text"
           v-model="productcreate.name"
@@ -94,7 +88,7 @@ const createProduct = async (productInfo: any, fileInputs: File[]) => {
       formData.append('files', file)
     })
 
-    const response = await axios.post('https://i10d106.p.ssafy.io/api/product/create', formData, {
+    const response = await axios.post('http://localhost:8080/product/create', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -115,15 +109,11 @@ const createProductNoFile = async (productInfo: any) => {
     const formData = new FormData()
     formData.append('productDto', JSON.stringify(productInfo))
 
-    const response = await axios.post(
-      'https://i10d106.p.ssafy.io/api/product/create/nofile',
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+    const response = await axios.post('http://localhost:8080/product/create/nofile', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
       }
-    )
+    })
     if (response.status === 200) {
       alert('상품이 성공적으로 생성되었습니다.')
       router.go(-1)

@@ -156,7 +156,7 @@ const like = async (id: number, username: string) => {
     try {
       // 좋아요 API 호출
       await axios.post(
-        `https://i10d106.p.ssafy.io/api/snapshot/${id}/likes`,
+        `http://localhost:8080/snapshot/${id}/likes`,
         { username: username },
         { withCredentials: true }
       )
@@ -174,7 +174,7 @@ const dislike = async (id: number, username: string) => {
     try {
       // 좋아요 API 호출
       await axios.post(
-        `https://i10d106.p.ssafy.io/api/snapshot/${id}/dislikes`,
+        `http://localhost:8080/snapshot/${id}/dislikes`,
 
         { username: username },
         { withCredentials: true }
@@ -190,7 +190,7 @@ const dislike = async (id: number, username: string) => {
 const deleteSnapshot = async (id: number) => {
   console.log('삭제 시작할게요')
   if (id && props.selectedSnapshot) {
-    const response = await axios.delete(`https://i10d106.p.ssafy.io/api/snapshot/${id}/delete`)
+    const response = await axios.delete(`http://localhost:8080/snapshot/${id}/delete`)
     console.log(response.data) // 성공 응답 로그
     console.log('삭제 성공!')
     // 성공적으로 삭제 후 필요한 추가 작업을 여기에 작성하세요.
@@ -213,7 +213,7 @@ const postComment = async () => {
   try {
     console.log(props.selectedSnapshot?.snapshotId)
     await axios.post(
-      `https://i10d106.p.ssafy.io/api/snapshot/${props.selectedSnapshot?.snapshotId}/comment/new`,
+      `http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/new`,
       {
         context: newCommentContent.value,
         username: username,
@@ -245,7 +245,7 @@ const cancelEdit = () => {
 const submitCommentEdit = async (commentId: number) => {
   try {
     const response = await axios.post(
-      `https://i10d106.p.ssafy.io/api/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${commentId}/update`,
+      `http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${commentId}/update`,
       {
         context: editingCommentContent.value,
         username: username,
@@ -266,7 +266,7 @@ const submitCommentEdit = async (commentId: number) => {
 const deleteComment = async (id: number) => {
   try {
     await axios.post(
-      `https://i10d106.p.ssafy.io/api/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${id}/delete`
+      `http://localhost:8080/snapshot/${props.selectedSnapshot?.snapshotId}/comment/${id}/delete`
     )
     // 댓글 목록을 다시 불러오는 로직 필요
     router.go(0)
