@@ -13,7 +13,6 @@
     </div>
     <!-- HOT STAR -->
     <img src="/image/wood.png" class="container-img" style="margin-left: 39%" alt="" />
-    <!-- <img src="/image/cat-banner.png" style="padding-top: 1000px;" alt=""> -->
     <h1 class="container" style="padding-top: 500px">HOT STAR들을 만나보세요!</h1>
     <div class="container slider-container">
       <div class="justify-content-between slider-track" ref="sliderTrack">
@@ -42,7 +41,7 @@
       <button class="category-btn m-2" @click="selectCategory(4)">뷰티/패션</button>
       <button class="category-btn m-2" @click="selectCategory(5)">기타</button>
     </div>
-    
+
     <div class="container tw-mx-auto">
       <div class="tw-grid tw-grid-cols-5 tw-gap-0" style="margin-bottom: 100px">
         <div v-if="StarsByCategory.length === 0">아직 이 분야 스타가 존재하지 않습니다.</div>
@@ -56,6 +55,7 @@
             :to="`/${star.id}/home`"
             class="tw-flex tw-flex-col tw-items-center tw-justify-center"
           >
+            <!-- object-fit 고치기 -->
             <div
               class="tw-basis-4/5 tw-overflow-hidden"
               style="object-fit:; border-top-left-radius: 20px; border-top-right-radius: 20px"
@@ -63,7 +63,9 @@
               <img :src="star.picture" alt="not" style="object-fit:" />
             </div>
             <div class="tw-flex tw-text-center tw-items-center tw-basis-1/5">
-              <span class="tw-text-xl tw-font-bold long-text">{{ truncateText(star.username, 6) }}</span>
+              <span class="tw-text-xl tw-font-bold long-text">{{
+                truncateText(star.username, 6)
+              }}</span>
             </div>
           </RouterLink>
         </div>

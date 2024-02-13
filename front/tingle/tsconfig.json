@@ -22,7 +22,6 @@
     "noEmit": true,
     "types": [
       "vue",
-      "vuesax-ts/global"
     ]
   }
 }

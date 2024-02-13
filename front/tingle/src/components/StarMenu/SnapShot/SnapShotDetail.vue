@@ -116,7 +116,6 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 import type { selectedSnapshotType, CommentType } from '@/common/types/index'
 import { isConstructorDeclaration } from 'typescript';
-import { VsButton } from 'vuesax-ts'
 
 // const snapshot = ref<SnapshotType | null>(null);
 const active = ref(0)
