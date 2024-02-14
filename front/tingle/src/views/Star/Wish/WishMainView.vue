@@ -393,7 +393,10 @@ import { useUserStore } from '@/stores/user'
 const store = useUserStore()
 // NotStatus, ProgressStatus, DoneStatus
 import type { WishInfo, LikesInfo } from '@/common/types/index'
+import { useRouter } from 'vue-router'
 import StarMenu from '@/components/StarMenu/StarMenu.vue'
+
+const router = useRouter()
 
 // 스타 id 정보
 const props = defineProps(['id'])
@@ -596,8 +599,8 @@ const updateWishStatus = async (wishId: number): Promise<void> => {
 const getLikesList = async function (): Promise<void> {
   try {
     const res = await axios.get(`${store.API_URL}/likes/read/mylist/${id.value}/${myid}`)
-    likesList.value = res.data
-    console.log('res')
+    likesList.value = res.data.data
+    console.log(likesList.value, '========================')
   } catch (error) {
     console.error('Error fetching likeList: ', error)
   }
@@ -606,10 +609,9 @@ const getLikesList = async function (): Promise<void> {
 // 해당 위시에 대한 추천 상태 토글 변경 (create 포함)
 const updateWishLiked = async function (wishId: number): Promise<void> {
   try {
-    await axios.get(`${store.API_URL}/likes/update/toggle/${wishId}/${myid}`)
-
-    getLikesList()
-
+    await axios.post(`${store.API_URL}/likes/update/toggle/${wishId}/${myid}`)
+    await getLikesList()
+    router.go(0)
     // 서버로 상태를 업데이트할 때 사용하고 싶다면, 여기에 추가 로직을 작성
 
     console.log('likesList:', likesList.value)
@@ -621,7 +623,8 @@ const updateWishLiked = async function (wishId: number): Promise<void> {
 // 해당 위시 삭제
 const deleteWish = async function (wishId: number): Promise<void> {
   try {
-    await axios.get(`${store.API_URL}/likes/delete/${wishId}/${id.value}/${myid}`)
+    await axios.delete(`${store.API_URL}/wish/delete/${wishId}/${id.value}/${myid}`)
+    router.go(0)
   } catch (error) {
     console.error('Error fetching deleteWish: ', error)
   }
@@ -629,12 +632,12 @@ const deleteWish = async function (wishId: number): Promise<void> {
 
 // likesList에서 해당 wishId를 가진 항목이 있는지 확인
 const checkIfWishHasLike = (wishId: number) => {
-  const foundLike = likesList.value.find((like) => like.wishId === wishId)
-
-  if (foundLike) {
-    // 해당 wishId를 가진 항목이 있다면, 해당 항목의 값을 반환
-    return foundLike.liked
-  } else {
+  if (likesList.value.length > 0) {
+    const foundLike = likesList.value.find((like) => like.wishId === wishId)
+    if (foundLike) {
+      // 해당 wishId를 가진 항목이 있다면, 해당 항목의 값을 반환
+      return foundLike.liked
+    }
     // 해당 wishId를 가진 항목이 없다면, 원하는 값을 반환
     return 0 // 또는 다른 값으로 대체 가능
   }

@@ -27,14 +27,20 @@ public class DateTimeParser {
         // 요일, 월, 일, 년, 시간, 시간대 등을 파싱
         String[] parts = sDateTime.split(" ");
 
-
+        System.out.println(111);
         int day = Integer.parseInt(parts[2]);
+        System.out.println(222);
+
         Month month = monthMap.get(parts[1]);
+        System.out.println(333);
         int year = Integer.parseInt(parts[3]);
+        System.out.println(1444);
         String[] timeParts = parts[4].split(":");
         int hour = Integer.parseInt(timeParts[0]);
+        System.out.println(5555);
         int minute = Integer.parseInt(timeParts[1]);
         int second = Integer.parseInt(timeParts[2]);
+        System.out.println(16666);
 
         // LocalDateTime 객체 생성
         return LocalDateTime.of(year, month, day, hour, minute, second);

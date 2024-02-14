@@ -19,9 +19,19 @@
         <div v-for="hotstar in hotStarsInfo" :key="hotstar.id" class="p-2 star-card-hotstar">
           <RouterLink :to="`/${hotstar.id}/home`">
             <div class="d-flex">
-              <div class="p-0 me-5 align-items center" style="width: 80px">
-                <img :src="hotstar.picture" alt="not" style="border-radius: 50%" />
-              </div>
+              <div
+                class="p-0 me-5 align-items center"
+                :style="{
+                  'min-width': '80px',
+                  'max-width': '80px',
+                  'max-height': '80px',
+                  'min-height': '80px',
+                  'border-radius': '50%',
+                  'background-image': `url(${hotstar.picture})`,
+                  'background-size': 'cover',
+                  'background-position': 'center'
+                }"
+              ></div>
               <div class="d-flex justify-content-center align-items-center me-5">
                 <span class="fw-bold long-text">{{ truncateText(hotstar.username, 4) }}</span>
               </div>
@@ -43,26 +53,37 @@
     </div>
 
     <div class="container tw-mx-auto">
-      <div class="tw-grid tw-grid-cols-5 tw-gap-0" style="margin-bottom: 100px">
-        <div v-if="StarsByCategory.length === 0">아직 이 분야 스타가 존재하지 않습니다.</div>
+      <div class="tw-grid tw-grid-cols-5 tw-gap-20" style="margin-bottom: 100px">
+        <div v-if="StarsByCategory.length === 0"><p>스타가 존재하지 않습니다.</p></div>
         <div
           v-else
           v-for="star in StarsByCategory"
           :key="star.id"
           class="tw-border tw-rounded-lg star-card"
+          style="
+            /* width: 230px; */
+          "
         >
           <RouterLink
             :to="`/${star.id}/home`"
             class="tw-flex tw-flex-col tw-items-center tw-justify-center"
           >
-            <!-- object-fit 고치기 -->
-            <div
-              class="tw-basis-4/5 tw-overflow-hidden"
-              style="object-fit:; border-top-left-radius: 20px; border-top-right-radius: 20px"
-            >
-              <img :src="star.picture" alt="not" style="object-fit:" />
+
+            <div class="tw-basis-4/5 tw-overflow-hidden" style="overflow: hidden">
+              <img
+                :src="star.picture"
+                alt="not"
+                style="
+                  width: 200px;
+                  height: 205px; /* 고정 높이 설정 */
+                  object-fit: cover;
+                  object-position: center;
+                  border-top-right-radius: 20px;
+                  border-top-left-radius: 20px;
+                "
+              />
             </div>
-            <div class="tw-flex tw-text-center tw-items-center tw-basis-1/5">
+            <div class="mt-1 tw-flex tw-text-center tw-items-center tw-basis-1/5">
               <span class="tw-text-xl tw-font-bold long-text">{{
                 truncateText(star.username, 6)
               }}</span>

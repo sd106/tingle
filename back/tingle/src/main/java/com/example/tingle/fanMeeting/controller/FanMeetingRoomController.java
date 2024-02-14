@@ -19,12 +19,5 @@ public class FanMeetingRoomController {
         fanMeetingRoomService.createRoom(request);
 
     }
-    public void joinWaitingRoom() {
-
-    }
-
-    public void joinMeetingRoom() {
-
-    }
 
 }

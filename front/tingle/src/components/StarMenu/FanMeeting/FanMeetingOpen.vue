@@ -4,7 +4,7 @@
             <div class="col-md-8 p-0" >
                 <div class="poster-first"></div>
             </div>
-            <div class="col-md-4 d-flex flex-column justify-content-center p-4 poster-content-first">
+            <div class="col-md-4 d-flex flex-column justify-content-center p-4 poster-content-first" :style="{ backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1)), url(${fanMeetingInfo.imgURL1})` }">
                 <div>
                     <h2>{{ fanMeetingInfo.name }}</h2>
                 </div>
@@ -23,7 +23,7 @@
             
         </div>
         <div class="row" style="object-fit: cover; width: 100%; height: 500px;">
-            <div class="col-md-4 poster-content-second">
+            <div class="col-md-4 poster-content-second" :style="{ backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1)), url(${fanMeetingInfo.imgURL2})` }">
                 <div class="mb-5">
                     <h2>{{ fanMeetingInfo.description }}</h2>
                 </div>
@@ -60,7 +60,6 @@ const enterWaitingRoom = () => {
 
 <style scoped>
 .poster-first{
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1)), url('/image/fan-meeting-img.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -75,7 +74,6 @@ const enterWaitingRoom = () => {
     display: flex;
 }
 .poster-second{
-    background-image: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1)), url('/image/fan-meeting-img-2.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
