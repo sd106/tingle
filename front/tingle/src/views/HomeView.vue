@@ -60,15 +60,12 @@
           v-for="star in StarsByCategory"
           :key="star.id"
           class="tw-border tw-rounded-lg star-card"
-          style="
-            /* width: 230px; */
-          "
+          style="/* width: 230px; */"
         >
           <RouterLink
             :to="`/${star.id}/home`"
             class="tw-flex tw-flex-col tw-items-center tw-justify-center"
           >
-
             <div class="tw-basis-4/5 tw-overflow-hidden" style="overflow: hidden">
               <img
                 :src="star.picture"
@@ -203,7 +200,9 @@ onMounted(() => {
 
 .container-banner {
   overflow: hidden;
-  background: midnightblue;
+  background-image: url('image/Animation.gif'); /* 이미지 경로를 여기에 추가 */
+  background-size: cover; /* 배경 이미지가 컨테이너를 꽉 채우도록 설정 */
+  background-position: center; /* 배경 이미지가 중앙에 위치하도록 설정 */
 }
 .star-card {
   display: flex;
