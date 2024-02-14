@@ -29,6 +29,8 @@
       <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
         <!-- 추가 기능 -->
         <hr />
+        <!-- 로그인하지 않았을 경우 에러 방지 -->
+        <template v-if="folloingInfo && folloingInfo.length > 0">
         <!-- n명까지만 표기하고 나머지 더보기 버튼 -->
         <li calss="nav-item" v-for="star in folloingInfo.slice(0, displayCount)" :key="star.id">
           <RouterLink :to="`/${star.id}/home`" class="text-decoration-none text-dark">
@@ -42,6 +44,7 @@
             <!-- 최근 활동 있으면 점으로 표시 -->
           </RouterLink>
         </li>
+        </template>
         <!-- 더보기 -->
         <button
           v-if="displayCount < folloingInfo.length"
