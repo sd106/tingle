@@ -68,7 +68,6 @@
             :to="`/${star.id}/home`"
             class="tw-flex tw-flex-col tw-items-center tw-justify-center"
           >
-
             <div class="tw-basis-4/5 tw-overflow-hidden" style="overflow: hidden">
               <img
                 :src="star.picture"
