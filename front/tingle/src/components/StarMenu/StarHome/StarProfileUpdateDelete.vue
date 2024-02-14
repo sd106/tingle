@@ -58,7 +58,7 @@ const updateImage = async () => {
     formData.append('starId', String(starId))
 
     // Axios 요청 보내기
-    const response = await axios.post('http://localhost:8080/star/profilePicture', formData, {
+    const response = await axios.post('https://i10d106.p.ssafy.io/api/star/profilePicture', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -92,7 +92,7 @@ const selectFile2 = () => {
 
 const deleteImage = async () => {
   try {
-    const response = await axios.post(`http://localhost:8080/star/profilePicture/delete/${starId}`)
+    const response = await axios.post(`https://i10d106.p.ssafy.io/api/star/profilePicture/delete/${starId}`)
     starState!.picture = response.data.data
     if (response.data.resultCode === 'SUCCESS') {
       alert('프로필 사진이 삭제 되었습니다.')

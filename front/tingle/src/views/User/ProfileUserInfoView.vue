@@ -75,7 +75,7 @@ const uploadImage = async () => {
     formData.append('fanId', String(fanId))
 
     // Axios 요청 보내기
-    const response = await axios.post('http://localhost:8080/user/profilePicture', formData, {
+    const response = await axios.post('https://i10d106.p.ssafy.io/api/user/profilePicture', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -107,7 +107,7 @@ const selectFile2 = () => {
 
 const deleteImage = async (fanId: number) => {
   try {
-    const response = await axios.post(`http://localhost:8080/user/profilePicture/delete/${fanId}`)
+    const response = await axios.post(`https://i10d106.p.ssafy.io/api/user/profilePicture/delete/${fanId}`)
     fanState!.picture = response.data.data
     if (response.data.resultCode === 'SUCCESS') {
       alert('프로필 사진이 삭제 되었습니다.')

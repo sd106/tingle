@@ -56,7 +56,7 @@ const router = useRouter()
 const isStar = store.isStar
 
 const logOut = function (): void {
-  window.location.href = 'http://localhost:8080/logout'
+  window.location.href = 'https://i10d106.p.ssafy.io/api/logout'
   router.push({ name: 'home' })
   store.starState = null
   store.fanState = null
@@ -77,7 +77,7 @@ watch(
 // 로그인
 const redirectToOAuthProvider = async (provider: string) => {
   try {
-    window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`
+    window.location.href = `https://i10d106.p.ssafy.io/api/oauth2/authorization/${provider}`
   } catch (error) {
     console.log('error', error)
   }

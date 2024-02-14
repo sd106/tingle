@@ -56,7 +56,7 @@ const userId = fanState?.id
 
 const getOrderByUserId = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/order/getUserOrders/${userId}`)
+    const response = await axios.get(`https://i10d106.p.ssafy.io/api/order/getUserOrders/${userId}`)
     responseMessageGetByUserId.value = response.data.data
     console.log(response.data.data)
     // var textOnly = responseMessageGetByUserId.replace(/<[^>]*>/g, '');
@@ -86,7 +86,7 @@ function truncateText(text: string, maxLength: number): string {
 
 const deleteOrder = async (orderId: number) => {
   try {
-    const response = await axios.post(`http://localhost:8080/order/delete/${orderId}`)
+    const response = await axios.post(`https://i10d106.p.ssafy.io/api/order/delete/${orderId}`)
     console.log(response.data)
     getOrderByUserId()
   } catch (error) {

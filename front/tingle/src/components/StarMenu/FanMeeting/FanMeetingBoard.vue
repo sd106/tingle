@@ -37,7 +37,7 @@ const finishFan = async () => {
 
 const finishMeeting = async () => {
     try {
-        axios.delete(`http://localhost:8080/fanMeeting/finish/${store.starState?.id}`)
+        axios.delete(`https://i10d106.p.ssafy.io/api/fanMeeting/finish/${store.starState?.id}`)
     } catch (error) {
         console.log(error)
     }

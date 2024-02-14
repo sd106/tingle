@@ -190,7 +190,7 @@ const createFanMeeting = async () => {
     for (let [key, value] of formData.entries()) {
       console.log(key, value);
     }
-    const { data } = await axios.post('http://localhost:8080/fanMeeting/', formData, {
+    const { data } = await axios.post('https://i10d106.p.ssafy.io/api/fanMeeting/', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -210,7 +210,7 @@ const createFanMeetingRoom = async () => {
       starName: meeting.value.starName,
     }
 
-    const { data } = await axios.post('http://localhost:8080/fanMeetingRoom/create', request)
+    const { data } = await axios.post('https://i10d106.p.ssafy.io/api/fanMeetingRoom/create', request)
 
     console.log(data)
   } catch (error) {
@@ -220,7 +220,7 @@ const createFanMeetingRoom = async () => {
 
 const loadContents = async () => {
   // Load contents from server
-  const { data } = await axios.get('http://localhost:8080/fanMeeting/types')
+  const { data } = await axios.get('https://i10d106.p.ssafy.io/api/fanMeeting/types')
 
   console.log(data)
   allContents.value = data

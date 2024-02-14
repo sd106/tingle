@@ -67,7 +67,7 @@ const showWelcomeMessage = ref(false)
 const selectLoginType = async (type: string) => {
   try {
     const { data } = await axios.post(
-      `http://localhost:8080/auth/login/${type}`,
+      `https://i10d106.p.ssafy.io/api/auth/login/${type}`,
       {},
       { withCredentials: true }
     )
