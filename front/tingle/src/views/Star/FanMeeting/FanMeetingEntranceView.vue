@@ -3,7 +3,7 @@
     <StarMenu :name="name" />
 
     <section v-if="fanMeetingInfo && fanMeetingInfo.status === 'ticketing'" class="pt-5">
-      <FanMeetingTicketing :fanMeetingInfo="fanMeetingInfo"></FanMeetingTicketing>
+      <FanMeetingTicketing :fanMeetingInfo="fanMeetingInfo" :starId="props.starid" :haveTicket="haveTicket"></FanMeetingTicketing>
     </section>
 
     <section v-else-if="fanMeetingInfo && fanMeetingInfo.status === 'open'" class="pt-5">
@@ -32,6 +32,8 @@ const name = ref(store.fanState?.username)
 
 const fanMeetingInfo = ref<FanMeetingInfo>()
 
+const haveTicket = ref<boolean>(false);
+
 // fanMeetingInfo.value =
 // {
 //   "id": 1,
@@ -54,7 +56,19 @@ const getFanMeetingInfo = async () => {
   }
 }
 
+const getUserTicket =async () => {
+  try {
+    const response = await axios.get(`http://localhost:8080/fanMeeting/${props.starid}/reservation/${store.fanState!.id}`)
+    console.log(response.data)
+    haveTicket.value = response.data
+    console.log(haveTicket.value)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 onMounted(() => {
   getFanMeetingInfo()
+  getUserTicket()
 })
 </script>

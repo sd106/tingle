@@ -2,12 +2,12 @@
   <div :class="{ ticket: true, 'ticket-selected': isSelected, 'ticket-not-selected': !isSelected }" @click="select">
     <div class="row">
       <div class="col-3 ">
-        <img :src="product.image" :alt="'팬 미팅 티켓: ' + product.description" class="ticket-image">
+        <img :src="product.image" :alt="'팬 미팅 티켓 이미지' " class="ticket-image">
       </div>
       <div class="col-9 text-start">
         <h4> {{ product.name }} </h4>
         <h5>{{ product.description }}</h5>
-        <p>{{ product.price }} 원</p>
+
       </div>
     </div>
   </div>

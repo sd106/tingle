@@ -218,9 +218,10 @@ const router = createRouter({
           props: (route) => ({ starid: route.params.starid })
         },
         {
-          path: '/profile/:starid/fanmeeting/ticketbox',
+          path: '/profile/:starid/fanmeeting/:meetingid/ticketbox',
           name: 'FanMeetingTicketBoxView',
-          component: FanMeetingTicketBoxView
+          component: FanMeetingTicketBoxView,
+          props: (route) => ({ starid: route.params.starid, meetingid: route.params.meetingid })
         },
         {
           path: '/fanmeeting/:starid/waitingroom',
