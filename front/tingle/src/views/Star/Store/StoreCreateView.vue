@@ -12,28 +12,53 @@
           placeholder="스타 이름"
           class="tw-input tw-input-bordered tw-w-full"
         /> -->
-        <input type="text" v-model="productcreate.name" placeholder="상품 이름"
-          class="tw-input tw-input-bordered tw-w-full" />
-        <input type="number" v-model.number="productcreate.amount" placeholder="수량"
-          class="tw-input tw-input-bordered tw-w-full" />
-        <input type="number" v-model.number="productcreate.price" placeholder="가격"
-          class="tw-input tw-input-bordered tw-w-full" />
+        <input
+          type="text"
+          v-model="productcreate.name"
+          placeholder="상품 이름"
+          class="tw-input tw-input-bordered tw-w-full"
+        />
+        <input
+          type="number"
+          v-model.number="productcreate.amount"
+          placeholder="수량"
+          class="tw-input tw-input-bordered tw-w-full"
+        />
+        <input
+          type="number"
+          v-model.number="productcreate.price"
+          placeholder="가격"
+          class="tw-input tw-input-bordered tw-w-full"
+        />
         <TiptapTest v-model="productcreate.content" />
       </div>
 
       <!-- 드래그 앤 드롭을 통한 파일 업로드 영역 -->
-      <div ref="dragArea"
+      <div
+        ref="dragArea"
         class="tw-border-dashed tw-border-2 tw-border-primary tw-p-4 tw-text-center tw-cursor-pointer tw-mb-4"
-        @dragover.prevent="handleDragOver" @drop="handleDrop" @click="fileInput!.click()">
+        @dragover.prevent="handleDragOver"
+        @drop="handleDrop"
+        @click="fileInput!.click()"
+      >
         여기에 파일을 드래그 앤 드롭하거나 클릭하여 선택하세요.
-        <input type="file" multiple ref="fileInput" @change="handleFileUpload" style="display: none" />
+        <input
+          type="file"
+          multiple
+          ref="fileInput"
+          @change="handleFileUpload"
+          style="display: none"
+        />
       </div>
 
       <!-- 드래그 앤 드롭으로 업로드된 파일의 미리보기 -->
       <div class="tw-grid tw-grid-cols-3 tw-gap-4">
         <div v-for="(file, index) in previewFiles" :key="index" class="tw-relative tw-mb-4">
           <img :src="file" class="tw-rounded tw-shadow-md" />
-          <button @click="removeFile(index)" class="tw-btn tw-btn-error tw-btn-sm tw-absolute tw-right-0 tw-top-0">
+          <button
+            @click="removeFile(index)"
+            class="tw-btn tw-btn-error tw-btn-sm tw-absolute tw-right-0 tw-top-0"
+          >
             삭제
           </button>
         </div>
@@ -57,8 +82,7 @@ const store = useUserStore()
 
 const starName = store.starState!.username
 
-const props = defineProps(['id'])
-const id = ref(props.id)
+const id = store.starState!.id
 
 const createProduct = async (productInfo: any, fileInputs: File[]) => {
   try {
@@ -196,7 +220,7 @@ h2 {
 }
 
 .tiptap {
-  >*+* {
+  > * + * {
     margin-top: 0.75em;
   }
 

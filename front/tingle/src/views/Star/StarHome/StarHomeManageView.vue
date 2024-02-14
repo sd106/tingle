@@ -1,24 +1,26 @@
 <template>
   <main class="container">
     <StarMenu :id="starId" />
-    <div class="container border">
-
       <img :src="starProfile?.banner" alt="사진">
-    </div>
-    <div class="container border">
-      <!-- 프로필 사진 > 누르면 확대-->
-      <div>
-        <img :src="starProfile?.profileImage" alt="사진">
-        <div style="display: inline-block;">
-          <!-- 닉네임 -->
-          <p>닉네임 {{ starProfile?.snsUrl }}</p>
-          <!-- sns주소 링크 -->
+
+    <div class="container border d-flex">
+      <div class>
+        <img :src="starProfile?.profileImage" alt="사진" class="w-75 h-75">
+        <!-- sns주소 링크 -->
+        <span>SNS주소 {{ starProfile?.snsUrl }}</span>
+      </div>
+      <div class="d-flex justify-content-between w-100">
+        <div class="d-flex inline-block m-lg-2 align-items-center">
+          <span>닉네임 {{ starProfile?.username }}</span>
+          <span>카테고리 {{ starProfile?.category }}</span>
+        </div>
+        <div class>
+          <StarProfileUpdateDeleteVue/>
         </div>
       </div>
 
-      <p>sns 주소 {{ starProfile?.username }} </p>
-
     </div>
+
 
     <div class="container border" v-show="showInputArticle">
       <input type="file" id="image-upload" multiple>
@@ -67,6 +69,7 @@ const store = useUserStore();
 let showInputArticle = ref(false);
 
 import StarMenu from '@/components/StarMenu/StarMenu.vue';
+import StarProfileUpdateDeleteVue from '@/components/StarMenu/StarHome/StarProfileUpdateDelete.vue'
 
 import type { StarProfile, HomeArticle } from '@/common/types/index'
 
@@ -137,30 +140,6 @@ let homeUpdateRequest = {
   ordering: 3,
   content: "입력해주세요"
 };
-
-// const updateArticle = async (homeid: number) => {
-//   ////////////////////////////// 오류 제거용
-//   console.log(homeid)
-//   ///////////////////////////////
-
-//   let formData = new FormData();
-//   formData.append('homeUpdateRequest', JSON.stringify(homeUpdateRequest)); // JSON 문자열로 변환하여 추가
-
-//   // 파일이 여러 개인 경우, 각각의 파일을 추가
-//   for (let i = 0; i < files.value.length; i++) {
-//     formData.append('files', files.value[i]);
-//   }
-
-//   axios.post(`${store.API_URL}/home/update`, formData, {
-//     headers: {
-//       'Content-Type': 'multipart/form-data'
-//     }
-//   }).then(response => {
-//     console.log(response.data);
-//   }).catch(error => {
-//     console.error(error);
-//   });
-// }
 
 
 const deleteArticle = async (homeid: number) => {

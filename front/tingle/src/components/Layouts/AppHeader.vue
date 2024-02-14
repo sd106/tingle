@@ -9,7 +9,8 @@
         <img src="/image/ham.png" alt="" />
       </button>
       <RouterLink to="/">
-        <img class="" src="/image/nav_logo.webp" alt="" style="height: 50px" />
+        <img v-if="isStar" class="logo" src="/image/star-logo.gif" alt="" style="height: 60px" />
+        <img v-else class="logo" src="/image/boat-logo.gif" alt="" style="height: 60px" />
       </RouterLink>
       <!-- 검색창 -->
       <form class="search-box" action="" method="get">
@@ -52,6 +53,7 @@ import { RouterLink, useRouter } from 'vue-router'
 
 const store = useUserStore()
 const router = useRouter()
+const isStar = store.isStar
 
 const logOut = function (): void {
   window.location.href = 'http://localhost:8080/logout'
@@ -91,6 +93,15 @@ const redirectToNaver = () => {
 </script>
 
 <style>
+
+.logo {
+  position: fixed;
+  top: 10px;
+  left: 140px;
+  right: 0;
+}
+
+
 .custom-navbar {
   background-color: white;
 }
@@ -189,4 +200,5 @@ const redirectToNaver = () => {
   width: 20px;
   object-fit: contain;
 }
+
 </style>

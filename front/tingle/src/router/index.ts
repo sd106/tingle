@@ -4,6 +4,7 @@ import LayoutOnView from '@/views/Layout/LayoutOnView.vue'
 import LayoutOnlyHeader from '@/views/Layout/LayoutOnlyHeader.vue'
 import LayoutOffView from '@/views/Layout/LayoutOffView.vue'
 import HomeView from '@/views/HomeView.vue'
+import StarProfileUpdateView from '@/views/Star/StarHome/StarProfileUpdateView.vue'
 import SignUpView from '@/views/User/SignUpView.vue'
 import ProfileView from '@/views/User/ProfileView.vue'
 import ProfileUserInfoView from '@/views/User/ProfileUserInfoView.vue'
@@ -13,6 +14,7 @@ import ProfileUserOrdersDetailView from '@/views/User/ProfileUserOrdersDetailVie
 import StarHomeMainView from '@/views/Star/StarHome/StarHomeMainView.vue'
 import StarHomeManageView from '@/views/Star/StarHome/StarHomeManageView.vue'
 import SnapshotMainView from '@/views/Star/Snapshot/SnapshotMainView.vue'
+import SnapshotMain4StarView from '@/views/Star/Snapshot/SnapshotMain4StarView.vue'
 import SnapshotCreateView from '@/views/Star/Snapshot/SnapshotCreateView.vue'
 import SnapshotUpdateView from '@/views/Star/Snapshot/SnapshotUpdateView.vue'
 import WishMainView from '@/views/Star/Wish/WishMainView.vue'
@@ -90,15 +92,25 @@ const router = createRouter({
         ////////////////////////스타 메뉴
         ///////////// 스타 전용
         {
-          path: '/forstar/home/manage/',
+          path: '/forstar/home/manage',
           name: 'starhomemanage',
           component: StarHomeManageView,
-          props: (route) => ({ id: route.params.starid })
         },
         {
-          path: '/forstar/wish/manage/',
+          path: '/forstar/snapshot',
+          name: 'starSnapshot',
+          component: SnapshotMain4StarView
+        },
+        
+        {
+          path: '/forstar/wish/manage',
           name: 'wishmanage',
           component: WishManageView,
+        },
+        { //스타 프로필 수정기능
+          path: '/forstar/home/profile/update',
+          name: 'starhomeprofileupdate',
+          component: StarProfileUpdateView,
           props: (route) => ({ id: route.params.starid })
         },
         {
@@ -145,6 +157,8 @@ const router = createRouter({
           name: 'CreateMeetingView',
           component: CreateFanMeetingView
         },
+        //////////////////////////////////////////// 스타 메뉴 끝
+
         // 홈
         {
           path: '/:starid/home',

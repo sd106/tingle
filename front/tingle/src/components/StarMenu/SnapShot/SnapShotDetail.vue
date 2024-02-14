@@ -2,28 +2,51 @@
   <div class="container mt-2 mb-3">
     <div class="row">
       <!-- 이미지 컨테이너 -->
-      <div class="col-md-6">
+      <div class="col-md-6 tw-flex tw-flex-row">
         <img :src="props.selectedSnapshot!.imageUrl" alt="Snapshot Image" class="rounded snapshot-image">
       </div>
       <div class="col-md-6">
         <!-- 스냅샷 관리 버튼 -->
-        <div class="snapshot-actions d-flex justify-content-between">
-          <button class="btn btn-dark" v-if="isLike" @click="preDislike(props.selectedSnapshot!.snapshotId)">좋아요 취소 {{
-            props.selectedSnapshot?.likes }}</button>
-          <button class="btn btn-outline-dark" v-else @click="preLike(props.selectedSnapshot!.snapshotId)">좋아요 {{
-            props.selectedSnapshot?.likes }}</button>
+        <div class="snapshot-actions d-flex justify-content-between p-1">
+          <!-- <button class="btn btn-danger" v-if="isLike" @click="preDislike(props.selectedSnapshot!.snapshotId)">
+            좋아요 취소 {{ props.selectedSnapshot?.likes }}
+          </button>
+          <button class="btn btn-outline-danger" v-else @click="preLike(props.selectedSnapshot!.snapshotId)">
+            좋아요 {{ props.selectedSnapshot?.likes }}
+          </button> -->
+          <div class="tw-flex tw-gap-x-2 tw-items-center">
+            <button v-if="isLike" @click="preDislike(props.selectedSnapshot!.snapshotId)"
+              class="tw-btn tw-btn-outline dislike">
+              <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-8 tw-w-8 heart" fill="red" viewBox="0 0 24 24"
+                stroke="black">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+              {{ props.selectedSnapshot?.likes }}
+            </button>
+            <button v-else @click="preLike(props.selectedSnapshot!.snapshotId)" class="tw-btn tw-btn-outline like">
+              <svg xmlns="http://www.w3.org/2000/svg" class="tw-h-8 tw-w-8 heart" fill="none" viewBox="0 0 24 24"
+                stroke="black">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+              {{ props.selectedSnapshot?.likes }}
+            </button>
+          </div>
+
+
           <span>
-            <button class="btn btn-secondary" @click="goToUpdate(props.selectedSnapshot!.snapshotId)">스냅샷 수정</button>
-            <button class="btn btn-danger" @click="deleteSnapshot(props.selectedSnapshot!.snapshotId)">스냅샷 삭제</button>
+            <button v-if="!store.isStar && (store.fanState && store.fanState.username === props.selectedSnapshot?.username)" class="btn btn-secondary" @click="goToUpdate(props.selectedSnapshot!.snapshotId)">스냅샷 수정</button>
+            <button v-if="store.isStar || (store.fanState && store.fanState.username === props.selectedSnapshot!.username)" class="btn btn-danger" @click="deleteSnapshot(props.selectedSnapshot!.snapshotId)">스냅샷 삭제</button>
           </span>
         </div>
         <!-- 본문 내용 -->
-        <div class="content mx-0 mt-2">
-          <p class="d-flex justify-content-between">
-            <span>{{ props.selectedSnapshot!.username }}</span>
-            <span class="text-body-tertiary">{{ createdTime }} // {{ time }}</span>
+        <div class="content mx-0 my-3 pt-0">
+          <p class="d-flex justify-content-between mb-2">
+            <span class="text-body-tertiary">{{ props.selectedSnapshot!.username }}</span>
+            <span class="text-body-tertiary">{{ createdTime }}</span>
           </p>
-          <h3>{{ props.selectedSnapshot!.content }}</h3>
+          <h3 class="tw-text-xl">{{ props.selectedSnapshot!.content }}</h3>
         </div>
 
         <!-- 태그 리스트 -->
@@ -35,7 +58,7 @@
         <div class="comments-list">
           <p class="mb-2">💬 댓글 {{ props.selectedSnapshot?.comments.length }}</p>
 
-          <div v-for="comment in props.selectedSnapshot!.comments" :key="comment.id" class="">
+          <div v-for="comment in props.selectedSnapshot!.comments" :key="comment.id" class="mb-2">
             <!-- 수정 중인 댓글의 UI 변경 -->
             <div v-if="editingCommentId === comment.id">
               <p class="d-flex justify-content-between align-items-center">
@@ -51,21 +74,22 @@
             </div>
             <!-- 일반 댓글 표시 -->
             <div v-else>
-              <p class="d-flex justify-content-between align-items-center">
-                <span>
-                  <span v-if="comment.isStar" class="fw-bold me-3 text-danger">{{ comment.username }}</span>
-                  <span v-else class="fw-bold me-3">{{ comment.username }}</span>
-                  <span class="">{{ comment.context }}</span>
-                </span>
-                <span class="">
-                  <button class="btn btn-outline-danger btn-sm" @click="deleteComment(comment.id)">
+              <div class="tw-flex tw-flex-row tw-items-stretch">
+                <div class="tw-self-center tw-basis-4/5 tw-flex tw-flex-row tw-items-stretch">
+                  <span v-if="comment.isStar" class="tw-self-center tw-basis-1/3 fw-bold text-danger">{{ comment.username }}</span>
+                  <span v-else class="tw-self-center tw-basis-1/3 fw-bold">{{ comment.username }}</span>
+                  <span class="tw-self-center tw-basis-1/2">{{ comment.context }}</span>
+                  <span class="tw-self-center tw-basis-1/6 text-body-tertiary tw-text-xs">{{ formatDistanceToNowFromLocalDateTime(comment.createdAt) }}</span>
+                </div>
+                <div class="tw-self-center tw-basis-1/5">
+                  <button v-if="store.isStar || (!store.isStar && !comment.isStar && store.fanState && (store.fanState.username === comment.username)) || (store.starState && (store.starState.username === comment.username))" class="btn btn-outline-danger btn-sm" @click="deleteComment(comment.id)">
                     삭제
                   </button>
-                  <button class="btn btn-outline-secondary btn-sm mx-2" @click="startEditComment(comment)">
+                  <button v-if="(!store.isStar && !comment.isStar && store.fanState && (store.fanState.username === comment.username)) || (store.isStar && comment.isStar && store.starState!.username === comment.username)" class="btn btn-outline-secondary btn-sm ms-1" @click="startEditComment(comment)">
                     수정
                   </button>
-                </span>
-              </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -74,7 +98,7 @@
           <div class="col-sm-10">
             <input class="form-control" type="text" v-model="newCommentContent" placeholder="댓글을 남겨보세요!" />
           </div>
-          <button type="submit" class="col-sm-2 btn btn-success">작성</button>
+          <button type="submit" class="col-sm-2 tw-bg-blue-500 hover:tw-bg-blue-700 tw-text-white tw-font-bold py-2 px-4 tw-rounded tw-shadow hover:tw-shadow-lg tw-transition tw-duration-300 tw-ease-in-out">작성</button>
         </form>
       </div>
     </div>
@@ -94,6 +118,7 @@ import type { selectedSnapshotType, CommentType } from '@/common/types/index'
 import { isConstructorDeclaration } from 'typescript';
 
 // const snapshot = ref<SnapshotType | null>(null);
+const active = ref(0)
 const router = useRouter()
 
 const store = useUserStore();
@@ -168,6 +193,16 @@ const goToUpdate = (id: number) => {
 };
 
 // -------------------------------------------------------------------- 좋아요 코드
+const handleClick = async (snapshotId: number) => {
+  if (isLike.value) {
+    preDislike(snapshotId)
+    active.value = 0
+  } else {
+    preLike(snapshotId)
+    active.value = 1
+  }
+}
+
 const preLike = async (id: number) => {
 
   if (!store.fanState && store.starState && (store.starState!.username === props.selectedSnapshot!.starname)) {
@@ -432,7 +467,7 @@ function formatDistanceToNowFromLocalDateTime(isoString: string) {
 }
 
 .snapshot-actions {
-  padding: 16px;
+  padding: 12px;
 }
 
 .snapshot-actions button {
@@ -459,5 +494,32 @@ function formatDistanceToNowFromLocalDateTime(isoString: string) {
   border-radius: 4px;
   text-decoration: none;
 }
+
+.like,
+.dislike {
+  border: none;
+  outline: none;
+  transition: background-color 0.3s;
+}
+
+.like:hover,
+.dislike:hover {
+  background-color: white;
+}
+
+.heart {
+  transition: fill 0.3s ease, stroke 0.3s ease, transform 0.3s ease;
+}
+
+.like:hover .heart {
+  fill: red;
+  transform: scale(1.5);
+}
+
+.dislike:hover .heart {
+  fill: none;
+  opacity: 0.2;
+  transition: opacity 0.3s ease, fill 0.3s ease;
+}
+
 </style>
-@/stores/snapshot

@@ -6,10 +6,7 @@ import com.example.tingle.home.entity.HomeEntity;
 import com.example.tingle.store.entity.OrderEntity;
 import com.example.tingle.user.entity.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +27,7 @@ public class StarEntity {
     private String username;
     private String password;
 
+    @Setter
     private String picture;
 
 
@@ -41,7 +39,7 @@ public class StarEntity {
     private String email;
 
     @Column(nullable = false)
-    private int category;
+    private int category= -1;
 
     private String snsUrl;
 
@@ -82,6 +80,7 @@ public class StarEntity {
                 .banner(this.banner)
                 .profileImage(this.picture)
                 .username(this.username)
+                .category(this.category)
                 .snsUrl(this.snsUrl)
                 .build();
     }

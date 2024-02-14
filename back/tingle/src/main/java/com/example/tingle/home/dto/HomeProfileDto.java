@@ -17,6 +17,8 @@ public class HomeProfileDto {
 
     private String username;
 
+    private int category;
+
     private String snsUrl;
 
 }

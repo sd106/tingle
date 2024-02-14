@@ -34,7 +34,7 @@ public class UserProfileController {
         if (optionalUserEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();
             String picture = userEntity.getPicture();
-            if (picture != null && picture.equals("https://tingle-s3.s3.ap-northeast-2.amazonaws.com/basic-profile.png")) {
+            if (picture != null && !picture.equals("https://tingle-s3.s3.ap-northeast-2.amazonaws.com/basic-profile.png")) {
                 s3UploadService.deleteImage(picture);
             }
             String s = s3UploadService.saveFile(file);
