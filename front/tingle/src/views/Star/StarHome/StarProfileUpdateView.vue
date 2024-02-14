@@ -1,11 +1,11 @@
 <template>
   <main class="container">
-    <StarMenu :id="id" />
+    <!-- <StarMenu :id="id" />
     <div class="tw-p-8">
       <h1 class="tw-text-2xl tw-font-bold tw-mb-8">스타 프로필 수정</h1>
 
       <div class="d-flex justify-content-between">
-        <!-- 드래그 앤 드롭을 통한 파일 업로드 영역 -->
+        드래그 앤 드롭을 통한 파일 업로드 영역
         <div
           ref="dragArea"
           class="tw-border-dashed tw-border-2 tw-border-primary tw-p-4 tw-text-center tw-cursor-pointer tw-mb-4"
@@ -22,7 +22,7 @@
           />
         </div>
 
-        <!-- 드래그 앤 드롭으로 업로드된 파일의 미리보기 -->
+        드래그 앤 드롭으로 업로드된 파일의 미리보기
         <div class="tw-grid tw-grid-cols-3 tw-gap-4">
           <div v-for="(file, index) in previewFiles" :key="index" class="tw-relative tw-mb-4">
             <img :src="file" class="tw-rounded tw-shadow-md" />
@@ -36,7 +36,7 @@
         </div>
       </div>
       <div>
-        <!-- 상품 정보 입력 폼 -->
+        상품 정보 입력 폼
         <div class="tw-flex tw-gap-4 tw-me-4 tw-mb-4">
 
           <input
@@ -65,10 +65,10 @@
         <TiptapTest />
 
 
-      <!-- 상품 생성 버튼 -->
+      상품 생성 버튼
       <button @click="submitForm" class="tw-btn tw-btn-primary tw-mt-4">상품 생성</button>
     </div>
-    <!-- //-----------상품 생성----------------------------// -->
+    //-----------상품 생성----------------------------// -->
   </main>
 </template>
 
@@ -82,11 +82,11 @@ import StarMenu from '@/components/StarMenu/StarMenu.vue'
 const router = useRouter()
 const starProfile = ref<StarProfile>();
 
-const getstarProfile = async () => {
-  const response = await axios.get(`${store.API_URL}/home/profile/${starId}`);
-  starProfile.value = response.data.data;
-  console.log(starProfile.value);
-}
+// const getstarProfile = async () => {
+//   const response = await axios.get(`${store.API_URL}/home/profile/${starId}`);
+//   starProfile.value = response.data.data;
+//   console.log(starProfile.value);
+// }
 
 const submitForm = () => {
   if (files.value.length > 0) {
@@ -115,7 +115,7 @@ const removeFile = (index: number) => {
 }
 
 onMounted(() => {
-  getstarProfile();
+  // getstarProfile();
 });
 
 
