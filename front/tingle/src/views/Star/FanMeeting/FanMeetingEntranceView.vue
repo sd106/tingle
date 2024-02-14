@@ -3,7 +3,7 @@
     <StarMenu :id="id" />
 
     <section v-if="fanMeetingInfo && fanMeetingInfo.status === 'ticketing'" class="pt-5">
-      <FanMeetingTicketing :fanMeetingInfo="fanMeetingInfo" :starId="props.starid" :haveTicket="haveTicket"></FanMeetingTicketing>
+      <FanMeetingTicketing :fanMeetingInfo="fanMeetingInfo" :starId="props.id" :haveTicket="haveTicket"></FanMeetingTicketing>
     </section>
 
     <section v-else-if="fanMeetingInfo && fanMeetingInfo.status === 'open'" class="pt-5">
@@ -27,12 +27,14 @@ import FanMeetingClosed from '@/components/StarMenu/FanMeeting/FanMeetingClosed.
 import StarMenu from '@/components/StarMenu/StarMenu.vue'
 
 const store = useUserStore()
-const props = defineProps(['starid'])
+const props = defineProps(['id'])
 const name = ref(store.fanState?.username)
 
 const fanMeetingInfo = ref<FanMeetingInfo>()
 
 const haveTicket = ref<boolean>(false);
+const starId = ref<number>();
+starId.value = Number(props.id)
 
 // fanMeetingInfo.value =
 // {
@@ -49,7 +51,7 @@ const haveTicket = ref<boolean>(false);
 
 const getFanMeetingInfo = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/fanMeeting/info/${props.id}`)
+    const response = await axios.get(`http://localhost:8080/fanMeeting/info/${starId.value}`)
     fanMeetingInfo.value = response.data
   } catch (error) {
     console.log(error)
@@ -58,7 +60,7 @@ const getFanMeetingInfo = async () => {
 
 const getUserTicket =async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/fanMeeting/${props.starid}/reservation/${store.fanState!.id}`)
+    const response = await axios.get(`http://localhost:8080/fanMeeting/${starId.value}/reservation/${store.fanState!.id}`)
     console.log(response.data)
     haveTicket.value = response.data
     console.log(haveTicket.value)
