@@ -32,7 +32,9 @@ public class QFanMeeting extends EntityPathBase<FanMeeting> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath imgURL = createString("imgURL");
+    public final StringPath imgURL1 = createString("imgURL1");
+
+    public final StringPath imgURL2 = createString("imgURL2");
 
     public final BooleanPath isFinished = createBoolean("isFinished");
 

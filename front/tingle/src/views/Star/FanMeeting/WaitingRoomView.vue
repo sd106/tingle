@@ -50,7 +50,7 @@ const localUserName = ref(store.fanState?.username)
 const roomType = 'Waiting'
 
 // 메시지 관련
-const invited = ref(true)
+const invited = ref(false)
 
 const messages = ref<FanMeetingMessage[]>([])
 const newMessage = ref('')
@@ -103,11 +103,6 @@ const initializeWebSocket = () => {
 
   socket.onopen = () => {
     console.log('소켓 열렸는디요.')
-    const sendToServer = (msg: SocketMessage) => {
-      if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify(msg))
-      }
-    }
 
     sendToServer({
       sender: localUserName.value,

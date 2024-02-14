@@ -1,35 +1,49 @@
 <template>
-    <section v-if="fanMeetingReservation?.fanMeetingType == 'normal'">
-        <NormalMeeting :localVideo="localVideo" :remoteVideo="remoteVideo" :starName="starName"
-            :localStream="localStream" />
-    </section>
-    <section v-else-if="fanMeetingReservation?.fanMeetingType == 'lifefourcut'">
-        <LifeFourCutMeeting :localVideo="localVideo" :remoteVideo="remoteVideo" :starName="starName"
-            :localStream="localStream" />
-    </section>
-    <section v-else-if="fanMeetingReservation?.fanMeetingType == 'birthday'">
-        <BirthdayMeeting :localVideo="localVideo" :remoteVideo="remoteVideo" :starName="starName"
-            :localStream="localStream" />
-    </section>
-    <section v-else>
-        <h1>연결중입니다...</h1>
-    </section>
+    <div>
+        <div>
+            <section v-if="fanMeetingReservation?.fanMeetingType == 'normal'">
+                <NormalMeeting 
+                :localVideo="localVideo"
+                :remoteVideo="remoteVideo"
+                :localStream="localStream"
+                />
+            </section>
+            <section v-else-if="fanMeetingReservation?.fanMeetingType == 'lifefourcut'">
+                <LifeFourCutMeeting 
+                :localVideo="localVideo"
+                :remoteVideo="remoteVideo"
+                :localStream="localStream"
+                />
+            </section>
+            <section v-else-if="fanMeetingReservation?.fanMeetingType== 'birthday'">
+                <BirthdayMeeting 
+                :localVideo="localVideo"
+                :remoteVideo="remoteVideo"
+                :localStream="localStream"
+                />
+            </section>
+            <section v-else>
+                <h1>연결중입니다...</h1>
+            </section>
+        </div>
+        <div>
+            <FanMeetingBoard @finish-fan="finishFan" @finish-meeting="finishMeeting"/>
+        </div>
+    </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useUserStore } from '@/stores/user'
-import { useRoute } from 'vue-router'
 import axios from 'axios'
 import type { SocketMessage, FanMeetingReservation } from '@/common/types/index'
 import NormalMeeting from '@/views/Star/FanMeeting/NormalMeeting.vue'
 import LifeFourCutMeeting from '@/views/Star/FanMeeting/LifeFourCutMeeting.vue'
 import BirthdayMeeting from '@/views/Star/FanMeeting/BirthdayMeeting.vue'
+import FanMeetingBoard from '@/components/StarMenu/FanMeeting/FanMeetingBoard.vue'
 
-const route = useRoute()
-
-const starName = ref(route.params.starid.toString())
 const store = useUserStore()
+const starName = store.starState?.username
 
 const fanMeetingReservation = ref<FanMeetingReservation>()
 
@@ -40,6 +54,14 @@ const loadReservation = async () => {
     } catch (error) {
         console.log(error)
     }
+}
+
+const finishFan = () => {
+    console.log("finishFan")
+}
+
+const finishMeeting = () => {
+    console.log("finishMeeting")
 }
 // 주소로 연결할 웹소켓
 let socket: WebSocket | undefined;
@@ -111,6 +133,11 @@ const initializeWebSocket = () => {
                 handleJoinMessage(message)
                 break;
 
+            case "Accept":
+                console.log('Signal ACCEPT received')
+                handleAcceptMessage(message)
+                break;
+
             default:
                 console.log('Error: ', message)
                 handleErrorMessage(message)
@@ -121,9 +148,10 @@ const initializeWebSocket = () => {
     socket.onopen = () => {
         console.log('소켓 열렸는디요')
         sendToServer({
-            sender: localUserName.value,
+            sender: starName,
             signalType: 'Join',
-            data: starName.value,
+            roomType: 'Meeting',
+            data: starName,
         })
     }
 
@@ -249,6 +277,10 @@ const handleJoinMessage = async (message: SocketMessage) => {
 
 }
 
+const handleAcceptMessage = (message: SocketMessage) => {
+    message.sdp
+    console.log('Signal ACCEPT received')
+}
 
 const handleErrorMessage = (message: SocketMessage) => {
     console.error("에러발생!: ", message)

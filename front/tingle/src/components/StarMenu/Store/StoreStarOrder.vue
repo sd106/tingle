@@ -29,7 +29,6 @@
               <span class="mb-3">{{ res.goods.name }}</span>
               <span>{{ res.goods.content }}</span>
             </div>
-
             <div class="p-3 col-2">
               <span>{{ res.goods.price }}</span>
               {{ res.fan.id }}
@@ -44,21 +43,16 @@
     </div>
   </main>
 </template>
-
 <script setup lang="ts">
 import { ref } from 'vue'
-
 import axios from 'axios'
 import type { OrderResponse } from '@/common/types/index.ts'
 import StarMenu from '@/components/StarMenu/StarMenu.vue'
 import { useUserStore } from '@/stores/user'
-
 const { starState } = useUserStore()
 const starid = starState!.id
-
 const responseMessageGetByStarName = ref<OrderResponse[]>([])
 const starname = ref('')
-
 const getStarOrder = async () => {
   try {
     const response = await axios.get(`http://localhost:8080/order/getByStarName/${starname.value}`)
@@ -69,16 +63,11 @@ const getStarOrder = async () => {
     console.log(error)
   }
 }
-
 import StoreOrderDetail from '@/components/StarMenu/Store/StoreOrderDetail.vue'
-
 const expandedProduct = ref<OrderResponse | null>(null)
-
 const expandProduct = (order: OrderResponse) => {
   expandedProduct.value = expandedProduct.value === order ? null : order
 }
-
-
 const deleteOrder = async (orderId: number) => {
   try {
     const response = await axios.post(`http://localhost:8080/order/delete/${orderId}`);
@@ -89,10 +78,8 @@ const deleteOrder = async (orderId: number) => {
   }
 }
 </script>
-
 <style>
 .custom-hr {
   border-top: 3px solid #000000;
 }
 </style>
-

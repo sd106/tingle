@@ -18,10 +18,6 @@ interface StarState {
     picture: string;
 }
 
-interface FanMeetingContent {
-    name: string
-}
-
 interface HotStarInfo {
     id: number;
     username: string;
@@ -73,7 +69,8 @@ interface FanMeetingInfo {
     ticketingEndAt: string
     fanMeetingStartAt: string
     price: number
-    imgURL: string
+    imgURL1: string
+    imgURL2: string
 }
 
 interface FanMeetingTicket {
@@ -311,7 +308,7 @@ export type {
     // 스토어
     Goods, ImageUrl, OrderResponse,
     // 팬미팅
-    FanMeetingContent, FanMeeting, FanMeetingInfo, FanMeetingTicket, FanMeetingReservation, CreateFanMeetingForm,
+    FanMeetingType, FanMeeting, FanMeetingInfo, FanMeetingTicket, FanMeetingReservation, CreateFanMeetingForm,
     Product, ProductCreationPayload, OrderResponse2, UserStoreStorageResponse,
     // 위시
     LikesInfo, WishInfo,
