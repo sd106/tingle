@@ -32,7 +32,7 @@
         <hr />
         <!-- n명까지만 표기하고 나머지 더보기 버튼 -->
         <li calss="nav-item" v-for="star in folloingInfo.slice(0, displayCount)" :key="star.id">
-          <RouterLink :to="`/${star.id}/home`" class="text-decoration-none text-dark">
+          <RouterLink :to="`/${star.starId}/home`" class="text-decoration-none text-dark">
             <div class="star-card">
               <div class="star-image">
                 <img :src="star.picture" alt="not" />
@@ -107,12 +107,12 @@ const showBrief = function (): void {
   displayCount.value = 7
 }
 
-const folloingInfo = ref<{ id: number; picture: string; userName: string }[]>([])
+const folloingInfo = ref<{ starId: number; picture: string; userName: string }[]>([])
 // const hotStarInfo= ref<{id: number, picture: string, userName: string}[]>([]);
 
 //구독한 스타 가져오기
 const getFolloings = async () => {
-  const response = await axios.get('http://localhost:8080/follow/1')
+  const response = await axios.get(`http://localhost:8080/follow/${store.fanState?.id}`)
   folloingInfo.value = response.data.data
   console.log(response)
 }
