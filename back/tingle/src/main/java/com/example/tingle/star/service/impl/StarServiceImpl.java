@@ -25,6 +25,11 @@ public class StarServiceImpl implements StarService {
     }
 
     @Override
+    public List<StarEntity> findByUsernameContaining(String starname) {
+        return starRepository.findByUsernameContaining(starname);
+    }
+
+    @Override
     public Optional<StarEntity> findById(Long starId) {
         return starRepository.findById(starId);
     }

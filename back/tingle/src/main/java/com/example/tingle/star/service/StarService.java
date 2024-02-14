@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface StarService {
     StarEntity findByUsername(String username);
 
+    List<StarEntity> findByUsernameContaining(String starname);
     Optional<StarEntity> findById(Long starId);
     List<ReadStarByCategory> findStarsByCategory(int category);
 
