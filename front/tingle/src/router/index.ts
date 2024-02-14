@@ -114,10 +114,9 @@ const router = createRouter({
         },
         
         {
-          path: '/forstar/wish',
+          path: '/forstar/wish/manage',
           name: 'wishmanage',
           component: WishManageView,
-          props: (route) => ({ id: route.params.starid })
         },
         { //스타 프로필 수정기능
           path: '/forstar/home/profile/update',
