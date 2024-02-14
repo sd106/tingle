@@ -13,16 +13,17 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import type { FanMeetingInfo } from '@/common/types/index'
+import { useUserStore } from '@/stores/user';
 import CreateFanMeetingViewVue from '@/views/Star/FanMeeting/CreateFanMeetingView.vue'
 import MeetingRoomView4Star from '@/views/Star/FanMeeting/MeetingRoom4StarView.vue'
 
 const props = defineProps(['username', 'starid'])
-
+const userStore = useUserStore()
 const fanMeetingInfo = ref<FanMeetingInfo>()
 
 const getFanMeetingInfo = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/fanMeeting/info/${props.starid}`)
+    const response = await axios.get(`http://localhost:8080/fanMeeting/info/${userStore.starState!.id}`)
     fanMeetingInfo.value = response.data
   } catch (error) {
     console.log(error)

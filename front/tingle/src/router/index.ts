@@ -140,7 +140,6 @@ const router = createRouter({
           path: '/forstar/store/create',
           name: 'storecreate',
           component: StoreCreateView,
-          props: (route) => ({ id: route.params.starid })
         },
         {
           path: '/forstar/store/update/:productId',
@@ -157,7 +156,6 @@ const router = createRouter({
           path: '/forstar/fanmeeting',
           name: 'fanmeeting4star',
           component: FanMeetingEntrance4StarView,
-          props: (route) => ({ starid: route.params.starid })
         },
         {
           path: '/forstar/fanmeeting/waitingroom',
