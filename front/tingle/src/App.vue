@@ -1,16 +1,28 @@
 <template>
-  <RouterView />
+  <main v-if="!store.isStar" class="main-color">
+    <RouterView />
+  </main>
+  <main v-if="store.isStar" class="main-color2">
+    <RouterView />
+  </main>
 </template>
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
+import { useUserStore } from './stores/user'
 
-
+const store = useUserStore()
 </script>
 
-
-
 <style>
+.main-color {
+  background-color: rgb(90, 76, 156);
+}
+
+.main-color2 {
+  background-color: #ffc7c7;
+}
+
 .star-card {
   display: flex;
   height: 50px;
@@ -68,9 +80,8 @@ import { RouterView } from 'vue-router'
   transition: none;
 }
 
-.is-sidebar-open .content {
+/* .is-sidebar-open .content {
   margin-left: 240px;
   margin-right: 64px;
-}
+} */
 </style>
- 

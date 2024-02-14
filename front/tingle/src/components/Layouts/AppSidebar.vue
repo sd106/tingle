@@ -1,5 +1,5 @@
 <template>
-  <!-- 사이드바 -->
+  <!--사이드바 -->
   <div
     v-if="store.isSidebarOpen"
     class="offcanvas offcanvas-start show"
@@ -8,7 +8,7 @@
     tabindex="-1"
     id="offcanvasNavbar"
     aria-labelledby="offcanvasNavbarLabel"
-    style="width: 240px; border-right: none"
+    style="width: 240px; border-right: none;"
   >
     <div class="offcanvas-header p-2">
       <!-- 닫는 버튼 -->
@@ -31,7 +31,7 @@
         <!-- 추가 기능 -->
         <hr />
         <!-- n명까지만 표기하고 나머지 더보기 버튼 -->
-        <li calss="nav-item" v-for="star in folloingInfo.slice(0, displayCount)" :key="star.id">
+        <li calss="nav-item" v-for="star in folloingInfo.slice(0, displayCount)" :key="star.starId">
           <RouterLink :to="`/${star.starId}/home`" class="text-decoration-none text-dark">
             <div class="star-card">
               <div class="star-image">

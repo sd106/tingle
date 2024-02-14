@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="container">
     <StarMenu :id="id" />
 
     <section v-if="fanMeetingInfo && fanMeetingInfo.status === 'ticketing'" class="pt-5">
