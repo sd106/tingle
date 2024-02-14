@@ -22,9 +22,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
         System.out.println("수고했네 oauth에 성공했네");
         if (Boolean.FALSE.equals(oAuth2User.getIsRealMember())) {
-            getRedirectStrategy().sendRedirect(request, response, "http://localhost:5173/signUp");
+            getRedirectStrategy().sendRedirect(request, response, "https://i10d106.p.ssafy.io/signUp");
         } else {
-            getRedirectStrategy().sendRedirect(request, response, "http://localhost:5173/selectLoginType");
+            getRedirectStrategy().sendRedirect(request, response, "https://i10d106.p.ssafy.io/selectLoginType");
         }
     }
 }
