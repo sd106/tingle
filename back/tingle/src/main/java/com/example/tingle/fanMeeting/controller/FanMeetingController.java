@@ -6,6 +6,7 @@ import com.example.tingle.fanMeeting.entity.FanMeeting;
 import com.example.tingle.fanMeeting.entity.FanMeetingReservation;
 import com.example.tingle.fanMeeting.entity.FanMeetingType;
 import com.example.tingle.fanMeeting.service.FanMeetingService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,7 +44,8 @@ public class FanMeetingController {
         return fanMeetingService.getFanMeetingReservation(fanId);
     }
 
-    @PostMapping("/finish/{starId}")
+    @DeleteMapping("/finish/{starId}")
+    @Transactional
     public void finishFanMeeting(@PathVariable Long starId) {
         System.out.println("finishFanMeeting");
         fanMeetingService.finishFanMeeting(starId);

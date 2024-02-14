@@ -93,8 +93,8 @@ public class SignalHandler extends TextWebSocketHandler {
                 }
                 break;
             case "Join":
-                // data 에 starname이 들어온다
-                star = starRepository.findByUsername(data);
+                // data 에 starid이 들어온다
+                star = starRepository.findStarEntityById(Long.parseLong(data)).orElseThrow(() -> new IllegalArgumentException("해당하는 star가 없습니다."));
 
                 System.out.println("star: " + star.getId() + "한테 입장중~~");
                 System.out.println("roomType: " + roomType);

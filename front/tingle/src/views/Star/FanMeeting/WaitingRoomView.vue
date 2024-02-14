@@ -103,11 +103,6 @@ const initializeWebSocket = () => {
 
   socket.onopen = () => {
     console.log('소켓 열렸는디요.')
-    const sendToServer = (msg: SocketMessage) => {
-      if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify(msg))
-      }
-    }
 
     sendToServer({
       sender: localUserName.value,

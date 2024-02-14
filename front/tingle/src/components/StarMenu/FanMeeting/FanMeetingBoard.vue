@@ -25,15 +25,22 @@
 // import { ref } from 'vue'
 // import type { Fan } from '@/common/types/index.ts';
 // const fans = ref<Fan[]>([])
+import axios from 'axios'
+import { useUserStore } from '@/stores/user'
 
-const emit = defineEmits(['finish'])
+const store = useUserStore()
+const emit = defineEmits(['finishFan', 'finishMeeting'])
 
 const finishFan = async () => {
     
 }
 
 const finishMeeting = async () => {
-    
+    try {
+        axios.delete(`http://localhost:8080/fanMeeting/finish/${store.starState?.id}`)
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 </script>

@@ -67,7 +67,8 @@ interface FanMeetingInfo {
     ticketingEndAt: string
     fanMeetingStartAt: string
     price: number
-    imgURL: string
+    imgURL1: string
+    imgURL2: string
 }
 
 interface FanMeetingTicket {

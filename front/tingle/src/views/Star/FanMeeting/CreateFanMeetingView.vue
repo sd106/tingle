@@ -110,13 +110,9 @@
     </div>
   
     <div class="col-12 text-center mt-4">
-      <button @click="createFanMeeting" class="btn btn-primary btn-lg">팬미팅 만들기</button>
+      <button @click="createFanMeetingSequence" class="btn btn-primary btn-lg">팬미팅 만들기</button>
     </div>
   </main>
-
-  <button @click="temp1">임시로 팬미팅 만들기 이름: 황찬준이다이 접속</button>
-
-
 
 </template>
 
@@ -128,25 +124,10 @@ import '@vuepic/vue-datepicker/dist/main.css' // https://vue3datepicker.com/
 import axios from 'axios'
 import type { FanMeetingType, CreateFanMeetingForm } from '@/common/types/index'
 import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
 
 const store = useUserStore()
-const temp1 = async () => {
-    try {
-        const { data } = await axios.post('http://localhost:8080/fanMeetingRoom/create', 
-                            {
-                                roomName: '환영환영',
-                                starName: store.starState?.username,
-                                maxUserCnt: 8,
-                            })
-        console.log(data)
-    } catch (e) {
-        console.log(e)
-    }
-}
-
-const props = defineProps(['username'])
-const name = ref('')
-name.value = props.username
+const router = useRouter()
 
 let meeting = ref<CreateFanMeetingForm>({
   title: '',
@@ -184,6 +165,13 @@ const isSelected = (content: FanMeetingType) => {
   return meeting.value.availableFanMeetingTypes.includes(content)
 }
 
+const createFanMeetingSequence = async () => {
+  await createFanMeeting()
+  await createFanMeetingRoom()
+  alert('팬미팅이 생성되었습니다.')
+  router.back()
+}
+
 const createFanMeeting = async () => {
   try {
     console.log("??")
@@ -207,6 +195,22 @@ const createFanMeeting = async () => {
         'Content-Type': 'multipart/form-data'
       }
     })
+
+    console.log(data)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const createFanMeetingRoom = async () => {
+  try {
+    const request = {
+      roomName: meeting.value.title,
+      maxUserCnt: meeting.value.capacity,
+      starName: meeting.value.starName,
+    }
+
+    const { data } = await axios.post('http://localhost:8080/fanMeetingRoom/create', request)
 
     console.log(data)
   } catch (error) {

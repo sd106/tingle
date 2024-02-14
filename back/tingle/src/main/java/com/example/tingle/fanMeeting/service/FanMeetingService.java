@@ -5,10 +5,12 @@ import com.example.tingle.fanMeeting.dto.response.GetFanMeetingInfoResponse;
 import com.example.tingle.fanMeeting.entity.FanMeeting;
 import com.example.tingle.fanMeeting.entity.FanMeetingReservation;
 import com.example.tingle.fanMeeting.entity.FanMeetingType;
+import com.example.tingle.fanMeeting.model.FanMeetingRoom;
 import com.example.tingle.fanMeeting.repository.FanMeetingRepository;
 import com.example.tingle.fanMeeting.repository.FanMeetingReservationRepository;
 import com.example.tingle.fanMeeting.repository.FanMeetingTypeRepository;
 import com.example.tingle.fanMeeting.utils.DateTimeParser;
+import com.example.tingle.fanMeeting.utils.MeetingRoomMap;
 import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.star.repository.StarRepository;
 import com.example.tingle.store.dto.ProductDto;
@@ -25,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +39,7 @@ public class FanMeetingService {
     private final UserRepository userRepository;
     private final S3UploadService s3UploadService;
     private final ObjectMapper objectMapper;
+    private final Map<Long, FanMeetingRoom> meetingRooms = MeetingRoomMap.getInstance().getMeetingRooms();
 
     public List<FanMeetingType> getFanMeetingTypes() {
         return fanMeetingTypeRepository.findAll();
@@ -50,12 +54,7 @@ public class FanMeetingService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("????");
-        System.out.println(request.getStarName());
         StarEntity star = starRepository.findByUsername(request.getStarName());
-        System.out.println(request.getFanMeetingStartAt());
-        System.out.println(request.getTicketingStartAt());
-        System.out.println(request.getTicketingEndAt());
 //        LocalDateTime ticketingStartAt = DateTimeParser.parse(request.getTicketingStartAt());
 //        System.out.println("@@@@1111");
 //        LocalDateTime ticketingEndAt = DateTimeParser.parse(request.getTicketingEndAt());
@@ -70,7 +69,6 @@ public class FanMeetingService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("@@@@2222");
 
         FanMeeting fanMeeting = FanMeeting.builder()
                 .title(request.getTitle())
@@ -143,7 +141,18 @@ public class FanMeetingService {
 
     public void finishFanMeeting(Long starId) {
         FanMeeting fanMeeting = recentFanMeeting(starId);
-
+        Long waitingRoomId = starId * 10 + 1;
+        Long meetingRoomId = starId * 10 + 2;
+        for(Long k : meetingRooms.keySet()){
+            System.out.println(k);
+        }
+        System.out.println("waitingRoomId : " + waitingRoomId);
+        meetingRooms.remove(waitingRoomId);
+        meetingRooms.remove(meetingRoomId);
+        System.out.println(fanMeeting.getId());
+        System.out.println(fanMeeting.getIsFinished());
         fanMeeting.finish();
+        System.out.println(fanMeeting.getIsFinished());
+        System.out.println("삭제 성공~");
     }
 }
