@@ -129,7 +129,6 @@ const router = createRouter({
           path: '/forstar/store/create',
           name: 'storecreate',
           component: StoreCreateView,
-          props: (route) => ({ id: route.params.starid })
         },
         {
           path: '/forstar/store/update/:productId',

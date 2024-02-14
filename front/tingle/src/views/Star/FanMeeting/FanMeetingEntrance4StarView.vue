@@ -13,9 +13,10 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import type { FanMeetingInfo } from '@/common/types/index'
-import MeetingRoomView4Star from '@/views/Star/FanMeeting/MeetingRoom4StarView.vue'
+import { useUserStore } from '@/stores/user';
 import CreateFanMeetingViewVue from '@/views/Star/FanMeeting/CreateFanMeetingView.vue'
-import { useUserStore } from '@/stores/user'
+import MeetingRoomView4Star from '@/views/Star/FanMeeting/MeetingRoom4StarView.vue'
+
 
 const store = useUserStore()
 const fanMeetingInfo = ref<FanMeetingInfo>()

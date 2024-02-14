@@ -274,6 +274,7 @@ interface SnapshotType {
     id: number;
     imageUrl: string;
     username: string;
+    isStarLike: boolean;
 };
 
 interface selectedSnapshotType {
