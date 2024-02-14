@@ -6,20 +6,42 @@
     <div class="container border d-flex">
       <div class>
         <img :src="starProfile?.profileImage" alt="사진" class="w-75 h-75">
-        <!-- sns주소 링크 -->
-        <span>SNS주소 {{ starProfile?.snsUrl }}</span>
       </div>
-      <div class="d-flex justify-content-between w-100">
-        <div class="d-flex inline-block m-lg-2 align-items-center">
-          <span>닉네임 {{ starProfile?.username }}</span>
-          <span>카테고리 {{ starProfile?.category }}</span>
+      <div>
+        <div>{{ starProfile?.username }}</div>
+        <div v-if="!isEdit" >
+        {{
+          starProfile?.category === -1 ? "카테고리" :
+          starProfile?.category === 0 ? "일상/토크" :
+          starProfile?.category === 1 ? "동물" :
+          starProfile?.category === 2 ? "게임/스포츠" :
+          starProfile?.category === 3 ? "미술/음악" :
+          starProfile?.category === 4 ? "뷰티/패션" :
+          starProfile?.category === 5 ? "기타" : ""
+          }} </div>
+        <div v-else>
+          <select v-model="starProfile!.category">
+            <option value="-1">카테고리</option>
+            <option value="0">일상/토크</option>
+            <option value="1">동물</option>
+            <option value="2">게임/스포츠</option>
+            <option value="3">미술/음악</option>
+            <option value="4">뷰티/패션</option>
+            <option value="5">기타</option>
+          </select>
+        </div>
+
+        <div v-if="!isEdit" >{{ starProfile?.snsUrl }}</div>
+        <div v-else>
+          <input v-model="editUsername">
+        </div>
         </div>
         <div class>
+          <button @click="startEdit" class="tw-btn m-2">{{buttonText}}</button>
           <StarProfileUpdateDeleteVue/>
         </div>
       </div>
 
-    </div>
 
 
     <div class="container border" v-show="showInputArticle">
@@ -45,13 +67,6 @@
         <p v-if="item.updatedAt">Updated At: {{ item.updatedAt }}</p>
       </div>
     </div>
-    <div v-if="selectedArticleId?.valueOf() !== -1" class="modal">
-      <div class="modal-content">
-        <h2>게시물 수정</h2>
-        <button>수정 확인</button>
-        <button @click="selectedArticleId = -1">취소</button>
-      </div>
-    </div>
 
   </main>
 
@@ -62,11 +77,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import { useUserStore } from '@/stores/user';
 const store = useUserStore();
 let showInputArticle = ref(false);
+
+const isEdit = ref(false)
+const editUsername = ref('')
 
 import StarMenu from '@/components/StarMenu/StarMenu.vue';
 import StarProfileUpdateDeleteVue from '@/components/StarMenu/StarHome/StarProfileUpdateDelete.vue'
@@ -74,14 +92,13 @@ import StarProfileUpdateDeleteVue from '@/components/StarMenu/StarHome/StarProfi
 import type { StarProfile, HomeArticle } from '@/common/types/index'
 
 const starId = store.starState!.id;
-
+const buttonText = ref('수정');
 const starProfile = ref<StarProfile>();
 
 
 const article = ref<HomeArticle[]>([]);
 let files = ref<File[]>([]);
 
-const selectedArticleId = ref<number>(-1);
 
 const getstarProfile = async () => {
   const response = await axios.get(`${store.API_URL}/home/profile/${starId}`);
@@ -158,6 +175,59 @@ const IsInputArticle = () => {
   showInputArticle.value = true;
 }
 
+
+function startEdit() {
+  if(!isEdit.value) {
+    isEdit.value = true
+    editUsername.value = starProfile.value?.snsUrl || ''
+    buttonText.value = '완료'
+  }else{ //수정을 완료함
+
+    insertProfile();
+    isEdit.value = false
+    buttonText.value = '수정'
+
+  }
+}
+
+const categoryText = ref('')
+
+const options = [
+  {
+    value: -1,
+    text: '카테고리'
+  },
+  {
+    value: 0,
+    text: '일상/토크'
+  }
+]
+
+// watch(starProfile.value.category, (updatedCategory) => {
+//   switch(updatedCategory) {
+//     case -1:
+//       categoryText.value = '카테고리'
+//       break;
+//     case 0:
+//       categoryText.value = '일상/토크'
+//       break;
+//   }
+// })
+import {useRouter} from 'vue-router'
+const router = useRouter()
+const insertProfile = async () => {
+
+  await axios.post(`${store.API_URL}/home/profile/${starId}`, {
+    category: starProfile.value?.category,
+    snsUrl: editUsername.value
+  }).then(response => {
+    console.log(response.data);
+    getstarProfile();
+
+  }).catch(error => {
+    console.error(error);
+  });
+}
 
 
 onMounted(() => {
