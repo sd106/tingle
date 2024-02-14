@@ -168,7 +168,7 @@
             <!-- ///////////////////////////////////////////////////////////////////// -->
             <!-- 삭제 버튼 작동안함 -->
             <!-- ///////////////////////////////////////////////////////////////////// -->
-            <button class="tw-btn tw-btn-outline tw-btn-error delete" @click="deleteWish(wish.id)">
+            <button class="tw-btn tw-btn-outline tw-btn-error delete" @click="deleteWish(wish.id, wish.userId)">
               <img src="/image/trashcan.png" class="tw-h-6 tw-w-6 can" alt="">
             </button>
           </div>
@@ -194,7 +194,6 @@
         </ul>
       </nav>
     </div>
-
   </main>
 </template>
 
@@ -207,6 +206,7 @@ const store = useUserStore()
 // NotStatus, ProgressStatus, DoneStatus
 import type { WishInfo } from '@/common/types/index'
 import StarMenu from '@/components/StarMenu/StarMenu.vue';
+import router from '@/router';
 
 // 스타 본인의 id 정보
 const id = store.starState!.id;
@@ -404,7 +404,7 @@ const updateWishStatus = async (wishId: number, wishStatus: number): Promise<voi
 // 해당 위시를 완료 상태로 변경
 const completeWishStatus = async (wish: WishInfo, wishId: number): Promise<void> => {
   try {
-    const res = await axios.post(`${store.API_URL}/wish/update/status/user/${wish.userId}/${wishId}/0`)
+    const res = await axios.post(`${store.API_URL}/wish/update/status/star/${wish.userId}/${wishId}/2`)
 
     console.log('Wish status updated:', res);
 
@@ -419,10 +419,12 @@ const completeWishStatus = async (wish: WishInfo, wishId: number): Promise<void>
 
 
 // // 해당 위시 삭제
-const deleteWish = async function (wishId: number): Promise<void> {
+const deleteWish = async function (wishId: number, userId: number): Promise<void> {
   try {
-    const res = await axios.get(`${store.API_URL}/likes/delete/${wishId}`)
+    const res = await axios.delete(`${store.API_URL}/wish/delete/${wishId}/${id}/${userId}`)
     console.log(res)
+    console.log("삭제 완료")
+    router.go(0)
   } catch (error) {
     console.error('Error fetching deleteWish: ', error);
   }
