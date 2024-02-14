@@ -105,21 +105,22 @@ const router = createRouter({
         {
           path: '/forstar/home/manage',
           name: 'starhomemanage',
-          component: StarHomeManageView,
+          component: StarHomeManageView
         },
         {
           path: '/forstar/snapshot',
           name: 'starSnapshot',
           component: SnapshotMain4StarView
         },
-        
+
         {
           path: '/forstar/wish',
           name: 'wishmanage',
           component: WishManageView,
           props: (route) => ({ id: route.params.starid })
         },
-        { //스타 프로필 수정기능
+        {
+          //스타 프로필 수정기능
           path: '/forstar/home/profile/update',
           name: 'starhomeprofileupdate',
           component: StarProfileUpdateView,
@@ -231,7 +232,7 @@ const router = createRouter({
           path: '/:starid/fanmeeting',
           name: 'fanmeeting',
           component: FanMeetingEntranceView,
-          props: (route) => ({ starid: route.params.starid })
+          props: (route) => ({ id: route.params.starid })
         },
         {
           path: '/profile/:starid/fanmeeting/ticketbox',

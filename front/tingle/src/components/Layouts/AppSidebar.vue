@@ -1,6 +1,7 @@
 <template>
   <!-- 사이드바 -->
   <div
+    v-if="store.isSidebarOpen"
     class="offcanvas offcanvas-start show"
     data-bs-scroll="true"
     data-bs-backdrop="false"
@@ -87,12 +88,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import axios from 'axios'
-
 import ChatModal from '@/components/ChatModal.vue'
+
 const store = useUserStore()
 const isStar = store.isStar
 // 사이드바 더보기
@@ -117,15 +118,17 @@ const getFolloings = async () => {
 }
 
 getFolloings()
+
+onMounted(() => {
+  store.isSidebarOpen = false
+})
 </script>
 
 <style>
-
 .logo {
   position: fixed;
   top: 10px;
   left: 140px;
   right: 0;
 }
-
 </style>

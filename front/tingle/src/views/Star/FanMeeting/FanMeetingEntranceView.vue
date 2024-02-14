@@ -1,6 +1,6 @@
 <template>
   <main>
-    <StarMenu :name="name" />
+    <StarMenu :id="id" />
 
     <section v-if="fanMeetingInfo && fanMeetingInfo.status === 'ticketing'" class="pt-5">
       <FanMeetingTicketing :fanMeetingInfo="fanMeetingInfo"></FanMeetingTicketing>
@@ -25,7 +25,9 @@ import FanMeetingTicketing from '@/components/StarMenu/FanMeeting/FanMeetingTick
 import FanMeetingClosed from '@/components/StarMenu/FanMeeting/FanMeetingClosed.vue'
 import StarMenu from '@/components/StarMenu/StarMenu.vue'
 
-const props = defineProps(['username', 'starid'])
+const props = defineProps(['username', 'id'])
+const id = props.id
+
 const name = ref('')
 name.value = props.username
 
@@ -46,7 +48,7 @@ const fanMeetingInfo = ref<FanMeetingInfo>()
 
 const getFanMeetingInfo = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/fanMeeting/info/${props.starid}`)
+    const response = await axios.get(`http://localhost:8080/fanMeeting/info/${props.id}`)
     fanMeetingInfo.value = response.data
   } catch (error) {
     console.log(error)
