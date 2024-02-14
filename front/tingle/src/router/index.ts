@@ -94,20 +94,21 @@ const router = createRouter({
         {
           path: '/forstar/home/manage',
           name: 'starhomemanage',
-          component: StarHomeManageView,
+          component: StarHomeManageView
         },
         {
           path: '/forstar/snapshot',
           name: 'starSnapshot',
           component: SnapshotMain4StarView
         },
-        
+
         {
           path: '/forstar/wish/manage',
           name: 'wishmanage',
-          component: WishManageView,
+          component: WishManageView
         },
-        { //스타 프로필 수정기능
+        {
+          //스타 프로필 수정기능
           path: '/forstar/home/profile/update',
           name: 'starhomeprofileupdate',
           component: StarProfileUpdateView,
@@ -128,7 +129,7 @@ const router = createRouter({
         {
           path: '/forstar/store/create',
           name: 'storecreate',
-          component: StoreCreateView,
+          component: StoreCreateView
         },
         {
           path: '/forstar/store/update/:productId',
@@ -144,7 +145,7 @@ const router = createRouter({
         {
           path: '/forstar/fanmeeting',
           name: 'fanmeeting4star',
-          component: FanMeetingEntrance4StarView,
+          component: FanMeetingEntrance4StarView
         },
         {
           path: '/forstar/fanmeeting/waitingroom',
