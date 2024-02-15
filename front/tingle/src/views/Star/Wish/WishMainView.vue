@@ -4,7 +4,7 @@
     <!-- /////////////////////////////////////////////////////////// -->
     <!-- ////////// 지금 함수 안먹어서 나중에 되는지 확인해야함 -->
     <!-- /////////////////////////////////////////////////////////// -->
-    <div class="container tw-flex tw-justify-between my-4">
+    <div class="container tw-flex tw-justify-between my-4" style="padding-left: 80px; padding-right: 80px; padding-top: 30px;">
       <!-- {{ selectedSort }} -->
       <div>
         <button
@@ -35,7 +35,7 @@
         </RouterLink>
       </div>
     </div>
-    <div class="container">
+    <div class="container" style="padding-left: 80px; padding-right: 80px;">
       <!-- DS 리스트 -->
       <span class="title">별빛 아래 이루어진 꿈</span>
       <!-- /////////////////////////////////////////////////////////// -->
@@ -147,9 +147,10 @@
         </ul>
       </nav>
     </div>
-    <br />
-    <hr />
-    <div class="container">
+    <br>
+    <br>
+    <div class="container" style="padding-left: 80px; padding-right: 80px;">
+      <hr />
       <!-- PS 리스트 -->
       <span class="title">별이 선택한 소원</span>
       <ul
@@ -268,9 +269,10 @@
         </ul>
       </nav>
     </div>
-    <br />
-    <hr />
-    <div class="container">
+    <br>
+    <br>
+    <div class="container" style="padding-left: 80px; padding-right: 80px;">
+      <hr />
       <!-- NS 리스트 -->
       <span class="title">별을 기다리는 소망</span>
       <ul

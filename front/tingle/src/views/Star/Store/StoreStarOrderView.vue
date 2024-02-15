@@ -16,23 +16,25 @@
         </div>
         <hr />
         <div class="border-bottom container p-0 justify-content-between" v-for="res in responseMessageGetByStarName"
-          :key="res.fan.id" @click="expandProduct(res)">
-          <div class="d-flex row">
-            <div class="col-3">
-              <div class="tw-flex tw-flex-col img-container"
-                :style="`background-image: url('${res.goods.imageUrl[0].url}');`">
-                <!-- <img :src="res.goods.imageUrl[0].url" alt="" /> -->
-              </div>
-            </div>
+  :key="res.fan.id" @click="expandProduct(res)">
+  <div class="d-flex row">
+    <!-- 이미지 컨테이너 -->
+    <div class="col-3 me-5">
+      <div class="tw-flex tw-flex-col img-container"
+        :style="`background-image: url('${res.goods.imageUrl[0].url}'); background-size: cover;`">
+      </div>
+    </div>
 
-            <div class="p-3 col-7 d-flex flex-column">
-              <h2 class="my-3 fw-bold">{{ res.goods.name }}</h2>
-              <span>{{ truncateText(removeHtmlTags(res.goods.content), 30) }}</span>
-            </div>
+    <!-- 상품 이름 및 설명 -->
+    <div class="p-3 col-5 d-flex flex-column ms-5">
+      <h2 class="my-3 fw-bold">{{ res.goods.name }}</h2>
+      <span>{{ truncateText(removeHtmlTags(res.goods.content), 30) }}</span>
+    </div>
 
-            <div class="p-3 col-2 centered-content p-3 col-2">
-              <h2 class="fw-bold">₩ {{ res.goods.price }}</h2>
-            </div>
+    <!-- 가격 -->
+    <div class="p-3 col-2 centered-content me-5">
+      <h2 class="fw-bold">₩ {{ res.goods.price }}</h2>
+    </div>
           </div>
           <div v-if="expandedProduct === res" @click.stop="">
             <StoreOrderDetail :order="res" />

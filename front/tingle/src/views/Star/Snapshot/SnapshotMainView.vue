@@ -1,14 +1,14 @@
 <template>
   <main class="container">
     <StarMenu :id="id" />
-    <div class="main-layout pt-5">
+    <div class="main-layout pt-5" style="padding-left: 80px; padding-right: 80px; padding-top: 30px;">
       <!-- 상단 메뉴 -->
       <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
       <section v-if="wishStore.selectedSnapshot" class="detail-section cont mb-5">
         <SnapShotDetail :selectedSnapshot="wishStore.selectedSnapshot" :starid="id" />
       </section>
     </div>
-    <div class="d-flex justify-content-between align-items-center my-4 mx-3">
+    <div class="d-flex justify-content-between align-items-center my-4 mx-3" style="padding-left: 80px; padding-right: 80px;">
       <div>
         <button class="btn me-2 fs-5 fw-bold text-secondary" @click="loadSnapshots">
           ✧ 최신순
@@ -18,11 +18,11 @@
         </button>
       </div>
       <div>
-        <RouterLink :to="`/${id}/snapshot/create`" class="btn btn-secondary">글쓰기</RouterLink>
+        <RouterLink :to="`/${id}/snapshot/create`" ><h2 class="hover-text fw-bold ">글쓰기</h2></RouterLink>
       </div>
     </div>
 
-  <div class="main-layout">
+  <div class="main-layout" style="padding-left: 80px; padding-right: 80px; padding-top: 30px;">
     <!-- 스냅샷 목록 섹션 (파란색 부분) -->
     <section class="snapshot-list-section">
       <div class="snapshot-list-container" ref="containerRef" @scroll="handleScroll">
@@ -227,4 +227,15 @@ const filteredSnapshot5 = computed(() => {
   transition: opacity 0.3s ease;
   /* 부드러운 효과를 위한 전환 */
 }
+
+.hover-text {
+  transition: transform 0.3s ease-in-out; /* transform 속성에 대한 전환 효과 적용 */
+}
+
+.hover-text:hover {
+  transform: translateX(10px); /* 호버 시 글자를 오른쪽으로 10픽셀 이동 */
+  cursor: pointer;
+}
+
+
 </style>

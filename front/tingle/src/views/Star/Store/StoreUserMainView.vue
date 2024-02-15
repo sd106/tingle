@@ -1,7 +1,7 @@
 <template>
   <main class="container">
     <StarMenu :id="props.id" class="mb-5" />
-    <div class="container">
+    <div class="container" style="padding-left: 80px; padding-right: 80px; padding-top: 30px;">
       <div class="d-flex justify-content-between my-2">
         <h1 class="fw-bold"></h1>
       </div>

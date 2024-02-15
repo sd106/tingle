@@ -35,13 +35,13 @@
           </div>
 
 
-          <span>
-            <button v-if="!store.isStar && (store.fanState && store.fanState.username === props.selectedSnapshot?.username)" class="btn btn-secondary" @click="goToUpdate(props.selectedSnapshot!.snapshotId)">스냅샷 수정</button>
-            <button v-if="store.isStar || (store.fanState && store.fanState.username === props.selectedSnapshot!.username)" class="btn btn-danger" @click="deleteSnapshot(props.selectedSnapshot!.snapshotId)">스냅샷 삭제</button>
+          <span class="d-flex">
+            <p v-if="!store.isStar && (store.fanState && store.fanState.username === props.selectedSnapshot?.username)" class="fw-bold hover-text me-3" @click="goToUpdate(props.selectedSnapshot!.snapshotId)">스냅샷 수정</p>
+            <p v-if="store.isStar || (store.fanState && store.fanState.username === props.selectedSnapshot!.username)" class="fw-bold hover-text me-1" @click="deleteSnapshot(props.selectedSnapshot!.snapshotId)">스냅샷 삭제</p>
           </span>
         </div>
         <!-- 본문 내용 -->
-        <div class="content mx-0 my-3 pt-0">
+        <div class="content mx-0 my-3 p-3" style="background-color: white;">
           <p class="d-flex justify-content-between mb-2">
             <span class="text-body-tertiary">{{ props.selectedSnapshot!.username }}</span>
             <span class="text-body-tertiary">{{ createdTime }}</span>
@@ -521,5 +521,16 @@ function formatDistanceToNowFromLocalDateTime(isoString: string) {
   opacity: 0.2;
   transition: opacity 0.3s ease, fill 0.3s ease;
 }
+
+
+.hover-text {
+  transition: transform 0.3s ease-in-out; /* transform 속성에 대한 전환 효과 적용 */
+}
+
+.hover-text:hover {
+  transform: translateX(10px); /* 호버 시 글자를 오른쪽으로 10픽셀 이동 */
+  cursor: pointer;
+}
+
 
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <main>
-    <StarMenu :id="starid" />
-    <div v-if="product" class="d-flex row tw-space-x-4 tw-mt-2">
+  <main class="container">
+    <StarMenu :id="starid" class="mb-5" />
+    <div v-if="product" class="d-flex row tw-space-x-4 tw-mt-2" style="padding-top: 30px;">
       <!-- 왼쪽 -->
       <!-- <div class="col-1">
         <button @click="goBack" class="tw-btn tw-btn-circle tw-glass">돌아가기</button>
