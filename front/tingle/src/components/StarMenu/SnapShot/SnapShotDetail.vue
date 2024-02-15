@@ -94,11 +94,11 @@
           </div>
         </div>
         <!-- 댓글 작성 폼 -->
-        <form @submit.prevent="postComment" class="me-1 row rounded comment-form rounded-lg bg-body-secondary">
+        <form @submit.prevent="postComment" class="me-1 row rounded comment-form rounded-lg tw-bg-yellow-200">
           <div class="col-sm-10">
             <input class="form-control" type="text" v-model="newCommentContent" placeholder="댓글을 남겨보세요!" />
           </div>
-          <button type="submit" class="col-sm-2 tw-bg-blue-500 hover:tw-bg-blue-700 tw-text-white tw-font-bold py-2 px-4 tw-rounded tw-shadow hover:tw-shadow-lg tw-transition tw-duration-300 tw-ease-in-out">작성</button>
+          <button type="submit" class="col-sm-2 tw-bg-yellow-500 hover:tw-bg-blue-700 tw-text-white tw-font-bold tw-py-2 tw-px-4 tw-rounded tw-shadow hover:tw-shadow-lg tw-transition tw-duration-300 tw-ease-in-out">작성</button>
         </form>
       </div>
     </div>

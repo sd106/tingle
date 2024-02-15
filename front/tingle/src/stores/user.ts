@@ -25,6 +25,8 @@ export const useUserStore = defineStore(
       }
     })
 
+    const provider = ref('')
+
     const isSidebarOpen = ref(false)
     const starId = ref<number>()
 
@@ -43,6 +45,7 @@ export const useUserStore = defineStore(
       logOut,
       starState,
       fanState,
+      provider,
       //
       isLogin,
       isStar,

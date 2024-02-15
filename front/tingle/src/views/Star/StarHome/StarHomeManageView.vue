@@ -307,6 +307,7 @@ const insertPhotos = async () => {
 }
 
 const insertPencil = async () => {
+<<<<<<< HEAD
   await axios
     .post(`${store.API_URL}/home/post/pencil`, {
       starId: starId,
@@ -321,6 +322,19 @@ const insertPencil = async () => {
     .catch((error) => {
       console.error(error)
     })
+=======
+  await axios.post(`${store.API_URL}/home/post/pencil`, {
+    starId: starId,
+    ordering: 1,
+    content: textContent!.value
+  }).then(response => {
+    console.log(response.data);
+    showTextarea.value= false;
+    getArticle();
+  }).catch(error => {
+    console.error(error);
+  });
+>>>>>>> 3b873ae687da1b749d29c29ad98edd9e956ed1c1
 }
 
 const previewFiles = ref<string[]>([])
