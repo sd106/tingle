@@ -110,7 +110,6 @@ const store = useUserStore()
 const router = useRouter()
 const route = useRoute()
 const isStar = store.isStar
-
 //=============search================
 const searchQuery = ref<String>('')
 const stars = ref<{ id: number; name: String }[]>([])
@@ -212,6 +211,7 @@ watch(
 const redirectToOAuthProvider = async (provider: string) => {
   try {
     window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`
+    store.provider = provider
   } catch (error) {
     console.log('error', error)
   }
