@@ -42,6 +42,7 @@ public class AuthServiceImpl implements AuthService {
                 .name(signUpRequest.getName())
                 .picture("https://tingle-s3.s3.ap-northeast-2.amazonaws.com/basic-profile.png")
                 .username(signUpRequest.getUsername())
+                .provider(member.getSocialType())push 
                 .build();
 
         UserEntity user = UserEntity.builder()
@@ -49,6 +50,7 @@ public class AuthServiceImpl implements AuthService {
                 .picture("https://tingle-s3.s3.ap-northeast-2.amazonaws.com/basic-profile.png")
                 .name(signUpRequest.getName())
                 .username(signUpRequest.getUsername())
+                .provider(member.getSocialType())
                 .build();
 
 
