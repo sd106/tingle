@@ -59,15 +59,15 @@ public class HomeController {
 //
 //    }
 //
-//    @Operation(summary = "스타 홈의 글 삭제")
-//    @ResponseStatus(HttpStatus.OK)
-//    @DeleteMapping(value = "/delete/{homeId}")
-//    public Response deleteHome(@PathVariable Long homeId) throws Exception {
-//
-//        return new Response("성공", "스타 홈 글 삭제", homeService.deleteHome(homeId));
-//
-//    }
-//
+    @Operation(summary = "스타 홈의 글 삭제")
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping(value = "/delete/{homeId}")
+    public Response deleteHome(@PathVariable Long homeId) throws Exception {
+
+        return new Response("성공", "스타 홈 글 삭제", homeService.deleteHome(homeId));
+
+    }
+
     @Operation(summary = "스타 프로필 조회")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/profile/{starId}")
