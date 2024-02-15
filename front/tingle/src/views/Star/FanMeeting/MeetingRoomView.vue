@@ -38,7 +38,7 @@ const fanMeetingReservation = ref<FanMeetingReservation>()
 
 const loadReservation = async () => {
   try {
-    const { data } = await axios.get(`https://i10d106.p.ssafy.io/api/fanMeeting/fanMeetingReservation/${localUser.value.id}/${starid.value}`)
+    const { data } = await axios.get(`http://localhost:8080/fanMeeting/fanMeetingReservation/${localUser.value.id}/${starid.value}`)
     fanMeetingReservation.value = data
     console.log(fanMeetingReservation.value)
     console.log(data)
@@ -79,10 +79,11 @@ const sendToServer = (msg: SocketMessage) => {
   }
 }
 
+
 // WebSocket
 const initializeWebSocket = () => {
   // 소켓 초기화
-  socket = new WebSocket('wss://i10d106.p.ssafy.io/api/signal')
+  socket = new WebSocket('ws://localhost:8080/signal')
 
   // 소켓이 message를 받을 때 이벤트 함수
   socket.onmessage = (msg) => {
@@ -111,13 +112,11 @@ const initializeWebSocket = () => {
         break
 
       case 'Join':
-        console.log(
-          'Client is starting to ' + (message.data === 'true') ? 'negotiate' : 'wait for a peer'
-        )
-
+        console.log('Client is starting to ' + (message.data === 'true') ? 'negotiate' : 'wait for a peer')
+        
         handleJoinMessage(message)
         break
-
+      
       case 'FinishFan':
         console.log('Fan Meeting is finished')
         handleFinishFanMessage(message)
@@ -296,70 +295,75 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+
 .container {
-  position: relative;
-  width: 100%;
-  height: 90vh;
-  border: 1px solid black;
+    position: relative;
+    width: 100%;
+    height: 90vh; 
+    /* border: 1px solid black;  */
 }
 
 #local-video-container {
   position: absolute;
   width: 20%;
   height: auto;
-  right: 10px;
+  right: 10px; 
   bottom: 10px;
   z-index: 2;
 }
 
 #localVideo {
-  width: 100%;
-  height: auto;
-  border: 1px solid black;
+    width: 100%;
+    height: auto;
+    border: 1px solid black;
 }
 
 #remote-video-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  background-color: grey;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; 
+    background-color: grey;
 }
 
 #remoteVideo {
-  width: 100%;
-  height: auto;
+    width: 100%;
+    height: auto;
 }
+
+
 
 .control-container {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  gap: 10px;
-  visibility: hidden;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); 
+    display: flex;
+    gap: 10px;
+    visibility: hidden;
 }
 
+
 .control-icon {
-  font-size: 2rem;
-  cursor: pointer;
+    font-size: 2rem;
+    cursor: pointer;
 }
 
 .control-label-container {
-  background-color: rgba(128, 128, 128, 0.5);
-  border-radius: 5px;
+    background-color: rgba(128,128,128,0.5) ;
+    border-radius: 5px;
 }
 .control-label {
-  font-size: 0.8rem;
-  font-weight: bold;
-  cursor: pointer;
-  color: black;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: black;
 }
 
+
 #local-video-container:hover .control-container {
-  visibility: visible;
+    visibility: visible;
 }
 </style>

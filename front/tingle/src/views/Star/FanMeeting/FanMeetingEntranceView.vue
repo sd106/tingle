@@ -3,11 +3,7 @@
     <StarMenu :id="id" />
 
     <section v-if="fanMeetingInfo && fanMeetingInfo.status === 'ticketing'" class="pt-5">
-      <FanMeetingTicketing
-        :fanMeetingInfo="fanMeetingInfo"
-        :starId="props.id"
-        :haveTicket="haveTicket"
-      ></FanMeetingTicketing>
+      <FanMeetingTicketing :fanMeetingInfo="fanMeetingInfo" :starId="props.id" :haveTicket="haveTicket"></FanMeetingTicketing>
     </section>
 
     <section v-else-if="fanMeetingInfo && fanMeetingInfo.status === 'open'" class="pt-5">
@@ -55,7 +51,8 @@ starId.value = Number(props.id)
 
 const getFanMeetingInfo = async () => {
   try {
-    const response = await axios.get(`https://i10d106.p.ssafy.io/api/fanMeeting/info/${starId.value}`)
+    console.log(starId.value)
+    const response = await axios.get(`http://localhost:8080/fanMeeting/info/${starId.value}`)
     fanMeetingInfo.value = response.data
     console.log(response)
     console.log("팬미팅 정보 불러왔다.")
@@ -68,7 +65,7 @@ const getUserTicket =async () => {
   try {
     console.log(fanMeetingInfo.value?.id)
     console.log(fanMeetingInfo.value?.status)
-    const response = await axios.get(`https://i10d106.p.ssafy.io/api/fanMeeting/${starId.value}/reservation/${store.fanState!.id}/${fanMeetingInfo.value!.id}`)
+    const response = await axios.get(`http://localhost:8080/fanMeeting/${starId.value}/reservation/${store.fanState!.id}/${fanMeetingInfo.value!.id}`)
     console.log(response.data)
     haveTicket.value = response.data
     console.log(haveTicket.value)
