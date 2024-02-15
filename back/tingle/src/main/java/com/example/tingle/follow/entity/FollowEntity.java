@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @Table(name = "follow")
 public class FollowEntity {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,5 +23,4 @@ public class FollowEntity {
     @ManyToOne
     @JoinColumn(name = "star_entity_id")
     private StarEntity starEntity;
-
 }

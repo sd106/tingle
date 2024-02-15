@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -40,14 +41,14 @@ public class WishEntity {
     private String contents; // 내용
 
     @Column(name = "create_time")
-    private LocalDate createTime; // 등록 날짜
+    private LocalDateTime createTime; // 등록 날짜
 
     @Column(name = "delete_time")
-    private LocalDate deleteTime; // 마감 날짜
+    private LocalDateTime deleteTime; // 마감 날짜
 
     @PrePersist
     public void setTime() {
-        this.createTime = LocalDate.now();
-        this.deleteTime = LocalDate.now();
+        this.createTime = LocalDateTime.now();
+        this.deleteTime = LocalDateTime.now();
     }
 }
