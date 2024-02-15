@@ -6,13 +6,13 @@
       </div>
     </div>
     <div class="col-5">
-      <div>{{ localUserName }} 님 안녕하세요</div>
+      <div>{{ localUser.username }} 님 안녕하세요</div>
       <div id="chat-room">
         <ul id="message-list">
-          <li v-for="message in messages" :key="message.sender">
-            <div v-if="message.sender !== localUserName" class="message-content other-message-content">
+          <li v-for="message in messages" :key="message.sender?.id">
+            <div v-if="message.sender?.username !== localUser.username" class="message-content other-message-content">
               <div class="profile-image">
-                <img src="/image/fan-meeting-img.webp" alt="프로필 이미지" />
+                <img :src="message.sender?.picture" alt="프로필 이미지" />
               </div>
               <div class="message other-message">
                 {{ message.text }}
@@ -32,7 +32,7 @@
       </div>
     </div>
   </div>
-  <InviteCard v-if="invited" :starid="starid"></InviteCard>
+  <InviteCard v-if="invited" @enter-meeting-room="enterMeetingRoom"></InviteCard>
 </template>
 
 <script lang="ts" setup>
@@ -40,14 +40,27 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import InviteCard from '@/components/StarMenu/FanMeeting/InviteCard.vue'
 import { useRoute } from 'vue-router'
-import type { FanMeetingMessage, SocketMessage } from '@/common/types/index'
+import axios from 'axios'
+import type { FanMeetingMessage, SocketMessage, SenderState, FanMeetingReservation } from '@/common/types/index'
 
 const route = useRoute()
 const store = useUserStore()
 
 const starid = ref(String(route.params.starid))
-const localUserName = ref(store.fanState?.username)
 const roomType = 'Waiting'
+
+
+const fanMeetingReservation = ref<FanMeetingReservation>()
+const loadReservation = async () => {
+    try {
+        const response = await axios.get(`${store.API_URL}/fanMeeting/reservation/${store.fanState?.id}`)
+        fanMeetingReservation.value = response.data
+        console.log(response)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 // 메시지 관련
 const invited = ref(false)
@@ -55,10 +68,16 @@ const invited = ref(false)
 const messages = ref<FanMeetingMessage[]>([])
 const newMessage = ref('')
 
+const localUser = ref<SenderState>({
+  id: store.fanState?.id,
+  username: store.fanState?.username,
+  picture: store.fanState?.picture
+})
+
 const sendMessage = () => {
   if (newMessage.value.trim() !== '') {
     sendToServer({
-      sender: localUserName.value,
+      sender: localUser.value,
       signalType: 'Text',
       data: newMessage.value,
       roomType: roomType
@@ -67,6 +86,15 @@ const sendMessage = () => {
   }
 }
 
+const enterMeetingRoom = () => {
+  console.log("??")
+  sendToServer({
+    sender: localUser.value,
+    signalType: 'Accept',
+    data: starid.value,
+    roomType: roomType
+  })
+}
 // 소켓 관련
 let socket: WebSocket | undefined
 
@@ -79,7 +107,6 @@ const sendToServer = (msg: SocketMessage) => {
 
 const initializeWebSocket = () => {
   socket = new WebSocket('ws://localhost:8080/signal')
-
 
   socket.onmessage = (msg) => {
     let message = JSON.parse(msg.data)
@@ -105,9 +132,10 @@ const initializeWebSocket = () => {
     console.log('소켓 열렸는디요.')
 
     sendToServer({
-      sender: localUserName.value,
+      sender: localUser.value,
       signalType: 'Join',
       data: starid.value,
+      sdp: store.fanState,
       roomType: roomType
     })
   }
@@ -137,7 +165,10 @@ const handleErrorMessage = (message: SocketMessage) => {
   console.error('에러발생!: ', message)
 }
 
-onMounted(initializeWebSocket)
+onMounted(async() => {
+  initializeWebSocket()
+  loadReservation()
+})
 onUnmounted(() => {
   if (socket) {
     socket.close()

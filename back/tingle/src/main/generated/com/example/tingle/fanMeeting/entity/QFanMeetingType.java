@@ -19,7 +19,11 @@ public class QFanMeetingType extends EntityPathBase<FanMeetingType> {
 
     public static final QFanMeetingType fanMeetingType = new QFanMeetingType("fanMeetingType");
 
+    public final StringPath description = createString("description");
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final StringPath image = createString("image");
 
     public final StringPath name = createString("name");
 

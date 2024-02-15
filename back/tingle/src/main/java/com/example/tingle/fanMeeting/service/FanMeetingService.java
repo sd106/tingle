@@ -9,12 +9,9 @@ import com.example.tingle.fanMeeting.model.FanMeetingRoom;
 import com.example.tingle.fanMeeting.repository.FanMeetingRepository;
 import com.example.tingle.fanMeeting.repository.FanMeetingReservationRepository;
 import com.example.tingle.fanMeeting.repository.FanMeetingTypeRepository;
-import com.example.tingle.fanMeeting.utils.DateTimeParser;
 import com.example.tingle.fanMeeting.utils.MeetingRoomMap;
 import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.star.repository.StarRepository;
-import com.example.tingle.store.dto.ProductDto;
-import com.example.tingle.store.entity.ProductImageEntity;
 import com.example.tingle.store.service.S3UploadService;
 import com.example.tingle.user.entity.UserEntity;
 import com.example.tingle.user.repository.UserRepository;
@@ -28,6 +25,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -55,12 +53,18 @@ public class FanMeetingService {
             throw new RuntimeException(e);
         }
         StarEntity star = starRepository.findByUsername(request.getStarName());
+        LocalDateTime ticketingStartAt = request.getTicketingStartAt().plusHours(9);
+        LocalDateTime ticketingEndAt = request.getTicketingEndAt().plusHours(9);
+        LocalDateTime fanMeetingStartAt = request.getFanMeetingStartAt().plusHours(9);
 //        LocalDateTime ticketingStartAt = DateTimeParser.parse(request.getTicketingStartAt());
-//        System.out.println("@@@@1111");
+//        System.out.println(request.getTicketingStartAt());
+//        System.out.println(ticketingStartAt);
 //        LocalDateTime ticketingEndAt = DateTimeParser.parse(request.getTicketingEndAt());
-//        System.out.println("@@@@1111");
+//        System.out.println(request.getTicketingEndAt());
+//        System.out.println(ticketingEndAt);
 //        LocalDateTime fanMeetingStartAt = DateTimeParser.parse(request.getFanMeetingStartAt());
-//        System.out.println("@@@@1111");
+//        System.out.println(request.getFanMeetingStartAt());
+//        System.out.println(fanMeetingStartAt);
         String imgURL1 = null;
         String imgURL2 = null;
         try {
@@ -75,9 +79,9 @@ public class FanMeetingService {
                 .description(request.getDescription())
                 .price(request.getPrice())
                 .capacity(request.getCapacity())
-                .fanMeetingStartAt(request.getFanMeetingStartAt())
-                .ticketingStartAt(request.getTicketingStartAt())
-                .ticketingEndAt(request.getTicketingEndAt())
+                .fanMeetingStartAt(fanMeetingStartAt)
+                .ticketingStartAt(ticketingStartAt)
+                .ticketingEndAt(ticketingEndAt)
                 .imgURL1(imgURL1)
                 .imgURL2(imgURL2)
                 .availableFanMeetingTypes(request.getAvailableFanMeetingTypes())
@@ -115,9 +119,13 @@ public class FanMeetingService {
             status = "closed";
         } else if (now.isBefore(fanMeeting.getTicketingEndAt())) {
             status = "ticketing";
-        } else {
+        } else if (now.isAfter(fanMeeting.getFanMeetingStartAt())) {
             status = "open";
+        } else {
+            status = "waiting";
         }
+
+        List<FanMeetingType> availableFanMeetingTypes = fanMeeting.getAvailableFanMeetingTypes();
 
         return GetFanMeetingInfoResponse.builder()
                 .id(fanMeeting.getId())
@@ -127,23 +135,27 @@ public class FanMeetingService {
                 .ticketingStartAt(fanMeeting.getTicketingStartAt().toString())
                 .ticketingEndAt(fanMeeting.getTicketingEndAt().toString())
                 .fanMeetingStartAt(fanMeeting.getFanMeetingStartAt().toString())
+                .capacity(fanMeeting.getCapacity())
                 .price(fanMeeting.getPrice())
                 .imgURL1(fanMeeting.getImgURL1())
-                .imgURL1(fanMeeting.getImgURL2())
+                .imgURL2(fanMeeting.getImgURL2())
+                .availableTypes(availableFanMeetingTypes)
                 .build();
 
     }
 
-    public FanMeetingReservation getFanMeetingReservation(Long fanId) {
+    public Optional<FanMeetingReservation> getFanMeetingReservation(Long starId, Long fanId, Long fanMeetingId) {
+        StarEntity star = starRepository.findById(starId).orElseThrow(() -> new IllegalArgumentException("해당하는 star가 없습니다."));
         UserEntity fan = userRepository.findById(fanId).orElseThrow(() -> new IllegalArgumentException("해당하는 fan이 없습니다."));
-        return fanMeetingReservationRepository.findByUser(fan);
+        FanMeeting fanMeeting = fanMeetingRepository.findById(fanMeetingId).orElseThrow(() -> new IllegalArgumentException("해당하는 팬미팅이 없습니다."));
+        return fanMeetingReservationRepository.findByUserAndStarAndFanMeeting(fan, star, fanMeeting);
     }
 
     public void finishFanMeeting(Long starId) {
         FanMeeting fanMeeting = recentFanMeeting(starId);
         Long waitingRoomId = starId * 10 + 1;
         Long meetingRoomId = starId * 10 + 2;
-        for(Long k : meetingRooms.keySet()){
+        for (Long k : meetingRooms.keySet()) {
             System.out.println(k);
         }
         System.out.println("waitingRoomId : " + waitingRoomId);
@@ -155,4 +167,49 @@ public class FanMeetingService {
         System.out.println(fanMeeting.getIsFinished());
         System.out.println("삭제 성공~");
     }
+
+    /**
+     * 티켓 만들기 서비스 코드
+     */
+    public void createTicket(Long starId, Long typeId, Long fanMettingId, String username) {
+
+        Optional<StarEntity> optStar = starRepository.findById(starId);
+        StarEntity star = optStar.get();
+        System.out.println("star = " + star);
+
+        Optional<FanMeetingType> optMeeting = fanMeetingTypeRepository.findById(typeId);
+        FanMeetingType fanMeetingType = optMeeting.get();
+        System.out.println("fanMeetingType = " + fanMeetingType);
+
+        Optional<FanMeeting> optFanMeeting = fanMeetingRepository.findById(fanMettingId);
+        FanMeeting fanMeeting = optFanMeeting.get();
+        System.out.println("fanMeeting = " + fanMeeting);
+
+        UserEntity user = userRepository.findByUsername(username);
+        System.out.println("user = " + user);
+
+        FanMeetingReservation fanMeetingReservation = FanMeetingReservation.builder()
+                .fanMeetingType(fanMeetingType)
+                .fanMeeting(fanMeeting)
+                .user(user)
+                .star(star)
+                .build();
+
+        fanMeetingReservationRepository.save(fanMeetingReservation);
+        System.out.println("티켓 저장 완료!");
+
+    }
+
+    /**
+     * 특정 팬미팅의 티켓 수를 반환하는 서비스
+     */
+    public List<FanMeetingReservation> getMeetingTicketNumber(Long meetingId) {
+        Optional<FanMeeting> fanMeeting = fanMeetingRepository.findById(meetingId);
+        if (fanMeeting.isPresent()) {
+            List<FanMeetingReservation> fanMeetingReservations = fanMeetingReservationRepository.findByFanMeeting(fanMeeting.get());
+            return fanMeetingReservations;
+        }
+        return null;
+    }
+
 }
