@@ -291,7 +291,7 @@ const insertPencil = async () => {
   await axios.post(`${store.API_URL}/home/post/pencil`, {
     starId: starId,
     ordering: 1,
-    content: textarea!.value
+    content: textContent!.value
   }).then(response => {
     console.log(response.data);
     showTextarea.value= false;
