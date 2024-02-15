@@ -1,5 +1,5 @@
 <template>
-  <main class="container">
+  <main class="container" >
     <StarMenu :id="starId" />
     <div class="container border">
       <img  :src="starProfile?.banner" alt="사진">
@@ -13,6 +13,17 @@
           <!-- 닉네임 -->
           <p>닉네임 {{starProfile?.snsUrl}}</p>
           <!-- 구독 여부 창 -->
+          <div >
+            {{
+              starProfile?.category === -1 ? "카테고리" :
+                  starProfile?.category === 0 ? "일상/토크" :
+                      starProfile?.category === 1 ? "동물" :
+                          starProfile?.category === 2 ? "게임/스포츠" :
+                              starProfile?.category === 3 ? "미술/음악" :
+                                  starProfile?.category === 4 ? "뷰티/패션" :
+                                      starProfile?.category === 5 ? "기타" : ""
+            }} </div>
+
           <button @click="checkFollow">{{ buttonText }}</button>
           <!-- sns주소 링크 -->
         </div>

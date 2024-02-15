@@ -1,6 +1,6 @@
 <template>
   <main class="container">
-    <ul class="mb-5 d-flex justify-content-around nav nav-underline">
+    <ul class="mt-4 d-flex justify-content-around nav nav-underline" style="padding-top: 50px; padding-bottom: 30px;">
       <li class="nav-item">
         <RouterLink :to="`/profile/userinfo`" class="nav-link router-link-custom"
           :class="{ active: isActive('/userInfo') }">회원 정보</RouterLink>
@@ -18,7 +18,7 @@
       <li></li>
     </ul>
     <div>
-      <div v-if="responseMessageGetByUserId">
+      <div class="p-5" v-if="responseMessageGetByUserId">
         <p class="fw-bold mt-3 mb-1">주문 상품</p>
         <hr class="m-0 mb-3" style="border: 0; height: 3px; background: #000" />
         <div class="d-flex">

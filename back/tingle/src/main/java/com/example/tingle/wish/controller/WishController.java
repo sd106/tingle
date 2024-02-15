@@ -4,6 +4,7 @@ import com.example.tingle.wish.dto.WishDto;
 import com.example.tingle.wish.dto.request.WishRequest;
 import com.example.tingle.wish.dto.response.Response;
 import com.example.tingle.wish.service.WishService;
+import com.example.tingle.wish.service.serviceImpl.WishServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;

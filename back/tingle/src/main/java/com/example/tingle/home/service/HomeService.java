@@ -20,8 +20,8 @@ public interface HomeService {
     boolean insertHomePictures(String homeRequestJson, List<MultipartFile> files) throws IOException;
 //
 //    boolean updateHome(String homeRequestJson, List<MultipartFile> files, Long ordering) throws IOException;
-//
-//    boolean deleteHome(Long homeId);
+
+    boolean deleteHome(Long homeId);
 
     HomeProfileDto findHomeProfile(Long starId);
 

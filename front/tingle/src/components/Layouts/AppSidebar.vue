@@ -23,7 +23,7 @@
       </button>
       <RouterLink to="/">
         <img v-if="isStar" class="logo" src="/image/star-logo.gif" alt="" style="height: 60px" />
-        <img v-else class="logo" src="/image/boat-logo.gif" alt="" style="height: 60px" />
+        <img v-if="store.isLogin && !isStar" class="logo" src="/image/boat-logo.gif" alt="" style="height: 60px" />
       </RouterLink>
     </div>
     <div class="offcanvas-body">
@@ -96,6 +96,7 @@ import ChatModal from '@/components/StarMenu/Chat/ChatModal.vue'
 
 const store = useUserStore()
 const isStar = store.isStar
+
 // 사이드바 더보기
 const displayCount = ref(7)
 
