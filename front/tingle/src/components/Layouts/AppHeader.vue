@@ -119,7 +119,9 @@ const selectedStarIndex = ref<number>(-1)
 const fetchStars = async () => {
   if (searchQuery.value.length >= 1) {
     // 최소 2글자 이상 입력시 검색 실행
-    const response = await axios.get(`http://localhost:8080/star/search/${searchQuery.value}`)
+    const response = await axios.get(
+      `https://i10d106.p.ssafy.io/api/star/search/${searchQuery.value}`
+    )
     stars.value = response.data.data
     console.log(stars.value)
   } else {
@@ -351,5 +353,4 @@ const redirectToNaver = () => {
   background-color: #eee; /* 선택된 항목의 배경색 */
   /* 추가 스타일링 */
 }
-
 </style>

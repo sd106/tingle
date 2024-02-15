@@ -10,7 +10,10 @@
       <div id="chat-room">
         <ul id="message-list">
           <li v-for="message in messages" :key="message.sender?.id">
-            <div v-if="message.sender?.username !== localUser.username" class="message-content other-message-content">
+            <div
+              v-if="message.sender?.username !== localUser.username"
+              class="message-content other-message-content"
+            >
               <div class="profile-image">
                 <img :src="message.sender?.picture" alt="프로필 이미지" />
               </div>
@@ -41,7 +44,12 @@ import { useUserStore } from '@/stores/user'
 import InviteCard from '@/components/StarMenu/FanMeeting/InviteCard.vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
-import type { FanMeetingMessage, SocketMessage, SenderState, FanMeetingReservation } from '@/common/types/index'
+import type {
+  FanMeetingMessage,
+  SocketMessage,
+  SenderState,
+  FanMeetingReservation
+} from '@/common/types/index'
 
 const route = useRoute()
 const store = useUserStore()
@@ -49,18 +57,18 @@ const store = useUserStore()
 const starid = ref(String(route.params.starid))
 const roomType = 'Waiting'
 
-
 const fanMeetingReservation = ref<FanMeetingReservation>()
 const loadReservation = async () => {
-    try {
-        const response = await axios.get(`${store.API_URL}/fanMeeting/reservation/${store.fanState?.id}`)
-        fanMeetingReservation.value = response.data
-        console.log(response)
-    } catch (error) {
-        console.log(error)
-    }
+  try {
+    const response = await axios.get(
+      `${store.API_URL}/fanMeeting/reservation/${store.fanState?.id}`
+    )
+    fanMeetingReservation.value = response.data
+    console.log(response)
+  } catch (error) {
+    console.log(error)
+  }
 }
-
 
 // 메시지 관련
 const invited = ref(false)
@@ -87,7 +95,7 @@ const sendMessage = () => {
 }
 
 const enterMeetingRoom = () => {
-  console.log("??")
+  console.log('??')
   sendToServer({
     sender: localUser.value,
     signalType: 'Accept',
@@ -106,7 +114,7 @@ const sendToServer = (msg: SocketMessage) => {
 }
 
 const initializeWebSocket = () => {
-  socket = new WebSocket('ws://localhost:8080/signal')
+  socket = new WebSocket('wss://i10d106.p.ssafy.io/api/signal')
 
   socket.onmessage = (msg) => {
     let message = JSON.parse(msg.data)
@@ -165,7 +173,7 @@ const handleErrorMessage = (message: SocketMessage) => {
   console.error('에러발생!: ', message)
 }
 
-onMounted(async() => {
+onMounted(async () => {
   initializeWebSocket()
   loadReservation()
 })

@@ -1,52 +1,59 @@
 <template>
   <div class="container">
     <div id="local-video-container" @mouseenter="showControls" @mouseleave="hideControls">
-        <video id="localVideo" ref="localVideo" autoplay></video>
-        <div class="control-container">
-            <div v-if="isVideoOn" class="text-center" @click="toggleVideo">
-                <div class="control-icon">🎥</div>
-                <div class="control-label-container">
-                    <div class="control-label">카메라</div>
-                    <div class="control-label">켜짐</div>
-                </div>
-            </div>
-            <div v-else class="text-center" @click="toggleVideo">
-                <div class="control-icon">🚫</div>
-                <div class="control-label-container">
-                    <div class="control-label">카메라</div>
-                    <div class="control-label">꺼짐</div>
-                </div>
-            </div>
-
-            <div v-if="isAudioOn" class="text-center" @click="toggleAudio">
-                <div class="control-icon">🔊</div>
-                <div class="control-label-container">
-                    <div class="control-label">마이크</div>
-                    <div class="control-label">켜짐</div>                
-                </div>
-            </div>
-            <div v-else class="text-center" @click="toggleAudio">
-                <div class="control-icon">🚫</div>
-                <div class="control-label-container">
-                    <div class="control-label">마이크</div>
-                    <div class="control-label">꺼짐</div>
-                </div>
-            </div>
-
+      <video id="localVideo" ref="localVideo" autoplay></video>
+      <div class="control-container">
+        <div v-if="isVideoOn" class="text-center" @click="toggleVideo">
+          <div class="control-icon">🎥</div>
+          <div class="control-label-container">
+            <div class="control-label">카메라</div>
+            <div class="control-label">켜짐</div>
+          </div>
         </div>
+        <div v-else class="text-center" @click="toggleVideo">
+          <div class="control-icon">🚫</div>
+          <div class="control-label-container">
+            <div class="control-label">카메라</div>
+            <div class="control-label">꺼짐</div>
+          </div>
+        </div>
+
+        <div v-if="isAudioOn" class="text-center" @click="toggleAudio">
+          <div class="control-icon">🔊</div>
+          <div class="control-label-container">
+            <div class="control-label">마이크</div>
+            <div class="control-label">켜짐</div>
+          </div>
+        </div>
+        <div v-else class="text-center" @click="toggleAudio">
+          <div class="control-icon">🚫</div>
+          <div class="control-label-container">
+            <div class="control-label">마이크</div>
+            <div class="control-label">꺼짐</div>
+          </div>
+        </div>
+      </div>
     </div>
     <div id="remote-video-container">
-        <video id="remoteVideo" ref="remoteVideo" autoplay></video>
+      <video id="remoteVideo" ref="remoteVideo" autoplay></video>
     </div>
   </div>
   <section v-if="fanMeetingReservation?.fanMeetingType == 'normal'">
     <NormalMeeting :localVideo="localVideo" :remoteVideo="remoteVideo" :localStream="localStream" />
   </section>
   <section v-else-if="fanMeetingReservation?.fanMeetingType == 'lifefourcut'">
-    <LifeFourCutMeeting :localVideo="localVideo" :remoteVideo="remoteVideo" :localStream="localStream" />
+    <LifeFourCutMeeting
+      :localVideo="localVideo"
+      :remoteVideo="remoteVideo"
+      :localStream="localStream"
+    />
   </section>
   <section v-else-if="fanMeetingReservation?.fanMeetingType == 'birthday'">
-    <BirthdayMeeting :localVideo="localVideo" :remoteVideo="remoteVideo" :localStream="localStream" />
+    <BirthdayMeeting
+      :localVideo="localVideo"
+      :remoteVideo="remoteVideo"
+      :localStream="localStream"
+    />
   </section>
   <section v-else>
     <h1>연결중입니다...</h1>
@@ -63,7 +70,6 @@ import NormalMeeting from '@/views/Star/FanMeeting/NormalMeeting.vue'
 import LifeFourCutMeeting from '@/views/Star/FanMeeting/LifeFourCutMeeting.vue'
 import BirthdayMeeting from '@/views/Star/FanMeeting/BirthdayMeeting.vue'
 import router from '@/router'
-
 
 const controlsVisible = ref(false)
 const isVideoOn = ref(true)
@@ -97,7 +103,6 @@ const toggleAudio = () => {
   }
 }
 
-
 const route = useRoute()
 
 const starid = ref(route.params.starid.toString())
@@ -112,7 +117,9 @@ const fanMeetingReservation = ref<FanMeetingReservation>()
 
 const loadReservation = async () => {
   try {
-    const response = await axios.get(`${store.API_URL}/fanMeeting/reservation/${store.fanState?.id}`)
+    const response = await axios.get(
+      `${store.API_URL}/fanMeeting/reservation/${store.fanState?.id}`
+    )
     fanMeetingReservation.value = response.data
   } catch (error) {
     console.log(error)
@@ -150,11 +157,10 @@ const sendToServer = (msg: SocketMessage) => {
   }
 }
 
-
 // WebSocket
 const initializeWebSocket = () => {
   // 소켓 초기화
-  socket = new WebSocket('ws://localhost:8080/signal')
+  socket = new WebSocket('wss://i10d106.p.ssafy.io/api/signal')
 
   // 소켓이 message를 받을 때 이벤트 함수
   socket.onmessage = (msg) => {
@@ -183,11 +189,13 @@ const initializeWebSocket = () => {
         break
 
       case 'Join':
-        console.log('Client is starting to ' + (message.data === 'true') ? 'negotiate' : 'wait for a peer')
-        
+        console.log(
+          'Client is starting to ' + (message.data === 'true') ? 'negotiate' : 'wait for a peer'
+        )
+
         handleJoinMessage(message)
         break
-      
+
       case 'FinishFan':
         console.log('Fan Meeting is finished')
         handleFinishMeeting(message)
@@ -230,7 +238,7 @@ const initializeWebRTC = async () => {
     // Define the type of localVideo.value to include the srcObject property
     const localVideoElement = localVideo.value as HTMLVideoElement
     localVideoElement.srcObject = localStream
-      ; (localVideo.value as HTMLVideoElement).play()
+    ;(localVideo.value as HTMLVideoElement).play()
   }
   console.log('야호')
 
@@ -257,7 +265,7 @@ const initializeWebRTC = async () => {
       // Define the type of remoteVideo.value to include the srcObject property
       const remoteVideoElement = remoteVideo.value as HTMLVideoElement
       remoteVideoElement.srcObject = event.streams[0]
-        ; (remoteVideo.value as HTMLVideoElement).play()
+      ;(remoteVideo.value as HTMLVideoElement).play()
     }
   }
 
@@ -328,16 +336,16 @@ const handleJoinMessage = async (message: SocketMessage) => {
   localStream.getTracks().forEach((track) => myPeerConnection.addTrack(track, localStream))
 }
 
-const handleFinishMeeting =async (message: SocketMessage) => {
+const handleFinishMeeting = async (message: SocketMessage) => {
   try {
     sendToServer({
-            sender: localUser.value,
-            signalType: 'leave',
-            sdp: myPeerConnection.localDescription ? myPeerConnection.localDescription : undefined
-          })
-    
+      sender: localUser.value,
+      signalType: 'leave',
+      sdp: myPeerConnection.localDescription ? myPeerConnection.localDescription : undefined
+    })
+
     router.go(-1)
-    alert("팬미팅이 종료되었습니다.")
+    alert('팬미팅이 종료되었습니다.')
   } catch (error) {
     console.log(error)
   }
@@ -361,75 +369,70 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-
 .container {
-    position: relative;
-    width: 100%;
-    height: 90vh; 
-    border: 1px solid black; 
+  position: relative;
+  width: 100%;
+  height: 90vh;
+  border: 1px solid black;
 }
 
 #local-video-container {
   position: absolute;
   width: 20%;
   height: auto;
-  right: 10px; 
+  right: 10px;
   bottom: 10px;
   z-index: 2;
 }
 
 #localVideo {
-    width: 100%;
-    height: auto;
-    border: 1px solid black;
+  width: 100%;
+  height: auto;
+  border: 1px solid black;
 }
 
 #remote-video-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1; 
-    background-color: grey;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: grey;
 }
 
 #remoteVideo {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
 }
-
-
 
 .control-container {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%); 
-    display: flex;
-    gap: 10px;
-    visibility: hidden;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 10px;
+  visibility: hidden;
 }
 
-
 .control-icon {
-    font-size: 2rem;
-    cursor: pointer;
+  font-size: 2rem;
+  cursor: pointer;
 }
 
 .control-label-container {
-    background-color: rgba(128,128,128,0.5) ;
-    border-radius: 5px;
+  background-color: rgba(128, 128, 128, 0.5);
+  border-radius: 5px;
 }
 .control-label {
-    font-size: 0.8rem;
-    font-weight: bold;
-    cursor: pointer;
-    color: black;
+  font-size: 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: black;
 }
 
-
 #local-video-container:hover .control-container {
-    visibility: visible;
+  visibility: visible;
 }
 </style>

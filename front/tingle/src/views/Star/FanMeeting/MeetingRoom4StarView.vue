@@ -1,35 +1,35 @@
 <template>
-    <div class="row m-0 p-0">
-        <div class="col-9">
-            <section v-if="fanMeetingReservation?.fanMeetingType == '자유대화'">
-                <NormalMeeting 
-                :localVideo="localVideo"
-                :remoteVideo="remoteVideo"
-                :localStream="localStream"
-                />
-            </section>
-            <section v-else-if="fanMeetingReservation?.fanMeetingType == '인생네컷'">
-                <LifeFourCutMeeting 
-                :localVideo="localVideo"
-                :remoteVideo="remoteVideo"
-                :localStream="localStream"
-                />
-            </section>
-            <section v-else-if="fanMeetingReservation?.fanMeetingType== '생일축하'">
-                <BirthdayMeeting 
-                :localVideo="localVideo"
-                :remoteVideo="remoteVideo"
-                :localStream="localStream"
-                />
-            </section>
-            <section v-else>
-                <h1>연결중입니다...</h1>
-            </section>
-        </div>
-        <div class="col-3">
-            <FanMeetingBoard @finish-fan="finishFan" @finish-meeting="finishMeeting"/>
-        </div>
+  <div class="row m-0 p-0">
+    <div class="col-9">
+      <section v-if="fanMeetingReservation?.fanMeetingType == '자유대화'">
+        <NormalMeeting
+          :localVideo="localVideo"
+          :remoteVideo="remoteVideo"
+          :localStream="localStream"
+        />
+      </section>
+      <section v-else-if="fanMeetingReservation?.fanMeetingType == '인생네컷'">
+        <LifeFourCutMeeting
+          :localVideo="localVideo"
+          :remoteVideo="remoteVideo"
+          :localStream="localStream"
+        />
+      </section>
+      <section v-else-if="fanMeetingReservation?.fanMeetingType == '생일축하'">
+        <BirthdayMeeting
+          :localVideo="localVideo"
+          :remoteVideo="remoteVideo"
+          :localStream="localStream"
+        />
+      </section>
+      <section v-else>
+        <h1>연결중입니다...</h1>
+      </section>
     </div>
+    <div class="col-3">
+      <FanMeetingBoard @finish-fan="finishFan" @finish-meeting="finishMeeting" />
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -43,7 +43,6 @@ import BirthdayMeeting from '@/views/Star/FanMeeting/BirthdayMeeting.vue'
 import FanMeetingBoard from '@/components/StarMenu/FanMeeting/FanMeetingBoard.vue'
 import { useRouter } from 'vue-router'
 
-
 const store = useUserStore()
 const router = useRouter()
 const localUser = ref<SenderState>({
@@ -54,266 +53,265 @@ const localUser = ref<SenderState>({
 
 const fanMeetingReservation = ref<FanMeetingReservation>()
 const loadReservation = async () => {
-    try {
-        const response = await axios.get(`${store.API_URL}/fanMeeting/reservation/${store.fanState?.id}`)
-        fanMeetingReservation.value = response.data
-    } catch (error) {
-        console.log(error)
-    }
+  try {
+    const response = await axios.get(
+      `${store.API_URL}/fanMeeting/reservation/${store.fanState?.id}`
+    )
+    fanMeetingReservation.value = response.data
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const finishFan = () => {
-    console.log("finishFan")
-    sendToServer({
-        sender: localUser.value,
-        signalType: 'FinishFan',
-        data: fanMeetingReservation.value?.fanname,
-        roomType: 'Waiting'
-    })
+  console.log('finishFan')
+  sendToServer({
+    sender: localUser.value,
+    signalType: 'FinishFan',
+    data: fanMeetingReservation.value?.fanname,
+    roomType: 'Waiting'
+  })
 }
 
 const finishMeeting = async () => {
-    console.log("finishing Meeting..")
-    try {
-        const response = axios.delete(`http://localhost:8080/fanMeeting/finish/${store.starState?.id}`)
-        console.log(response)
-        router.push({name:'starhomemanage'})
-    } catch (error) {
-        console.log(error)
-    }
+  console.log('finishing Meeting..')
+  try {
+    const response = axios.delete(
+      `https://i10d106.p.ssafy.io/api/fanMeeting/finish/${store.starState?.id}`
+    )
+    console.log(response)
+    router.push({ name: 'starhomemanage' })
+  } catch (error) {
+    console.log(error)
+  }
 }
 // 주소로 연결할 웹소켓
-let socket: WebSocket | undefined;
+let socket: WebSocket | undefined
 
 // UI elements
 const localVideo = ref(null)
 const remoteVideo = ref(null)
 
-// WebRTC STUN servers 
+// WebRTC STUN servers
 const peerConnectionConfig = {
-    'iceServers': [
-        { 'urls': 'stun:stun.stunprotocol.org:3478' },
-        { 'urls': 'stun:stun.l.google.com:19302' },
-    ]
+  iceServers: [
+    { urls: 'stun:stun.stunprotocol.org:3478' },
+    { urls: 'stun:stun.l.google.com:19302' }
+  ]
 }
 
 // WebRTC media 설정
 const mediaConstraints = {
-    audio: true,
-    video: true
+  audio: true,
+  video: true
 }
 
 // WebRTC 에 사용할 변수
-let localStream: MediaStream;
-let myPeerConnection: RTCPeerConnection;
-
+let localStream: MediaStream
+let myPeerConnection: RTCPeerConnection
 
 // 서버에게 메시지 전송 메서드
 const sendToServer = (msg: SocketMessage) => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify(msg))
-    }
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify(msg))
+  }
 }
 
 // WebSocket
 const initializeWebSocket = () => {
-    // 소켓 초기화
-    socket = new WebSocket("ws://localhost:8080/signal")
+  // 소켓 초기화
+  socket = new WebSocket('wss://i10d106.p.ssafy.io/api/signal')
 
-    // 소켓이 message를 받을 때 이벤트 함수
-    socket.onmessage = (msg) => {
-        let message = JSON.parse(msg.data)
-        console.log("서버로부터 메시지가 도착했습니다!")
-        console.log(message)
-        // data type별 처리 메서드가 있음
-        switch (message.signalType) {
-            case "text":
-                console.log('Text message from ' + message.sender + ' received: ' + message.data)
-                break
+  // 소켓이 message를 받을 때 이벤트 함수
+  socket.onmessage = (msg) => {
+    let message = JSON.parse(msg.data)
+    console.log('서버로부터 메시지가 도착했습니다!')
+    console.log(message)
+    // data type별 처리 메서드가 있음
+    switch (message.signalType) {
+      case 'text':
+        console.log('Text message from ' + message.sender + ' received: ' + message.data)
+        break
 
-            case "Offer":
-                console.log('Signal OFFER received')
-                handleOfferMessage(message)
-                break;
+      case 'Offer':
+        console.log('Signal OFFER received')
+        handleOfferMessage(message)
+        break
 
-            case "Answer":
-                console.log('Signal ANSWER received')
-                handleAnswerMessage(message)
-                break;
+      case 'Answer':
+        console.log('Signal ANSWER received')
+        handleAnswerMessage(message)
+        break
 
-            case "Ice":
-                console.log('Signal ICE Candidate received')
-                handleICEMessage(message)
-                break;
+      case 'Ice':
+        console.log('Signal ICE Candidate received')
+        handleICEMessage(message)
+        break
 
-            case "Join":
-                console.log('Client is starting to ' + (message.data === "true)" ? 'negotiate' : 'wait for a peer'))
-                handleJoinMessage(message)
-                break;
+      case 'Join':
+        console.log(
+          'Client is starting to ' + (message.data === 'true)' ? 'negotiate' : 'wait for a peer')
+        )
+        handleJoinMessage(message)
+        break
 
-            case "Accept":
-                console.log('Signal ACCEPT received')
-                handleAcceptMessage(message)
-                break;
+      case 'Accept':
+        console.log('Signal ACCEPT received')
+        handleAcceptMessage(message)
+        break
 
-            default:
-                console.log('Error: ', message)
-                handleErrorMessage(message)
-        }
+      default:
+        console.log('Error: ', message)
+        handleErrorMessage(message)
     }
+  }
 
-    // 소켓이 열리면 이벤트 함수
-    socket.onopen = () => {
-        console.log('소켓 열렸는디요')
-        sendToServer({
-            sender: localUser.value,
-            signalType: 'Join',
-            roomType: 'Meeting',
-            data: String(localUser.value.id),
-        })
-    }
+  // 소켓이 열리면 이벤트 함수
+  socket.onopen = () => {
+    console.log('소켓 열렸는디요')
+    sendToServer({
+      sender: localUser.value,
+      signalType: 'Join',
+      roomType: 'Meeting',
+      data: String(localUser.value.id)
+    })
+  }
 
-    // 소켓이 닫히면 이벤트 함수
-    socket.onclose = () => {
-        console.log('소켓 닫혔는디요')
-    }
+  // 소켓이 닫히면 이벤트 함수
+  socket.onclose = () => {
+    console.log('소켓 닫혔는디요')
+  }
 
-
-    // 소켓에 에러나면 이벤트 함수
-    socket.onerror = (error) => {
-        console.error(error)
-    }
+  // 소켓에 에러나면 이벤트 함수
+  socket.onerror = (error) => {
+    console.error(error)
+  }
 }
 
 // WebRTC
 const initializeWebRTC = async () => {
-    console.log("handling joing message!")
-    // 내 media 출력
-    localStream = await navigator.mediaDevices.getUserMedia(mediaConstraints)
-    if (localVideo.value) {
-        // Define the type of localVideo.value to include the srcObject property
-        const localVideoElement = localVideo.value as HTMLVideoElement;
-        localVideoElement.srcObject = localStream;
-        (localVideo.value as HTMLVideoElement).play();
-    }
-    console.log("야호")
+  console.log('handling joing message!')
+  // 내 media 출력
+  localStream = await navigator.mediaDevices.getUserMedia(mediaConstraints)
+  if (localVideo.value) {
+    // Define the type of localVideo.value to include the srcObject property
+    const localVideoElement = localVideo.value as HTMLVideoElement
+    localVideoElement.srcObject = localStream
+    ;(localVideo.value as HTMLVideoElement).play()
+  }
+  console.log('야호')
 
-    // 다른 peer들을 위한 RTCPeerConnection을 만듬
-    myPeerConnection = new RTCPeerConnection(peerConnectionConfig)
+  // 다른 peer들을 위한 RTCPeerConnection을 만듬
+  myPeerConnection = new RTCPeerConnection(peerConnectionConfig)
 
-    // 
-    myPeerConnection.onicecandidate = (event) => {
-        // ICE Candidate 정보를 서버로 보냄
-        if (event.candidate) {
-            sendToServer({
-                sender: localUser.value,
-                signalType: 'Ice',
-                iceCandidate: event.candidate
-            })
-            console.log('ICE Candidate Event: ICE candidate sent')
-        }
+  //
+  myPeerConnection.onicecandidate = (event) => {
+    // ICE Candidate 정보를 서버로 보냄
+    if (event.candidate) {
+      sendToServer({
+        sender: localUser.value,
+        signalType: 'Ice',
+        iceCandidate: event.candidate
+      })
+      console.log('ICE Candidate Event: ICE candidate sent')
     }
-    // 원격 스트림을 받을 때 처리
-    myPeerConnection.ontrack = (event) => {
-        console.log('Track Event: set stream to remote video element')
-        console.log('remoteVideo: ', event.streams[0])
-        if (remoteVideo.value) {
-            // Define the type of remoteVideo.value to include the srcObject property
-            const remoteVideoElement = remoteVideo.value as HTMLVideoElement;
-            remoteVideoElement.srcObject = event.streams[0];
-            (remoteVideo.value as HTMLVideoElement).play();
-        }
+  }
+  // 원격 스트림을 받을 때 처리
+  myPeerConnection.ontrack = (event) => {
+    console.log('Track Event: set stream to remote video element')
+    console.log('remoteVideo: ', event.streams[0])
+    if (remoteVideo.value) {
+      // Define the type of remoteVideo.value to include the srcObject property
+      const remoteVideoElement = remoteVideo.value as HTMLVideoElement
+      remoteVideoElement.srcObject = event.streams[0]
+      ;(remoteVideo.value as HTMLVideoElement).play()
     }
+  }
 
-    // ICE 연결 상태 변경되면 로깅
-    myPeerConnection.oniceconnectionstatechange = (event) => {
-        if (myPeerConnection) {
-            console.log(event)
-            console.log('ICE Connection State:', myPeerConnection.iceConnectionState)
-        }
+  // ICE 연결 상태 변경되면 로깅
+  myPeerConnection.oniceconnectionstatechange = (event) => {
+    if (myPeerConnection) {
+      console.log(event)
+      console.log('ICE Connection State:', myPeerConnection.iceConnectionState)
     }
-
+  }
 }
 
 // socket event 별 처리 메서드
 const handleOfferMessage = async (message: SocketMessage) => {
-    try {
-        if (message.sdp) {
-            const remoteDescription = new RTCSessionDescription(message.sdp as RTCSessionDescriptionInit);
-            await myPeerConnection.setRemoteDescription(remoteDescription)
-        }
-
-        const answer = await myPeerConnection.createAnswer()
-        await myPeerConnection.setLocalDescription(answer)
-        sendToServer({
-            sender: localUser.value,
-            signalType: 'Answer',
-            sdp: myPeerConnection.localDescription ? myPeerConnection.localDescription : undefined
-        })
-    } catch (error) {
-        console.error('Error handling offer message: ', error)
+  try {
+    if (message.sdp) {
+      const remoteDescription = new RTCSessionDescription(message.sdp as RTCSessionDescriptionInit)
+      await myPeerConnection.setRemoteDescription(remoteDescription)
     }
+
+    const answer = await myPeerConnection.createAnswer()
+    await myPeerConnection.setLocalDescription(answer)
+    sendToServer({
+      sender: localUser.value,
+      signalType: 'Answer',
+      sdp: myPeerConnection.localDescription ? myPeerConnection.localDescription : undefined
+    })
+  } catch (error) {
+    console.error('Error handling offer message: ', error)
+  }
 }
 
 const handleAnswerMessage = (message: SocketMessage) => {
-    if (message.sdp) {
-        const remoteDescription = new RTCSessionDescription(message.sdp as RTCSessionDescriptionInit);
-        myPeerConnection.setRemoteDescription(remoteDescription)
-    }
+  if (message.sdp) {
+    const remoteDescription = new RTCSessionDescription(message.sdp as RTCSessionDescriptionInit)
+    myPeerConnection.setRemoteDescription(remoteDescription)
+  }
 }
 
 const handleICEMessage = (message: SocketMessage) => {
-    const candidate = new RTCIceCandidate(message.iceCandidate)
-    myPeerConnection.addIceCandidate(candidate)
+  const candidate = new RTCIceCandidate(message.iceCandidate)
+  myPeerConnection.addIceCandidate(candidate)
 }
 
 const handleJoinMessage = async (message: SocketMessage) => {
-    if (message.data === "true") {
-        console.log("11")
-        myPeerConnection.onnegotiationneeded = async () => {
-            try {
-                console.log("22")
+  if (message.data === 'true') {
+    console.log('11')
+    myPeerConnection.onnegotiationneeded = async () => {
+      try {
+        console.log('22')
 
-                const offer = await myPeerConnection.createOffer()
-                await myPeerConnection.setLocalDescription(offer)
-                sendToServer({
-                    sender: localUser.value,
-                    signalType: 'Offer',
-                    sdp: myPeerConnection.localDescription ? myPeerConnection.localDescription : undefined
-                })
-                console.log('Negotiation Needed Event: SDP offer sent')
-            } catch (reason) {
-                // 연결 실패 시 오류 처리
-                console.error('failure to connect error: ', reason)
-            }
-        }
+        const offer = await myPeerConnection.createOffer()
+        await myPeerConnection.setLocalDescription(offer)
+        sendToServer({
+          sender: localUser.value,
+          signalType: 'Offer',
+          sdp: myPeerConnection.localDescription ? myPeerConnection.localDescription : undefined
+        })
+        console.log('Negotiation Needed Event: SDP offer sent')
+      } catch (reason) {
+        // 연결 실패 시 오류 처리
+        console.error('failure to connect error: ', reason)
+      }
     }
+  }
 
-    // 내 media를 RTCPeerConnection에 추가
-    localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream))
-
+  // 내 media를 RTCPeerConnection에 추가
+  localStream.getTracks().forEach((track) => myPeerConnection.addTrack(track, localStream))
 }
 
 const handleAcceptMessage = (message: SocketMessage) => {
-    fanMeetingReservation.value = message.sdp as FanMeetingReservation
+  fanMeetingReservation.value = message.sdp as FanMeetingReservation
 }
 
 const handleErrorMessage = (message: SocketMessage) => {
-    console.error("에러발생!: ", message)
+  console.error('에러발생!: ', message)
 }
 
-
 onMounted(async () => {
-    loadReservation()
-    await initializeWebRTC()
-    initializeWebSocket()
+  loadReservation()
+  await initializeWebRTC()
+  initializeWebSocket()
 })
 
 onUnmounted(() => {
-    if (socket) {
-        socket.close();
-    }
+  if (socket) {
+    socket.close()
+  }
 })
-
-
 </script>
