@@ -52,7 +52,8 @@ const starSignup = async () => {
     const response2 = await axios.post(`http://localhost:8080/chat/saveTheRoom/${signupData.email}`)
 
     console.log(response)
-
+    console.log(response2)
+    
     // console.log(response2)
     
     router.push('/')

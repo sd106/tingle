@@ -9,29 +9,48 @@
     </div>
     <div class="chat-list-items scrollable-container">
       <div class="scrollable-content">
-  
         <!-- 채팅방 중간 direction 1 == 스타, direction == 2 팬 -->
-        <div v-for="msg in newSelectedRoom" :key="msg.id">
+        <div v-for="(msg, index) in newSelectedRoom" :key="index">
+          <div>{{ msg.message }}</div>
+          <div>{{ msg.createDate }}</div>
+
+
             <!-- 받은 메시지 -->
             <!-- 스타 x, 스타 (=1) -->
+            <span v-if="(!store.isStar && msg.direction == 1)">
+              <div class="star-card">
+                <div class="star-image">
+                  <img :src="chatUserInfo[index].picture" class="img-fluid rounded-start" alt="">
+                </div>
+                <div> {{ msg.message }}: </div>
+                <div>{{ msg.message }}</div>
+                <div>{{ msg.createDate }}</div>
+              </div>
+            </span>
+            
             <!-- 스타 o, 팬 (=2) -->
-            <span v-if="(!store.isStar && msg.direction == 1)
-                     || (store.isStar && msg.direction == 2)">
+            <span v-if="(store.isStar && msg.direction == 2)">
               <div class="star-card">
                 <div class="star-image">
                   <img src="/image/yoo.png" class="img-fluid rounded-start" alt="">
                 </div>
-                <div> 상대: </div>
+                <div> {{ msg.message }}: </div>
                 <div>{{ msg.message }}</div>
                 <div>{{ msg.createDate }}</div>
               </div>
             </span>
   
             <!-- 보낸 메시지 -->
-            <!-- 스타 x, 팬 (=2) -->
             <!-- 스타 o, 스타 (=1) -->
-            <span v-if="(!store.isStar && msg.direction == 2)
-                     || (store.isStar && msg.direction == 1)">
+            <span v-if="(store.isStar && msg.direction == 1)">
+              <div class="star-card">
+                <div> 나: </div>
+                <div class="justify-content-end">{{ msg.message }}</div>
+              </div>
+            </span>
+
+            <!-- 스타 x, 팬 (=2) -->
+            <span v-if="(!store.isStar && msg.direction == 2)">
               <div class="star-card">
                 <div> 나: </div>
                 <div class="justify-content-end">{{ msg.message }}</div>
@@ -53,7 +72,7 @@
   import { useRoute } from 'vue-router';
   import { useUserStore } from '@/stores/user';
   import { ref, computed, onMounted } from 'vue';
-  import type { ChatMessageInfo, ChatRoomInfo } from '@/common/types/index'
+  import type { ChatMessageInfo, ChatRoomInfo, SenderState } from '@/common/types/index'
   import axios from "axios";
   import { defineProps } from 'vue';
   import { Client } from '@stomp/stompjs';
@@ -86,6 +105,7 @@
   
   const inputValue = ref<string>('');
   const newSelectedRoom = ref<ChatMessageInfo[]>([]);
+  const chatUserInfo = ref<SenderState[]>([]);
   
   /////////////////////////////////////////////////
   // Stomp over WebSocket 인스턴스 생성
@@ -170,9 +190,12 @@
   try {
     const res = await axios.get(`${store.API_URL}/chatMessage/readMessages/${props.selectedRoom.id}`);
     newSelectedRoom.value = res.data.data;
-    
     console.log(`${res.data.message}: ${res.data.code}`);
   
+    const res2 = await axios.get(`${store.API_URL}/chatRoom/readRooms/userInfo/${myid}`);
+    chatUserInfo.value = res2.data.data;
+    console.log(`${res2.data.message}: ${res2.data.code}`);
+
     } catch (error) {
       console.error(`Error fetching getChatMessages: `, error);
     }

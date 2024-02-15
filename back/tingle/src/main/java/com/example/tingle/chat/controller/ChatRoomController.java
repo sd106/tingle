@@ -1,6 +1,7 @@
 package com.example.tingle.chat.controller;
 
 import com.example.tingle.chat.dto.ChatRoomDto;
+import com.example.tingle.chat.dto.ChatUserDto;
 import com.example.tingle.chat.service.ChatRoomService;
 import com.example.tingle.wish.dto.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,23 @@ public class ChatRoomController {
     public Response findAddingRoomsByUserId(@PathVariable Long userId) {
         try {
             List<ChatRoomDto> list = chatRoomService.findRoomsByUserId(userId);
+
+            if(list.isEmpty())
+                return new Response("success", "findAddingRoomsByUserId", null);
+            else
+                return new Response("success", "findAddingRoomsByUserId", list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Response("fail", "findAddingRoomsByUserId", null);
+        }
+    }
+
+    // 구독 & 추가한 스타들의 채팅방 스타 정보 조회
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/readRooms/starInfo/{userId}")
+    public Response findAddingRoomsStarInfoByUserId(@PathVariable Long userId) {
+        try {
+            List<ChatUserDto> list = chatRoomService.findChatRoomsUserInfoByUserId(userId);
 
             if(list.isEmpty())
                 return new Response("success", "findAddingRoomsByUserId", null);

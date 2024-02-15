@@ -2,6 +2,7 @@ package com.example.tingle.chat.repository;
 
 import com.example.tingle.chat.entity.ChatEnterEntity;
 import com.example.tingle.chat.entity.ChatMessageEntity;
+import com.example.tingle.chat.entity.ChatRoomEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

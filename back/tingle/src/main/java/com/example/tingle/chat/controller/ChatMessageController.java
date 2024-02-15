@@ -2,9 +2,11 @@ package com.example.tingle.chat.controller;
 
 import com.example.tingle.chat.dto.ChatMessageDto;
 import com.example.tingle.chat.dto.ChatRoomDto;
+import com.example.tingle.chat.dto.ChatUserDto;
 import com.example.tingle.chat.dto.request.ChatMessageRequest;
 import com.example.tingle.chat.repository.ChatMessageRepository;
 import com.example.tingle.chat.service.ChatMessageService;
+import com.example.tingle.user.dto.UserDto;
 import com.example.tingle.wish.dto.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +36,23 @@ public class ChatMessageController {
         } catch (Exception e) {
             e.printStackTrace();
             return new Response("fail", "findMessagesByStarId", null);
+        }
+    }
+
+    // 해당 스타의 모든 메시지 유저 정보 조회
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/readMessages/userInfo/{starId}")
+    public Response findMessagesUserInfoByStarId(@PathVariable Long starId) {
+        try {
+            List<ChatUserDto> list = chatMessageService.findMessagesUserInfoByStarId(starId);
+
+            if(list.isEmpty())
+                return new Response("success", "findMessagesUserInfoByStarId", null);
+            else
+                return new Response("success", "findMessagesUserInfoByStarId", list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Response("fail", "findMessagesUserInfoByStarId", null);
         }
     }
 

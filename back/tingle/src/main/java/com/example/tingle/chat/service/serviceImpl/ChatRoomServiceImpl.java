@@ -4,6 +4,7 @@ import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.tingle.chat.dto.ChatEnterDto;
 import com.example.tingle.chat.dto.ChatMessageDto;
 import com.example.tingle.chat.dto.ChatRoomDto;
+import com.example.tingle.chat.dto.ChatUserDto;
 import com.example.tingle.chat.entity.ChatEnterEntity;
 import com.example.tingle.chat.entity.ChatMessageEntity;
 import com.example.tingle.chat.entity.ChatRoomEntity;
@@ -55,7 +56,6 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         List<ChatRoomDto> chatRoomDtos = new ArrayList<>();
 
         for(ChatEnterEntity entity : chatEnterEntities) {
-
             List<ChatMessageDto> chatMessageDtos = new ArrayList<>();
             ChatMessageEntity chatMessage = chatMessageRepository.findTheMessageByChatRoom(entity.getChatRoom().getId());
 
@@ -82,6 +82,27 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         }
 
         return chatRoomDtos;
+    }
+
+    public List<ChatUserDto> findChatRoomsUserInfoByUserId(Long userId) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Could not found user id : " + userId));
+
+        List<ChatEnterEntity> chatEnterEntities = chatEnterRepository.findEntersByUserId(user.getId());
+
+        List<ChatUserDto> chatUserDtos = new ArrayList<>();
+
+        for(ChatEnterEntity entity : chatEnterEntities) {
+            ChatUserDto chatUserDto = ChatUserDto.builder()
+                    .id(entity.getChatRoom().getStar().getId())
+                    .username(entity.getChatRoom().getStar().getUsername())
+                    .picture(entity.getChatRoom().getStar().getPicture())
+                    .build();
+
+            chatUserDtos.add(chatUserDto);
+        }
+
+        return chatUserDtos;
     }
 
     @Override

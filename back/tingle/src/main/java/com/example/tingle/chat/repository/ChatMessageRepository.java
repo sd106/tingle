@@ -3,6 +3,7 @@ package com.example.tingle.chat.repository;
 import com.example.tingle.chat.dto.ChatRoomDto;
 import com.example.tingle.chat.entity.ChatMessageEntity;
 import com.example.tingle.chat.entity.ChatRoomEntity;
+import com.example.tingle.user.entity.UserEntity;
 import com.example.tingle.wish.dto.response.Response;
 import com.example.tingle.wish.entity.LikesEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,6 +21,10 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessageEntity, 
     // 메시지 목록 조회 (방 id)
     @Query("SELECT cm FROM ChatMessageEntity cm WHERE cm.chatRoom.id = :roomId ORDER BY cm.createdDate ASC")
     List<ChatMessageEntity> findMessagesByChatRoom(Long roomId);
+
+//    // 메시지 목록의 각 UserEntity 조회 (방 id)
+//    @Query("SELECT cm.user FROM ChatMessageEntity cm WHERE cm.chatRoom.id = :roomId ORDER BY cm.createdDate ASC")
+//    List<UserEntity> findMessagesUserInfoByChatRoom(Long roomId);
 
     // 메시지 목록 마지막 1개 조회
     @Query("SELECT cm FROM ChatMessageEntity cm WHERE cm.chatRoom.id = :roomId ORDER BY cm.createdDate ASC limit 1")

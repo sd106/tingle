@@ -33,7 +33,8 @@ const folloingInfo = ref<{ starId: number; picture: string; userName: string }[]
 // 구독 & 추가 스타 리스트
 const chatStarsInfo = ref<ChatRoomInfo[]>([]);
 
-const myid = 1;// store.fanState!.id;
+const myid = store.fanState!.id;
+const myname = store.fanState!.username;
 
 // 구독 스타 조회
 const getFolloings = async (): Promise<void> => {
@@ -91,7 +92,6 @@ try {
     // 시작 메시지 DB 에 저장
     addStarChatingMessages(res2.data.data.id);
 
-
     getFolloings();
     getChatStars();
     //setStarsList();
@@ -110,7 +110,7 @@ try {
   const dataToSend = {
     userId: myid,
     direction: 1,
-    message: myid + " 님, 채팅 고마워요.",
+    message: myname + " 님, 채팅 고마워요.",
     roomId: roomId
   };
 
