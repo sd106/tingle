@@ -1,5 +1,6 @@
 package com.example.tingle.fanMeeting.service;
 
+import com.example.tingle.fanMeeting.dto.FanMeetingReservationMessageDto;
 import com.example.tingle.fanMeeting.dto.request.CreateFanMeetingRequest;
 import com.example.tingle.fanMeeting.dto.response.GetFanMeetingInfoResponse;
 import com.example.tingle.fanMeeting.entity.FanMeeting;
@@ -212,4 +213,12 @@ public class FanMeetingService {
         return null;
     }
 
+    public FanMeetingReservationMessageDto findRecentFanMeetingByUserAndStar(Long userId, Long starId) {
+        FanMeetingReservation fanMeetingReservation = fanMeetingReservationRepository.findRecentFanMeetingByUserAndStar(userId, starId);
+        return FanMeetingReservationMessageDto.builder()
+                .starName(fanMeetingReservation.getStar().getUsername())
+                .userName(fanMeetingReservation.getUser().getUsername())
+                .fanMeetingType(fanMeetingReservation.getFanMeetingType().getName())
+                .build();
+    }
 }

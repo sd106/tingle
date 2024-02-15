@@ -2,32 +2,20 @@
     <div class="row m-0 p-0">
         <div class="col-9">
             <section v-if="fanMeetingReservation?.fanMeetingType == '자유대화'">
-                <NormalMeeting 
-                :localVideo="localVideo"
-                :remoteVideo="remoteVideo"
-                :localStream="localStream"
-                />
+                <NormalMeeting :localStream="localStream" :remoteStream="remoteStream"/>
             </section>
             <section v-else-if="fanMeetingReservation?.fanMeetingType == '인생네컷'">
-                <LifeFourCutMeeting 
-                :localVideo="localVideo"
-                :remoteVideo="remoteVideo"
-                :localStream="localStream"
-                />
+                <LifeFourCutMeeting :localStream="localStream" :remoteStream="remoteStream"/>
             </section>
             <section v-else-if="fanMeetingReservation?.fanMeetingType== '생일축하'">
-                <BirthdayMeeting 
-                :localVideo="localVideo"
-                :remoteVideo="remoteVideo"
-                :localStream="localStream"
-                />
+                <BirthdayMeeting :localStream="localStream" :remoteStream="remoteStream"/>
             </section>
             <section v-else>
                 <h1>연결중입니다...</h1>
             </section>
         </div>
         <div class="col-3">
-            <FanMeetingBoard @finish-fan="finishFan" @finish-meeting="finishMeeting"/>
+            <FanMeetingBoard :finishedFans="finishedFans" @finish-fan="finishFan" @finish-meeting="finishMeeting"/>
         </div>
     </div>
 </template>
@@ -53,23 +41,20 @@ const localUser = ref<SenderState>({
 })
 
 const fanMeetingReservation = ref<FanMeetingReservation>()
-const loadReservation = async () => {
-    try {
-        const response = await axios.get(`${store.API_URL}/fanMeeting/reservation/${store.fanState?.id}`)
-        fanMeetingReservation.value = response.data
-    } catch (error) {
-        console.log(error)
-    }
-}
+
+const finishedFans = ref<String[]>([])
 
 const finishFan = () => {
     console.log("finishFan")
+    console.log(fanMeetingReservation)
     sendToServer({
         sender: localUser.value,
         signalType: 'FinishFan',
-        data: fanMeetingReservation.value?.fanname,
+        data: fanMeetingReservation.value?.userName,
         roomType: 'Waiting'
     })
+    finishedFans.value.push(fanMeetingReservation.value?.userName ?? '')
+    fanMeetingReservation.value = undefined
 }
 
 const finishMeeting = async () => {
@@ -86,8 +71,8 @@ const finishMeeting = async () => {
 let socket: WebSocket | undefined;
 
 // UI elements
-const localVideo = ref(null)
-const remoteVideo = ref(null)
+const localVideo = ref()
+const remoteVideo = ref()
 
 // WebRTC STUN servers 
 const peerConnectionConfig = {
@@ -104,7 +89,8 @@ const mediaConstraints = {
 }
 
 // WebRTC 에 사용할 변수
-let localStream: MediaStream;
+const localStream = ref<MediaStream>()
+const remoteStream = ref<MediaStream>()
 let myPeerConnection: RTCPeerConnection;
 
 
@@ -147,7 +133,7 @@ const initializeWebSocket = () => {
                 break;
 
             case "Join":
-                console.log('Client is starting to ' + (message.data === "true)" ? 'negotiate' : 'wait for a peer'))
+                console.log('Client is starting to ' + (message.data === "true" ? 'negotiate' : 'wait for a peer'))
                 handleJoinMessage(message)
                 break;
 
@@ -189,13 +175,12 @@ const initializeWebSocket = () => {
 const initializeWebRTC = async () => {
     console.log("handling joing message!")
     // 내 media 출력
-    localStream = await navigator.mediaDevices.getUserMedia(mediaConstraints)
-    if (localVideo.value) {
-        // Define the type of localVideo.value to include the srcObject property
-        const localVideoElement = localVideo.value as HTMLVideoElement;
-        localVideoElement.srcObject = localStream;
-        (localVideo.value as HTMLVideoElement).play();
-    }
+    localStream.value = await navigator.mediaDevices.getUserMedia(mediaConstraints)
+    // if (localVideo.value) {
+    //     const localVideoElement = localVideo.value as HTMLVideoElement;
+    //     localVideoElement.srcObject = localStream.value;
+    //     (localVideo.value as HTMLVideoElement).play();
+    // }
     console.log("야호")
 
     // 다른 peer들을 위한 RTCPeerConnection을 만듬
@@ -217,12 +202,13 @@ const initializeWebRTC = async () => {
     myPeerConnection.ontrack = (event) => {
         console.log('Track Event: set stream to remote video element')
         console.log('remoteVideo: ', event.streams[0])
-        if (remoteVideo.value) {
-            // Define the type of remoteVideo.value to include the srcObject property
-            const remoteVideoElement = remoteVideo.value as HTMLVideoElement;
-            remoteVideoElement.srcObject = event.streams[0];
-            (remoteVideo.value as HTMLVideoElement).play();
-        }
+        // if (remoteVideo.value) {
+        //     const remoteVideoElement = remoteVideo.value as HTMLVideoElement;
+        //     remoteVideoElement.srcObject = event.streams[0];
+            remoteStream.value = event.streams[0];
+        //     (remoteVideo.value as HTMLVideoElement).play();
+            console.log(remoteStream.value)
+        // }
     }
 
     // ICE 연결 상태 변경되면 로깅
@@ -268,7 +254,6 @@ const handleICEMessage = (message: SocketMessage) => {
 }
 
 const handleJoinMessage = async (message: SocketMessage) => {
-    if (message.data === "true") {
         console.log("11")
         myPeerConnection.onnegotiationneeded = async () => {
             try {
@@ -287,15 +272,22 @@ const handleJoinMessage = async (message: SocketMessage) => {
                 console.error('failure to connect error: ', reason)
             }
         }
-    }
 
     // 내 media를 RTCPeerConnection에 추가
-    localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream))
+    if (localStream.value) {
+        localStream.value.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream.value as MediaStream));
+    }
 
 }
 
 const handleAcceptMessage = (message: SocketMessage) => {
-    fanMeetingReservation.value = message.sdp as FanMeetingReservation
+    try {
+        console.log(message.sdp)
+        fanMeetingReservation.value = message.sdp as FanMeetingReservation
+        console.log(fanMeetingReservation.value)
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 const handleErrorMessage = (message: SocketMessage) => {
@@ -304,7 +296,6 @@ const handleErrorMessage = (message: SocketMessage) => {
 
 
 onMounted(async () => {
-    loadReservation()
     await initializeWebRTC()
     initializeWebSocket()
 })

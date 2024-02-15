@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface FanMeetingReservationRepository extends JpaRepository<FanMeetingReservation, Long> {
+public interface FanMeetingReservationRepository extends JpaRepository<FanMeetingReservation, Long>, CustomFanMeetingReservationRepository {
     List<FanMeetingReservation> findByFanMeeting(FanMeeting fanMeeting);
     Optional<FanMeetingReservation> findByUserAndStarAndFanMeeting(UserEntity user, StarEntity star, FanMeeting fanMeeting);
     FanMeetingReservation findByUser(UserEntity user);

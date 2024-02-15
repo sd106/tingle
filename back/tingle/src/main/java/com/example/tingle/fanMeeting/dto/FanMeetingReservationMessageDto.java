@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class FanMeetingReservationMessageDto {
-    private LocalDateTime orderAt;
     private String userName;
     private String starName;
     private String fanMeetingType;

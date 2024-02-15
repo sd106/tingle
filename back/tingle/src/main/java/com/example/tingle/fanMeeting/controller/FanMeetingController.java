@@ -1,6 +1,6 @@
 package com.example.tingle.fanMeeting.controller;
 
-import com.example.tingle.fanMeeting.dto.request.CreateFanMeetingRequest;
+import com.example.tingle.fanMeeting.dto.FanMeetingReservationMessageDto;
 import com.example.tingle.fanMeeting.dto.request.FanMeetingReservationRequest;
 import com.example.tingle.fanMeeting.dto.response.GetFanMeetingInfoResponse;
 import com.example.tingle.fanMeeting.entity.FanMeeting;
@@ -88,5 +88,10 @@ public class FanMeetingController {
         List<FanMeetingReservation> fanMeetingReservations = fanMeetingService.getMeetingTicketNumber(fanMeetingId);
 
         return fanMeetingReservations.size();
+    }
+
+    @GetMapping("/fanMeetingReservation/{userId}/{starId}")
+    public FanMeetingReservationMessageDto getRecentFanMeetingByUserAndStar(@PathVariable Long userId, @PathVariable Long starId) {
+        return fanMeetingService.findRecentFanMeetingByUserAndStar(userId, starId);
     }
 }
