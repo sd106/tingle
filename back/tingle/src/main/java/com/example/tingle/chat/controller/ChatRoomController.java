@@ -49,15 +49,15 @@ public class ChatRoomController {
 
     // 해당 스타의 채팅방 생성 (스타 가입 시)
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/saveTheRoom/{starId}")
-    public Response saveTheRoomByStarId(@PathVariable Long starId) {
+    @PostMapping("/saveTheRoom/{starEmail}")
+    public Response saveTheRoomByStarEmail(@PathVariable String starEmail) {
         try {
-            chatRoomService.saveTheRoomByStarId(starId);
+            chatRoomService.saveTheRoomByStarEmail(starEmail);
 
-            return new Response("success", "saveTheRoomByStarId", null);
+            return new Response("success", "saveTheRoomByStarEmail", null);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Response("fail", "saveTheRoomByStarId", null);
+            return new Response("fail", "saveTheRoomByStarEmail", null);
         }
     }
 

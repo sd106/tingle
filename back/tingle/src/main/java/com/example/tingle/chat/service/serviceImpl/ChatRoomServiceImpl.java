@@ -119,9 +119,9 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
-    public void saveTheRoomByStarId(Long starId) {
-        StarEntity star = starRepository.findById(starId)
-                .orElseThrow(() -> new NotFoundException("Could not found star id : " + starId));
+    public void saveTheRoomByStarEmail(String starEmail) {
+        StarEntity star = starRepository.findByEmail(starEmail)
+                .orElseThrow(() -> new NotFoundException("Could not found starEmail : " + starEmail));
 
         ChatRoomEntity chatRoomEntity = ChatRoomEntity.builder()
                 .star(star)

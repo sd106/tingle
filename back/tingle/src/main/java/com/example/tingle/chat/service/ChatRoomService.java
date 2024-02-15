@@ -14,7 +14,7 @@ public interface ChatRoomService {
     public ChatRoomDto findTheRoomByStarId(Long starId);
 
     // 해당 스타의 채팅방 생성 (스타 가입 시)
-    public void saveTheRoomByStarId(Long starId);
+    public void saveTheRoomByStarEmail(String starEmail);
 
     // 해당 스타의 채팅방 삭제 (스타 탈퇴 시)
     public void deleteByStarId(Long starId);
