@@ -48,8 +48,8 @@ const starSignup = async () => {
       withCredentials: true
     })
 
-    // // 스타 회원가입 시 채팅방도 생성
-    // const response2 = await axios.post(`http://localhost:8080/chat/saveTheRoom/${signupData.username}`)
+    // 스타 회원가입 시 채팅방도 생성
+    const response2 = await axios.post(`http://localhost:8080/chat/saveTheRoom/${signupData.email}`)
 
     console.log(response)
 
