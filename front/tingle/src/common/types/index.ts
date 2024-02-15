@@ -67,11 +67,12 @@ interface FanMeeting {
 interface FanMeetingInfo {
   id: number
   status: string
-  name: string
+  title: string
   description: string
   ticketingStartAt: string
   ticketingEndAt: string
   fanMeetingStartAt: string
+  capacity: number
   price: number
   imgURL1: string
   imgURL2: string
@@ -268,6 +269,7 @@ interface SnapshotType {
   id: number
   imageUrl: string
   username: string
+  isStarLike: boolean
 }
 
 interface selectedSnapshotType {

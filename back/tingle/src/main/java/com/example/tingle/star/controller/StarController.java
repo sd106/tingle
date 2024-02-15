@@ -13,7 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Tag(name = "스타 API")
@@ -50,5 +53,34 @@ public class StarController {
     }
 
 
+//    @ResponseStatus(HttpStatus.OK)
+//    @GetMapping("/search/{stars}")
+//    public Response searchStarContaining(@PathVariable String stars) {
+//        System.out.println(stars);
+//        List<StarEntity> byUsernameContaining = starService.findByUsernameContaining(stars);
+//
+//        List<String> responseName = new ArrayList<>();
+//        for (StarEntity containing : byUsernameContaining) {
+//            String username = containing.getUsername();
+//            responseName.add(username);
+//        }
+//        for (String n : responseName) {
+//            System.out.println(n);
+//        }
+//        return new Response("success", "검색결과", responseName);
+//    }
+    @GetMapping("/search/{stars}")
+    public Response searchStarContaining(@PathVariable String stars) {
+        List<StarEntity> byUsernameContaining = starService.findByUsernameContaining(stars);
 
+        List<Map<String, Object>> responseData = new ArrayList<>();
+        for (StarEntity starEntity : byUsernameContaining) {
+            Map<String, Object> starData = new HashMap<>();
+            starData.put("id", starEntity.getId());
+            starData.put("name", starEntity.getUsername());
+            responseData.add(starData);
+        }
+
+        return new Response("success", "검색결과", responseData);
+    }
 }

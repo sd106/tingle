@@ -15,6 +15,7 @@ public class GetFanMeetingInfoResponse {
         private String fanMeetingStartAt;
         private String ticketingStartAt;
         private String ticketingEndAt;
+        private Integer capacity;
         private Integer price;
         private String imgURL1;
         private String imgURL2;

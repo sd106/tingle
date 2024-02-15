@@ -6,7 +6,7 @@
             </div>
             <div class="col-md-4 d-flex flex-column justify-content-center p-4 poster-content-first" :style="{ backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1)), url(${fanMeetingInfo.imgURL1})` }">
                 <div>
-                    <h2>{{ fanMeetingInfo.name }}</h2>
+                    <h2>{{ fanMeetingInfo.title}}</h2>
                 </div>
                 
                 <div class="text-center mt-4">
