@@ -20,4 +20,9 @@ public class ChatMessageDto {
     private String message;
     private LocalDateTime createdDate;
     private Long roomId;
+
+    @PrePersist
+    public void setTime() {
+        this.createdDate = LocalDateTime.now();
+    }
 }

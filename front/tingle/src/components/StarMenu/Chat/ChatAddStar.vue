@@ -28,20 +28,18 @@ import axios from "axios";
 const store = useUserStore()
 
 // 구독 스타 리스트
-const folloingInfo = ref<{ starId: number; picture: string; userName: string }[]>([]);
+const folloingInfo = ref<StarState[]>([]);
 
 // 구독 & 추가 스타 리스트
 const chatStarsInfo = ref<ChatRoomInfo[]>([]);
 
 const myid = 1;// store.fanState!.id;
 
-// 구독 스타 조회
-const getFolloings = async (): Promise<void> => {
+// 구독 스타 가져오기
+const getFolloings = async () => {
   try {
-    const res = await axios.get(`${store.API_URL}/follow/${myid}`);
-    folloingInfo.value = res.data.data;
-
-    console.log(`${res.data.message}: ${res.data.code}`);
+    const response = await axios.get(`${store.API_URL}/follow/${store.fanState!.id}`);
+    folloingInfo.value = response.data.data;
 
   } catch (error) {
     console.error(`Error fetching getFolloings: `, error);
@@ -54,63 +52,25 @@ const getChatStars = async (): Promise<void> => {
   const res = await axios.get(`${store.API_URL}/chatRoom/readRooms/${myid}`);
   chatStarsInfo.value = res.data.data;
 
-  console.log(`${res.data.message}: ${res.data.code}`);
-  
   } catch (error) {
     console.error(`Error fetching getChatStars: `, error);
   }
 };
 
 // a 리스트에서 b 리스트와 중복되는 아이템 제거
-// const setStarsList = async (): Promise<void> => {
-//   if(chatStarsInfo.value == null) return;
+const setStarsList = async (): Promise<void> => {
+  if(chatStarsInfo.value == null) return;
 
-//   folloingInfo.value = folloingInfo.value.filter(itemA => {
-//     return !chatStarsInfo.value.some(itemB => itemB.starId === itemA.starId);
-//   });
-// };
-
-// 스타 추가
-const addStarChating = async (starId: number): Promise<void> => {
-try {
-
-  if(folloingInfo?.value.length == 5) {
-    window.alert("스타를 더 이상 추가할 수 없습니다. (최대 5명)");
-    return;
-  }
-  else {
-    const res = await axios.post(`${store.API_URL}/chatRoom/enterTheRoom/${myid}/${starId}`);
-    console.log(`${res.data.message}: ${res.data.code}`);
-
-    const res2 = await axios.get(`${store.API_URL}/chatRoom/readTheRoom/${starId}`);
-    console.log(`${res2.data.message}: ${res2.data.code}`);
-
-    // 시작 메시지 DB 에 저장
-    addStarChatingMessages(res2.data.data.id);
-
-    getFolloings();
-    getChatStars();
-    //setStarsList();
-  }
-
-  } catch (error) {
-    console.error(`Error fetching addStarChating: `, error);
-  }
+  folloingInfo.value = folloingInfo.value.filter(itemA => {
+    return !chatStarsInfo.value.some(itemB => itemB.starId === itemA.starId);
+  });
 };
 
-// 시작 메시지 DB 에 저장
-const addStarChatingMessages = async (roomId: number): Promise<void> => {
+// 스타 추가하기
+const addStarChating = async (follow: StarState): Promise<void> => {
 try {
-  const dataToSend = {
-    userId: myid,
-    direction: 1,
-    message: myid + " 님, 채팅 고마워요.",
-    roomId: roomId
-  };
-
-    const res = await axios.post(`${store.API_URL}/chatMessage/saveMessages`, dataToSend);
-
-    console.log(`${res.data.message}: ${res.data.code}`);
+  const res = await axios.get(`${store.API_URL}/chat/read/addingRooms/${store.fanState!.id}`);
+  chatStarsInfo.value = res.data.data;
 
   } catch (error) {
     console.error(`Error fetching addStarChating: `, error);
@@ -121,7 +81,6 @@ try {
 onMounted(() => {
   getFolloings();
   getChatStars();
-  //setStarsList();
 });
 </script>
 
