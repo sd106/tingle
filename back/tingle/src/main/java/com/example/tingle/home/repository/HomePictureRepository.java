@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface HomePictureRepository extends JpaRepository<HomePictureEntity, Long> {
+public interface HomePictureRepository extends JpaRepository<HomePictureEntity, Long>, CustomHomeRepository {
     List<HomePictureEntity> findByHomeEntityId(Long homeId);
 }

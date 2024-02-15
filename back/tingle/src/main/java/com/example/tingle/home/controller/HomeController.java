@@ -68,23 +68,23 @@ public class HomeController {
 //
 //    }
 //
-//    @Operation(summary = "스타 프로필 조회")
-//    @ResponseStatus(HttpStatus.OK)
-//    @GetMapping("/profile/{starId}")
-//    public Response getProfile(@PathVariable Long starId){
-//
-//        return new Response("성공", "스타 프로필 조회",homeService.findHomeProfile(starId));
-//
-//    }
-//
-//    @Operation(summary = "스타 프로필 생성")
-//    @ResponseStatus(HttpStatus.OK)
-//    @PostMapping("/profile/{starId}")
-//    public Response updateProfile(@PathVariable Long starId, @RequestBody HomeProfileCreateRequest homeProfileCreateRequest){
-//
-//        return new Response("성공", "스타 프로필 생성",homeService.insertHomeProfile(starId, homeProfileCreateRequest));
-//
-//    }
+    @Operation(summary = "스타 프로필 조회")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/profile/{starId}")
+    public Response getProfile(@PathVariable Long starId){
+
+        return new Response("성공", "스타 프로필 조회",homeService.findHomeProfile(starId));
+
+    }
+
+    @Operation(summary = "스타 프로필 생성")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/profile/{starId}")
+    public Response updateProfile(@PathVariable Long starId, @RequestBody HomeProfileCreateRequest homeProfileCreateRequest){
+
+        return new Response("성공", "스타 프로필 생성",homeService.insertHomeProfile(starId, homeProfileCreateRequest));
+
+    }
 
 
 
