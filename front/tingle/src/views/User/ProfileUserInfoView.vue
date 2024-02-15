@@ -1,23 +1,35 @@
 <template>
   <main class="container">
-    <ul class="d-flex justify-content-around nav nav-underline">
+    <ul class="mt-4 d-flex justify-content-around nav nav-underline" style="padding-top: 50px; padding-bottom: 30px;">
       <li class="nav-item">
-        <RouterLink :to="`/profile/userinfo`" class="nav-link router-link-custom"
-          :class="{ active: isActive('/userInfo') }">회원 정보</RouterLink>
+        <RouterLink
+          :to="`/profile/userinfo`"
+          class="nav-link router-link-custom"
+          :class="{ active: isActive('/userInfo') }"
+          >회원 정보</RouterLink
+        >
       </li>
       <li class="nav-item">
-        <RouterLink :to="`/profile/storage`" class="nav-link router-link-custom"
-          :class="{ active: isActive('/storage') }">보관함</RouterLink>
+        <RouterLink
+          :to="`/profile/storage`"
+          class="nav-link router-link-custom"
+          :class="{ active: isActive('/storage') }"
+          >보관함</RouterLink
+        >
       </li>
       <li class="nav-item">
-        <RouterLink :to="`/profile/orders`" class="nav-link router-link-custom" :class="{ active: isActive('/orders') }">
-          주문 목록</RouterLink>
+        <RouterLink
+          :to="`/profile/orders`"
+          class="nav-link router-link-custom"
+          :class="{ active: isActive('/orders') }"
+          >주문 목록</RouterLink
+        >
       </li>
       <li></li>
       <li></li>
       <li></li>
     </ul>
-    <div class="container" style="display: flex; justify-content: center; align-items: center; height: 85vh">
+    <div class="container p-5" style="display: flex; justify-content: center; align-items: center; height: 85vh">
       <div style="width: 500px; height: 650px; position: relative" v-if="fanState!.picture"
         class="p-4 d-flex flex-column justify-content-center align-items-center border">
         <img class="mb-5 mx-0 profile-pic" :src="fanState!.picture" alt=""

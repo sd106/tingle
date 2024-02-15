@@ -12,6 +12,13 @@
     font-style: normal;
 }
 
+@font-face {
+  font-family: 'HS-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/HS-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
     font-family: 'NanumSquareNeo-Variable', sans-serif;
   }
@@ -22,4 +29,8 @@ body {
 
   .no-custom-font {
     font-family: inherit; /* 또는 'initial' 또는 구체적인 글씨체 */
+  }
+
+  .logo-title {
+    font-family: 'HS-Regular', sans-serif;
   }

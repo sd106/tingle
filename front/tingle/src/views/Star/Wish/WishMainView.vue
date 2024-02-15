@@ -48,8 +48,8 @@
         class="tw-divide-y tw-divide-gray-300"
       >
         <li
-          v-for="wish in getCurrentPageItemsDS"
-          :key="wish.id"
+          v-for="(wish, index) in getCurrentPageItemsDS"
+          :key="index"
           class="tw-flex tw-justify-between tw-gap-x-6 tw-py-3 tw-items-center"
         >
           <div class="tw-min-w-0">
@@ -65,7 +65,7 @@
           <div class="tw-flex tw-gap-x-2 tw-items-center">
             <button
               v-if="checkIfWishHasLike(wish.id)"
-              @click="updateWishLiked(wish.id)"
+              @click="updateWishLiked(wish.id, index, -1, 'DS')"
               class="tw-btn tw-btn-outline dislike"
             >
               <svg
@@ -84,7 +84,11 @@
               </svg>
               {{ wish.likedCount }}
             </button>
-            <button v-else @click="updateWishLiked(wish.id)" class="tw-btn tw-btn-outline like">
+            <button
+              v-else
+              @click="updateWishLiked(wish.id, index, 1, 'DS')"
+              class="tw-btn tw-btn-outline like"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="tw-h-6 tw-w-6 heart"
@@ -154,8 +158,8 @@
         class="tw-divide-y tw-divide-gray-300"
       >
         <li
-          v-for="wish in getCurrentPageItemsPS"
-          :key="wish.id"
+          v-for="(wish, index) in getCurrentPageItemsPS"
+          :key="index"
           class="tw-flex tw-justify-between tw-gap-x-6 tw-py-3 tw-items-center"
         >
           <div class="tw-min-w-0">
@@ -171,7 +175,7 @@
           <div class="tw-flex tw-gap-x-2 tw-items-center">
             <button
               v-if="checkIfWishHasLike(wish.id)"
-              @click="updateWishLiked(wish.id)"
+              @click="updateWishLiked(wish.id, index, -1, 'PS')"
               class="tw-btn tw-btn-outline dislike"
             >
               <svg
@@ -190,7 +194,11 @@
               </svg>
               {{ wish.likedCount }}
             </button>
-            <button v-else @click="updateWishLiked(wish.id)" class="tw-btn tw-btn-outline like">
+            <button
+              v-else
+              @click="updateWishLiked(wish.id, index, 1, 'PS')"
+              class="tw-btn tw-btn-outline like"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="tw-h-6 tw-w-6 heart"
@@ -207,7 +215,7 @@
               </svg>
               {{ wish.likedCount }}
             </button>
-            <button @click="addPoints(wish.id, 1000)" class="tw-btn tw-btn-outline point">
+            <button @click="addPoints(wish, index, 1000, `PS`)" class="tw-btn tw-btn-outline point">
               <img src="/image/coin.png" class="tw-h-t tw-w-6 coin" alt="" />
               {{ formatNumber(wish.points) }}
             </button>
@@ -271,8 +279,8 @@
         class="tw-divide-y tw-divide-gray-300"
       >
         <li
-          v-for="wish in getCurrentPageItemsNS"
-          :key="wish.id"
+          v-for="(wish, index) in getCurrentPageItemsNS"
+          :key="index"
           class="tw-flex tw-justify-between tw-gap-x-6 tw-py-3 tw-items-center"
         >
           <div class="tw-min-w-0">
@@ -288,7 +296,7 @@
           <div class="tw-flex tw-gap-x-2 tw-items-center">
             <button
               v-if="checkIfWishHasLike(wish.id)"
-              @click="updateWishLiked(wish.id)"
+              @click="updateWishLiked(wish.id, index, -1, 'NS')"
               class="tw-btn tw-btn-outline dislike"
             >
               <svg
@@ -307,7 +315,11 @@
               </svg>
               {{ wish.likedCount }}
             </button>
-            <button v-else @click="updateWishLiked(wish.id)" class="tw-btn tw-btn-outline like">
+            <button
+              v-else
+              @click="updateWishLiked(wish.id, index, 1, 'NS')"
+              class="tw-btn tw-btn-outline like"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="tw-h-6 tw-w-6 heart"
@@ -328,7 +340,7 @@
             <!-- /////////////////////////////////////////////////////////// -->
             <!-- ////// 일단 1000포인트 추가로 고정 -->
             <!-- /////////////////////////////////////////////////////////// -->
-            <button @click="addPoints(wish.id, 1000)" class="tw-btn tw-btn-outline point">
+            <button @click="addPoints(wish, index, 1000, `NS`)" class="tw-btn tw-btn-outline point">
               <img src="/image/coin.png" class="tw-h-t tw-w-6 coin" alt="" />
               {{ formatNumber(wish.points) }}
             </button>
@@ -535,9 +547,6 @@ const getCurrentPageItemsNS = computed(() => {
 // 데이터 가져오기 함수
 const fetchData = async (status: number, sorting: number): Promise<void> => {
   try {
-    /* test */
-    id.value = parseInt('1')
-
     const res = await axios.get(`${store.API_URL}/wish/read/${id.value}/${sorting}/${status}`)
 
     if (status === 0) {
@@ -567,15 +576,25 @@ const getSortingWish = function (sorting: number): void {
   fetchData(0, sorting)
   fetchData(1, sorting)
   fetchData(2, sorting)
+  getLikesList()
   selectedSort.value = sorting
 }
 
 // 해당 위시에 포인트 추가
-const addPoints = async function (wishId: number, points: number): Promise<void> {
+const addPoints = async function (
+  wish: WishInfo,
+  index: number,
+  data: number,
+  status: string
+): Promise<void> {
   try {
-    const res = await axios.get(`${store.API_URL}/likes/points/add/${wishId}/${myid}/${points}`)
-    likesList.value = res.data
-    console.log('res')
+    await axios.post(`${store.API_URL}/wish/add/points/${wish.id}/${myid}/${data}`)
+
+    if (status === 'PS') {
+      wishPS.value[index].points += data
+    } else if (status === 'NS') {
+      wishNS.value[index].points += data
+    }
   } catch (error) {
     console.error('Error fetching addPoints: ', error)
   }
@@ -584,7 +603,7 @@ const addPoints = async function (wishId: number, points: number): Promise<void>
 // 해당 위시를 완료 상태로 변경
 const updateWishStatus = async (wishId: number): Promise<void> => {
   try {
-    const res = await axios.post(`${store.API_URL}/wish/update/status/user/${myid}/${wishId}/0`)
+    const res = await axios.post(`${store.API_URL}/wish/update/status/star/${myid}/${wishId}/2`)
 
     console.log('Wish status updated:', res)
 
@@ -606,20 +625,6 @@ const getLikesList = async function (): Promise<void> {
   }
 }
 
-// 해당 위시에 대한 추천 상태 토글 변경 (create 포함)
-const updateWishLiked = async function (wishId: number): Promise<void> {
-  try {
-    await axios.post(`${store.API_URL}/likes/update/toggle/${wishId}/${myid}`)
-    await getLikesList()
-    router.go(0)
-    // 서버로 상태를 업데이트할 때 사용하고 싶다면, 여기에 추가 로직을 작성
-
-    console.log('likesList:', likesList.value)
-  } catch (error) {
-    console.error('Error updating wish liked status:', error)
-  }
-}
-
 // 해당 위시 삭제
 const deleteWish = async function (wishId: number): Promise<void> {
   try {
@@ -630,7 +635,29 @@ const deleteWish = async function (wishId: number): Promise<void> {
   }
 }
 
-// likesList에서 해당 wishId를 가진 항목이 있는지 확인
+const updateWishLiked = async function (
+  wishId: number,
+  index: number,
+  data: number,
+  status: String
+): Promise<void> {
+  try {
+    await axios.post(`${store.API_URL}/likes/update/toggle/${wishId}/${myid}`)
+
+    if (status === 'DS') {
+      wishDS.value[index].likedCount += data
+    } else if (status === 'PS') {
+      wishPS.value[index].likedCount += data
+    } else if (status === 'NS') {
+      wishNS.value[index].likedCount += data
+    }
+    console.log('likesList:', likesList.value)
+    getLikesList()
+  } catch (error) {
+    console.error('Error updating wish liked status:', error)
+  }
+}
+
 const checkIfWishHasLike = (wishId: number) => {
   if (likesList.value.length > 0) {
     const foundLike = likesList.value.find((like) => like.wishId === wishId)

@@ -16,7 +16,7 @@ const store = useUserStore()
 
 <style>
 .main-color {
-  background-color: rgb(90, 76, 156);
+  background-color: #f1eaff;
 }
 
 .main-color2 {

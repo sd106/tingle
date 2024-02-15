@@ -14,7 +14,7 @@
     </div>
     <!-- DS 리스트 -->
     <div class="container">
-      <span class="title">Done</span>
+      <span class="title">별빛 아래 이루어진 꿈</span>
       <!-- /////////////////////////////////////////////////////////// -->
       <!-- 뭔가 추가 페이지로 결과 확인할 수 있어야 할 텐데...? 구독자만 볼 수 있다거나 -->
       <!-- 없으면 그게 없다고 표시 최소 크기 지정 -->
@@ -69,7 +69,7 @@
     <hr>
     <div class="container">
       <!-- PS 리스트 -->
-      <span class="title">In Progress</span>
+      <span class="title">별이 선택한 소원</span>
       <ul v-if="getCurrentPageItemsPS.length > 0" role="list" class="tw-divide-y tw-divide-gray-300">
         <li v-for="wish in getCurrentPageItemsPS " :key="wish.id"
           class="tw-flex tw-justify-between tw-gap-x-6 tw-py-3 tw-items-center">
@@ -134,7 +134,7 @@
     <hr>
     <div class="container">
       <!-- NS 리스트 -->
-      <span class="title">Not Started</span>
+      <span class="title">별을 기다리는 소망</span>
       <ul v-if="getCurrentPageItemsNS.length > 0" role="list" class="tw-divide-y tw-divide-gray-300">
         <li v-for="wish in  getCurrentPageItemsNS " :key="wish.id"
           class="tw-flex tw-justify-between tw-gap-x-6 tw-py-3 tw-items-center">
