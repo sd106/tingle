@@ -52,7 +52,7 @@
               @click="wishStore.selectSnapshot(snapshot.id)"
               :src="snapshot.imageUrl"
               alt="Snapshot Image"
-              class="snapshot-image my-1 tw-border-4 tw-border-yellow-300"
+              class="snapshot-image my-1"
             />
           </span>
           <span class="snapshot-item">
