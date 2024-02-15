@@ -4,6 +4,7 @@ import com.example.tingle.wish.dto.WishDto;
 import com.example.tingle.wish.dto.request.WishRequest;
 import com.example.tingle.wish.dto.response.Response;
 import com.example.tingle.wish.service.WishService;
+import com.example.tingle.wish.service.serviceImpl.WishServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -71,9 +72,13 @@ public class WishController {
     public Response deleteWish(@PathVariable Long wishId, @PathVariable Long starId, @PathVariable Long userId) {
 
         try {
+            System.out.println("wishId + starId + userId = " + wishId + starId + userId);
+            System.out.println("@@@@@@111111111111");
             wishService.deleteWish(wishId, starId, userId);
+            System.out.println("@@@@@@222222222222");
             return new Response("success", "deleteWish", null);
         } catch(Exception e) {
+            System.out.println("@@@@@@@@3333333333");
             e.printStackTrace();
             return new Response("fail", "deleteWish", null);
         }

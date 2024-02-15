@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignalData {
-    private String sender;
+    private SenderState sender;
     private String data;
     private String signalType;
     private Object iceCandidate;

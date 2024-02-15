@@ -1,16 +1,18 @@
 <template>
   <main class="container">
     <StarMenu class="mb-5" />
-    <div class="container">
+    <div class="container" style="padding-left: 80px; padding-right: 80px; padding-top: 30px;">
       <div class="d-flex justify-content-between my-2">
         <!-- 원래 상품 목록이라는 글 있던 자리 -->
         <h1 class="fw-bold"></h1>
-        <div class="mb-4">
-          <RouterLink :to="`/store/orders`">
-            <button class="tw-btn tw-btn-outline mx-2">주문 목록</button>
+        <div class="mb-4 d-flex">
+          <RouterLink :to="`/forstar/store/orders`">
+            <!-- <button class="tw-btn tw-btn-outline mx-2">주문 목록</button> -->
+            <p class="fw-bold mx-4 hover-text">주문 목록</p>
           </RouterLink>
           <RouterLink :to="`/forstar/store/create`">
-            <button class="tw-btn tw-btn-outline mx-2">상품 등록</button>
+            <!-- <button class="tw-btn tw-btn-outline mx-2">상품 등록</button> -->
+            <p class="fw-bold mx-2 hover-text">상품 등록</p>
           </RouterLink>
         </div>
       </div>
@@ -130,4 +132,14 @@ img {
   margin: 0.5rem 0;
   text-decoration: none;
 }
+
+.hover-text {
+  transition: transform 0.3s ease-in-out; /* transform 속성에 대한 전환 효과 적용 */
+}
+
+.hover-text:hover {
+  transform: translateX(10px); /* 호버 시 글자를 오른쪽으로 10픽셀 이동 */
+  cursor: pointer;
+}
+
 </style>

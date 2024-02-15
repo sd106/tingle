@@ -1,7 +1,7 @@
 <template>
     <main>
         <div>
-          <RouterLink :to="`/forstar/home/profile/update`">
+          <RouterLink :to="`/forstar/home/profile/update`" :starId="starId">
             <button class="tw-btn m-2">수정</button>
           </RouterLink>
 
@@ -9,7 +9,7 @@
         </div>
     </main>
 </template>
-  
+
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
 import axios from 'axios'

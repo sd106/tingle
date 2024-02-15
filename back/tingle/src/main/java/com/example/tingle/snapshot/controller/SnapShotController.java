@@ -53,7 +53,8 @@ public class SnapShotController {
             Map<String, Object> snapShotMap = new HashMap<>();
             snapShotMap.put("id", snapShot.getId());
             snapShotMap.put("imageUrl", snapShot.getImageUrl());
-
+            snapShotMap.put("isStarLike", snapShot.isStarLike());
+            System.out.println("snapShot = " + snapShot.isStarLike());
             UserEntity user = snapShot.getUser();
             snapShotMap.put("username", user != null ? user.getUsername() : "Unknown");
             System.out.println("snapShotMap = " + snapShotMap);
@@ -81,7 +82,8 @@ public class SnapShotController {
             Map<String, Object> snapShotMap = new HashMap<>();
             snapShotMap.put("id", snapShot.getId());
             snapShotMap.put("imageUrl", snapShot.getImageUrl());
-
+            snapShotMap.put("isStarLike", snapShot.isStarLike());
+            System.out.println("snapShot.isStarLike = " + snapShot.isStarLike());
             UserEntity user = snapShot.getUser();
             snapShotMap.put("username", user != null ? user.getUsername() : "Unknown");
             System.out.println("snapShotMap = " + snapShotMap);

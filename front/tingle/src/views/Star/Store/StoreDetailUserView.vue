@@ -39,12 +39,16 @@
         </div>
         <div>
           <!-- ////// 유저일때 -->
-          <button v-if="product.available === true && product.amount > 0"
+          <button v-if="!fanState?.id"
+            class="tw-btn tw-btn-active tw-btn-block tw-bg-black tw-text-white tw-py-3 tw-rounded-md tw-mb-2">
+            로그인을 해 주세요.
+          </button>
+          <button v-else-if="product.available === true && product.amount > 0"
             class="tw-btn tw-btn-active tw-btn-block tw-bg-black tw-text-white tw-py-3 tw-rounded-md tw-mb-2"
             @click="createOrder(fanState!.id, product.productId)">
             구매하기
           </button>
-          <button v-else
+          <button v-else-if="product.available === false || product.amount <= 0"
             class="tw-btn tw-btn-active tw-btn-block tw-bg-black tw-text-white tw-py-3 tw-rounded-md tw-mb-2">
             구매할 수 없는 상품입니다.
           </button>

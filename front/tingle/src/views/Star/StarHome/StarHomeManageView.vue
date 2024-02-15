@@ -1,9 +1,9 @@
 <template>
-  <main class="container">
+  <main class="container" >
     <StarMenu :id="starId" />
       <img :src="starProfile?.banner" alt="사진">
 
-    <div class="container border d-flex">
+    <div class="container border d-flex" >
       <div class>
         <img :src="starProfile?.profileImage" alt="사진" class="w-75 h-75">
         <!-- sns주소 링크 -->

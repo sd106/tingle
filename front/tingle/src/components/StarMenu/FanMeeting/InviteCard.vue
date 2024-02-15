@@ -3,41 +3,27 @@
         <div class="invite-card-container">
             <div>
               <p>
-                {{ star?.username }} 으로부터 팬미팅 초대장이 왔습니다.
+                팬미팅 초대장이 왔습니다.
               </p>
             </div>
             <br>
             <div class="d-flex justify-content-center">
-                <button class="enter-btn" @click="store.goPage('FanMeetingRoomView')">입장하기</button>
+                <button class="enter-btn" @click="enterMeetingRoom">입장하기</button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, onMounted } from 'vue'
 import { useFanMeetingStore } from '@/stores/fanMeeting'
-import { ref } from 'vue'
-import type { Star } from '@/common/types'
-import axios from 'axios';
 
 const store = useFanMeetingStore()
+const emit = defineEmits(['enter-meeting-room'])
 
-const star = ref<Star>()
-const loadStar = async () => {
-  star.value = await axios.get(`${store.API_URL}/star/${props.starid}`)
+const enterMeetingRoom = () => {
+  emit('enter-meeting-room')
+  store.goPage('FanMeetingRoomView')
 }
-
-const props = defineProps({
-    starid: {
-        type: String,
-        required: true
-    }
-})
-
-onMounted(() => {
-  loadStar()
-})
 </script>
 
 <style scoped>

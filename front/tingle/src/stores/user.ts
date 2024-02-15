@@ -25,7 +25,7 @@ export const useUserStore = defineStore(
       }
     })
 
-    const isSidebarOpen = ref(true)
+    const isSidebarOpen = ref(false)
     const starId = ref<number>()
 
     const logOut = async function (): Promise<void> {

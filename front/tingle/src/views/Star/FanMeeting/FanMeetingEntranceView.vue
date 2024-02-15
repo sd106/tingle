@@ -1,13 +1,17 @@
 <template>
-  <main>
-    <StarMenu :name="name" />
+  <main class="container">
+    <StarMenu :id="id" />
 
     <section v-if="fanMeetingInfo && fanMeetingInfo.status === 'ticketing'" class="pt-5">
-      <FanMeetingTicketing :fanMeetingInfo="fanMeetingInfo"></FanMeetingTicketing>
+      <FanMeetingTicketing
+        :fanMeetingInfo="fanMeetingInfo"
+        :starId="props.id"
+        :haveTicket="haveTicket"
+      ></FanMeetingTicketing>
     </section>
 
     <section v-else-if="fanMeetingInfo && fanMeetingInfo.status === 'open'" class="pt-5">
-      <FanMeetingOpen :fanMeetingInfo="fanMeetingInfo"></FanMeetingOpen>
+      <FanMeetingOpen :fanMeetingInfo="fanMeetingInfo" :haveTicket="haveTicket"></FanMeetingOpen>
     </section>
 
     <section v-else class="pt-5 text-center">
@@ -27,10 +31,14 @@ import FanMeetingClosed from '@/components/StarMenu/FanMeeting/FanMeetingClosed.
 import StarMenu from '@/components/StarMenu/StarMenu.vue'
 
 const store = useUserStore()
-const props = defineProps(['starid'])
+const props = defineProps(['id'])
 const name = ref(store.fanState?.username)
 
 const fanMeetingInfo = ref<FanMeetingInfo>()
+
+const haveTicket = ref<boolean>(false);
+const starId = ref<number>();
+starId.value = Number(props.id)
 
 // fanMeetingInfo.value =
 // {
@@ -47,14 +55,30 @@ const fanMeetingInfo = ref<FanMeetingInfo>()
 
 const getFanMeetingInfo = async () => {
   try {
-    const response = await axios.get(`https://i10d106.p.ssafy.io/api/fanMeeting/info/${props.starid}`)
+    const response = await axios.get(`https://i10d106.p.ssafy.io/api/fanMeeting/info/${starId.value}`)
     fanMeetingInfo.value = response.data
+    console.log(response)
+    console.log("팬미팅 정보 불러왔다.")
   } catch (error) {
     console.log(error)
   }
 }
 
-onMounted(() => {
-  getFanMeetingInfo()
+const getUserTicket =async () => {
+  try {
+    console.log(fanMeetingInfo.value?.id)
+    console.log(fanMeetingInfo.value?.status)
+    const response = await axios.get(`https://i10d106.p.ssafy.io/api/fanMeeting/${starId.value}/reservation/${store.fanState!.id}/${fanMeetingInfo.value!.id}`)
+    console.log(response.data)
+    haveTicket.value = response.data
+    console.log(haveTicket.value)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+onMounted( async() => {
+  await getFanMeetingInfo()
+  await getUserTicket()
 })
 </script>

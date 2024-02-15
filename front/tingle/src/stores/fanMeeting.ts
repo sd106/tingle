@@ -6,6 +6,7 @@ export const useFanMeetingStore = defineStore('fanMeeting', () => {
   const API_URL = 'https://i10d106.p.ssafy.io/api'
   const router = useRouter()
 
+  const selectMeetingPrice = ref<number>();
 
   const formatDateTime = (dateTimeStr: string) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -27,6 +28,7 @@ export const useFanMeetingStore = defineStore('fanMeeting', () => {
   return {
     API_URL,
     formatDateTime,
-    goPage
+    goPage,
+    selectMeetingPrice
   }
-})
+},{ persist: true })

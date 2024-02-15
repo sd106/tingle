@@ -1,6 +1,6 @@
 <template>
   <main class="container">
-    <ul class="mb-5 d-flex justify-content-around nav nav-underline">
+    <ul class="mt-4 d-flex justify-content-around nav nav-underline" style="padding-top: 50px; padding-bottom: 30px;">
       <li class="nav-item">
         <RouterLink :to="`/profile/userinfo`" class="nav-link router-link-custom"
           :class="{ active: isActive('/userInfo') }">회원 정보</RouterLink>
@@ -17,7 +17,7 @@
       <li></li>
       <li></li>
     </ul>
-    <div class="d-flex flex-wrap">
+    <div class="d-flex flex-wrap p-5">
       <div class="storage-item col-3 mx-2" v-for="storage in userStoreStorages" :key="storage.id">
         <div class="storage-image-container">
           <img class="storage-image" :src="storage.url" :alt="storage.title" />

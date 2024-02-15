@@ -4,24 +4,34 @@
     <!-- 배너사진 -->
     <div v-if="hotStarsInfo"></div>
     <div class="container-banner full-width-fixed p-0">
-      <img class="star1" src="/image/star1.png" />
-      <img class="star2" src="/image/star2.png" />
-      <img class="star3" src="/image/star3.png" />
-      <img class="star4" src="/image/star4.png" />
-      <img class="star5" src="/image/star1.png" />
       <img src="/image/cat-banner.png" style="margin-left: 40%; margin-top: 94px" alt="" />
     </div>
+    <img class="star1" src="/image/star1.png" />
+    <img class="star2" src="/image/star2.png" />
+    <img class="star3" src="/image/star3.png" />
+    <img class="star4" src="/image/star4.png" />
+    <img class="star5" src="/image/star1.png" />
     <!-- HOT STAR -->
     <img src="/image/wood.png" class="container-img" style="margin-left: 39%" alt="" />
-    <h1 class="container" style="padding-top: 500px">HOT STAR들을 만나보세요!</h1>
+    <h1 class="container" style="padding-top: 500px;">HOT STAR들을 만나보세요!</h1>
     <div class="container slider-container">
       <div class="justify-content-between slider-track" ref="sliderTrack">
-        <div v-for="hotstar in hotStarsInfo" :key="hotstar.id" class="p-2 star-card-hotstar">
+        <div v-for="hotstar in hotStarsInfo" :key="hotstar.id" class="p-2 border star-card-hotstar">
           <RouterLink :to="`/${hotstar.id}/home`">
             <div class="d-flex">
-              <div class="p-0 me-5 align-items center" style="width: 80px">
-                <img :src="hotstar.picture" alt="not" style="border-radius: 50%" />
-              </div>
+              <div
+                class="p-0 me-5 align-items center"
+                :style="{
+                  'min-width': '80px',
+                  'max-width': '80px',
+                  'max-height': '80px',
+                  'min-height': '80px',
+                  'border-radius': '50%',
+                  'background-image': `url(${hotstar.picture})`,
+                  'background-size': 'cover',
+                  'background-position': 'center'
+                }"
+              ></div>
               <div class="d-flex justify-content-center align-items-center me-5">
                 <span class="fw-bold long-text">{{ truncateText(hotstar.username, 4) }}</span>
               </div>
@@ -34,7 +44,7 @@
     <h1 class="container">카테고리별 상위 10명!</h1>
     <div class="container d-flex">
       <!-- 카테고리 버튼 > 누르면 v-for에 들어갈 displaystarinfo 기준이 바뀜 -->
-      <button class="category-btn m-2" @click="selectCategory(0)">일상/토크</button>
+      <button class="category-btn m-2 " @click="selectCategory(0)">일상/토크</button>
       <button class="category-btn m-2" @click="selectCategory(1)">동물</button>
       <button class="category-btn m-2" @click="selectCategory(2)">게임/스포츠</button>
       <button class="category-btn m-2" @click="selectCategory(3)">미술/음악</button>
@@ -43,30 +53,40 @@
     </div>
 
     <div class="container tw-mx-auto">
-      <div class="tw-grid tw-grid-cols-5 tw-gap-0" style="margin-bottom: 100px">
-        <div v-if="!StarsByCategory || StarsByCategory.length === 0">아직 이 분야 스타가 존재하지 않습니다.</div>
+      <div class="tw-grid tw-grid-cols-5 tw-gap-20" style="margin-bottom: 100px">
+        <div v-if="StarsByCategory.length === 0"><p>스타가 존재하지 않습니다.</p></div>
         <div
           v-else
           v-for="star in StarsByCategory"
           :key="star.id"
-          class="tw-border tw-rounded-lg star-card"
+          class="tw-border tw-rounded-lg star-card border p-0"
+          style="
+            /* width: 230px; */
+          "
         >
           <RouterLink
             :to="`/${star.id}/home`"
             class="tw-flex tw-flex-col tw-items-center tw-justify-center"
           >
-            <!-- object-fit 고치기 -->
-<!--            <div-->
-<!--              class="tw-basis-4/5 tw-overflow-hidden"-->
-<!--              style="object-fit:; border-top-left-radius: 20px; border-top-right-radius: 20px"-->
-<!--            >-->
-<!--              <img :src="star.picture" alt="not" style="object-fit:" />-->
-<!--            </div>-->
-<!--            <div class="tw-flex tw-text-center tw-items-center tw-basis-1/5">-->
-<!--              <span class="tw-text-xl tw-font-bold long-text">{{-->
-<!--                truncateText(star.username, 6)-->
-<!--              }}</span>-->
-<!--            </div>-->
+            <div class="tw-basis-4/5 tw-overflow-hidden" style="overflow: hidden">
+              <img
+                :src="star.picture"
+                alt="not"
+                style="
+                  width: 200px;
+                  height: 205px; /* 고정 높이 설정 */
+                  object-fit: cover;
+                  object-position: center;
+                  border-top-right-radius: 20px;
+                  border-top-left-radius: 20px;
+                "
+              />
+            </div>
+            <div class="mt-1 tw-flex tw-text-center tw-items-center tw-basis-1/5">
+              <span class="tw-text-xl tw-font-bold long-text">{{
+                truncateText(star.username, 6)
+              }}</span>
+            </div>
           </RouterLink>
         </div>
       </div>
@@ -151,18 +171,34 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.long-text {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+
+h1 {
+  color: black;
 }
 
 .main-background {
   position: absolute;
   left: 0;
   right: 0;
-  background-color: #eef1ff;
+
+  /* 어둡게 */
+  /* background-color: #435585; */
+
+  /* 밝게 */
+  /* background-color: #0C356A; */
+
+  /* 원래 색 */
+  background-color: #F1EAFF;
+  /* background-color: rgb(90, 76, 156); */
+
 }
+
+.long-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 
 .full-width-fixed {
   position: absolute;
@@ -180,10 +216,12 @@ onMounted(() => {
   z-index: 1000; /* 필요한 경우 z-index 값 설정 */
 }
 
-.container-banner {
+.container-banner{
   overflow: hidden;
-  background: midnightblue;
+  /* background: midnightblue; */
 }
+
+
 .star-card {
   display: flex;
   flex-direction: column;
@@ -192,6 +230,7 @@ onMounted(() => {
   margin: 10px;
   transition: transform 0.3s ease;
   background: white;
+  
   height: 240px;
   width: 200px;
 }
@@ -247,7 +286,7 @@ onMounted(() => {
   overflow: hidden;
   width: 100%;
   height: 180px;
-  background-color: #eef1ff;
+  /* background-color: #0C356A; */
 }
 
 .slider-track {

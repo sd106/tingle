@@ -1,9 +1,10 @@
 <template>
+  <div style="height: 40px"></div>
   <!--  유저일 때 -->
   <ul v-if="!store.isStar" class="d-flex justify-content-around nav nav-underline">
     <li class="nav-item">
       <RouterLink
-        :to="`/${props.id}/home`"
+        :to="`/${starId}/home`"
         class="nav-link router-link-custom"
         :class="{ active: isActive('/home') }"
         >Home</RouterLink
@@ -11,7 +12,7 @@
     </li>
     <li class="nav-item">
       <RouterLink
-        :to="`/${props!.id}/snapshot`"
+        :to="`/${starId}/snapshot`"
         class="nav-link router-link-custom"
         :class="{ active: isActive('/snapshot') }"
         >Snapshot</RouterLink
@@ -19,7 +20,7 @@
     </li>
     <li class="nav-item">
       <RouterLink
-        :to="`/${props.id}/wish`"
+        :to="`/${starId}/wish`"
         class="nav-link router-link-custom"
         :class="{ active: isActive('/wish') }"
         >Wish</RouterLink
@@ -27,7 +28,7 @@
     </li>
     <li class="nav-item">
       <RouterLink
-        :to="`/${props.id}/store/user`"
+        :to="`/${starId}/store/user`"
         class="nav-link router-link-custom"
         :class="{ active: isActive('/store') }"
         >Store</RouterLink
@@ -35,7 +36,7 @@
     </li>
     <li class="nav-item">
       <RouterLink
-        :to="`/${props.id}/fanmeeting`"
+        :to="`/${starId}/fanmeeting`"
         class="nav-link router-link-custom"
         :class="{ active: isActive('/fanmeeting') }"
         >Fanmeeting</RouterLink
@@ -45,20 +46,17 @@
   <!-- 스타일 때 -->
   <ul v-else class="d-flex justify-content-around nav nav-underline">
     <li class="nav-item">
-      <RouterLink
-        :to="`/forstar/home/manage`"
-        class="nav-link router-link-custom"
-        >Home</RouterLink
-      >
+      <RouterLink :to="`/forstar/home/manage`" class="nav-link router-link-custom">Home</RouterLink>
     </li>
     <li class="nav-item">
       <RouterLink
         :to="`/forstar/snapshot`"
         class="nav-link router-link-custom"
         :class="{ active: isActive('/snapshot') }"
-        >Snapshot</RouterLink>
+        >Snapshot</RouterLink
+      >
     </li>
-    
+
     <li class="nav-item">
       <RouterLink
         :to="`/forstar/wish/manage/`"
@@ -88,10 +86,14 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 
 const props = defineProps(['id'])
+const starId = ref<number>()
+starId.value = Number(props.id)
+
 const store = useUserStore()
 const route = useRoute()
 

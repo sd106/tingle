@@ -11,7 +11,7 @@
         }"
         style="display: flex; flex-direction: column; align-items: center; justify-content: center"
       >
-        <span>팬이에요!</span>
+        <p class="fw-bold">팬이예요!</p>
         <!-- <img
           src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Purple%20Heart.png"
           alt="Purple Heart"
@@ -36,7 +36,7 @@
         }"
         style="display: flex; flex-direction: column; align-items: center; justify-content: center"
       >
-        <span>스타에요!</span>
+        <p class="fw-bold">스타예요!</p>
         <img
           src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Star.png"
           alt="Star"
@@ -135,7 +135,7 @@ const expandAndRefresh = (type: string) => {
 }
 
 .signin-btn {
-  background: #aa96da;
+  background: #D0A2F7;
   color: white;
   box-shadow: 0 15px 30px rgba(233, 30, 99, 0.36);
 }
@@ -148,7 +148,7 @@ const expandAndRefresh = (type: string) => {
 
 .signin-btn:hover {
   transform: scale(1.5);
-  background: #aa96da;
+  background: #D0A2F7;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   z-index: 100;
 }

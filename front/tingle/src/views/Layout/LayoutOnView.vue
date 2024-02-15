@@ -1,9 +1,15 @@
 <template>
-  <AppHeader />
-  <AppSidebar />
-  <div class="content" :class="{ 'is-sidebar-open': store.isSidebarOpen }">
-    <RouterView />
-  </div>
+  <mai>
+    <AppHeader />
+    <AppSidebar />
+    <div
+      class="content"
+      style="margin-top: 55px"
+      :class="{ 'is-sidebar-open': store.isSidebarOpen }"
+    >
+      <RouterView />
+    </div>
+  </mai>
 </template>
 
 <script setup lang="ts">
@@ -22,3 +28,12 @@ onMounted(() => {
   }
 })
 </script>
+<style>
+.content {
+  background-color: #f1eaff;
+}
+
+main {
+  background-color: white;
+}
+</style>

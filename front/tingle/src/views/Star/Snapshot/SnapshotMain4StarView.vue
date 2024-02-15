@@ -1,79 +1,82 @@
 <template>
-  <StarMenu :id="id" />
-  <div class="main-layout pt-5">
-    <!-- 상단 메뉴 -->
-    <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
-    <section v-if="wishStore.selectedSnapshot" class="detail-section cont mb-5">
-      <SnapShotDetail :selectedSnapshot="wishStore.selectedSnapshot" />
-    </section>
-  </div>
-  <div class="d-flex justify-content-between align-items-center my-4 mx-3">
-    <div>
-      <button class="btn me-2 fs-5 fw-bold text-secondary" @click="loadSnapshots">✧ 최신순</button>
-      <button class="btn fs-5 fw-bold text-secondary" @click="loadSnapshotsBylikes">
-        🔥 좋아요순
-      </button>
+  <main class="container">
+    <StarMenu :id="id" />
+    <div class="main-layout pt-5">
+      <!-- 상단 메뉴 -->
+      <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
+      <section v-if="wishStore.selectedSnapshot" class="detail-section cont mb-5">
+        <SnapShotDetail :selectedSnapshot="wishStore.selectedSnapshot" />
+      </section>
     </div>
-  
-  </div>
-
-  <div class="main-layout">
-    <!-- 스냅샷 목록 섹션 (파란색 부분) -->
-    <section class="snapshot-list-section">
-      <div class="snapshot-list-container" ref="containerRef" @scroll="handleScroll">
-        <span class="snapshot-item">
-          <img
-            v-for="snapshot in filteredSnapshot1"
-            :key="snapshot.id"
-            @click="wishStore.selectSnapshot(snapshot.id)"
-            :src="snapshot.imageUrl"
-            alt="Snapshot Image"
-            class="snapshot-image my-1"
-          />
-        </span>
-        <span class="snapshot-item">
-          <img
-            v-for="snapshot in filteredSnapshot2"
-            :key="snapshot.id"
-            @click="wishStore.selectSnapshot(snapshot.id)"
-            :src="snapshot.imageUrl"
-            alt="Snapshot Image"
-            class="snapshot-image my-1"
-          />
-        </span>
-        <span class="snapshot-item">
-          <img
-            v-for="snapshot in filteredSnapshot3"
-            :key="snapshot.id"
-            @click="wishStore.selectSnapshot(snapshot.id)"
-            :src="snapshot.imageUrl"
-            alt="Snapshot Image"
-            class="snapshot-image my-1"
-          />
-        </span>
-        <span class="snapshot-item">
-          <img
-            v-for="snapshot in filteredSnapshot4"
-            :key="snapshot.id"
-            @click="wishStore.selectSnapshot(snapshot.id)"
-            :src="snapshot.imageUrl"
-            alt="Snapshot Image"
-            class="snapshot-image my-1"
-          />
-        </span>
-        <span class="snapshot-item">
-          <img
-            v-for="snapshot in filteredSnapshot5"
-            :key="snapshot.id"
-            @click="wishStore.selectSnapshot(snapshot.id)"
-            :src="snapshot.imageUrl"
-            alt="Snapshot Image"
-            class="snapshot-image my-1"
-          />
-        </span>
+    <div class="d-flex justify-content-between align-items-center my-4 mx-3">
+      <div>
+        <button class="btn me-2 fs-5 fw-bold text-secondary" @click="loadSnapshots">
+          ✧ 최신순
+        </button>
+        <button class="btn fs-5 fw-bold text-secondary" @click="loadSnapshotsBylikes">
+          🔥 좋아요순
+        </button>
       </div>
-    </section>
-  </div>
+    </div>
+
+    <div class="main-layout">
+      <!-- 스냅샷 목록 섹션 (파란색 부분) -->
+      <section class="snapshot-list-section">
+        <div class="snapshot-list-container" ref="containerRef" @scroll="handleScroll">
+          <span class="snapshot-item">
+            <img
+              v-for="snapshot in filteredSnapshot1"
+              :key="snapshot.id"
+              @click="wishStore.selectSnapshot(snapshot.id)"
+              :src="snapshot.imageUrl"
+              alt="Snapshot Image"
+              class="snapshot-image my-1"
+            />
+          </span>
+          <span class="snapshot-item">
+            <img
+              v-for="snapshot in filteredSnapshot2"
+              :key="snapshot.id"
+              @click="wishStore.selectSnapshot(snapshot.id)"
+              :src="snapshot.imageUrl"
+              alt="Snapshot Image"
+              class="snapshot-image my-1"
+            />
+          </span>
+          <span class="snapshot-item">
+            <img
+              v-for="snapshot in filteredSnapshot3"
+              :key="snapshot.id"
+              @click="wishStore.selectSnapshot(snapshot.id)"
+              :src="snapshot.imageUrl"
+              alt="Snapshot Image"
+              class="snapshot-image my-1"
+            />
+          </span>
+          <span class="snapshot-item">
+            <img
+              v-for="snapshot in filteredSnapshot4"
+              :key="snapshot.id"
+              @click="wishStore.selectSnapshot(snapshot.id)"
+              :src="snapshot.imageUrl"
+              alt="Snapshot Image"
+              class="snapshot-image my-1"
+            />
+          </span>
+          <span class="snapshot-item">
+            <img
+              v-for="snapshot in filteredSnapshot5"
+              :key="snapshot.id"
+              @click="wishStore.selectSnapshot(snapshot.id)"
+              :src="snapshot.imageUrl"
+              alt="Snapshot Image"
+              class="snapshot-image my-1"
+            />
+          </span>
+        </div>
+      </section>
+    </div>
+  </main>
 </template>
 
 <script setup lang="ts">
@@ -88,7 +91,7 @@ import SnapShotDetail from '../../../components/StarMenu/SnapShot/SnapShotDetail
 const store = useUserStore()
 const wishStore = useSnapshotStore()
 
-const id = ref(store.starState!.id);
+const id = ref(store.starState!.id)
 
 const snapshots = ref<SnapshotType[]>([])
 const display = ref<Starinfo[]>([])

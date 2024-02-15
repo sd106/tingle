@@ -58,8 +58,6 @@ public class HomeEntity {
             .homePictureDtos(homePictureDtos)
             .build();
 }
-
-
 }
 
 

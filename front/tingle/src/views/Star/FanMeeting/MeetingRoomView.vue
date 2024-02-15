@@ -1,14 +1,52 @@
 <template>
+  <div class="container">
+    <div id="local-video-container" @mouseenter="showControls" @mouseleave="hideControls">
+        <video id="localVideo" ref="localVideo" autoplay></video>
+        <div class="control-container">
+            <div v-if="isVideoOn" class="text-center" @click="toggleVideo">
+                <div class="control-icon">🎥</div>
+                <div class="control-label-container">
+                    <div class="control-label">카메라</div>
+                    <div class="control-label">켜짐</div>
+                </div>
+            </div>
+            <div v-else class="text-center" @click="toggleVideo">
+                <div class="control-icon">🚫</div>
+                <div class="control-label-container">
+                    <div class="control-label">카메라</div>
+                    <div class="control-label">꺼짐</div>
+                </div>
+            </div>
+
+            <div v-if="isAudioOn" class="text-center" @click="toggleAudio">
+                <div class="control-icon">🔊</div>
+                <div class="control-label-container">
+                    <div class="control-label">마이크</div>
+                    <div class="control-label">켜짐</div>                
+                </div>
+            </div>
+            <div v-else class="text-center" @click="toggleAudio">
+                <div class="control-icon">🚫</div>
+                <div class="control-label-container">
+                    <div class="control-label">마이크</div>
+                    <div class="control-label">꺼짐</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="remote-video-container">
+        <video id="remoteVideo" ref="remoteVideo" autoplay></video>
+    </div>
+  </div>
   <section v-if="fanMeetingReservation?.fanMeetingType == 'normal'">
-    <NormalMeeting :localVideo="localVideo" :remoteVideo="remoteVideo" :starName="starName" :localStream="localStream" />
+    <NormalMeeting :localVideo="localVideo" :remoteVideo="remoteVideo" :localStream="localStream" />
   </section>
   <section v-else-if="fanMeetingReservation?.fanMeetingType == 'lifefourcut'">
-    <LifeFourCutMeeting :localVideo="localVideo" :remoteVideo="remoteVideo" :starName="starName"
-      :localStream="localStream" />
+    <LifeFourCutMeeting :localVideo="localVideo" :remoteVideo="remoteVideo" :localStream="localStream" />
   </section>
   <section v-else-if="fanMeetingReservation?.fanMeetingType == 'birthday'">
-    <BirthdayMeeting :localVideo="localVideo" :remoteVideo="remoteVideo" :starName="starName"
-      :localStream="localStream" />
+    <BirthdayMeeting :localVideo="localVideo" :remoteVideo="remoteVideo" :localStream="localStream" />
   </section>
   <section v-else>
     <h1>연결중입니다...</h1>
@@ -20,15 +58,55 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
-import type { SocketMessage, FanMeetingReservation } from '@/common/types/index'
+import type { SocketMessage, FanMeetingReservation, SenderState } from '@/common/types/index'
 import NormalMeeting from '@/views/Star/FanMeeting/NormalMeeting.vue'
 import LifeFourCutMeeting from '@/views/Star/FanMeeting/LifeFourCutMeeting.vue'
 import BirthdayMeeting from '@/views/Star/FanMeeting/BirthdayMeeting.vue'
+import router from '@/router'
+
+
+const controlsVisible = ref(false)
+const isVideoOn = ref(true)
+const isAudioOn = ref(true)
+
+const showControls = () => {
+  controlsVisible.value = true
+}
+
+const hideControls = () => {
+  controlsVisible.value = false
+}
+
+const toggleVideo = () => {
+  if (localStream) {
+    const videoTrack = localStream.getVideoTracks()[0]
+    if (videoTrack) {
+      videoTrack.enabled = !videoTrack.enabled
+      isVideoOn.value = videoTrack.enabled
+    }
+  }
+}
+
+const toggleAudio = () => {
+  if (localStream) {
+    const audioTrack = localStream.getAudioTracks()[0]
+    if (audioTrack) {
+      audioTrack.enabled = !audioTrack.enabled
+      isAudioOn.value = audioTrack.enabled
+    }
+  }
+}
+
 
 const route = useRoute()
 
-const starName = ref(route.params.starid.toString())
+const starid = ref(route.params.starid.toString())
 const store = useUserStore()
+const localUser = ref<SenderState>({
+  id: store.fanState?.id,
+  username: store.fanState?.username,
+  picture: store.fanState?.picture
+})
 
 const fanMeetingReservation = ref<FanMeetingReservation>()
 
@@ -45,7 +123,6 @@ let socket: WebSocket | undefined
 
 // UI elements
 const localVideo = ref(null)
-const localUserName = ref(store.fanState?.username)
 const remoteVideo = ref(null)
 
 // WebRTC STUN servers
@@ -74,7 +151,6 @@ const sendToServer = (msg: SocketMessage) => {
 }
 
 
-const API_URL = 'https://i10d106.p.ssafy.io/api'
 // WebSocket
 const initializeWebSocket = () => {
   // 소켓 초기화
@@ -107,10 +183,14 @@ const initializeWebSocket = () => {
         break
 
       case 'Join':
-        console.log(
-          'Client is starting to ' + (message.data === 'true)' ? 'negotiate' : 'wait for a peer')
-        )
+        console.log('Client is starting to ' + (message.data === 'true') ? 'negotiate' : 'wait for a peer')
+        
         handleJoinMessage(message)
+        break
+      
+      case 'FinishFan':
+        console.log('Fan Meeting is finished')
+        handleFinishMeeting(message)
         break
 
       default:
@@ -123,9 +203,10 @@ const initializeWebSocket = () => {
   socket.onopen = () => {
     console.log('소켓 열렸는디요')
     sendToServer({
-      sender: localUserName.value,
+      sender: localUser.value,
       signalType: 'Join',
-      data: starName.value
+      data: starid.value,
+      roomType: 'Meeting'
     })
   }
 
@@ -161,7 +242,7 @@ const initializeWebRTC = async () => {
     // ICE Candidate 정보를 서버로 보냄
     if (event.candidate) {
       sendToServer({
-        sender: localUserName.value,
+        sender: localUser.value,
         signalType: 'Ice',
         iceCandidate: event.candidate
       })
@@ -193,14 +274,14 @@ const initializeWebRTC = async () => {
 const handleOfferMessage = async (message: SocketMessage) => {
   try {
     if (message.sdp) {
-      const remoteDescription = new RTCSessionDescription(message.sdp)
+      const remoteDescription = new RTCSessionDescription(message.sdp as RTCSessionDescriptionInit)
       await myPeerConnection.setRemoteDescription(remoteDescription)
     }
 
     const answer = await myPeerConnection.createAnswer()
     await myPeerConnection.setLocalDescription(answer)
     sendToServer({
-      sender: localUserName.value,
+      sender: localUser.value,
       signalType: 'Answer',
       sdp: myPeerConnection.localDescription ? myPeerConnection.localDescription : undefined
     })
@@ -211,7 +292,7 @@ const handleOfferMessage = async (message: SocketMessage) => {
 
 const handleAnswerMessage = (message: SocketMessage) => {
   if (message.sdp) {
-    const remoteDescription = new RTCSessionDescription(message.sdp)
+    const remoteDescription = new RTCSessionDescription(message.sdp as RTCSessionDescriptionInit)
     myPeerConnection.setRemoteDescription(remoteDescription)
   }
 }
@@ -231,7 +312,7 @@ const handleJoinMessage = async (message: SocketMessage) => {
         const offer = await myPeerConnection.createOffer()
         await myPeerConnection.setLocalDescription(offer)
         sendToServer({
-          sender: localUserName.value,
+          sender: localUser.value,
           signalType: 'Offer',
           sdp: myPeerConnection.localDescription ? myPeerConnection.localDescription : undefined
         })
@@ -245,6 +326,21 @@ const handleJoinMessage = async (message: SocketMessage) => {
 
   // 내 media를 RTCPeerConnection에 추가
   localStream.getTracks().forEach((track) => myPeerConnection.addTrack(track, localStream))
+}
+
+const handleFinishMeeting =async (message: SocketMessage) => {
+  try {
+    sendToServer({
+            sender: localUser.value,
+            signalType: 'leave',
+            sdp: myPeerConnection.localDescription ? myPeerConnection.localDescription : undefined
+          })
+    
+    router.go(-1)
+    alert("팬미팅이 종료되었습니다.")
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const handleErrorMessage = (message: SocketMessage) => {
@@ -263,3 +359,77 @@ onUnmounted(() => {
   }
 })
 </script>
+
+<style scoped>
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 90vh; 
+    border: 1px solid black; 
+}
+
+#local-video-container {
+  position: absolute;
+  width: 20%;
+  height: auto;
+  right: 10px; 
+  bottom: 10px;
+  z-index: 2;
+}
+
+#localVideo {
+    width: 100%;
+    height: auto;
+    border: 1px solid black;
+}
+
+#remote-video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; 
+    background-color: grey;
+}
+
+#remoteVideo {
+    width: 100%;
+    height: auto;
+}
+
+
+
+.control-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); 
+    display: flex;
+    gap: 10px;
+    visibility: hidden;
+}
+
+
+.control-icon {
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.control-label-container {
+    background-color: rgba(128,128,128,0.5) ;
+    border-radius: 5px;
+}
+.control-label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: black;
+}
+
+
+#local-video-container:hover .control-container {
+    visibility: visible;
+}
+</style>

@@ -15,5 +15,10 @@ public class FanMeetingType {
     @Id
     private Long id;
 
+    private String image;
+
     private String name;
+
+    private String description;
+
 }
