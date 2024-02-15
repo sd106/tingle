@@ -68,6 +68,7 @@ import type { FanMeetingMessage, SocketMessage, SenderState } from '@/common/typ
 
 const store = useUserStore()
 const emit = defineEmits(['finish-fan', 'finish-meeting'])
+const props = defineProps(['finishedFans'])
 
 const localUser = ref<SenderState>({
   id: store.starState?.id,

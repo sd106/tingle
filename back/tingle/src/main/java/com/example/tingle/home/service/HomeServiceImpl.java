@@ -159,25 +159,25 @@ public class HomeServiceImpl implements HomeService {
 //
 //        return true;
 //    }
-//
-//    @Transactional
-//    @Override
-//    public boolean deleteHome(Long homeId) {
-//        // HomePictureEntity 리스트 조회
-//        List<HomePictureEntity> homePictures = homePictureRepository.findByHomeEntityId(homeId);
-//
-//        // 각 HomePictureEntity에 대해
-//        for (HomePictureEntity homePicture : homePictures) {
-//            s3UploadService.deleteImage(homePicture.getImage());
-//            // HomePictureEntity 삭제
-//            homePictureRepository.delete(homePicture);
-//        }
-//
-//        //각 HomeEntity 삭제
-//        homeRepository.deleteById(homeId);
-//
-//        return true;
-//    }
+
+    @Transactional
+    @Override
+    public boolean deleteHome(Long homeId) {
+        // HomePictureEntity 리스트 조회
+        List<HomePictureEntity> homePictures = homePictureRepository.findByHomeEntityId(homeId);
+
+        // 각 HomePictureEntity에 대해
+        for (HomePictureEntity homePicture : homePictures) {
+            s3UploadService.deleteImage(homePicture.getImage());
+            // HomePictureEntity 삭제
+            homePictureRepository.delete(homePicture);
+        }
+
+        //각 HomeEntity 삭제
+        homeRepository.deleteById(homeId);
+
+        return true;
+    }
 
     @Override
     public HomeProfileDto findHomeProfile(Long starId) {

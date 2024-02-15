@@ -1,7 +1,7 @@
 <template>
     <div class="container">
     <div id="local-video-container" @mouseenter="showControls" @mouseleave="hideControls">
-        <video id="localVideo" ref="localVideo" autoplay></video>
+        <video id="localVideo" ref="localVideoElement" autoplay></video>
         <div class="control-container">
             <div v-if="isVideoOn" class="text-center" @click="toggleVideo">
                 <div class="control-icon">🎥</div>
@@ -36,21 +36,32 @@
         </div>
     </div>
     <div id="remote-video-container">
-        <video id="remoteVideo" ref="remoteVideo" autoplay></video>
+        <video id="remoteVideo" ref="remoteVideoElement" autoplay></video>
     </div>
   </div>
+  {{ props.localStream }}
+  {{ props.remoteStream }}
+  <button @click="bb">ddd</button>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted, watch, watchEffect } from 'vue'
 
 const props = defineProps<{
-  localStream: MediaStream | null
+  localStream: MediaStream | undefined
+  remoteStream: MediaStream | undefined
 }>()
+
+const localVideoElement = ref<HTMLMediaElement>()
+const remoteVideoElement = ref<HTMLMediaElement>()
 const controlsVisible = ref(false)
 const isVideoOn = ref(true)
 const isAudioOn = ref(true)
 
+const bb = () => {
+  console.log(props.localStream)
+  console.log(props.remoteStream)
+}
 const showControls = () => {
   controlsVisible.value = true
 }
@@ -78,6 +89,32 @@ const toggleAudio = () => {
     }
   }
 }
+
+const loadLocalVideo = async () => {
+  if (localVideoElement.value && props.localStream) {
+    localVideoElement.value.srcObject = props.localStream;
+  }
+  console.log("loadLocalVideo@@@@@@@@@@@@@@@2")
+}
+
+const loadRemoteVideo = async () => {
+  if (remoteVideoElement.value && props.remoteStream) {
+    remoteVideoElement.value.srcObject = props.remoteStream;
+  }
+  console.log("loadRemoteVideo@@@@@@@@@@@@@@@2")
+}
+
+
+watchEffect(async() => {
+  await loadLocalVideo()
+  await loadRemoteVideo()
+});
+
+watch(() => props.remoteStream, (newStream) => {
+  if (remoteVideoElement.value && newStream) {
+    remoteVideoElement.value.srcObject = newStream;
+  }
+}, { immediate: true });
 
 </script>
 
