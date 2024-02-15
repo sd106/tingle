@@ -1,8 +1,9 @@
 <template>
   <main class="container">
     <StarMenu :id="starId" />
-      <img :src="starProfile?.banner" alt="사진">
-
+    <div v-if="starProfile?.banner">
+    <img :src="starProfile.banner" alt="사진">
+    </div>
     <div class="container border d-flex">
       <div class>
         <img :src="starProfile?.profileImage" alt="사진" class="w-75 h-75">
@@ -43,7 +44,6 @@
       </div>
 
 
-
     <div class="container border" v-show="showInputArticle">
       <input type="file" id="image-upload" multiple>
       <input v-model="homeCreateRequest.content" placeholder="입력해주세요">
@@ -68,11 +68,53 @@
       </div>
     </div>
 
+    <div v-if="showTextarea">
+      <textarea id="textarea" class="textarea textarea-bordered" placeholder="입력해주세요" v-model="textContent"></textarea>
+      <button @click="insertPencil">완료</button>
+    </div>
+
+    <div v-if="showImage">
+      <div
+        ref="dragArea"
+        class="tw-border-dashed tw-border-2 tw-border-primary tw-p-4 tw-text-center tw-cursor-pointer tw-mb-4"
+        @dragover.prevent="handleDragOver"
+        @drop="handleDrop"
+        @click="fileInput!.click()"
+      >
+        여기에 파일을 드래그 앤 드롭하거나 클릭하여 선택하세요.
+        <input
+          type="file"
+          multiple
+          ref="fileInput"
+          @change="handleFileUpload"
+          style="display: none"
+        />
+      </div>
+
+      <!-- 드래그 앤 드롭으로 업로드된 파일의 미리보기 -->
+      <div class="tw-grid tw-grid-cols-3 tw-gap-4">
+        <div v-for="(file, index) in previewFiles" :key="index" class="tw-relative tw-mb-4">
+          <img :src="file" class="tw-rounded tw-shadow-md" />
+          <button
+            @click="removeFile(index)"
+            class="tw-btn tw-btn-error tw-btn-sm tw-absolute tw-right-0 tw-top-0"
+          >
+            삭제
+          </button>
+        </div>
+      </div>
+       <button @click="insertPhotos">완료</button>
+    </div>
+
   </main>
 
   <div class="fixed-button">
 
-    <img src="/image/articlePlus.png" @click="IsInputArticle" />
+    <div style="display:inline-flex">
+      <img src="/image/Homephotos.png" @click="showImage = true">
+      <img src="/image/Homepencil.png" @click="showTextarea = true">
+    </div>
+
   </div>
 </template>
 
@@ -98,6 +140,14 @@ const starProfile = ref<StarProfile>();
 
 const article = ref<HomeArticle[]>([]);
 let files = ref<File[]>([]);
+
+const showTextarea = ref(false)
+const showImage = ref(false)
+
+const textContent = ref('')
+
+const dragArea = ref<HTMLElement | null>(null)
+const fileInput = ref<HTMLInputElement | null>(null)
 
 
 const getstarProfile = async () => {
@@ -190,29 +240,6 @@ function startEdit() {
   }
 }
 
-const categoryText = ref('')
-
-const options = [
-  {
-    value: -1,
-    text: '카테고리'
-  },
-  {
-    value: 0,
-    text: '일상/토크'
-  }
-]
-
-// watch(starProfile.value.category, (updatedCategory) => {
-//   switch(updatedCategory) {
-//     case -1:
-//       categoryText.value = '카테고리'
-//       break;
-//     case 0:
-//       categoryText.value = '일상/토크'
-//       break;
-//   }
-// })
 import {useRouter} from 'vue-router'
 const router = useRouter()
 const insertProfile = async () => {
@@ -229,14 +256,89 @@ const insertProfile = async () => {
   });
 }
 
+let photos = {
+  starId: starId,
+  ordering: 2,
+  content: ""
+};
+
+const insertPhotos = async () => {
+
+  let formData = new FormData();
+  formData.append('homeCreateRequest', JSON.stringify(photos)); // JSON 문자열로 변환하여 추가
+
+  // 파일이 있을 경우에만 추가
+  if (files && files.value.length > 0) {
+    for (let i = 0; i < files.value.length; i++) {
+      formData.append('files', files.value[i]);
+    }
+  }
+
+  await axios.post(`${store.API_URL}/home/post/picture`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }).then(response => {
+    showImage.value= false;
+    getArticle();
+    console.log(response.data);
+  }).catch(error => {
+    console.error(error);
+  });
+}
+
+const insertPencil = async () => {
+  await axios.post(`${store.API_URL}/home/post/pencil`, {
+    starId: starId,
+    ordering: 1,
+    content: textarea!.value
+  }).then(response => {
+    console.log(response.data);
+    showTextarea.value= false;
+    getArticle();
+  }).catch(error => {
+    console.error(error);
+  });
+}
+
+const previewFiles = ref<string[]>([])
+
+watch(files, (newFiles) => {
+  previewFiles.value = newFiles.map((file) => URL.createObjectURL(file))
+})
+
+const handleDragOver = (event: DragEvent) => {
+  event.preventDefault()
+}
+
+const handleDrop = (event: DragEvent) => {
+  event.preventDefault()
+  if (event.dataTransfer) {
+    // 기존 파일 배열에 새로운 파일들을 추가
+    files.value = files.value.concat(Array.from(event.dataTransfer.files))
+  }
+}
+
+const handleFileUpload = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  if (target.files) {
+    // 기존 파일 배열에 새로운 파일들을 추가
+    files.value = [...files.value, ...Array.from(target.files)]
+  }
+}
+
+const removeFile = (index: number) => {
+  // 미리보기 URL 배열에서 해당 항목 제거
+  previewFiles.value.splice(index, 1)
+
+  // 실제 파일 배열에서도 해당 항목 제거
+  files.value.splice(index, 1)
+}
+
 
 onMounted(() => {
   getstarProfile();
   getArticle();
-
-  const inputElement = document.getElementById('image-upload');
-
-  inputElement!.addEventListener('change', handleFileSelection);
 
 });
 
