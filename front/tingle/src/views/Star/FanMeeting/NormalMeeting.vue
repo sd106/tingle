@@ -1,51 +1,87 @@
 <template>
-    <div class="container">
-    <div id="local-video-container" @mouseenter="showControls" @mouseleave="hideControls">
-        <video id="localVideo" ref="localVideoElement" autoplay></video>
-        <div class="control-container">
-            <div v-if="isVideoOn" class="text-center" @click="toggleVideo">
-                <div class="control-icon">🎥</div>
-                <div class="control-label-container">
-                    <div class="control-label">카메라</div>
-                    <div class="control-label">켜짐</div>
-                </div>
+  <div class="container px-0">
+    <div v-if="store.isStar" id="local-video-container-star" @mouseenter="showControls" @mouseleave="hideControls">
+      <video id="localVideo" ref="localVideoElement" autoplay></video>
+      <div class="control-container">
+        <div v-if="isVideoOn" class="text-center" @click="toggleVideo">
+            <div class="control-icon">🎥</div>
+            <div class="control-label-container">
+                <div class="control-label">카메라</div>
+                <div class="control-label">켜짐</div>
             </div>
-            <div v-else class="text-center" @click="toggleVideo">
-                <div class="control-icon">🚫</div>
-                <div class="control-label-container">
-                    <div class="control-label">카메라</div>
-                    <div class="control-label">꺼짐</div>
-                </div>
-            </div>
-
-            <div v-if="isAudioOn" class="text-center" @click="toggleAudio">
-                <div class="control-icon">🔊</div>
-                <div class="control-label-container">
-                    <div class="control-label">마이크</div>
-                    <div class="control-label">켜짐</div>                
-                </div>
-            </div>
-            <div v-else class="text-center" @click="toggleAudio">
-                <div class="control-icon">🚫</div>
-                <div class="control-label-container">
-                    <div class="control-label">마이크</div>
-                    <div class="control-label">꺼짐</div>
-                </div>
-            </div>
-
         </div>
+        <div v-else class="text-center" @click="toggleVideo">
+            <div class="control-icon">🚫</div>
+            <div class="control-label-container">
+                <div class="control-label">카메라</div>
+                <div class="control-label">꺼짐</div>
+            </div>
+        </div>
+
+        <div v-if="isAudioOn" class="text-center" @click="toggleAudio">
+            <div class="control-icon">🔊</div>
+            <div class="control-label-container">
+                <div class="control-label">마이크</div>
+                <div class="control-label">켜짐</div>                
+            </div>
+        </div>
+        <div v-else class="text-center" @click="toggleAudio">
+          <div class="control-icon">🚫</div>
+            <div class="control-label-container">
+                <div class="control-label">마이크</div>
+                <div class="control-label">꺼짐</div>
+            </div>
+          </div>
+      </div>
     </div>
-    <div id="remote-video-container">
-        <video id="remoteVideo" ref="remoteVideoElement" autoplay></video>
+    <div v-else id="local-video-container-fan" @mouseenter="showControls" @mouseleave="hideControls">
+      <video id="localVideo" ref="localVideoElement" autoplay></video>
+      <div class="control-container">
+        <div v-if="isVideoOn" class="text-center" @click="toggleVideo">
+            <div class="control-icon">🎥</div>
+            <div class="control-label-container">
+                <div class="control-label">카메라</div>
+                <div class="control-label">켜짐</div>
+            </div>
+        </div>
+        <div v-else class="text-center" @click="toggleVideo">
+            <div class="control-icon">🚫</div>
+            <div class="control-label-container">
+                <div class="control-label">카메라</div>
+                <div class="control-label">꺼짐</div>
+            </div>
+        </div>
+
+        <div v-if="isAudioOn" class="text-center" @click="toggleAudio">
+            <div class="control-icon">🔊</div>
+            <div class="control-label-container">
+                <div class="control-label">마이크</div>
+                <div class="control-label">켜짐</div>                
+            </div>
+        </div>
+        <div v-else class="text-center" @click="toggleAudio">
+          <div class="control-icon">🚫</div>
+            <div class="control-label-container">
+                <div class="control-label">마이크</div>
+                <div class="control-label">꺼짐</div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div v-if="store.isStar" id="remote-video-container-star">
+        <video class="tw-size-full" id="remoteVideo" ref="remoteVideoElement" autoplay></video>
+    </div>
+    <div v-else id="remote-video-container-fan">
+        <video class="tw-size-full" id="remoteVideo" ref="remoteVideoElement" autoplay></video>
     </div>
   </div>
-  {{ props.localStream }}
-  {{ props.remoteStream }}
-  <button @click="bb">ddd</button>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, watch, watchEffect } from 'vue'
+import { useUserStore } from '@/stores/user'
+
+const store = useUserStore()
 
 const props = defineProps<{
   localStream: MediaStream | undefined
@@ -58,10 +94,6 @@ const controlsVisible = ref(false)
 const isVideoOn = ref(true)
 const isAudioOn = ref(true)
 
-const bb = () => {
-  console.log(props.localStream)
-  console.log(props.remoteStream)
-}
 const showControls = () => {
   controlsVisible.value = true
 }
@@ -120,43 +152,63 @@ watch(() => props.remoteStream, (newStream) => {
 
 <style scoped>
 .container {
-    position: relative;
-    width: 100%;
-    height: 90vh; 
-    border: 1px solid black; 
+    /* position: relative; */
+    width: auto;
+    height: 100%; 
+    /* border: 1px solid black;  */
 }
 
-#local-video-container {
+#local-video-container-star {
   position: absolute;
   width: 20%;
   height: auto;
-  right: 10px; 
-  bottom: 10px;
+  left: 7%; 
+  bottom: 0px;
+  z-index: 2;
+}
+
+
+#local-video-container-fan {
+  position: absolute;
+  width: 20%;
+  height: auto;
+  right: 0px; 
+  bottom: 0px;
   z-index: 2;
 }
 
 #localVideo {
     width: 100%;
     height: auto;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
-#remote-video-container {
+#remote-video-container-star {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    left: 7%;
+    width: auto;
     height: 100%;
     z-index: 1; 
-    background-color: grey;
+    /* background-color: grey; */
 }
 
+#remote-video-container-fan {
+    position: absolute;
+    top: 0;
+    left: 0px;
+    width: auto;
+    height: 100%;
+    z-index: 1; 
+    /* background-color: grey; */
+}
+/*
 #remoteVideo {
     width: 100%;
     height: auto;
 }
 
-
+ */
 
 .control-container {
     position: absolute;

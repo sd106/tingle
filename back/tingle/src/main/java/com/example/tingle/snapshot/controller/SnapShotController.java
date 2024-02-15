@@ -54,10 +54,10 @@ public class SnapShotController {
             snapShotMap.put("id", snapShot.getId());
             snapShotMap.put("imageUrl", snapShot.getImageUrl());
             snapShotMap.put("isStarLike", snapShot.isStarLike());
-            System.out.println("snapShot = " + snapShot.isStarLike());
+//            System.out.println("snapShot = " + snapShot.isStarLike());
             UserEntity user = snapShot.getUser();
             snapShotMap.put("username", user != null ? user.getUsername() : "Unknown");
-            System.out.println("snapShotMap = " + snapShotMap);
+//            System.out.println("snapShotMap = " + snapShotMap);
 
             return snapShotMap;
         }).collect(Collectors.toList());

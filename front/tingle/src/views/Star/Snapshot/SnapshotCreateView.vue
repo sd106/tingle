@@ -60,14 +60,7 @@ const router = useRouter();
 const userStore = useUserStore()
 
 const props = defineProps(['id']);
-const username = computed<string>(() => {
-  if (userStore.fanState && !userStore.starState) {
-    return userStore.fanState.username;
-  } else if (userStore.starState && !userStore.fanState) {
-    return userStore.starState.username;
-  }
-  return '';
-});
+const username = userStore.fanState!.username
 
 
 
@@ -113,9 +106,10 @@ const createSnapshot = async () => {
   }
   formData.append('content', content.value);
   formData.append('tags', tags.value.join(',')); // 태그 형식에 따라 조정 필요
-  formData.append('username', username.value);
+  formData.append('username', username);
   formData.append('starId', props.id);
 
+  console.log(username)
   for (let [key, value] of formData.entries()) {
     console.log(`${key}: ${value}`)
   }
@@ -124,11 +118,13 @@ const createSnapshot = async () => {
     console.log('post직전')
     axios.post('http://localhost:8080/snapshot/new', formData, { withCredentials: true })
     console.log('post끝')
-    router.go(-1) // 메인 뷰로 이동
+    
   } catch (error) {
     console.error(error)
     console.log('실패!')
   }
+  router.push({name: 'snapshot'}) // 메인 뷰로 이동
+  router.go(0)
 }
 </script>
 
