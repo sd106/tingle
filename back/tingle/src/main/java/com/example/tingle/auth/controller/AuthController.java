@@ -26,14 +26,14 @@ public class AuthController {
     private final StarRepository starRepository;
 
     // 인증 절차는 끝났기 때문에 프런트 store에 넣어줄 정보만 return 하도록 하자
-    @PostMapping("/login/fan")
-    public ResponseEntity<?> loginFan() {
+    @PostMapping("/login/fan/{provider}")
+    public ResponseEntity<?> loginFan(@PathVariable String provider) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomOAuth2User userDetails = (CustomOAuth2User) authentication.getPrincipal();
 
         String email = userDetails.getEmail();
 
-        UserEntity user = userRepository.findByEmail(email).orElse(null);
+        UserEntity user = userRepository.findByEmailAndProvider(email, provider).orElse(null);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("없다 가라");
         }
@@ -43,15 +43,15 @@ public class AuthController {
     }
 
 
-    @PostMapping("/login/star")
-    public ResponseEntity<?> loginStar() {
+    @PostMapping("/login/star/{provider}")
+    public ResponseEntity<?> loginStar(@PathVariable String provider) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         CustomOAuth2User userDetails = (CustomOAuth2User) authentication.getPrincipal();
 
         String email = userDetails.getEmail();
 
-        StarEntity star = starRepository.findByEmail(email).orElse(null);
+        StarEntity star = starRepository.findByEmailAndProvider(email, provider).orElse(null);
         if (star == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("없다 가라");
         }
