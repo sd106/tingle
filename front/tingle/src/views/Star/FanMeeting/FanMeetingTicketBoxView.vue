@@ -110,6 +110,7 @@ const select = (product: FanMeetingTicket) => {
   console.log(fanId.value)
   console.log(selectedProduct.value.id)
   console.log(starid)
+  console.log(meetingStore.selectMeetingPrice)
 }
 
 const getProducts = async () => {

@@ -29,31 +29,31 @@
         <span v-for="snapshot in filteredSnapshot1" :key="snapshot.id" class="snapshot-item">
           <div class="tw-relative">
             <img @click="wishStore.selectSnapshot(snapshot.id)" :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
-            <span v-if="snapshot.isStarLike" class="tw-absolute tw-top-0 tw-right-0" style="font-size: 24px;"><img src="" alt=""></span>
+            <span v-if="snapshot.isStarLike" class="tw-absolute tw-top-0 tw-right-0" style="font-size: 36px;"><img src="/image/favourite1.gif" alt="" style="width: 54px; height: 54px;"></span>
           </div>
         </span>
         <span v-for="snapshot in filteredSnapshot2" :key="snapshot.id" class="snapshot-item">
           <div class="tw-relative">
             <img @click="wishStore.selectSnapshot(snapshot.id)" :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
-            <span v-if="snapshot.isStarLike" class="tw-absolute tw-top-0 tw-right-0" style="font-size: 24px;">⭐</span>
+            <span v-if="snapshot.isStarLike" class="tw-absolute tw-top-0 tw-right-0" style="font-size: 36px;">⭐</span>
           </div>
         </span>
         <span v-for="snapshot in filteredSnapshot3" :key="snapshot.id" class="snapshot-item">
           <div class="tw-relative">
             <img @click="wishStore.selectSnapshot(snapshot.id)" :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
-            <span v-if="snapshot.isStarLike" class="tw-absolute tw-top-0 tw-right-0" style="font-size: 24px;">⭐</span>
+            <span v-if="snapshot.isStarLike" class="tw-absolute tw-top-0 tw-right-0" style="font-size: 36px;">⭐</span>
           </div>
         </span>
         <span v-for="snapshot in filteredSnapshot4" :key="snapshot.id" class="snapshot-item">
           <div class="tw-relative">
             <img @click="wishStore.selectSnapshot(snapshot.id)" :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
-            <span v-if="snapshot.isStarLike" class="tw-absolute tw-top-0 tw-right-0" style="font-size: 24px;">⭐</span>
+            <span v-if="snapshot.isStarLike" class="tw-absolute tw-top-0 tw-right-0" style="font-size: 36px;">⭐</span>
           </div>
         </span>
         <span v-for="snapshot in filteredSnapshot5" :key="snapshot.id" class="snapshot-item">
           <div class="tw-relative">
             <img @click="wishStore.selectSnapshot(snapshot.id)" :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
-            <span v-if="snapshot.isStarLike" class="tw-absolute tw-top-0 tw-right-0" style="font-size: 24px;">⭐</span>
+            <span v-if="snapshot.isStarLike" class="tw-absolute tw-top-0 tw-right-0" style="font-size: 36px;">⭐</span>
           </div>
         </span>
       </div>

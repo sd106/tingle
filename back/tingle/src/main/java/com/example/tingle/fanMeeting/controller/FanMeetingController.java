@@ -40,10 +40,10 @@ public class FanMeetingController {
         return fanMeetingService.getFanMeetingInfo(starId);
     }
 
-    @GetMapping("/{starId}/reservation/{fanId}")
-    public Boolean getFanMeetingReservation(@PathVariable Long starId, @PathVariable Long fanId) {
+    @GetMapping("/{starId}/reservation/{fanId}/{fanMeetingId}")
+    public Boolean getFanMeetingReservation(@PathVariable Long starId, @PathVariable Long fanId, @PathVariable Long fanMeetingId) {
         System.out.println("getFanMeetingReservation");
-        Optional<FanMeetingReservation> optFanMeetingReservation = fanMeetingService.getFanMeetingReservation(starId, fanId);
+        Optional<FanMeetingReservation> optFanMeetingReservation = fanMeetingService.getFanMeetingReservation(starId, fanId, fanMeetingId);
 
         Boolean haveTicket = false;
         if (optFanMeetingReservation.isPresent()) {
@@ -62,19 +62,19 @@ public class FanMeetingController {
     /**
      * 팬미팅 티켓을 구매하는 컨트롤러
      */
-    @PostMapping("/{fanMettingId}/reservation/new/{starId}/{typeId}")
+    @PostMapping("/{fanMeetingId}/reservation/new/{starId}/{typeId}")
     @Transactional
-    public void perchaseMeeting(@PathVariable Long fanMettingId,
+    public void perchaseMeeting(@PathVariable Long fanMeetingId,
                                 @PathVariable Long starId,
                                 @PathVariable Long typeId,
                                 @RequestBody FanMeetingReservationRequest fanMeetingReservationRequest) {
         System.out.println("티켓 만들기 시작");
-        System.out.println("fanMettingId = " + fanMettingId);
+        System.out.println("fanMettingId = " + fanMeetingId);
         System.out.println("starId = " + starId);
         System.out.println("typeId = " + typeId);
         System.out.println("username = " + fanMeetingReservationRequest.getUsername());
         String username = fanMeetingReservationRequest.getUsername();
-        fanMeetingService.createTicket(starId, typeId, fanMettingId, username);
+        fanMeetingService.createTicket(starId, typeId, fanMeetingId, username);
 
 
     }
