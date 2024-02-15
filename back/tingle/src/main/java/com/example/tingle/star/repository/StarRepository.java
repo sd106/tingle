@@ -23,4 +23,6 @@ public interface StarRepository extends JpaRepository<StarEntity, Long>, CustomS
     Optional<StarEntity> findStarEntityById(Long starId);
 
     List<StarEntity> findByUsernameContaining(String starname);
-    }
+
+    Optional<StarEntity> findByEmailAndProvider(String email, String provider);
+}

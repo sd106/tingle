@@ -92,9 +92,8 @@ interface FanMeetingMessage {
 }
 
 interface FanMeetingReservation {
-  orderAt: Date
-  fanname: string
-  starname: string
+  userName: string
+  starName: string
   fanMeetingType: string
 }
 

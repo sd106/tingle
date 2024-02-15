@@ -22,43 +22,93 @@
       </div>
     </div>
 
-  <div class="main-layout">
-    <!-- 스냅샷 목록 섹션 (파란색 부분) -->
-    <section class="snapshot-list-section">
-      <div class="snapshot-list-container" ref="containerRef" @scroll="handleScroll">
-        <span v-for="snapshot in filteredSnapshot1" :key="snapshot.id" class="snapshot-item">
-          <div class="tw-relative">
-            <img @click="wishStore.selectSnapshot(snapshot.id)" :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
-            <span v-if="snapshot.isStarLike" class="tw-absolute tw-top-0 tw-right-0" style="font-size: 36px;"><img src="/image/favourite1.gif" alt="" style="width: 54px; height: 54px;"></span>
-          </div>
-        </span>
-        <span v-for="snapshot in filteredSnapshot2" :key="snapshot.id" class="snapshot-item">
-          <div class="tw-relative">
-            <img @click="wishStore.selectSnapshot(snapshot.id)" :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
-            <span v-if="snapshot.isStarLike" class="tw-absolute tw-top-0 tw-right-0" style="font-size: 36px;">⭐</span>
-          </div>
-        </span>
-        <span v-for="snapshot in filteredSnapshot3" :key="snapshot.id" class="snapshot-item">
-          <div class="tw-relative">
-            <img @click="wishStore.selectSnapshot(snapshot.id)" :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
-            <span v-if="snapshot.isStarLike" class="tw-absolute tw-top-0 tw-right-0" style="font-size: 36px;">⭐</span>
-          </div>
-        </span>
-        <span v-for="snapshot in filteredSnapshot4" :key="snapshot.id" class="snapshot-item">
-          <div class="tw-relative">
-            <img @click="wishStore.selectSnapshot(snapshot.id)" :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
-            <span v-if="snapshot.isStarLike" class="tw-absolute tw-top-0 tw-right-0" style="font-size: 36px;">⭐</span>
-          </div>
-        </span>
-        <span v-for="snapshot in filteredSnapshot5" :key="snapshot.id" class="snapshot-item">
-          <div class="tw-relative">
-            <img @click="wishStore.selectSnapshot(snapshot.id)" :src="snapshot.imageUrl" alt="Snapshot Image" class="snapshot-image my-1">
-            <span v-if="snapshot.isStarLike" class="tw-absolute tw-top-0 tw-right-0" style="font-size: 36px;">⭐</span>
-          </div>
-        </span>
-      </div>
-    </section>
-  </div>
+    <div class="main-layout">
+      <!-- 스냅샷 목록 섹션 (파란색 부분) -->
+      <section class="snapshot-list-section">
+        <div class="snapshot-list-container" ref="containerRef" @scroll="handleScroll">
+          <span v-for="snapshot in filteredSnapshot1" :key="snapshot.id" class="snapshot-item">
+            <div class="tw-relative">
+              <img
+                @click="wishStore.selectSnapshot(snapshot.id)"
+                :src="snapshot.imageUrl"
+                alt="Snapshot Image"
+                class="snapshot-image my-1"
+              />
+              <span
+                v-if="snapshot.isStarLike"
+                class="tw-absolute tw-top-0 tw-right-0"
+                style="font-size: 36px"
+                ><img src="/image/favourite1.gif" alt="" style="width: 54px; height: 54px"
+              /></span>
+            </div>
+          </span>
+          <span v-for="snapshot in filteredSnapshot2" :key="snapshot.id" class="snapshot-item">
+            <div class="tw-relative">
+              <img
+                @click="wishStore.selectSnapshot(snapshot.id)"
+                :src="snapshot.imageUrl"
+                alt="Snapshot Image"
+                class="snapshot-image my-1"
+              />
+              <span
+                v-if="snapshot.isStarLike"
+                class="tw-absolute tw-top-0 tw-right-0"
+                style="font-size: 36px"
+                >⭐</span
+              >
+            </div>
+          </span>
+          <span v-for="snapshot in filteredSnapshot3" :key="snapshot.id" class="snapshot-item">
+            <div class="tw-relative">
+              <img
+                @click="wishStore.selectSnapshot(snapshot.id)"
+                :src="snapshot.imageUrl"
+                alt="Snapshot Image"
+                class="snapshot-image my-1"
+              />
+              <span
+                v-if="snapshot.isStarLike"
+                class="tw-absolute tw-top-0 tw-right-0"
+                style="font-size: 36px"
+                >⭐</span
+              >
+            </div>
+          </span>
+          <span v-for="snapshot in filteredSnapshot4" :key="snapshot.id" class="snapshot-item">
+            <div class="tw-relative">
+              <img
+                @click="wishStore.selectSnapshot(snapshot.id)"
+                :src="snapshot.imageUrl"
+                alt="Snapshot Image"
+                class="snapshot-image my-1"
+              />
+              <span
+                v-if="snapshot.isStarLike"
+                class="tw-absolute tw-top-0 tw-right-0"
+                style="font-size: 36px"
+                >⭐</span
+              >
+            </div>
+          </span>
+          <span v-for="snapshot in filteredSnapshot5" :key="snapshot.id" class="snapshot-item">
+            <div class="tw-relative">
+              <img
+                @click="wishStore.selectSnapshot(snapshot.id)"
+                :src="snapshot.imageUrl"
+                alt="Snapshot Image"
+                class="snapshot-image my-1"
+              />
+              <span
+                v-if="snapshot.isStarLike"
+                class="tw-absolute tw-top-0 tw-right-0"
+                style="font-size: 36px"
+                >⭐</span
+              >
+            </div>
+          </span>
+        </div>
+      </section>
+    </div>
   </main>
 </template>
 
@@ -83,7 +133,9 @@ const containerRef = ref<HTMLElement | null>(null)
 const loadSnapshots = async (): Promise<void> => {
   try {
     console.log(id)
-    const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/created`)
+    const response = await axios.get(
+      `https://i10d106.p.ssafy.io/api/snapshot/star/${id.value}/created`
+    )
     snapshots.value = response.data.AllSnapShot
     console.log('최신순')
   } catch (error) {
@@ -93,7 +145,9 @@ const loadSnapshots = async (): Promise<void> => {
 
 const loadSnapshotsBylikes = async (): Promise<void> => {
   try {
-    const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/likes`)
+    const response = await axios.get(
+      `https://i10d106.p.ssafy.io/api/snapshot/star/${id.value}/likes`
+    )
     snapshots.value = response.data.AllSnapShot
     console.log('좋아요순')
   } catch (error) {

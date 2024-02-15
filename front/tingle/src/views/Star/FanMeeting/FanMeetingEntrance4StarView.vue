@@ -26,7 +26,7 @@ const fanMeetingInfo = ref<FanMeetingInfo>()
 
 const getFanMeetingInfo = async () => {
     try {
-        const response = await axios.get(`http://localhost:8080/fanMeeting/info/${store.starState?.id}`)
+        const response = await axios.get(`https://i10d106.p.ssafy.io/api/fanMeeting/info/${store.starState?.id}`)
         fanMeetingInfo.value = response.data
         console.log("팬미팅 정보  : ", response.data)
         

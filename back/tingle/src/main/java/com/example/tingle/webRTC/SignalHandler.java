@@ -209,9 +209,8 @@ public class SignalHandler extends TextWebSocketHandler {
 
             case "Accept":
                 fan = userRepository.findByUsername(sender.getUsername());
-                FanMeetingReservation fanMeetingReservation = fanMeetingReservationRepository.findByUser(fan);
+                FanMeetingReservation fanMeetingReservation = fanMeetingReservationRepository.findRecentFanMeetingByUserAndStar(fan.getId(), Long.parseLong(data));
                 FanMeetingReservationMessageDto fanMeetingReservationMessageDto = FanMeetingReservationMessageDto.builder()
-                        .orderAt(fanMeetingReservation.getOrderAt())
                         .userName(fanMeetingReservation.getUser().getUsername())
                         .starName(fanMeetingReservation.getStar().getUsername())
                         .fanMeetingType(fanMeetingReservation.getFanMeetingType().getName())
@@ -233,17 +232,35 @@ public class SignalHandler extends TextWebSocketHandler {
 
                 // data 안에는 초대할 팬의 이름이 들어온다.
                 WebSocketSession meetingClient = meetingClients.get(star.getUsername());
+                try {
+                    meetingClient.sendMessage(new TextMessage(objectMapper.writeValueAsString(acceptMessaege)));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    session.sendMessage(new TextMessage(objectMapper.writeValueAsString(acceptMessaege)));
 
-                meetingClient.sendMessage(new TextMessage(objectMapper.writeValueAsString(acceptMessaege)));
-
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 //                // 팬미팅 중인 팬과 연결을 종료
-            case "FinishMeeting":
+
+            case "FinishFan":
                 FanMeetingRoom room5 = sessionIdToRoomMap.get(session.getId());
 
                 Map<String, WebSocketSession> meetingClients2 = fanMeetingRoomService.getClients(room5);
                 System.out.println(data);
                 WebSocketSession finishedClient = meetingClients2.get(data);
 
+                SignalData finishMessaege = SignalData.builder()
+                        .sender(server)
+                        .signalType(signalData.getSignalType())
+                        .data(null)
+                        .iceCandidate(null)
+                        .sdp(null)
+                        .build();
+
+                finishedClient.sendMessage(new TextMessage(objectMapper.writeValueAsString(finishMessaege)));
                 fanMeetingRoomService.removeClientByName(room5, data);
 
                 sessionIdToRoomMap.remove(finishedClient.getId());

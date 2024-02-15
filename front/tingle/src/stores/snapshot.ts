@@ -11,7 +11,7 @@ export const useSnapshotStore = defineStore('snapshot', () => {
   const userStore = useUserStore()
 
 
-  const API_URL = 'http://localhost:8080'
+  const API_URL = 'https://i10d106.p.ssafy.io/api'
 
   const selectedSnapshot = ref<selectedSnapshotType | null>(null);
 

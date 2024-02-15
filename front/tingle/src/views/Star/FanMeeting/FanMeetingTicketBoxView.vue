@@ -1,13 +1,17 @@
 <template>
   <main>
     <div class="my-5 text-center">
-      <h2> {{ starid }} 티켓 박스</h2>
+      <h2>{{ starid }} 티켓 박스</h2>
     </div>
     <div class="container">
       <div class="row">
-        <div class="col-md-8 ">
+        <div class="col-md-8">
           <div class="row mb-4" v-for="product in products" :key="product.id">
-            <TicketFormat @select="select(product)" :product="product" :isSelected="selectedProduct === product" />
+            <TicketFormat
+              @select="select(product)"
+              :product="product"
+              :isSelected="selectedProduct === product"
+            />
           </div>
         </div>
 
@@ -21,7 +25,12 @@
               <p>티켓을 선택해주세요.</p>
             </div>
             <div class="d-flex justify-content-center">
-              <button :class="{'btn': true ,'btn-on':selectedProduct , 'btn-off':!selectedProduct}" @click="payRequest()">구매하기</button>
+              <button
+                :class="{ btn: true, 'btn-on': selectedProduct, 'btn-off': !selectedProduct }"
+                @click="payRequest()"
+              >
+                구매하기
+              </button>
             </div>
           </div>
         </div>
@@ -33,21 +42,20 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import type { FanMeetingTicket } from '@/common/types/index'
-import { useRoute } from 'vue-router' 
+import { useRoute } from 'vue-router'
 import axios from 'axios'
 import TicketFormat from '@/components/StarMenu/FanMeeting/TicketFormat.vue'
 import { useUserStore } from '@/stores/user'
 import { useFanMeetingStore } from '@/stores/fanMeeting'
 import router from '@/router'
 
-const route = useRoute();
-const userStore = useUserStore();
-const meetingStore = useFanMeetingStore();
+const route = useRoute()
+const userStore = useUserStore()
+const meetingStore = useFanMeetingStore()
 const products = ref<FanMeetingTicket[]>([])
 
-const starid = Number(route.params.starid);
+const starid = Number(route.params.starid)
 const meetingid = Number(route.params.meetingid)
-
 
 // products.value = [
 //   {
@@ -113,7 +121,7 @@ const select = (product: FanMeetingTicket) => {
 
 const getProducts = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/fanMeeting/info/${starid}`)
+    const response = await axios.get(`https://i10d106.p.ssafy.io/api/fanMeeting/info/${starid}`)
     products.value = response.data.availableTypes
     console.log(products.value)
   } catch (error) {
@@ -124,28 +132,35 @@ const getProducts = async () => {
 const fanId = ref(userStore.fanState!.id)
 
 const payRequest = async () => {
-
   if (selectedProduct!.value) {
-
     try {
-      console.log("post 직전, 유저정보 :", userStore.fanState!.username)
-      console.log("팬미팅 id :", meetingid, "팬 id :", fanId.value, "스타 id :", starid, "상품 타입 id :", selectedProduct.value.id)
+      console.log('post 직전, 유저정보 :', userStore.fanState!.username)
+      console.log(
+        '팬미팅 id :',
+        meetingid,
+        '팬 id :',
+        fanId.value,
+        '스타 id :',
+        starid,
+        '상품 타입 id :',
+        selectedProduct.value.id
+      )
 
-      await axios.post(`http://localhost:8080/fanMeeting/${meetingid}/reservation/new/${starid}/${selectedProduct.value.id}`,
-       { username: userStore.fanState!.username }, { withCredentials: true })
-      
-      console.log("post 끝남")
-      
+      await axios.post(
+        `https://i10d106.p.ssafy.io/api/fanMeeting/${meetingid}/reservation/new/${starid}/${selectedProduct.value.id}`,
+        { username: userStore.fanState!.username },
+        { withCredentials: true }
+      )
+
+      console.log('post 끝남')
     } catch (error) {
       console.log(error)
     }
-    router.push({ name: 'fanmeeting'})
+    router.push({ name: 'fanmeeting' })
   } else {
     window.alert('상품을 선택해주세요')
   }
-  
 }
-
 
 onMounted(() => {
   getProducts()
@@ -179,6 +194,4 @@ onMounted(() => {
   background-color: slategray;
   cursor: not-allowed;
 }
-
 </style>
-  
