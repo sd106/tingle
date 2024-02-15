@@ -54,9 +54,7 @@
     <div class="item-wrapper">
       <div v-for="item in article" :key="item.id" class="item-container">
         <div class="item-header">
-          <button class="menu-btn" type="button" data-bs-toggle="modal" data-bs-target="#chatModal"
-            style="height: 50px; width: 50px;">수정
-          </button>
+          <button>수정</button>
           <button class="item-button" @click="deleteArticle(item.id)">삭제</button>
         </div>
         <p>{{ item.content }}</p>
@@ -209,7 +207,7 @@ let homeUpdateRequest = {
 };
 
 
-const deleteArticle = async (homeid: number) => {
+const  deleteArticle = async (homeid: number) => {
 
   axios.delete(`${store.API_URL}/home/delete/${homeid}`)
     .then(response => {
