@@ -22,8 +22,8 @@ public interface HomeService {
 //    boolean updateHome(String homeRequestJson, List<MultipartFile> files, Long ordering) throws IOException;
 //
 //    boolean deleteHome(Long homeId);
-//
-//    HomeProfileDto findHomeProfile(Long starId);
-//
-//    boolean insertHomeProfile(Long starId, HomeProfileCreateRequest homeProfileCreateRequest);
+
+    HomeProfileDto findHomeProfile(Long starId);
+
+    boolean insertHomeProfile(Long starId, HomeProfileCreateRequest homeProfileCreateRequest);
 }

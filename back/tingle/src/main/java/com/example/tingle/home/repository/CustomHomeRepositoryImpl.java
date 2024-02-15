@@ -20,12 +20,18 @@ public class CustomHomeRepositoryImpl implements CustomHomeRepository{
     @Override
     public List<HomeEntity> findByStarIdOrderByOrdering(Long starId) {
 
-        return (List<HomeEntity>) jpaQueryFactory
+        List<HomeEntity> list=  (List<HomeEntity>) jpaQueryFactory
                 .from(homeEntity)
                 .where(homeEntity.starEntity.id.eq(starId))
                 .orderBy(homeEntity.ordering.asc())
                 .fetch();
 
+        for(HomeEntity home: list){
+            System.out.println(home.getId());
+            System.out.println(home.getContent());
+        }
+
+        return list;
     }
 }
 

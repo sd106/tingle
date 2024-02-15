@@ -13,7 +13,6 @@ import com.example.tingle.snapshot.S3.S3Service;
 import com.example.tingle.star.entity.StarEntity;
 import com.example.tingle.star.repository.StarRepository;
 import com.example.tingle.store.service.S3UploadService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -41,9 +40,20 @@ public class HomeServiceImpl implements HomeService {
     private final S3UploadService s3UploadService;
     private final S3Service s3Service;
 
+    @Transactional
     @Override
-    public List<HomeDto> findHomesByStarId(Long StarId) {
-        return null;
+    public List<HomeDto> findHomesByStarId(Long starId) {
+
+        List<HomeEntity> homeEntities = homeRepository.findByStarIdOrderByOrdering(starId);
+
+        List<HomeDto> homeDtos = new ArrayList<>();
+
+        homeEntities.forEach(home -> {
+            homeDtos.add(home.toDto());
+        });
+
+        return homeDtos;
+
     }
 
     @Transactional
@@ -168,30 +178,30 @@ public class HomeServiceImpl implements HomeService {
 //
 //        return true;
 //    }
-//
-//    @Override
-//    public HomeProfileDto findHomeProfile(Long starId) {
-//
-//        StarEntity starEntity = starRepository.findById(starId)
-//                .orElseThrow(() -> new IllegalArgumentException("Star not found"));
-//
-//        return starEntity.toDto();
-//
-//    }
-//
-//    @Override
-//    public boolean insertHomeProfile(Long starId, HomeProfileCreateRequest homeProfileCreateRequest) {
-//
-//        StarEntity starEntity = starRepository.findById(starId)
-//                .orElseThrow(() -> new IllegalArgumentException("Star not found"));
-//
-//        starEntity.setCategory(homeProfileCreateRequest.getCategory());
-//        starEntity.setSnsUrl(homeProfileCreateRequest.getSnsUrl());
-//
-//        starRepository.save(starEntity);
-//
-//        return true;
-//    }
+
+    @Override
+    public HomeProfileDto findHomeProfile(Long starId) {
+
+        StarEntity starEntity = starRepository.findById(starId)
+                .orElseThrow(() -> new IllegalArgumentException("Star not found"));
+
+        return starEntity.toDto();
+
+    }
+
+    @Override
+    public boolean insertHomeProfile(Long starId, HomeProfileCreateRequest homeProfileCreateRequest) {
+
+        StarEntity starEntity = starRepository.findById(starId)
+                .orElseThrow(() -> new IllegalArgumentException("Star not found"));
+
+        starEntity.setCategory(homeProfileCreateRequest.getCategory());
+        starEntity.setSnsUrl(homeProfileCreateRequest.getSnsUrl());
+
+        starRepository.save(starEntity);
+
+        return true;
+    }
 
 }
 
