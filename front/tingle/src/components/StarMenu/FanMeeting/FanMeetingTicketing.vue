@@ -2,7 +2,7 @@
     <div>
         <div class="row" style="height: 500px;">
             <div class="col-md-8 p-0">
-                <div class="img-fluid h-100 opacity-75" :style="{ backgroundImage: `url(${fanMeetingInfo.imgURL})` }" style="background-size: cover;" ></div>
+                <div class="img-fluid h-100 opacity-75" :style="{ backgroundImage: `url(${fanMeetingInfo.imgURL1})` }" style="background-size: cover;" ></div>
             </div>
             <div class="col-md-4 rounded-3 d-flex flex-column justify-content-center bg-light p-4">
                 <div>
