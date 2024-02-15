@@ -144,10 +144,11 @@ public class FanMeetingService {
 
     }
 
-    public Optional<FanMeetingReservation> getFanMeetingReservation(Long starId, Long fanId) {
+    public Optional<FanMeetingReservation> getFanMeetingReservation(Long starId, Long fanId, Long fanMeetingId) {
         StarEntity star = starRepository.findById(starId).orElseThrow(() -> new IllegalArgumentException("해당하는 star가 없습니다."));
         UserEntity fan = userRepository.findById(fanId).orElseThrow(() -> new IllegalArgumentException("해당하는 fan이 없습니다."));
-        return fanMeetingReservationRepository.findByUserAndStar(fan, star);
+        FanMeeting fanMeeting = fanMeetingRepository.findById(fanMeetingId).orElseThrow(() -> new IllegalArgumentException("해당하는 팬미팅이 없습니다."));
+        return fanMeetingReservationRepository.findByUserAndStarAndFanMeeting(fan, star, fanMeeting);
     }
 
     public void finishFanMeeting(Long starId) {

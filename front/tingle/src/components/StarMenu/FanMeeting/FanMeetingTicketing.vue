@@ -13,7 +13,7 @@
 
             <div class="text-center mt-4">
                 <div class="d-grid gap-2 col-6 mx-auto">
-                    <RouterLink :to="`/profile/${starId}/fanmeeting/${fanMeetingInfo.id}/ticketbox`" @click="changePrice">
+                    <RouterLink :to="`/profile/${starId}/fanmeeting/${fanMeetingInfo.id}/ticketbox`">
                         <button class="btn btn-secondary btn-lg">
                             팬미팅 입장권 구매 {{ remainTicket }}
                         </button>
@@ -62,6 +62,7 @@ const starId = Number(props.starId)
 
 const changePrice = () => {
     store.selectMeetingPrice = props.fanMeetingInfo!.price
+    console.log(store.selectMeetingPrice)
 }
 
 const sellingTicket = ref<number>(0);
@@ -90,11 +91,12 @@ const changeRemainTicket =async () => {
     }
 }
 
-onMounted(() => {
-    getTicketNumber()
+onMounted( async () => {
+    await getTicketNumber()
     console.log(sellingTicket.value)
     console.log(remainTicket.value)
-    changeRemainTicket()
+    await changeRemainTicket()
+    await changePrice()
     
 })
 
