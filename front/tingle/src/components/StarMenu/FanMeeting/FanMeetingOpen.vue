@@ -2,11 +2,11 @@
     <div>
         <div class="row" style="object-fit: cover; width: 100%; height: 500px;">
             <div class="col-md-8 p-0" >
-                <div class="poster-first"></div>
+                <div class="poster-first" :style="{ backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1)), url(${fanMeetingInfo.imgURL1})` }"></div>
             </div>
-            <div class="col-md-4 d-flex flex-column justify-content-center p-4 poster-content-first" :style="{ backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1)), url(${fanMeetingInfo.imgURL1})` }">
+            <div class="col-md-4 d-flex flex-column justify-content-center p-4 poster-content-first" >
                 <div>
-                    <h2>{{ fanMeetingInfo.title}}</h2>
+                    <h2 style="color: white; font-weight: bold;">{{ fanMeetingInfo.title}}</h2>
                 </div>
                 
                 <div class="text-center mt-4">
@@ -23,15 +23,15 @@
             
         </div>
         <div class="row" style="object-fit: cover; width: 100%; height: 500px;">
-            <div class="col-md-4 poster-content-second" :style="{ backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1)), url(${fanMeetingInfo.imgURL2})` }">
+            <div class="col-md-4 poster-content-second" >
                 <div class="mb-5">
-                    <h2>{{ fanMeetingInfo.description }}</h2>
+                    <h2 style="color: white;">{{ fanMeetingInfo.description }}</h2>
                 </div>
                 <button @click="enterWaitingRoom" class="btn btn-success btn-lg">
                     팬미팅 입장
                 </button>
             </div>
-            <div class="col-md-8 p-0" >
+            <div class="col-md-8 p-0" :style="{ backgroundImage: `linear-gradient(to left, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1)), url(${fanMeetingInfo.imgURL2})` }">
                 <div class="poster-second"></div>
             </div>
         </div>

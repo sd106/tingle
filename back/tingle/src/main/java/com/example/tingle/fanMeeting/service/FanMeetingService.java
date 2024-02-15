@@ -53,12 +53,18 @@ public class FanMeetingService {
             throw new RuntimeException(e);
         }
         StarEntity star = starRepository.findByUsername(request.getStarName());
+        LocalDateTime ticketingStartAt = request.getTicketingStartAt().plusHours(9);
+        LocalDateTime ticketingEndAt = request.getTicketingEndAt().plusHours(9);
+        LocalDateTime fanMeetingStartAt = request.getFanMeetingStartAt().plusHours(9);
 //        LocalDateTime ticketingStartAt = DateTimeParser.parse(request.getTicketingStartAt());
-//        System.out.println("@@@@1111");
+//        System.out.println(request.getTicketingStartAt());
+//        System.out.println(ticketingStartAt);
 //        LocalDateTime ticketingEndAt = DateTimeParser.parse(request.getTicketingEndAt());
-//        System.out.println("@@@@1111");
+//        System.out.println(request.getTicketingEndAt());
+//        System.out.println(ticketingEndAt);
 //        LocalDateTime fanMeetingStartAt = DateTimeParser.parse(request.getFanMeetingStartAt());
-//        System.out.println("@@@@1111");
+//        System.out.println(request.getFanMeetingStartAt());
+//        System.out.println(fanMeetingStartAt);
         String imgURL1 = null;
         String imgURL2 = null;
         try {
@@ -73,9 +79,9 @@ public class FanMeetingService {
                 .description(request.getDescription())
                 .price(request.getPrice())
                 .capacity(request.getCapacity())
-                .fanMeetingStartAt(request.getFanMeetingStartAt())
-                .ticketingStartAt(request.getTicketingStartAt())
-                .ticketingEndAt(request.getTicketingEndAt())
+                .fanMeetingStartAt(fanMeetingStartAt)
+                .ticketingStartAt(ticketingStartAt)
+                .ticketingEndAt(ticketingEndAt)
                 .imgURL1(imgURL1)
                 .imgURL2(imgURL2)
                 .availableFanMeetingTypes(request.getAvailableFanMeetingTypes())
@@ -117,6 +123,8 @@ public class FanMeetingService {
             status = "open";
         }
 
+        List<FanMeetingType> availableFanMeetingTypes = fanMeeting.getAvailableFanMeetingTypes();
+
         return GetFanMeetingInfoResponse.builder()
                 .id(fanMeeting.getId())
                 .title(fanMeeting.getTitle())
@@ -129,6 +137,7 @@ public class FanMeetingService {
                 .price(fanMeeting.getPrice())
                 .imgURL1(fanMeeting.getImgURL1())
                 .imgURL1(fanMeeting.getImgURL2())
+                .availableTypes(availableFanMeetingTypes)
                 .build();
 
     }
@@ -143,7 +152,7 @@ public class FanMeetingService {
         FanMeeting fanMeeting = recentFanMeeting(starId);
         Long waitingRoomId = starId * 10 + 1;
         Long meetingRoomId = starId * 10 + 2;
-        for(Long k : meetingRooms.keySet()){
+        for (Long k : meetingRooms.keySet()) {
             System.out.println(k);
         }
         System.out.println("waitingRoomId : " + waitingRoomId);

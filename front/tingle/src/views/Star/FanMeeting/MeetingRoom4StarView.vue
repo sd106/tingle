@@ -1,21 +1,21 @@
 <template>
-    <div class="row">
+    <div class="row m-0 p-0">
         <div class="col-9">
-            <section v-if="fanMeetingReservation?.fanMeetingType == 'normal'">
+            <section v-if="fanMeetingReservation?.fanMeetingType == '자유대화'">
                 <NormalMeeting 
                 :localVideo="localVideo"
                 :remoteVideo="remoteVideo"
                 :localStream="localStream"
                 />
             </section>
-            <section v-else-if="fanMeetingReservation?.fanMeetingType == 'lifefourcut'">
+            <section v-else-if="fanMeetingReservation?.fanMeetingType == '인생네컷'">
                 <LifeFourCutMeeting 
                 :localVideo="localVideo"
                 :remoteVideo="remoteVideo"
                 :localStream="localStream"
                 />
             </section>
-            <section v-else-if="fanMeetingReservation?.fanMeetingType== 'birthday'">
+            <section v-else-if="fanMeetingReservation?.fanMeetingType== '생일축하'">
                 <BirthdayMeeting 
                 :localVideo="localVideo"
                 :remoteVideo="remoteVideo"
@@ -41,9 +41,11 @@ import NormalMeeting from '@/views/Star/FanMeeting/NormalMeeting.vue'
 import LifeFourCutMeeting from '@/views/Star/FanMeeting/LifeFourCutMeeting.vue'
 import BirthdayMeeting from '@/views/Star/FanMeeting/BirthdayMeeting.vue'
 import FanMeetingBoard from '@/components/StarMenu/FanMeeting/FanMeetingBoard.vue'
+import { useRouter } from 'vue-router'
 
 
 const store = useUserStore()
+const router = useRouter()
 const localUser = ref<SenderState>({
   id: store.starState?.id,
   username: store.starState?.username,
@@ -62,10 +64,23 @@ const loadReservation = async () => {
 
 const finishFan = () => {
     console.log("finishFan")
+    sendToServer({
+        sender: localUser.value,
+        signalType: 'FinishFan',
+        data: fanMeetingReservation.value?.fanname,
+        roomType: 'Waiting'
+    })
 }
 
-const finishMeeting = () => {
-    console.log("finishMeeting")
+const finishMeeting = async () => {
+    console.log("finishing Meeting..")
+    try {
+        const response = axios.delete(`http://localhost:8080/fanMeeting/finish/${store.starState?.id}`)
+        console.log(response)
+        router.push({name:'starhomemanage'})
+    } catch (error) {
+        console.log(error)
+    }
 }
 // 주소로 연결할 웹소켓
 let socket: WebSocket | undefined;
