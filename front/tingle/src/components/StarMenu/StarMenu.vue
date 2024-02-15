@@ -1,4 +1,5 @@
 <template>
+  <div style="height: 40px"></div>
   <!--  유저일 때 -->
   <ul v-if="!store.isStar" class="d-flex justify-content-around nav nav-underline">
     <li class="nav-item">

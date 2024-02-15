@@ -1,5 +1,6 @@
 package com.example.tingle.webRTC;
 
+import com.example.tingle.fanMeeting.dto.FanMeetingReservationMessageDto;
 import com.example.tingle.fanMeeting.entity.FanMeetingReservation;
 import com.example.tingle.fanMeeting.model.FanMeetingRoom;
 import com.example.tingle.fanMeeting.repository.FanMeetingReservationRepository;
@@ -208,22 +209,24 @@ public class SignalHandler extends TextWebSocketHandler {
 
             case "Accept":
                 fan = userRepository.findByUsername(sender.getUsername());
-                System.out.println("11");
                 FanMeetingReservation fanMeetingReservation = fanMeetingReservationRepository.findByUser(fan);
-
+                FanMeetingReservationMessageDto fanMeetingReservationMessageDto = FanMeetingReservationMessageDto.builder()
+                        .orderAt(fanMeetingReservation.getOrderAt())
+                        .userName(fanMeetingReservation.getUser().getUsername())
+                        .starName(fanMeetingReservation.getStar().getUsername())
+                        .fanMeetingType(fanMeetingReservation.getFanMeetingType().getName())
+                        .build();
                 star = starRepository.findStarEntityById(Long.parseLong(data)).orElseThrow(() -> new IllegalArgumentException("해당하는 star가 없습니다."));
-                System.out.println("22");
 
                 SignalData acceptMessaege = SignalData.builder()
                         .sender(server)
                         .signalType(signalData.getSignalType())
                         .data(null)
                         .iceCandidate(null)
-                        .sdp(fanMeetingReservation)
+                        .sdp(fanMeetingReservationMessageDto)
                         .build();
 
                 meetingRoomId = star.getId() * 10 + 2;
-                System.out.println("33");
 
                 FanMeetingRoom meetingRoom = fanMeetingRoomService.findRoomById(meetingRoomId);
                 Map<String, WebSocketSession> meetingClients = fanMeetingRoomService.getClients(meetingRoom);
@@ -232,14 +235,13 @@ public class SignalHandler extends TextWebSocketHandler {
                 WebSocketSession meetingClient = meetingClients.get(star.getUsername());
 
                 meetingClient.sendMessage(new TextMessage(objectMapper.writeValueAsString(acceptMessaege)));
-                System.out.println("44");
-
 
 //                // 팬미팅 중인 팬과 연결을 종료
             case "FinishMeeting":
                 FanMeetingRoom room5 = sessionIdToRoomMap.get(session.getId());
 
                 Map<String, WebSocketSession> meetingClients2 = fanMeetingRoomService.getClients(room5);
+                System.out.println(data);
                 WebSocketSession finishedClient = meetingClients2.get(data);
 
                 fanMeetingRoomService.removeClientByName(room5, data);

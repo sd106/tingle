@@ -7,7 +7,7 @@
     </section>
 
     <section v-else-if="fanMeetingInfo && fanMeetingInfo.status === 'open'" class="pt-5">
-      <FanMeetingOpen :fanMeetingInfo="fanMeetingInfo"></FanMeetingOpen>
+      <FanMeetingOpen :fanMeetingInfo="fanMeetingInfo" :haveTicket="haveTicket"></FanMeetingOpen>
     </section>
 
     <section v-else class="pt-5 text-center">
@@ -53,6 +53,8 @@ const getFanMeetingInfo = async () => {
   try {
     const response = await axios.get(`http://localhost:8080/fanMeeting/info/${starId.value}`)
     fanMeetingInfo.value = response.data
+    console.log(response)
+    console.log("팬미팅 정보 불러왔다.")
   } catch (error) {
     console.log(error)
   }
@@ -60,7 +62,9 @@ const getFanMeetingInfo = async () => {
 
 const getUserTicket =async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/fanMeeting/${starId.value}/reservation/${store.fanState!.id}`)
+    console.log(fanMeetingInfo.value?.id)
+    console.log(fanMeetingInfo.value?.status)
+    const response = await axios.get(`http://localhost:8080/fanMeeting/${starId.value}/reservation/${store.fanState!.id}/${fanMeetingInfo.value!.id}`)
     console.log(response.data)
     haveTicket.value = response.data
     console.log(haveTicket.value)
@@ -69,8 +73,8 @@ const getUserTicket =async () => {
   }
 }
 
-onMounted(() => {
-  getFanMeetingInfo()
-  getUserTicket()
+onMounted( async() => {
+  await getFanMeetingInfo()
+  await getUserTicket()
 })
 </script>

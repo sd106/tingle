@@ -1,13 +1,13 @@
 <template>
     <main>
-        <section v-if="fanMeetingInfo && fanMeetingInfo.status === 'open'" class="pt-5 text-center">
-            <MeetingRoomView4Star :fanMeetingInfo="fanMeetingInfo"></MeetingRoomView4Star>
-        </section>
-        <section v-else-if="fanMeetingInfo && fanMeetingInfo.status === 'ticketing'">
-            <h1>티켓 판매중!</h1>
-        </section>
-        <section v-else class="pt-5">
+        <section v-if="fanMeetingInfo?.status === 'closed'" class="pt-5 text-center">
             <CreateFanMeetingViewVue :fanMeetingInfo="fanMeetingInfo"></CreateFanMeetingViewVue>
+        </section>
+        <!-- <section v-else-if="fanMeetingInfo && fanMeetingInfo.status === 'ticketing'">
+            <h1>티켓 판매중!</h1>
+        </section> -->
+        <section v-else class="pt-5">
+            <MeetingRoomView4Star :fanMeetingInfo="fanMeetingInfo"></MeetingRoomView4Star>
         </section>
     </main>
 </template>

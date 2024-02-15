@@ -11,6 +11,6 @@ import java.util.Optional;
 
 public interface FanMeetingReservationRepository extends JpaRepository<FanMeetingReservation, Long> {
     List<FanMeetingReservation> findByFanMeeting(FanMeeting fanMeeting);
-    Optional<FanMeetingReservation> findByUserAndStar(UserEntity user, StarEntity star);
+    Optional<FanMeetingReservation> findByUserAndStarAndFanMeeting(UserEntity user, StarEntity star, FanMeeting fanMeeting);
     FanMeetingReservation findByUser(UserEntity user);
 }

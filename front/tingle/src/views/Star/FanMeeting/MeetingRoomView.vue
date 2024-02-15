@@ -62,6 +62,7 @@ import type { SocketMessage, FanMeetingReservation, SenderState } from '@/common
 import NormalMeeting from '@/views/Star/FanMeeting/NormalMeeting.vue'
 import LifeFourCutMeeting from '@/views/Star/FanMeeting/LifeFourCutMeeting.vue'
 import BirthdayMeeting from '@/views/Star/FanMeeting/BirthdayMeeting.vue'
+import router from '@/router'
 
 
 const controlsVisible = ref(false)
@@ -185,6 +186,11 @@ const initializeWebSocket = () => {
         console.log('Client is starting to ' + (message.data === 'true') ? 'negotiate' : 'wait for a peer')
         
         handleJoinMessage(message)
+        break
+      
+      case 'FinishFan':
+        console.log('Fan Meeting is finished')
+        handleFinishMeeting(message)
         break
 
       default:
@@ -320,6 +326,21 @@ const handleJoinMessage = async (message: SocketMessage) => {
 
   // 내 media를 RTCPeerConnection에 추가
   localStream.getTracks().forEach((track) => myPeerConnection.addTrack(track, localStream))
+}
+
+const handleFinishMeeting =async (message: SocketMessage) => {
+  try {
+    sendToServer({
+            sender: localUser.value,
+            signalType: 'leave',
+            sdp: myPeerConnection.localDescription ? myPeerConnection.localDescription : undefined
+          })
+    
+    router.go(-1)
+    alert("팬미팅이 종료되었습니다.")
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const handleErrorMessage = (message: SocketMessage) => {

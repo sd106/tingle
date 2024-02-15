@@ -1,5 +1,5 @@
 <template>
-  <mai class="">
+  <mai>
     <AppHeader />
     <AppSidebar />
     <div
@@ -30,7 +30,7 @@ onMounted(() => {
 </script>
 <style>
 .content {
-  background-color: rgb(90, 76, 156);
+  background-color: #f1eaff;
 }
 
 main {

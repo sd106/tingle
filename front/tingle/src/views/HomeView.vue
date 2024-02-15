@@ -188,8 +188,8 @@ h1 {
   /* background-color: #0C356A; */
 
   /* 원래 색 */
-  /* background-color: #eef1ff; */
-  background-color: rgb(90, 76, 156);
+  background-color: #F1EAFF;
+  /* background-color: rgb(90, 76, 156); */
 
 }
 

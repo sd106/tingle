@@ -15,6 +15,6 @@ import AppHeader from '@/components/Layouts/AppHeader.vue'
 
 <style>
 .content2 {
-  background-color: #ffc7c7;
+  background-color: #FFF3E2;
 }
 </style>

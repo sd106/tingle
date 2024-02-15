@@ -1,9 +1,14 @@
 <template>
   <!-- Nav바 -->
-  <nav class="navbar fixed-top custom-navbar">
-    <div class="container-fluid">
+  <nav class="navbar fixed-top p-0">
+    <div
+      :class="{ 'user-background': !isStar, 'star-background': isStar }"
+      class="container-fluid"
+      style="height: 80px"
+    >
       <!-- 사이드바 여는 버튼 -->
       <button
+        v-if="store.isLogin"
         class="menu-btn"
         type="button"
         data-bs-toggle="offcanvas"
@@ -16,10 +21,17 @@
       </button>
       <RouterLink to="/">
         <img v-if="isStar" class="logo" src="/image/star-logo.gif" alt="" style="height: 60px" />
-        <img v-else class="logo" src="/image/boat-logo.gif" alt="" style="height: 60px" />
+        <img
+          v-if="store.isLogin && !isStar"
+          class="logo"
+          src="/image/boat-logo.gif"
+          alt=""
+          style="height: 60px"
+        />
+        <h1 class="logo-title" style="margin-left: 10%" v-if="!store.isLogin">TINGLE</h1>
       </RouterLink>
       <!-- 검색창 -->
-      <div class="search-box">
+      <div class="search-box" v-if="!isStar">
         <input
           class="search-txt"
           placeholder="검색어를 입력하세요"
@@ -222,8 +234,14 @@ const redirectToNaver = () => {
   right: 0;
 }
 
-.custom-navbar {
-  background-color: white;
+.user-background {
+  /* background-color: #DCBFFF; */
+  background: linear-gradient(to bottom, #dcbfff, #f1eaff);
+  /* background: linear-gradient(to bottom, rgba(220, 191, 255, 0.3), rgba(241, 234, 255, 0.2)); */
+}
+
+.star-background {
+  background: linear-gradient(to bottom, #ffc7c7, #fff3e2);
 }
 
 .dropdown-toggle::before {
@@ -333,4 +351,5 @@ const redirectToNaver = () => {
   background-color: #eee; /* 선택된 항목의 배경색 */
   /* 추가 스타일링 */
 }
+
 </style>

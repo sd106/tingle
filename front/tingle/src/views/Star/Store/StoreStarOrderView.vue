@@ -2,7 +2,7 @@
   <main class="container">
     <StarMenu :id="starid" class="mb-5" />
     <div>
-      <div v-if="responseMessageGetByStarName">
+      <div  v-if="responseMessageGetByStarName" style="padding-left: 80px; padding-right: 80px; padding-top: 30px;">
         <p class="fw-bold mt-3 mb-1">주문 상품</p>
         <hr class="m-0 mb-3" style="border: 0; height: 3px; background: #000" />
         <div class="d-flex">

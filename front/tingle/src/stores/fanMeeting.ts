@@ -31,4 +31,4 @@ export const useFanMeetingStore = defineStore('fanMeeting', () => {
     goPage,
     selectMeetingPrice
   }
-})
+},{ persist: true })
