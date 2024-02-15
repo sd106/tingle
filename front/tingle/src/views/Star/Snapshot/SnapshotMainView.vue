@@ -1,23 +1,26 @@
 <template>
-  <StarMenu :id="id" />
-  <div class="main-layout pt-5">
-    <!-- 상단 메뉴 -->
-    <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
-    <section v-if="wishStore.selectedSnapshot" class="detail-section cont mb-5">
-      <SnapShotDetail :selectedSnapshot="wishStore.selectedSnapshot" :starid="id" />
-    </section>
-  </div>
-  <div class="d-flex justify-content-between align-items-center my-4 mx-3">
-    <div>
-      <button class="btn me-2 fs-5 fw-bold text-secondary" @click="loadSnapshots">✧ 최신순</button>
-      <button class="btn fs-5 fw-bold text-secondary" @click="loadSnapshotsBylikes">
-        🔥 좋아요순
-      </button>
+  <main class="container">
+    <StarMenu :id="id" />
+    <div class="main-layout pt-5">
+      <!-- 상단 메뉴 -->
+      <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
+      <section v-if="wishStore.selectedSnapshot" class="detail-section cont mb-5">
+        <SnapShotDetail :selectedSnapshot="wishStore.selectedSnapshot" :starid="id" />
+      </section>
     </div>
-    <div>
-      <RouterLink :to="`/${id}/snapshot/create`" class="btn btn-secondary">글쓰기</RouterLink>
+    <div class="d-flex justify-content-between align-items-center my-4 mx-3">
+      <div>
+        <button class="btn me-2 fs-5 fw-bold text-secondary" @click="loadSnapshots">
+          ✧ 최신순
+        </button>
+        <button class="btn fs-5 fw-bold text-secondary" @click="loadSnapshotsBylikes">
+          🔥 좋아요순
+        </button>
+      </div>
+      <div>
+        <RouterLink :to="`/${id}/snapshot/create`" class="btn btn-secondary">글쓰기</RouterLink>
+      </div>
     </div>
-  </div>
 
   <div class="main-layout">
     <!-- 스냅샷 목록 섹션 (파란색 부분) -->
@@ -56,49 +59,47 @@
       </div>
     </section>
   </div>
+  </main>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import axios from 'axios';
-import { useUserStore } from '@/stores/user';
+import { ref, onMounted, computed } from 'vue'
+import axios from 'axios'
+import { useUserStore } from '@/stores/user'
 import { useSnapshotStore } from '@/stores/snapshot'
-import StarMenu from '@/components/StarMenu/StarMenu.vue';
-import type { Starinfo, SnapshotType } from '@/common/types';
+import StarMenu from '@/components/StarMenu/StarMenu.vue'
+import type { Starinfo, SnapshotType } from '@/common/types'
 import SnapShotDetail from '../../../components/StarMenu/SnapShot/SnapShotDetail.vue'
 
+const store = useUserStore()
+const wishStore = useSnapshotStore()
+const props = defineProps(['id'])
+const id = ref(props.id)
 
-const store = useUserStore();
-const wishStore = useSnapshotStore();
-const props = defineProps(['id']);
-const id = ref(props.id);
-
-
-const snapshots = ref<SnapshotType[]>([]);
-const display = ref<Starinfo[]>([]);
-const containerRef = ref<HTMLElement | null>(null);
-
+const snapshots = ref<SnapshotType[]>([])
+const display = ref<Starinfo[]>([])
+const containerRef = ref<HTMLElement | null>(null)
 
 const loadSnapshots = async (): Promise<void> => {
   try {
     console.log(id)
-    const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/created`);
-    snapshots.value = response.data.AllSnapShot;
-    console.log("최신순");
+    const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/created`)
+    snapshots.value = response.data.AllSnapShot
+    console.log('최신순')
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
-};
+}
 
 const loadSnapshotsBylikes = async (): Promise<void> => {
   try {
-    const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/likes`);
-    snapshots.value = response.data.AllSnapShot;
-    console.log("좋아요순");
+    const response = await axios.get(`http://localhost:8080/snapshot/star/${id.value}/likes`)
+    snapshots.value = response.data.AllSnapShot
+    console.log('좋아요순')
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
-};
+}
 
 // const loadMore = function (): void {
 //   // 스크롤 관련 로딩 로직
@@ -106,40 +107,37 @@ const loadSnapshotsBylikes = async (): Promise<void> => {
 //   display.value = [...display.value, ...newData];
 // };
 
-
 const handleScroll = function (): void {
   // 스크롤 이벤트 처리 로직
-  const container = containerRef.value;
+  const container = containerRef.value
   if (container) {
     // 스크롤이 하단에 도달했을 때 추가 데이터 로딩
     if (container.scrollTop + container.clientHeight >= container.scrollHeight) {
       // loadMore();
     }
   }
-};
+}
 
 onMounted(() => {
-  wishStore.selectedSnapshot = null;
-  loadSnapshots();
-});
+  wishStore.selectedSnapshot = null
+  loadSnapshots()
+})
 
 const filteredSnapshot1 = computed(() => {
-  return snapshots.value.filter((_, index) => index % 5 === 0);
-});
+  return snapshots.value.filter((_, index) => index % 5 === 0)
+})
 const filteredSnapshot2 = computed(() => {
-  return snapshots.value.filter((_, index) => index % 5 === 1);
-});
+  return snapshots.value.filter((_, index) => index % 5 === 1)
+})
 const filteredSnapshot3 = computed(() => {
-  return snapshots.value.filter((_, index) => index % 5 === 2);
-});
+  return snapshots.value.filter((_, index) => index % 5 === 2)
+})
 const filteredSnapshot4 = computed(() => {
-  return snapshots.value.filter((_, index) => index % 5 === 3);
-});
+  return snapshots.value.filter((_, index) => index % 5 === 3)
+})
 const filteredSnapshot5 = computed(() => {
-  return snapshots.value.filter((_, index) => index % 5 === 4);
-});
-
-
+  return snapshots.value.filter((_, index) => index % 5 === 4)
+})
 </script>
 
 <style>
@@ -206,7 +204,6 @@ const filteredSnapshot5 = computed(() => {
 }
 
 .snapshot-item {
-
   flex: 0 0 calc(19% - 10px);
   margin: 5px;
   cursor: pointer;
@@ -229,5 +226,5 @@ const filteredSnapshot5 = computed(() => {
   /* 이미지가 비율을 유지하면서 항목을 꽉 채우도록 함 */
   transition: opacity 0.3s ease;
   /* 부드러운 효과를 위한 전환 */
-}</style>
-
+}
+</style>

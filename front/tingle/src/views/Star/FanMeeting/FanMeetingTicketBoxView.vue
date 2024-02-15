@@ -1,7 +1,7 @@
 <template>
   <main>
     <div class="my-5 text-center">
-      <h2> {{ starName }} 티켓 박스</h2>
+      <h2> {{ starid }} 티켓 박스</h2>
     </div>
     <div class="container">
       <div class="row">
@@ -15,19 +15,19 @@
           <div class="pay-box">
             <div v-if="selectedProduct">
               <h4>{{ selectedProduct.name }}</h4>
-              <p>가격: {{ selectedProduct.price }} 원</p>
+              <p>가격: {{ meetingStore.selectMeetingPrice }} 원</p>
             </div>
             <div v-else>
               <p>티켓을 선택해주세요.</p>
             </div>
             <div class="d-flex justify-content-center">
-              <button :class="{'btn': true ,'btn-on':selectedProduct , 'btn-off':!selectedProduct}" @click="payRequest">구매하기</button>
+              <button :class="{'btn': true ,'btn-on':selectedProduct , 'btn-off':!selectedProduct}" @click="payRequest()">구매하기</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </main>ddd
+  </main>
 </template>
 
 <script setup lang="ts">
@@ -36,14 +36,20 @@ import type { FanMeetingTicket } from '@/common/types/index'
 import { useRoute } from 'vue-router' 
 import axios from 'axios'
 import TicketFormat from '@/components/StarMenu/FanMeeting/TicketFormat.vue'
+import { useUserStore } from '@/stores/user'
+import { useFanMeetingStore } from '@/stores/fanMeeting'
+import { storeToRefs } from 'pinia'
+import router from '@/router'
 
-const route = useRoute()
-
+const route = useRoute();
+const userStore = useUserStore();
+const meetingStore = useFanMeetingStore();
 const products = ref<FanMeetingTicket[]>([])
+const props = defineProps(['meetingId']);
 
+const starid = Number(route.params.starid);
+const meetingid = Number(route.params.meetingid)
 
-const starName = ref<string>()
-starName.value = route.params.starid.toString();
 
 // products.value = [
 //   {
@@ -101,24 +107,44 @@ const selectedProduct = ref<FanMeetingTicket>()
 
 const select = (product: FanMeetingTicket) => {
   selectedProduct.value = product
+  console.log(fanId.value)
+  console.log(selectedProduct.value.id)
+  console.log(starid)
 }
 
 const getProducts = async () => {
   try {
-    const response = await axios.get(``)
+    const response = await axios.get(`http://localhost:8080/fanMeeting/types`)
     products.value = response.data
+    console.log(products.value)
   } catch (error) {
     console.log(error)
   }
 }
 
+const fanId = ref(userStore.fanState!.id)
+
 const payRequest = async () => {
-  try {
-    const response = await axios.post(``)
-    products.value = response.data
-  } catch (error) {
-    console.log(error)
+
+  if (selectedProduct!.value) {
+
+    try {
+      console.log("post 직전, 유저정보 :", userStore.fanState!.username)
+      console.log("팬미팅 id :", meetingid, "팬 id :", fanId.value, "스타 id :", starid, "상품 타입 id :", selectedProduct.value.id)
+
+      await axios.post(`http://localhost:8080/fanMeeting/${meetingid}/reservation/new/${starid}/${selectedProduct.value.id}`,
+       { username: userStore.fanState!.username }, { withCredentials: true })
+      
+      console.log("post 끝남")
+      
+    } catch (error) {
+      console.log(error)
+    }
+    router.push({ name: 'fanmeeting'})
+  } else {
+    window.alert('상품을 선택해주세요')
   }
+  
 }
 
 

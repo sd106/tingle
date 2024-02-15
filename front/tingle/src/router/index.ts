@@ -4,6 +4,7 @@ import LayoutOnView from '@/views/Layout/LayoutOnView.vue'
 import LayoutOnlyHeader from '@/views/Layout/LayoutOnlyHeader.vue'
 import LayoutOffView from '@/views/Layout/LayoutOffView.vue'
 import HomeView from '@/views/HomeView.vue'
+import StarProfileUpdateView from '@/views/Star/StarHome/StarProfileUpdateView.vue'
 import SignUpView from '@/views/User/SignUpView.vue'
 import ProfileView from '@/views/User/ProfileView.vue'
 import ProfileUserInfoView from '@/views/User/ProfileUserInfoView.vue'
@@ -88,68 +89,6 @@ const router = createRouter({
           component: ProfileUserOrdersDetailView,
           props: true
         },
-        ////////////////////////스타 메뉴
-        ///////////// 스타 전용
-        {
-          path: '/forstar/home/manage',
-          name: 'starhomemanage',
-          component: StarHomeManageView,
-        },
-        {
-          path: '/forstar/snapshot',
-          name: 'starSnapshot',
-          component: SnapshotMain4StarView
-        },
-        
-        {
-          path: '/forstar/wish/manage',
-          name: 'wishmanage',
-          component: WishManageView,
-        },
-        {
-          path: '/forstar/store/',
-          name: 'storestarmainview',
-          component: StoreStarMainView,
-          props: (route) => ({ id: route.params.starid })
-        },
-        {
-          path: '/forstar/store/star/:productId(\\d+)',
-          name: 'storedetailstarview',
-          component: StoreDetailStarView,
-          props: true
-        },
-        {
-          path: '/forstar/store/create',
-          name: 'storecreate',
-          component: StoreCreateView,
-        },
-        {
-          path: '/forstar/store/update/:productId',
-          name: 'storeupdate',
-          component: StoreUpdateView,
-          props: true
-        },
-        {
-          path: '/forstar/store/orders',
-          name: 'storestarorderview',
-          component: StoreStarOrderView
-        },
-        {
-          path: '/forstar/fanmeeting',
-          name: 'fanmeeting4star',
-          component: FanMeetingEntrance4StarView,
-        },
-        {
-          path: '/forstar/fanmeeting/waitingroom',
-          name: 'MeetingRoom4StarView',
-          component: MeetingRoom4StarView
-        },
-        {
-          path: '/forstar/fanmeeting/create',
-          name: 'CreateMeetingView',
-          component: CreateFanMeetingView
-        },
-        //////////////////////////////////////////// 스타 메뉴 끝
 
         // 홈
         {
@@ -208,12 +147,13 @@ const router = createRouter({
           path: '/:starid/fanmeeting',
           name: 'fanmeeting',
           component: FanMeetingEntranceView,
-          props: (route) => ({ starid: route.params.starid })
+          props: (route) => ({ id: route.params.starid })
         },
         {
-          path: '/profile/:starid/fanmeeting/ticketbox',
+          path: '/profile/:starid/fanmeeting/:meetingid/ticketbox',
           name: 'FanMeetingTicketBoxView',
-          component: FanMeetingTicketBoxView
+          component: FanMeetingTicketBoxView,
+          props: (route) => ({ starid: route.params.starid, meetingid: route.params.meetingid })
         },
         {
           path: '/fanmeeting/:starid/waitingroom',
@@ -228,6 +168,75 @@ const router = createRouter({
       name: 'layoutonlyheader',
       component: LayoutOnlyHeader,
       children: [
+        ////////////////////////스타 메뉴
+        ///////////// 스타 전용
+        {
+          path: '/forstar/home/manage',
+          name: 'starhomemanage',
+          component: StarHomeManageView
+        },
+        {
+          path: '/forstar/snapshot',
+          name: 'starSnapshot',
+          component: SnapshotMain4StarView
+        },
+
+        {
+          path: '/forstar/wish/manage',
+          name: 'wishmanage',
+          component: WishManageView
+        },
+        {
+          //스타 프로필 수정기능
+          path: '/forstar/home/profile/update',
+          name: 'starhomeprofileupdate',
+          component: StarProfileUpdateView,
+          props: (route) => ({ id: route.params.starid })
+        },
+        {
+          path: '/forstar/store/',
+          name: 'storestarmainview',
+          component: StoreStarMainView,
+          props: (route) => ({ id: route.params.starid })
+        },
+        {
+          path: '/forstar/store/star/:productId(\\d+)',
+          name: 'storedetailstarview',
+          component: StoreDetailStarView,
+          props: true
+        },
+        {
+          path: '/forstar/store/create',
+          name: 'storecreate',
+          component: StoreCreateView
+        },
+        {
+          path: '/forstar/store/update/:productId',
+          name: 'storeupdate',
+          component: StoreUpdateView,
+          props: true
+        },
+        {
+          path: '/forstar/store/orders',
+          name: 'storestarorderview',
+          component: StoreStarOrderView
+        },
+        {
+          path: '/forstar/fanmeeting',
+          name: 'fanmeeting4star',
+          component: FanMeetingEntrance4StarView
+        },
+        {
+          path: '/forstar/fanmeeting/waitingroom',
+          name: 'MeetingRoom4StarView',
+          component: MeetingRoom4StarView
+        },
+        {
+          path: '/forstar/fanmeeting/create',
+          name: 'CreateMeetingView',
+          component: CreateFanMeetingView
+        },
+        //////////////////////////////////////////// 스타 메뉴 끝
         {
           path: '/fanmeetingRoom/:starid',
           name: 'FanMeetingRoomView',
