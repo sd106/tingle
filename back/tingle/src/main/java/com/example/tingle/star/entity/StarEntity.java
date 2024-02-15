@@ -14,6 +14,7 @@ import java.util.Set;
 
 @Entity(name = "star")
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

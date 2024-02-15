@@ -33,6 +33,7 @@ public class SignalHandler extends TextWebSocketHandler {
     private final Map<Long, FanMeetingRoom> chatRooms = MeetingRoomMap.getInstance().getMeetingRooms();
     private final ObjectMapper objectMapper = new ObjectMapper();
     private Map<String, FanMeetingRoom> sessionIdToRoomMap = new HashMap<>();
+    private static SenderState server = new SenderState("Server");
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -53,10 +54,10 @@ public class SignalHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-
         SignalData signalData = objectMapper.readValue(message.getPayload(), SignalData.class);
 
-        String sender = signalData.getSender();
+        System.out.println("handleTextMessage: " + signalData.getSignalType());
+        SenderState sender = signalData.getSender();
         String data = signalData.getData();
         String roomType = signalData.getRoomType();
         StarEntity star;
@@ -78,7 +79,7 @@ public class SignalHandler extends TextWebSocketHandler {
                     Map<String, WebSocketSession> clients = fanMeetingRoomService.getClients(room);
 
                     for (Map.Entry<String, WebSocketSession> client : clients.entrySet()) {
-                        if (!client.getKey().equals(sender)) {
+                        if (!client.getKey().equals(sender.getUsername())) {
                             SignalData sd = SignalData.builder()
                                     .data(data)
                                     .iceCandidate(iceCandidate)
@@ -115,17 +116,36 @@ public class SignalHandler extends TextWebSocketHandler {
                 System.out.println("방번호는??: " + room2);
 
                 SignalData sd = SignalData.builder()
-                        .sender("Server")
+                        .sender(server)
                         .signalType("Join")
                         .data(data)
                         .iceCandidate(null)
                         .sdp(null)
                         .build();
-                System.out.println(sender);
+                System.out.println(sender.getUsername());
                 System.out.println(session);
-                fanMeetingRoomService.addClient(room2, sender, session);
+                fanMeetingRoomService.addClient(room2, sender.getUsername(), session);
                 sessionIdToRoomMap.put(session.getId(), room2);
                 session.sendMessage(new TextMessage(objectMapper.writeValueAsString(sd)));
+
+                // 대기자 목록을 받기 위해 메시지 처리
+                if (roomType.equals("Waiting")) {
+                    SignalData sd2 = SignalData.builder()
+                            .sender(sender) // 또는 적절한 발신자 설정
+                            .signalType("Join2")
+                            .data("새로운 사용자가 대기방에 입장했습니다.")
+                            .iceCandidate(null)
+                            .sdp(null)
+                            .build();
+
+                    // 대기방에 있는 모든 클라이언트(스타 포함)에게 메시지를 보낸다
+                    Map<String, WebSocketSession> waitingClients = fanMeetingRoomService.getClients(room2);
+                    for (WebSocketSession clientSession : waitingClients.values()) {
+                        clientSession.sendMessage(new TextMessage(objectMapper.writeValueAsString(sd2)));
+                    }
+                }
+
+                // 스타한테 메시지 보내기 sd2
 
                 break;
             case "Leave":
@@ -159,7 +179,7 @@ public class SignalHandler extends TextWebSocketHandler {
                 break;
             // 다음 팬에게 초대장 보내는 신호
             case "Invite":
-                star = starRepository.findByUsername(sender);
+                star = starRepository.findByUsername(sender.getUsername());
 
                 // roomType에 따라 roomId를 다르게 찾는다 (대기방 => *10 +1, 미팅방 => *10 + 2)
                 waitingRoomId = star.getId() * 10 + 1;
@@ -173,7 +193,7 @@ public class SignalHandler extends TextWebSocketHandler {
 
                 if (waitingClient != null) {
                     SignalData inviteMessage = SignalData.builder()
-                            .sender("Server")
+                            .sender(server)
                             .signalType(signalData.getSignalType())
                             .data(null)
                             .iceCandidate(null)
@@ -187,14 +207,15 @@ public class SignalHandler extends TextWebSocketHandler {
                 break;
 
             case "Accept":
-                fan = userRepository.findByUsername(sender);
-
+                fan = userRepository.findByUsername(sender.getUsername());
+                System.out.println("11");
                 FanMeetingReservation fanMeetingReservation = fanMeetingReservationRepository.findByUser(fan);
 
-                star = starRepository.findByUsername(data);
+                star = starRepository.findStarEntityById(Long.parseLong(data)).orElseThrow(() -> new IllegalArgumentException("해당하는 star가 없습니다."));
+                System.out.println("22");
 
-                SignalData inviteMessage = SignalData.builder()
-                        .sender("Server")
+                SignalData acceptMessaege = SignalData.builder()
+                        .sender(server)
                         .signalType(signalData.getSignalType())
                         .data(null)
                         .iceCandidate(null)
@@ -202,14 +223,16 @@ public class SignalHandler extends TextWebSocketHandler {
                         .build();
 
                 meetingRoomId = star.getId() * 10 + 2;
+                System.out.println("33");
 
                 FanMeetingRoom meetingRoom = fanMeetingRoomService.findRoomById(meetingRoomId);
                 Map<String, WebSocketSession> meetingClients = fanMeetingRoomService.getClients(meetingRoom);
 
                 // data 안에는 초대할 팬의 이름이 들어온다.
-                WebSocketSession meetingClient = meetingClients.get(data);
+                WebSocketSession meetingClient = meetingClients.get(star.getUsername());
 
-                meetingClient.sendMessage(new TextMessage(objectMapper.writeValueAsString(inviteMessage)));
+                meetingClient.sendMessage(new TextMessage(objectMapper.writeValueAsString(acceptMessaege)));
+                System.out.println("44");
 
 
 //                // 팬미팅 중인 팬과 연결을 종료

@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div>
+    <div class="row">
+        <div class="col-9">
             <section v-if="fanMeetingReservation?.fanMeetingType == 'normal'">
                 <NormalMeeting 
                 :localVideo="localVideo"
@@ -26,7 +26,7 @@
                 <h1>연결중입니다...</h1>
             </section>
         </div>
-        <div>
+        <div class="col-3">
             <FanMeetingBoard @finish-fan="finishFan" @finish-meeting="finishMeeting"/>
         </div>
     </div>
@@ -36,17 +36,21 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import axios from 'axios'
-import type { SocketMessage, FanMeetingReservation } from '@/common/types/index'
+import type { SocketMessage, FanMeetingReservation, SenderState } from '@/common/types/index'
 import NormalMeeting from '@/views/Star/FanMeeting/NormalMeeting.vue'
 import LifeFourCutMeeting from '@/views/Star/FanMeeting/LifeFourCutMeeting.vue'
 import BirthdayMeeting from '@/views/Star/FanMeeting/BirthdayMeeting.vue'
 import FanMeetingBoard from '@/components/StarMenu/FanMeeting/FanMeetingBoard.vue'
 
+
 const store = useUserStore()
-const starName = store.starState?.username
+const localUser = ref<SenderState>({
+  id: store.starState?.id,
+  username: store.starState?.username,
+  picture: store.starState?.picture
+})
 
 const fanMeetingReservation = ref<FanMeetingReservation>()
-
 const loadReservation = async () => {
     try {
         const response = await axios.get(`${store.API_URL}/fanMeeting/reservation/${store.fanState?.id}`)
@@ -68,7 +72,6 @@ let socket: WebSocket | undefined;
 
 // UI elements
 const localVideo = ref(null)
-const localUserName = ref(store.fanState?.username)
 const remoteVideo = ref(null)
 
 // WebRTC STUN servers 
@@ -148,10 +151,10 @@ const initializeWebSocket = () => {
     socket.onopen = () => {
         console.log('소켓 열렸는디요')
         sendToServer({
-            sender: starName,
+            sender: localUser.value,
             signalType: 'Join',
             roomType: 'Meeting',
-            data: starName,
+            data: String(localUser.value.id),
         })
     }
 
@@ -188,7 +191,7 @@ const initializeWebRTC = async () => {
         // ICE Candidate 정보를 서버로 보냄
         if (event.candidate) {
             sendToServer({
-                sender: localUserName.value,
+                sender: localUser.value,
                 signalType: 'Ice',
                 iceCandidate: event.candidate
             })
@@ -218,18 +221,17 @@ const initializeWebRTC = async () => {
 }
 
 // socket event 별 처리 메서드
-
 const handleOfferMessage = async (message: SocketMessage) => {
     try {
         if (message.sdp) {
-            const remoteDescription = new RTCSessionDescription(message.sdp);
+            const remoteDescription = new RTCSessionDescription(message.sdp as RTCSessionDescriptionInit);
             await myPeerConnection.setRemoteDescription(remoteDescription)
         }
 
         const answer = await myPeerConnection.createAnswer()
         await myPeerConnection.setLocalDescription(answer)
         sendToServer({
-            sender: localUserName.value,
+            sender: localUser.value,
             signalType: 'Answer',
             sdp: myPeerConnection.localDescription ? myPeerConnection.localDescription : undefined
         })
@@ -240,7 +242,7 @@ const handleOfferMessage = async (message: SocketMessage) => {
 
 const handleAnswerMessage = (message: SocketMessage) => {
     if (message.sdp) {
-        const remoteDescription = new RTCSessionDescription(message.sdp);
+        const remoteDescription = new RTCSessionDescription(message.sdp as RTCSessionDescriptionInit);
         myPeerConnection.setRemoteDescription(remoteDescription)
     }
 }
@@ -260,7 +262,7 @@ const handleJoinMessage = async (message: SocketMessage) => {
                 const offer = await myPeerConnection.createOffer()
                 await myPeerConnection.setLocalDescription(offer)
                 sendToServer({
-                    sender: localUserName.value,
+                    sender: localUser.value,
                     signalType: 'Offer',
                     sdp: myPeerConnection.localDescription ? myPeerConnection.localDescription : undefined
                 })
@@ -278,8 +280,7 @@ const handleJoinMessage = async (message: SocketMessage) => {
 }
 
 const handleAcceptMessage = (message: SocketMessage) => {
-    message.sdp
-    console.log('Signal ACCEPT received')
+    fanMeetingReservation.value = message.sdp as FanMeetingReservation
 }
 
 const handleErrorMessage = (message: SocketMessage) => {

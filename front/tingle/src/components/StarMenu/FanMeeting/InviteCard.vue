@@ -8,7 +8,7 @@
             </div>
             <br>
             <div class="d-flex justify-content-center">
-                <button class="enter-btn" @click="store.goPage('FanMeetingRoomView')">입장하기</button>
+                <button class="enter-btn" @click="enterMeetingRoom">입장하기</button>
             </div>
         </div>
     </div>
@@ -22,11 +22,7 @@ import type { Star } from '@/common/types'
 import axios from 'axios';
 
 const store = useFanMeetingStore()
-
-const star = ref<Star>()
-const loadStar = async () => {
-  star.value = await axios.get(`${store.API_URL}/star/${props.starid}`)
-}
+const emit = defineEmits(['enter-meeting-room'])
 
 const props = defineProps({
     starid: {
@@ -35,6 +31,16 @@ const props = defineProps({
     }
 })
 
+const star = ref<Star>()
+const loadStar = async () => {
+  star.value = await axios.get(`${store.API_URL}/star/${props.starid}`)
+}
+
+
+const enterMeetingRoom = () => {
+  emit('enter-meeting-room')
+  store.goPage('FanMeetingRoomView')
+}
 onMounted(() => {
   loadStar()
 })

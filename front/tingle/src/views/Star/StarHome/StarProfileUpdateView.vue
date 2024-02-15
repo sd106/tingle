@@ -1,41 +1,12 @@
 <template>
   <main class="container">
-    <StarMenu :id="id" />
+    <StarMenu :id="starId" />
+  1 {{ starId}}
     <div class="tw-p-8">
       <h1 class="tw-text-2xl tw-font-bold tw-mb-8">스타 프로필 수정</h1>
-
-      <div class="d-flex justify-content-between">
-        <!-- 드래그 앤 드롭을 통한 파일 업로드 영역 -->
-        <div
-          ref="dragArea"
-          class="tw-border-dashed tw-border-2 tw-border-primary tw-p-4 tw-text-center tw-cursor-pointer tw-mb-4"
-          @dragover.prevent="handleDragOver"
-          @drop="handleDrop"
-          @click="fileInput!.click()"
-        >
-          프로필 사진을 드래그 앤 드롭하거나 클릭하여 선택하세요.
-          <input
-            type="file"
-            ref="fileInput"
-            @change="handleFileUpload"
-            style="display: none"
-          />
-        </div>
-
-        <!-- 드래그 앤 드롭으로 업로드된 파일의 미리보기 -->
-        <div class="tw-grid tw-grid-cols-3 tw-gap-4">
-          <div v-for="(file, index) in previewFiles" :key="index" class="tw-relative tw-mb-4">
-            <img :src="file" class="tw-rounded tw-shadow-md" />
-            <button
-              @click="removeFile(index)"
-              class="tw-btn tw-btn-error tw-btn-sm tw-absolute tw-right-0 tw-top-0"
-            >
-              삭제
-            </button>
-          </div>
-        </div>
-      </div>
+      <img :src="starProfile?.profileImage" alt="사진" class="w-75 h-75">
       <div>
+
         <!-- 상품 정보 입력 폼 -->
         <div class="tw-flex tw-gap-4 tw-me-4 tw-mb-4">
 
@@ -57,20 +28,17 @@
 
         </div>
 
-        <textarea class="textarea textarea-bordered tw-input tw-input-bordered" placeholder="SNS">
-
-        </textarea>
-
       </div>
         <TiptapTest />
 
 
       <!-- 상품 생성 버튼 -->
-      <button @click="submitForm" class="tw-btn tw-btn-primary tw-mt-4">상품 생성</button>
+<!--      <button @click="submitForm" class="tw-btn tw-btn-primary tw-mt-4">프로필 수정</button>-->
     </div>
     <!-- //-----------상품 생성----------------------------// -->
   </main>
 </template>
+
 
 <script setup lang="ts">
 import { ref } from 'vue'
@@ -79,6 +47,18 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import TiptapTest from '@/components/StarMenu/Store/TiptabTest.vue'
 import StarMenu from '@/components/StarMenu/StarMenu.vue'
+
+const store = useUserStore();
+
+const props = defineProps({
+  starId: string
+})
+
+const starId= props.starId;
+
+import { onMounted, watch } from 'vue'
+import type { StarProfile } from '@/common/types'
+
 const router = useRouter()
 const starProfile = ref<StarProfile>();
 
@@ -88,35 +68,45 @@ const getstarProfile = async () => {
   console.log(starProfile.value);
 }
 
-const submitForm = () => {
-  if (files.value.length > 0) {
-    //createProduct(productcreate.value, files.value)
-  } else {
-   // createProductNoFile(productcreate.value)
-  }
-}
-
-import { onMounted, watch } from 'vue'
-import type { StarProfile } from '@/common/types'
-
-
 const files = ref<File[]>([])
-const previewFiles = ref<string[]>([])
+const previewFiles = ref<string>()
 const dragArea = ref<HTMLElement | null>(null)
 const fileInput = ref<HTMLInputElement | null>(null)
 
 
-const removeFile = (index: number) => {
-  // 미리보기 URL 배열에서 해당 항목 제거
-  previewFiles.value.splice(index, 1)
-
-  // 실제 파일 배열에서도 해당 항목 제거
-  files.value.splice(index, 1)
-}
-
+//  업데이트
 onMounted(() => {
   getstarProfile();
-});
+
+  if (dragArea.value) {
+    dragArea.value.addEventListener('dragover', handleDragOver)
+  }
+})
+
+
+// watch(files, (newFiles) => {
+//   previewFiles.value = newFiles.map((file) => URL.createObjectURL(file))
+// })
+
+const handleDragOver = (event: DragEvent) => {
+  event.preventDefault()
+}
+
+
+// const submitForm = () => {
+//   if (files.value.length > 0 && previewFiles.value.length > 0) {
+//     console.log('첫번째 이프')
+//     //updateProduct(product.value, files.value, previewFiles.value)
+//   } else if (previewFiles.value.length > 0 && files.value.length === 0) {
+//     console.log('두번째 이프')
+//     //updateProductWithOutFile(product.value, previewFiles.value)
+//   } else if (previewFiles.value.length === 0 && files.value.length === 0) {
+//     console.log('세번째 이프')
+//     //updateProductWithPreview(product.value)
+//   }
+// }
+
+
 
 
 </script>
@@ -149,7 +139,7 @@ h2 {
 }
 
 .tiptap {
-  > * + * {
+  >*+* {
     margin-top: 0.75em;
   }
 
@@ -176,6 +166,4 @@ h2 {
     color: #495057;
   }
 }
-
-
 </style>
