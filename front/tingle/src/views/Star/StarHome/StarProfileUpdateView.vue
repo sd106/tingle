@@ -51,7 +51,7 @@ import StarMenu from '@/components/StarMenu/StarMenu.vue'
 const store = useUserStore();
 
 const props = defineProps({
-  starId: string
+  starId: String
 })
 
 const starId= props.starId;

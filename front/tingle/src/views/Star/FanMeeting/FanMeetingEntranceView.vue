@@ -53,6 +53,7 @@ const getFanMeetingInfo = async () => {
   try {
     const response = await axios.get(`http://localhost:8080/fanMeeting/info/${starId.value}`)
     fanMeetingInfo.value = response.data
+    console.log(response)
   } catch (error) {
     console.log(error)
   }

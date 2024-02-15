@@ -119,8 +119,10 @@ public class FanMeetingService {
             status = "closed";
         } else if (now.isBefore(fanMeeting.getTicketingEndAt())) {
             status = "ticketing";
-        } else {
+        } else if (now.isAfter(fanMeeting.getFanMeetingStartAt())) {
             status = "open";
+        } else {
+            status = "waiting";
         }
 
         List<FanMeetingType> availableFanMeetingTypes = fanMeeting.getAvailableFanMeetingTypes();
@@ -136,7 +138,7 @@ public class FanMeetingService {
                 .capacity(fanMeeting.getCapacity())
                 .price(fanMeeting.getPrice())
                 .imgURL1(fanMeeting.getImgURL1())
-                .imgURL1(fanMeeting.getImgURL2())
+                .imgURL2(fanMeeting.getImgURL2())
                 .availableTypes(availableFanMeetingTypes)
                 .build();
 

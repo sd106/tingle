@@ -31,8 +31,8 @@
                     팬미팅 입장
                 </button>
             </div>
-            <div class="col-md-8 p-0" :style="{ backgroundImage: `linear-gradient(to left, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1)), url(${fanMeetingInfo.imgURL2})` }">
-                <div class="poster-second"></div>
+            <div class="col-md-8 p-0">
+                <div class="poster-second"  :style="{ backgroundImage: `linear-gradient(to left, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1)), url(${fanMeetingInfo.imgURL2})` }"></div>
             </div>
         </div>
     </div>
