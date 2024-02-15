@@ -2,7 +2,7 @@
   <main class="container">
     <StarMenu :id="starId" />
     <div v-if="starProfile?.banner">
-    <img :src="starProfile.banner" alt="사진">
+      <img :src="starProfile.banner" alt="사진">
     </div>
     <div class="container border d-flex">
       <div class>
@@ -11,14 +11,14 @@
       <div>
         <div>{{ starProfile?.username }}</div>
         <div v-if="!isEdit" >
-        {{
-          starProfile?.category === -1 ? "카테고리" :
-          starProfile?.category === 0 ? "일상/토크" :
-          starProfile?.category === 1 ? "동물" :
-          starProfile?.category === 2 ? "게임/스포츠" :
-          starProfile?.category === 3 ? "미술/음악" :
-          starProfile?.category === 4 ? "뷰티/패션" :
-          starProfile?.category === 5 ? "기타" : ""
+          {{
+            starProfile?.category === -1 ? "카테고리" :
+                starProfile?.category === 0 ? "일상/토크" :
+                    starProfile?.category === 1 ? "동물" :
+                        starProfile?.category === 2 ? "게임/스포츠" :
+                            starProfile?.category === 3 ? "미술/음악" :
+                                starProfile?.category === 4 ? "뷰티/패션" :
+                                    starProfile?.category === 5 ? "기타" : ""
           }} </div>
         <div v-else>
           <select v-model="starProfile!.category">
@@ -36,12 +36,12 @@
         <div v-else>
           <input v-model="editUsername">
         </div>
-        </div>
-        <div class>
-          <button @click="startEdit" class="tw-btn m-2">{{buttonText}}</button>
-          <StarProfileUpdateDeleteVue/>
-        </div>
       </div>
+      <div class>
+        <button @click="startEdit" class="tw-btn m-2">{{buttonText}}</button>
+        <StarProfileUpdateDeleteVue/>
+      </div>
+    </div>
 
 
     <div class="container border" v-show="showInputArticle">
@@ -54,7 +54,9 @@
     <div class="item-wrapper">
       <div v-for="item in article" :key="item.id" class="item-container">
         <div class="item-header">
-          <button>수정</button>
+          <button class="menu-btn" type="button" data-bs-toggle="modal" data-bs-target="#chatModal"
+                  style="height: 50px; width: 50px;">수정
+          </button>
           <button class="item-button" @click="deleteArticle(item.id)">삭제</button>
         </div>
         <p>{{ item.content }}</p>
@@ -73,19 +75,19 @@
 
     <div v-if="showImage">
       <div
-        ref="dragArea"
-        class="tw-border-dashed tw-border-2 tw-border-primary tw-p-4 tw-text-center tw-cursor-pointer tw-mb-4"
-        @dragover.prevent="handleDragOver"
-        @drop="handleDrop"
-        @click="fileInput!.click()"
+          ref="dragArea"
+          class="tw-border-dashed tw-border-2 tw-border-primary tw-p-4 tw-text-center tw-cursor-pointer tw-mb-4"
+          @dragover.prevent="handleDragOver"
+          @drop="handleDrop"
+          @click="fileInput!.click()"
       >
         여기에 파일을 드래그 앤 드롭하거나 클릭하여 선택하세요.
         <input
-          type="file"
-          multiple
-          ref="fileInput"
-          @change="handleFileUpload"
-          style="display: none"
+            type="file"
+            multiple
+            ref="fileInput"
+            @change="handleFileUpload"
+            style="display: none"
         />
       </div>
 
@@ -94,14 +96,14 @@
         <div v-for="(file, index) in previewFiles" :key="index" class="tw-relative tw-mb-4">
           <img :src="file" class="tw-rounded tw-shadow-md" />
           <button
-            @click="removeFile(index)"
-            class="tw-btn tw-btn-error tw-btn-sm tw-absolute tw-right-0 tw-top-0"
+              @click="removeFile(index)"
+              class="tw-btn tw-btn-error tw-btn-sm tw-absolute tw-right-0 tw-top-0"
           >
             삭제
           </button>
         </div>
       </div>
-       <button @click="insertPhotos">완료</button>
+      <button @click="insertPhotos">완료</button>
     </div>
 
   </main>
@@ -156,13 +158,13 @@ const getstarProfile = async () => {
 
 const getArticle = async () => {
   axios.get(`${store.API_URL}/home/${starId}`)
-    .then(response => {
-      console.log(response.data.data);
-      article.value = response.data.data;
-    })
-    .catch(error => {
-      console.error(error);
-    });
+      .then(response => {
+        console.log(response.data.data);
+        article.value = response.data.data;
+      })
+      .catch(error => {
+        console.error(error);
+      });
 };
 
 const handleFileSelection = (event: any) => {
@@ -207,15 +209,15 @@ let homeUpdateRequest = {
 };
 
 
-const  deleteArticle = async (homeid: number) => {
+const deleteArticle = async (homeid: number) => {
 
   axios.delete(`${store.API_URL}/home/delete/${homeid}`)
-    .then(response => {
-      getArticle();
-      console.log(response.data);
-    }).catch(error => {
-      console.error(error);
-    });
+      .then(response => {
+        getArticle();
+        console.log(response.data);
+      }).catch(error => {
+    console.error(error);
+  });
 
 }
 
