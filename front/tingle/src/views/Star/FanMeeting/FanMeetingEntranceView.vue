@@ -51,6 +51,7 @@ starId.value = Number(props.id)
 
 const getFanMeetingInfo = async () => {
   try {
+    console.log(starId.value)
     const response = await axios.get(`http://localhost:8080/fanMeeting/info/${starId.value}`)
     fanMeetingInfo.value = response.data
     console.log(response)
