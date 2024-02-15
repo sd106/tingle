@@ -1,26 +1,22 @@
 <template>
-    <div class="row m-0 p-0">
-        <div class="col-9">
-            <section v-if="fanMeetingReservation?.fanMeetingType == '자유대화'">
-                <NormalMeeting :localStream="localStream" :remoteStream="remoteStream"/>
-            </section>
-            <section v-else-if="fanMeetingReservation?.fanMeetingType == '인생네컷'">
-                <LifeFourCutMeeting :localStream="localStream" :remoteStream="remoteStream"/>
-            </section>
-            <section v-else-if="fanMeetingReservation?.fanMeetingType== '생일축하'">
-                <BirthdayMeeting :localStream="localStream" :remoteStream="remoteStream"/>
-            </section>
-            <section v-else>
-                <h1>연결중입니다...</h1>
-            </section>
-        </div>
-        <div class="col-3">
-            <FanMeetingBoard :finishedFans="finishedFans" @finish-fan="finishFan" @finish-meeting="finishMeeting"/>
-        </div>
-    </div>
-    <div class="col-3">
-      <FanMeetingBoard @finish-fan="finishFan" @finish-meeting="finishMeeting" />
-    </div>
+  <div class="row m-0 p-0">
+      <div class="col-9">
+          <section v-if="fanMeetingReservation?.fanMeetingType == '자유대화'">
+              <NormalMeeting :localStream="localStream" :remoteStream="remoteStream"/>
+          </section>
+          <section v-else-if="fanMeetingReservation?.fanMeetingType == '인생네컷'">
+              <LifeFourCutMeeting :localStream="localStream" :remoteStream="remoteStream"/>
+          </section>
+          <section v-else-if="fanMeetingReservation?.fanMeetingType== '생일축하'">
+              <BirthdayMeeting :localStream="localStream" :remoteStream="remoteStream"/>
+          </section>
+          <section v-else>
+              <h1>연결중입니다...</h1>
+          </section>
+      </div>
+      <div class="col-3">
+          <FanMeetingBoard :finishedFans="finishedFans" @finish-fan="finishFan" @finish-meeting="finishMeeting"/>
+      </div>
   </div>
 </template>
 

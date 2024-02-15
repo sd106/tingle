@@ -38,7 +38,7 @@ const fanMeetingReservation = ref<FanMeetingReservation>()
 
 const loadReservation = async () => {
   try {
-    const { data } = await axios.get(`http://localhost:8080/fanMeeting/fanMeetingReservation/${localUser.value.id}/${starid.value}`)
+    const { data } = await axios.get(`https://i10d106.p.ssafy.io/api/fanMeeting/fanMeetingReservation/${localUser.value.id}/${starid.value}`)
     fanMeetingReservation.value = data
     console.log(fanMeetingReservation.value)
     console.log(data)
