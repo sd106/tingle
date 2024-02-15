@@ -38,14 +38,12 @@ import axios from 'axios'
 import TicketFormat from '@/components/StarMenu/FanMeeting/TicketFormat.vue'
 import { useUserStore } from '@/stores/user'
 import { useFanMeetingStore } from '@/stores/fanMeeting'
-import { storeToRefs } from 'pinia'
 import router from '@/router'
 
 const route = useRoute();
 const userStore = useUserStore();
 const meetingStore = useFanMeetingStore();
 const products = ref<FanMeetingTicket[]>([])
-const props = defineProps(['meetingId']);
 
 const starid = Number(route.params.starid);
 const meetingid = Number(route.params.meetingid)
@@ -110,12 +108,13 @@ const select = (product: FanMeetingTicket) => {
   console.log(fanId.value)
   console.log(selectedProduct.value.id)
   console.log(starid)
+  console.log(meetingStore.selectMeetingPrice)
 }
 
 const getProducts = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/fanMeeting/types`)
-    products.value = response.data
+    const response = await axios.get(`http://localhost:8080/fanMeeting/info/${starid}`)
+    products.value = response.data.availableTypes
     console.log(products.value)
   } catch (error) {
     console.log(error)

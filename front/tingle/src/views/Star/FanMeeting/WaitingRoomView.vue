@@ -32,7 +32,7 @@
       </div>
     </div>
   </div>
-  <InviteCard v-if="invited" :starid="starid" @enter-meeting-room="enterMeetingRoom"></InviteCard>
+  <InviteCard v-if="invited" @enter-meeting-room="enterMeetingRoom"></InviteCard>
 </template>
 
 <script lang="ts" setup>

@@ -29,5 +29,4 @@ public interface WishService {
     /* user */
     // 해당 위시를 완료 상태로 변경 (팬)
     public void updateWishStatusByUserId(Long userId, Long wishId);
-
 }

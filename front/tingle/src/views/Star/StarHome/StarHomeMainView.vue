@@ -1,5 +1,5 @@
 <template>
-  <main class="container">
+  <main class="container" >
     <StarMenu :id="starId" />
     <div class="container border">
       <img  :src="starProfile?.banner" alt="사진">
