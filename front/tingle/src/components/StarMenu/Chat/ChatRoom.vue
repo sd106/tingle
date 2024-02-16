@@ -40,7 +40,7 @@
             <span v-if="(store.isStar && msg.direction == 1)">
               <div class="star-card">
                 <div class="justify-content-end">{{ msg.message }}</div>
-
+                <div class="justify-content-end">{{ msg.createDate }}</div>
               </div>
             </span>
 
@@ -48,6 +48,7 @@
             <span v-if="(!store.isStar && msg.direction == 2)">
               <div class="star-card">
                 <div class="justify-content-end">{{ msg.message }}</div>
+                <div class="justify-content-end">{{ msg.createDate }}</div>
               </div>
             </span>
         </div>
