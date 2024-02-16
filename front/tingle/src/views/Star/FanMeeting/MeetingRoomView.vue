@@ -297,10 +297,11 @@ onUnmounted(() => {
 
 <style scoped>
 .container {
-  position: relative;
-  width: 100%;
-  height: 90vh;
-  border: 1px solid black;
+
+    position: relative;
+    width: 100%;
+    height: 90vh; 
+    /* border: 1px solid black;  */
 }
 
 #local-video-container {

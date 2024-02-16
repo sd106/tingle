@@ -1,26 +1,22 @@
 <template>
-  <div>
-    <div class="d-flex justify-content-between px-3">
-      <div>
-        <button class="btn border btn-secondary" @click="finishFan">팬 내보내기</button>
-      </div>
-      <div>
-        <button class="btn border btn-secondary" @click="showFanListModal = true">
-          대기방 팬 목록 보기
-        </button>
-
-        <div v-if="showFanListModal" class="fan-list-modal" @click.self="showFanListModal = false">
-          <div class="fan-list-modal-content">
-            <div class="fan-list">
-              <div v-for="fan in fans" :key="fan.id" class="fan-item" @click.stop>
-                <div class="fan-name" @click="selectFan(fan.username)">{{ fan.username }}</div>
-                <button
-                  v-if="selectedFanName === fan.username"
-                  class="invite-btn"
-                  @click="invite(fan.username)"
-                >
-                  초대하기
-                </button>
+    <div>
+      <div class="d-flex justify-content-between px-3">
+        <!-- <div>
+          <button class="btn border btn-secondary" @click="finishFan">팬 내보내기</button>
+        </div> -->
+        <div>
+          <button class="btn border btn-secondary" @click="finishFan">팬 내보내기</button>
+          <button class="btn border btn-secondary" @click="showFanListModal = true">대기방 팬 목록 보기</button>
+          <button class="btn border btn-secondary" @click="finishMeeting">팬미팅 끝내기</button>
+          <div v-if="showFanListModal" class="fan-list-modal" @click.self="showFanListModal = false">
+            <div class="fan-list-modal-content">
+              <div class="fan-list">
+                <div v-for="fan in fans" :key="fan.id" class="fan-item" @click.stop>
+                  <div class="fan-name" @click="selectFan(fan.username)">{{ fan.username }}</div>
+                  <button v-if="selectedFanName === fan.username" class="invite-btn" @click="invite(fan.username)">
+                    초대하기
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -54,11 +50,9 @@
         <button class="send-message-button" @click="sendMessage">보내기</button>
       </div>
     </div>
-
-    <div>
-      <button @click="finishMeeting">팬미팅 끝내기</button>
-    </div>
-  </div>
+    <!-- <div>
+        <button @click="finishMeeting">팬미팅 끝내기</button>
+    </div> -->
 </template>
 
 <script lang="ts" setup>

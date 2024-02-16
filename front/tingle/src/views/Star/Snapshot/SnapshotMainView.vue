@@ -1,7 +1,7 @@
 <template>
   <main class="container">
     <StarMenu :id="id" />
-    <div class="main-layout pt-5">
+    <div class="main-layout pt-5" style="padding-left: 80px; padding-right: 80px; padding-top: 30px;">
       <!-- 상단 메뉴 -->
       <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
       <section v-if="wishStore.selectedSnapshot" class="detail-section cont mb-5">
@@ -9,106 +9,96 @@
       </section>
     </div>
     <div class="d-flex justify-content-between align-items-center my-4 mx-3">
+
+      <!-- <div class="tw-navbar tw-bg-base-300 tw-rounded-box">
+        <div class="tw-flex-1 tw-px-2 tw-lg:flex-none">
+          <a class="tw-text-lg tw-font-bold hover-text">SnapShot</a>
+        </div> 
+        <div class="tw-flex tw-justify-end tw-flex-1 tw-px-2">
+          <div class="tw-flex tw-items-stretch">
+            <a class="tw-btn tw-btn-ghost tw-rounded-btn">스냅샷 작성</a>
+            <div class="tw-dropdown tw-dropdown-end">
+              <div tabindex="0" role="button" class="tw-btn tw-btn-ghost tw-rounded-btn">정렬</div>
+              <ul tabindex="0" class="tw-menu tw-dropdown-content tw-z-[1] tw-p-2 tw-shadow tw-bg-base-100 tw-rounded-box tw-w-52 tw-mt-4">
+                <li><a>최신순</a></li> 
+                <li><a>좋아요</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
       <div>
-        <button class="btn me-2 fs-5 fw-bold text-secondary" @click="loadSnapshots">
+        <button class="btn me-2 fs-5 fw-bold text-secondary hover-text" @click="loadSnapshots">
           ✧ 최신순
         </button>
-        <button class="btn fs-5 fw-bold text-secondary" @click="loadSnapshotsBylikes">
+        <button class="btn fs-5 fw-bold text-secondary hover-text" @click="loadSnapshotsBylikes">
           🔥 좋아요순
         </button>
       </div>
       <div>
-        <RouterLink :to="`/${id}/snapshot/create`" class="btn btn-secondary">글쓰기</RouterLink>
+        <RouterLink :to="`/${id}/snapshot/create`" ><h2 class="hover-text fw-bold ">글쓰기</h2></RouterLink>
       </div>
     </div>
 
-    <div class="main-layout">
-      <!-- 스냅샷 목록 섹션 (파란색 부분) -->
-      <section class="snapshot-list-section">
-        <div class="snapshot-list-container" ref="containerRef" @scroll="handleScroll">
-          <span v-for="snapshot in filteredSnapshot1" :key="snapshot.id" class="snapshot-item">
-            <div class="tw-relative">
-              <img
-                @click="wishStore.selectSnapshot(snapshot.id)"
-                :src="snapshot.imageUrl"
-                alt="Snapshot Image"
-                class="snapshot-image my-1"
-              />
-              <span
-                v-if="snapshot.isStarLike"
-                class="tw-absolute tw-top-0 tw-right-0"
-                style="font-size: 36px"
-                ><img src="/image/favourite1.gif" alt="" style="width: 54px; height: 54px"
-              /></span>
-            </div>
+  <div class="main-layout" style="padding-left: 80px; padding-right: 80px; padding-top: 30px;">
+    <!-- 스냅샷 목록 섹션 (파란색 부분) -->
+    <section class="snapshot-list-section">
+      <div class="snapshot-list-container" ref="containerRef" @scroll="handleScroll">
+        <span class="snapshot-item">
+            <img
+              v-for="snapshot in filteredSnapshot1"
+              :key="snapshot.id"
+              @click="wishStore.selectSnapshot(snapshot.id)"
+              :src="snapshot.imageUrl"
+              alt="Snapshot Image"
+              class="snapshot-image my-1"
+            />
           </span>
-          <span v-for="snapshot in filteredSnapshot2" :key="snapshot.id" class="snapshot-item">
-            <div class="tw-relative">
-              <img
-                @click="wishStore.selectSnapshot(snapshot.id)"
-                :src="snapshot.imageUrl"
-                alt="Snapshot Image"
-                class="snapshot-image my-1"
-              />
-              <span
-                v-if="snapshot.isStarLike"
-                class="tw-absolute tw-top-0 tw-right-0"
-                style="font-size: 36px"
-                >⭐</span
-              >
-            </div>
+          <span class="snapshot-item">
+            <img
+              v-for="snapshot in filteredSnapshot2"
+              :key="snapshot.id"
+              @click="wishStore.selectSnapshot(snapshot.id)"
+              :src="snapshot.imageUrl"
+              alt="Snapshot Image"
+              class="snapshot-image my-1"
+            />
           </span>
-          <span v-for="snapshot in filteredSnapshot3" :key="snapshot.id" class="snapshot-item">
-            <div class="tw-relative">
-              <img
-                @click="wishStore.selectSnapshot(snapshot.id)"
-                :src="snapshot.imageUrl"
-                alt="Snapshot Image"
-                class="snapshot-image my-1"
-              />
-              <span
-                v-if="snapshot.isStarLike"
-                class="tw-absolute tw-top-0 tw-right-0"
-                style="font-size: 36px"
-                >⭐</span
-              >
-            </div>
+          <span class="snapshot-item">
+            <img
+              v-for="snapshot in filteredSnapshot3"
+              :key="snapshot.id"
+              @click="wishStore.selectSnapshot(snapshot.id)"
+              :src="snapshot.imageUrl"
+              alt="Snapshot Image"
+              class="snapshot-image my-1"
+            />
           </span>
-          <span v-for="snapshot in filteredSnapshot4" :key="snapshot.id" class="snapshot-item">
-            <div class="tw-relative">
-              <img
-                @click="wishStore.selectSnapshot(snapshot.id)"
-                :src="snapshot.imageUrl"
-                alt="Snapshot Image"
-                class="snapshot-image my-1"
-              />
-              <span
-                v-if="snapshot.isStarLike"
-                class="tw-absolute tw-top-0 tw-right-0"
-                style="font-size: 36px"
-                >⭐</span
-              >
-            </div>
+          <span class="snapshot-item">
+            <img
+              v-for="snapshot in filteredSnapshot4"
+              :key="snapshot.id"
+              @click="wishStore.selectSnapshot(snapshot.id)"
+              :src="snapshot.imageUrl"
+              alt="Snapshot Image"
+              class="snapshot-image my-1"
+            />
           </span>
-          <span v-for="snapshot in filteredSnapshot5" :key="snapshot.id" class="snapshot-item">
-            <div class="tw-relative">
-              <img
-                @click="wishStore.selectSnapshot(snapshot.id)"
-                :src="snapshot.imageUrl"
-                alt="Snapshot Image"
-                class="snapshot-image my-1"
-              />
-              <span
-                v-if="snapshot.isStarLike"
-                class="tw-absolute tw-top-0 tw-right-0"
-                style="font-size: 36px"
-                >⭐</span
-              >
-            </div>
+          <span class="snapshot-item">
+            <img
+              v-for="snapshot in filteredSnapshot5"
+              :key="snapshot.id"
+              @click="wishStore.selectSnapshot(snapshot.id)"
+              :src="snapshot.imageUrl"
+              alt="Snapshot Image"
+              class="snapshot-image my-1"
+            />
           </span>
-        </div>
-      </section>
-    </div>
+      </div>
+    </section>
+  </div>
+
   </main>
 </template>
 
@@ -178,6 +168,7 @@ onMounted(() => {
 })
 
 const filteredSnapshot1 = computed(() => {
+  console.log("필터처리중")
   return snapshots.value.filter((_, index) => index % 5 === 0)
 })
 const filteredSnapshot2 = computed(() => {
@@ -281,4 +272,14 @@ const filteredSnapshot5 = computed(() => {
   transition: opacity 0.3s ease;
   /* 부드러운 효과를 위한 전환 */
 }
+
+.hover-text {
+  transition: transform 0.3s ease-in-out; /* transform 속성에 대한 전환 효과 적용 */
+}
+
+.hover-text:hover {
+  transform: translateX(10px); /* 호버 시 글자를 오른쪽으로 10픽셀 이동 */
+  cursor: pointer;
+}
+
 </style>

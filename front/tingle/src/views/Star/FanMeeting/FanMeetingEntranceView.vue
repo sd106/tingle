@@ -40,22 +40,12 @@ const haveTicket = ref<boolean>(false);
 const starId = ref<number>();
 starId.value = Number(props.id)
 
-// fanMeetingInfo.value =
-// {
-//   "id": 1,
-//   "status": "open",
-//   "name": "제 1회 르브론 팬미팅",
-//   "description": "모두 모여라!",
-//   "ticketingStartAt": "2024-01-25 14:41:00",
-//   "ticketingEndAt": "2024-01-26 14:41:00",
-//   "fanMeetingStartAt": "2024-01-27 02:41:00",
-//   "price": 10000,
-//   "imgURL": '/image/fan-meeting-img.webp',
-// }
 
 const getFanMeetingInfo = async () => {
   try {
     const response = await axios.get(`https://i10d106.p.ssafy.io/api/fanMeeting/info/${starId.value}`)
+    console.log(starId.value)
+
     fanMeetingInfo.value = response.data
     console.log(response)
     console.log("팬미팅 정보 불러왔다.")

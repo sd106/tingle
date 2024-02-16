@@ -1,6 +1,6 @@
 <template>
-  <main>
-    <ul class="mb-5 d-flex justify-content-around nav nav-underline">
+  <main class="container">
+    <ul class="mb-5 d-flex justify-content-around nav nav-underline"  style="padding-top: 50px; padding-bottom: 30px;">
       <li class="nav-item">
         <RouterLink
           :to="`/profile/userinfo`"

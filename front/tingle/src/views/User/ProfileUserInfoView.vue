@@ -44,11 +44,11 @@
             justify-content: space-between;
             padding: 0 20px;
           ">
-          <button style="width: 48%" class="tw-btn" @click="uploadImage">
-            <h2>프로필 수정</h2>
+          <button style="width: 50%" @click="uploadImage">
+            <h2 class="fw-bold hover-text">프로필 수정</h2>
           </button>
-          <button style="width: 48%" class="tw-btn" @click="deleteImage(fanState!.id)">
-            <h2>프로필 삭제</h2>
+          <button style="width: 50%" @click="deleteImage(fanState!.id)">
+            <h2 class="fw-bold hover-text">프로필 삭제</h2>
           </button>
         </div>
       </div>
@@ -144,4 +144,17 @@ const deleteImage = async (fanId: number) => {
   object-fit: cover;
   /* 이미지 비율 유지 */
 }
+
+.hover-text {
+  transition: transform 0.3s ease-in-out; /* transform 속성에 대한 전환 효과 적용 */
+}
+
+.hover-text:hover {
+  transform: translateX(10px); /* 호버 시 글자를 오른쪽으로 10픽셀 이동 */
+  cursor: pointer;
+}
+
+
+
+
 </style>
