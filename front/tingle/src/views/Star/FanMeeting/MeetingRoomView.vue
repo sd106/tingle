@@ -41,7 +41,7 @@ const fanMeetingReservation = ref<FanMeetingReservation>()
 
 const loadReservation = async () => {
   try {
-    const { data } = await axios.get(`http://localhost:8080/fanMeeting/fanMeetingReservation/${localUser.value.id}/${starid.value}`)
+    const { data } = await axios.get(`https://i10d106.p.ssafy.io/api/fanMeeting/fanMeetingReservation/${localUser.value.id}/${starid.value}`)
     fanMeetingReservation.value = data
     console.log(fanMeetingReservation.value)
     console.log(data)
@@ -88,7 +88,7 @@ const sendToServer = (msg: SocketMessage) => {
 // WebSocket
 const initializeWebSocket = () => {
   // 소켓 초기화
-  socket = new WebSocket('ws://localhost:8080/signal')
+  socket = new WebSocket('wss://i10d106.p.ssafy.io/api/signal')
 
   // 소켓이 message를 받을 때 이벤트 함수
   socket.onmessage = (msg) => {

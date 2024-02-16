@@ -101,7 +101,7 @@
   
   //처음 채팅방에 접속 시 SockJS 연결
   function connect(): void {
-      const socket = new SockJS('http://localhost:8080/chat');
+      const socket = new SockJS('https://i10d106.p.ssafy.io/api/chat');
       stompClient = Stomp.over(socket);
   
       stompClient.connect({}, onConnected);

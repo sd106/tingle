@@ -49,7 +49,7 @@ const starSignup = async () => {
     })
 
     // 스타 회원가입 시 채팅방도 생성
-    const response2 = await axios.post(`http://localhost:8080/chat/saveTheRoom/${signupData.email}`)
+    const response2 = await axios.post(`https://i10d106.p.ssafy.io/api/chat/saveTheRoom/${signupData.email}`)
 
     console.log(response)
     console.log(response2)

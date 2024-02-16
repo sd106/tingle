@@ -59,7 +59,7 @@ const finishFan = () => {
 const finishMeeting = async () => {
   console.log('finishing Meeting..')
   try {
-    const response = axios.delete(`http://localhost:8080/fanMeeting/finish/${store.starState?.id}`)
+    const response = axios.delete(`https://i10d106.p.ssafy.io/api/fanMeeting/finish/${store.starState?.id}`)
     console.log(response)
     router.push({ name: 'starhomemanage' })
   } catch (error) {
@@ -121,7 +121,7 @@ const sendToServer = (msg: SocketMessage) => {
 // WebSocket
 const initializeWebSocket = () => {
   // 소켓 초기화
-  socket = new WebSocket('ws://localhost:8080/signal')
+  socket = new WebSocket('wss://i10d106.p.ssafy.io/api/signal')
 
   // 소켓이 message를 받을 때 이벤트 함수
   socket.onmessage = (msg) => {

@@ -54,7 +54,7 @@ const getUserTicket =async () => {
   try {
     console.log(fanMeetingInfo.value?.id)
     console.log(fanMeetingInfo.value?.status)
-    const response = await axios.get(`http://localhost:8080/fanMeeting/${starId.value}/reservation/${store.fanState!.id}/${fanMeetingInfo.value!.id}`)
+    const response = await axios.get(`https://i10d106.p.ssafy.io/api/fanMeeting/${starId.value}/reservation/${store.fanState!.id}/${fanMeetingInfo.value!.id}`)
     console.log(response.data)
     haveTicket.value = response.data
     console.log(haveTicket.value)
