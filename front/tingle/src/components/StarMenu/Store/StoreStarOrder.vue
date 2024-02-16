@@ -55,7 +55,7 @@ const responseMessageGetByStarName = ref<OrderResponse[]>([])
 const starname = ref('')
 const getStarOrder = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/order/getByStarName/${starname.value}`)
+    const response = await axios.get(`https://i10d106.p.ssafy.io/api/order/getByStarName/${starname.value}`)
     responseMessageGetByStarName.value = response.data.data
     console.log(response.data.data)
     console.log(response.data)
@@ -70,7 +70,7 @@ const expandProduct = (order: OrderResponse) => {
 }
 const deleteOrder = async (orderId: number) => {
   try {
-    const response = await axios.post(`http://localhost:8080/order/delete/${orderId}`);
+    const response = await axios.post(`https://i10d106.p.ssafy.io/api/order/delete/${orderId}`);
     console.log(response.data)
     getStarOrder();
   } catch (error) {

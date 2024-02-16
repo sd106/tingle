@@ -95,7 +95,7 @@ const createProduct = async (productInfo: any, fileInputs: File[]) => {
       formData.append('files', file)
     })
 
-    const response = await axios.post('http://localhost:8080/product/create', formData, {
+    const response = await axios.post('https://i10d106.p.ssafy.io/api/product/create', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -116,7 +116,7 @@ const createProductNoFile = async (productInfo: any) => {
     const formData = new FormData()
     formData.append('productDto', JSON.stringify(productInfo))
 
-    const response = await axios.post('http://localhost:8080/product/create/nofile', formData, {
+    const response = await axios.post('https://i10d106.p.ssafy.io/api/product/create/nofile', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

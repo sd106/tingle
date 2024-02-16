@@ -75,7 +75,7 @@ const title = ref<string>('')
 
 const deleteOrder = async (orderId: number) => {
   try {
-    const response = await axios.post(`http://localhost:8080/order/delete/${orderId}`)
+    const response = await axios.post(`https://i10d106.p.ssafy.io/api/order/delete/${orderId}`)
     console.log(response.data)
     router.go(0)
   } catch (error) {
@@ -154,7 +154,7 @@ const createStorage = async (orderId: Number, fileInputs: File[]) => {
       formData.append('files', fileInputs[i])
     }
 
-    const response = await axios.post('http://localhost:8080/order/sendTouser', formData, {
+    const response = await axios.post('https://i10d106.p.ssafy.io/api/order/sendTouser', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

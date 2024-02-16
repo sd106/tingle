@@ -293,6 +293,21 @@ interface CommentType {
   isStar: boolean
   createdAt: string
 }
+// 채팅
+interface ChatRoomInfo {
+    id: number;
+    starId: number;
+    chatMessages: ChatMessageInfo[];
+}
+
+interface ChatMessageInfo {
+    id: number;
+    userId: number;
+    direction: number;
+    message: string;
+    createDate: Date;
+    roomId: number;
+}
 
 export type {
   FanState,
@@ -330,5 +345,7 @@ export type {
   selectedSnapshotType,
   CommentType,
   FanMeetingMessage,
-  SocketMessage
+  SocketMessage,
+  // 채팅
+    ChatRoomInfo, ChatMessageInfo
 }

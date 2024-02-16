@@ -12,7 +12,7 @@ export const useUserStore = defineStore(
   () => {
     const router = useRouter()
 
-    const API_URL = 'http://localhost:8080'
+    const API_URL = 'https://i10d106.p.ssafy.io/api'
 
     const fanState = ref<FanState | null>(null)
     const starState = ref<StarState | null>(null)
@@ -32,7 +32,7 @@ export const useUserStore = defineStore(
 
     const logOut = async function (): Promise<void> {
       try {
-        const response = await axios.post(`${API_URL}/users/logout`, {})
+        const response = await axios.post(`https://i10d106.p.ssafy.io/users/logout`, {})
         console.log(response)
         window.alert('로그아웃!')
         router.push({ name: 'home' })

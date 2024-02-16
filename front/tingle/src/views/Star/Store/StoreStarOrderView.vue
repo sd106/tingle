@@ -76,7 +76,7 @@ function truncateText(text: string, maxLength: number): string {
 
 const getStarOrder = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/order/getByStarName/${starname}`)
+    const response = await axios.get(`https://i10d106.p.ssafy.io/api/order/getByStarName/${starname}`)
     responseMessageGetByStarName.value = response.data.data
     console.log(response.data.data)
     console.log(response.data)

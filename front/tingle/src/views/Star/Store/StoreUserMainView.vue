@@ -66,7 +66,7 @@ const products = ref<Goods[] | null>(null)
 
 const getAllProducts = async (id: number) => {
   try {
-    const response = await axios.get(`http://localhost:8080/product/getByStarId/${id}`)
+    const response = await axios.get(`https://i10d106.p.ssafy.io/api/product/getByStarId/${id}`)
     if (response.data.resultCode === 'SUCCESS') {
       products.value = response.data.data
     }

@@ -66,7 +66,7 @@ const fileInput = ref<HTMLInputElement | null>(null)
 
 const getProduct = async (productId: number) => {
   try {
-    const response = await axios.get(`http://localhost:8080/product/getById/${productId}`)
+    const response = await axios.get(`https://i10d106.p.ssafy.io/api/product/getById/${productId}`)
     if (response.data.resultCode === 'SUCCESS') {
       product.value = response.data.data
       if (product.value && product.value.imageUrl) {
@@ -152,7 +152,7 @@ const updateProductWithOutFile = async (productInfo: any, previewFiles: string[]
     previewFiles.forEach((previewFile) => {
       formData.append('previewFiles', previewFile)
     })
-    const response = await axios.post('http://localhost:8080/product/update/nofile', formData)
+    const response = await axios.post('https://i10d106.p.ssafy.io/api/product/update/nofile', formData)
     if (response.status === 200) {
       alert('상품이 성공적으로 수정되었습니다.')
       router.go(-1)
@@ -169,7 +169,7 @@ const updateProductWithPreview = async (productInfo: any) => {
     const formData = new FormData()
     formData.append('productDto', JSON.stringify(productInfo))
 
-    const response = await axios.post('http://localhost:8080/product/update/nopre', formData)
+    const response = await axios.post('https://i10d106.p.ssafy.io/api/product/update/nopre', formData)
     if (response.status === 200) {
       alert('상품이 성공적으로 수정되었습니다.')
       router.go(-1)
@@ -192,7 +192,7 @@ const updateProduct = async (productInfo: any, fileInputs: File[], previewFiles:
       formData.append('previewFiles', previewFile)
     })
 
-    const response = await axios.post('http://localhost:8080/product/update', formData, {
+    const response = await axios.post('https://i10d106.p.ssafy.io/api/product/update', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

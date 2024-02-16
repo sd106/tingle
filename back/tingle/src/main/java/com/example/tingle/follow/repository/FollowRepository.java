@@ -12,10 +12,9 @@ import java.util.Optional;
 @Repository
 public interface FollowRepository extends JpaRepository<FollowEntity, Integer> {
 
+    // 구독한 스타 리스트를 반환
     List<FollowEntity> findByUserEntityId(Long userId) throws SQLException;
 
     @Query("SELECT f FROM FollowEntity f WHERE f.userEntity.id = :userId AND f.starEntity.id = :starId")
-    FollowEntity findByUserEntityIdAndStarEntityId(Long userId, Long starId) throws SQLException;
-
-
+    FollowEntity findByUserEntityIdAndStarEntityId(Long userId, Long starId);
 }

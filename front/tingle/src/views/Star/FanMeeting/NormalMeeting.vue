@@ -78,7 +78,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch, watchEffect } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
 import { useUserStore } from '@/stores/user'
 
 const store = useUserStore()

@@ -44,11 +44,18 @@ const signupData = reactive({
 
 const starSignup = async () => {
   try {
-    const response = await axios.post('http://localhost:8080/auth/member/signup', signupData, {
+    const response = await axios.post('https://i10d106.p.ssafy.io/api/auth/member/signup', signupData, {
       withCredentials: true
     })
 
+    // 스타 회원가입 시 채팅방도 생성
+    const response2 = await axios.post(`http://localhost:8080/chat/saveTheRoom/${signupData.email}`)
+
     console.log(response)
+    console.log(response2)
+    
+    // console.log(response2)
+    
     router.push('/')
   } catch (error) {
     console.error('스타 회원가입 실패', error)
@@ -57,7 +64,7 @@ const starSignup = async () => {
 
 const loadMemeber = async () => {
   try {
-    const response = await axios.get('http://localhost:8080/auth/member/info', {
+    const response = await axios.get('https://i10d106.p.ssafy.io/api/auth/member/info', {
       withCredentials: true
     })
 

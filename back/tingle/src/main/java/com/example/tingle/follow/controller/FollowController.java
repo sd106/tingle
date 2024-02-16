@@ -29,7 +29,6 @@ public class FollowController {
     @GetMapping("/{userId}")
     public Response getFollowing(@PathVariable Long userId) throws Exception {
         return new Response("성공", "팔로잉한 모든 스타들 리턴", followService.getFollowList(userId));
-
     }
 
     @Operation(summary = "스타 팔로잉하기")

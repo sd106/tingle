@@ -122,7 +122,9 @@ const selectedStarIndex = ref<number>(-1)
 const fetchStars = async () => {
   if (searchQuery.value.length >= 1) {
     // 최소 2글자 이상 입력시 검색 실행
-    const response = await axios.get(`http://localhost:8080/star/search/${searchQuery.value}`)
+    const response = await axios.get(
+      `https://i10d106.p.ssafy.io/api/star/search/${searchQuery.value}`
+    )
     stars.value = response.data.data
     console.log(stars.value)
   } else {
@@ -193,7 +195,7 @@ onUnmounted(() => {
 
 //================search============//
 const logOut = function (): void {
-  window.location.href = 'http://localhost:8080/logout'
+  window.location.href = 'https://i10d106.p.ssafy.io/api/logout'
   router.push({ name: 'home' })
   store.starState = null
   store.fanState = null
@@ -214,7 +216,7 @@ watch(
 // 로그인
 const redirectToOAuthProvider = async (provider: string) => {
   try {
-    window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`
+    window.location.href = `https://i10d106.p.ssafy.io/api/oauth2/authorization/${provider}`
     store.provider = provider
   } catch (error) {
     console.log('error', error)

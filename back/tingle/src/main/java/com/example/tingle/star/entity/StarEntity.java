@@ -61,7 +61,6 @@ public class StarEntity {
         return this;
     }
 
-
     public void addOrderEntity(OrderEntity orderEntity) {
         if (orderEntities == null) {
             orderEntities = new ArrayList<>();
