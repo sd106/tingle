@@ -22,6 +22,7 @@
     "noEmit": true,
     "types": [
       "vue",
-    ]
+    ],
+    "typeRoots" : ["./@types", "./node_modules/@types"]
   }
 }

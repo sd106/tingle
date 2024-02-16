@@ -66,25 +66,13 @@
   <script setup lang="ts">
   import { useRoute } from 'vue-router';
   import { useUserStore } from '@/stores/user';
-  import { ref, computed, onMounted } from 'vue';
+  import { ref, onMounted } from 'vue';
   import type { ChatMessageInfo, ChatRoomInfo, SenderState } from '@/common/types/index'
   import axios from "axios";
   import { defineProps } from 'vue';
-  import { Client } from '@stomp/stompjs';
-  
   import Stomp from 'stompjs';
-  // import SockJS from 'sockjs-client';
-  
   import SockJS from "sockjs-client/dist/sockjs";
   
-  // import * as Stomp from 'stompjs/lib/stomp.js';
-  // import SockJs from 'sockjs-client/dist/sockjs.min.js'
-  
-  //import SockJS from '@/common/modules/sockjs';
-  
-  //import SockJS from 'sockjs-client';
-  
-  //const myid = store.fanState!.id;
   // NotStatus, ProgressStatus, DoneStatus
   const store = useUserStore();
   
@@ -121,31 +109,12 @@
   
   // 웹소켓 연결 시 onConnected 함수 실행
   function onConnected(): void {
-        stompClient?.subscribe(`/sub/room/${props.selectedRoom.id}`, (message) => {
+        stompClient?.subscribe(`/sub/room/${props.selectedRoom.id}`, (message: Stomp.Message) => {
           const msg = JSON.parse(message.body);
   
           newSelectedRoom.value.push(msg);
         });
       }
-  
-    // stompClient.subscribe(`/sub/room/${props.selectedRoom.id}`, {
-    //     id: 0,
-    //     userId: myid,
-    //     direction: store.isStar ? 1 : 2,
-    //     message: message,
-    //     createDate: new Date(),
-    //     roomId: props.selectedRoom.id
-    // });
-    // stompClient.send('/pub/message', {}, JSON.stringify({ 
-    //     id: 0,
-    //     userId: myid,
-    //     direction: store.isStar ? 1 : 2,
-    //     message: message,
-    //     createDate: new Date(),
-    //     roomId: props.selectedRoom.id
-    //  }));
-  
-    // connectingElement.classList.add('hidden');
   
   
   // 웹소켓 연결 에러 발생 시 onError함수 실행
