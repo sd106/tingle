@@ -219,14 +219,14 @@ const router = createRouter({
           component: FanMeetingEntrance4StarView
         },
         {
-          path: '/forstar/fanmeeting/waitingroom',
-          name: 'MeetingRoom4StarView',
-          component: MeetingRoom4StarView
-        },
-        {
           path: '/forstar/fanmeeting/create',
           name: 'CreateMeetingView',
           component: CreateFanMeetingView
+        },
+        {
+          path: '/forstar/fanmeeting/waitingroom',
+          name: 'MeetingRoom4StarView',
+          component: MeetingRoom4StarView
         },
         //////////////////////////////////////////// 스타 메뉴 끝
         {

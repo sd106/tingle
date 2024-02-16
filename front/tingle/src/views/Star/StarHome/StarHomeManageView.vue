@@ -10,8 +10,9 @@
         <img :src="starProfile?.profileImage" alt="사진" class="w-75 h-75" />
       </div>
       <div>
-        <div>{{ starProfile?.username }}</div>
+        <div>닉네임 : {{ starProfile?.username }}</div>
         <div v-if="!isEdit">
+          카테고리 :
           {{
             starProfile?.category === -1
               ? '카테고리'
@@ -42,7 +43,7 @@
           </select>
         </div>
 
-        <div v-if="!isEdit">{{ starProfile?.snsUrl }}</div>
+        <div v-if="!isEdit">SNS주소 : {{ starProfile?.snsUrl }}</div>
         <div v-else>
           <input v-model="editUsername" />
         </div>
@@ -56,11 +57,17 @@
     <div class="container border" v-show="showInputArticle">
       <input type="file" id="image-upload" multiple />
       <input v-model="homeCreateRequest.content" placeholder="입력해주세요" />
-      <button @click="insertArticle()">완료</button>
+      <button @click="insertPhotos()">완료</button>
     </div>
 
     {{ article }}
-    <draggable v-if="article.length > 0" v-model="article" class="drag-area" item-key="id">
+    <draggable
+      v-if="article.length > 0"
+      v-model="article"
+      class="drag-area"
+      item-key="ordering"
+      @end="onDragEnd"
+    >
       <template v-slot:item="{ item }">
         <div class="item-container">
           <div v-if="item.content !== ''">{{ item.content }}</div>
@@ -165,6 +172,12 @@ const textContent = ref('')
 const dragArea = ref<HTMLElement | null>(null)
 const fileInput = ref<HTMLInputElement | null>(null)
 
+function onDragEnd(event: Event) {
+  // 드래그 앤 드롭으로 인한 변경사항을 처리합니다.
+  // 예: 서버에 순서 변경을 저장하는 로직
+  console.log('드래그 앤 드롭 작업 완료', event)
+}
+
 const getstarProfile = async () => {
   const response = await axios.get(`${store.API_URL}/home/profile/${starId}`)
   starProfile.value = response.data.data
@@ -189,42 +202,42 @@ const handleFileSelection = (event: any) => {
 
 let homeCreateRequest = {
   starId: starId,
-  ordering: 3,
+  ordering: article.value.length + 1,
   content: '입력해주세요'
 }
 
-const insertArticle = async () => {
-  let formData = new FormData()
-  formData.append('homeCreateRequest', JSON.stringify(homeCreateRequest)) // JSON 문자열로 변환하여 추가
+// const insertArticle = async () => {
+//   let formData = new FormData()
+//   formData.append('homeCreateRequest', JSON.stringify(homeCreateRequest)) // JSON 문자열로 변환하여 추가
 
-  // 파일이 있을 경우에만 추가
-  if (files && files.value.length > 0) {
-    for (let i = 0; i < files.value.length; i++) {
-      formData.append('files', files.value[i])
-    }
-  }
+//   // 파일이 있을 경우에만 추가
+//   if (files && files.value.length > 0) {
+//     for (let i = 0; i < files.value.length; i++) {
+//       formData.append('files', files.value[i])
+//     }
+//   }
 
-  axios
-    .post(`${store.API_URL}/home/post`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    .then((response) => {
-      getArticle()
-      showInputArticle.value = false
-      console.log(response.data)
-    })
-    .catch((error) => {
-      console.error(error)
-    })
-}
+//   axios
+//     .post(`${store.API_URL}/home/post`, formData, {
+//       headers: {
+//         'Content-Type': 'multipart/form-data'
+//       }
+//     })
+//     .then((response) => {
+//       getArticle()
+//       showInputArticle.value = false
+//       console.log(response.data)
+//     })
+//     .catch((error) => {
+//       console.error(error)
+//     })
+// }
 
-let homeUpdateRequest = {
-  homeId: 1,
-  ordering: 3,
-  content: '입력해주세요'
-}
+// let homeUpdateRequest = {
+//   homeId: 1,
+//   ordering: article.value.length + 1,
+//   content: '입력해주세요'
+// }
 
 const deleteArticle = async (homeid: number) => {
   axios
@@ -275,7 +288,7 @@ const insertProfile = async () => {
 
 let photos = {
   starId: starId,
-  ordering: 2,
+  ordering: article.value.length + 1,
   content: ''
 }
 
@@ -307,11 +320,10 @@ const insertPhotos = async () => {
 }
 
 const insertPencil = async () => {
-<<<<<<< HEAD
   await axios
     .post(`${store.API_URL}/home/post/pencil`, {
       starId: starId,
-      ordering: 1,
+      ordering: article.value.length + 1,
       content: textContent!.value
     })
     .then((response) => {
@@ -322,19 +334,6 @@ const insertPencil = async () => {
     .catch((error) => {
       console.error(error)
     })
-=======
-  await axios.post(`${store.API_URL}/home/post/pencil`, {
-    starId: starId,
-    ordering: 1,
-    content: textContent!.value
-  }).then(response => {
-    console.log(response.data);
-    showTextarea.value= false;
-    getArticle();
-  }).catch(error => {
-    console.error(error);
-  });
->>>>>>> 3b873ae687da1b749d29c29ad98edd9e956ed1c1
 }
 
 const previewFiles = ref<string[]>([])

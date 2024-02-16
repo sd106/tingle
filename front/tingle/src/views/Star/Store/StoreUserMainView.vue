@@ -6,10 +6,18 @@
         <h1 class="fw-bold"></h1>
       </div>
       <div v-if="altProducts" class="row">
-        <div v-for="product in altProducts" :key="product.productId" class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-4">
+        <div
+          v-for="product in altProducts"
+          :key="product.productId"
+          class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-4"
+        >
           <RouterLink :to="`/${id}/store/${product.productId}`" class="d-flex flex-column">
             <div class="border p-1" v-if="product.available === true && product.amount > 0">
-              <img :src="product.imageUrl[0]?.url" alt="" class="tw-w-full tw-h-72 tw-object-cover" />
+              <img
+                :src="product.imageUrl[0]?.url"
+                alt=""
+                class="tw-w-full tw-h-72 tw-object-cover"
+              />
               <div class="product-info tw-text-left tw-py-1">
                 <p class="tw-text-md ms-2 tw-font-semibold tw-truncate">{{ product.name }}</p>
                 <p class="tw-text-lg ms-2 tw-font-bold tw-text-gray-800">
@@ -18,7 +26,11 @@
               </div>
             </div>
             <div v-else style="background-color: rgb(177, 171, 171)">
-              <img :src="product.imageUrl[0]?.url" alt="" class="tw-w-full tw-h-72 tw-object-cover" />
+              <img
+                :src="product.imageUrl[0]?.url"
+                alt=""
+                class="tw-w-full tw-h-72 tw-object-cover"
+              />
               <div class="product-info tw-text-left tw-py-1">
                 <p class="tw-text-md ms-2 tw-font-semibold tw-truncate">{{ product.name }}</p>
                 <p class="tw-text-lg ms-2 tw-font-bold tw-text-gray-800">
@@ -29,7 +41,9 @@
           </RouterLink>
         </div>
       </div>
-      <div v-else>스타의 상품 목록이 없습니다.</div>
+      <div v-else class="text-center">
+        <h1>스타의 상품목록이 없습니다.</h1>
+      </div>
     </div>
   </main>
 </template>

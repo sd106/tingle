@@ -2,7 +2,11 @@
   <!-- Nav바 -->
   <nav class="navbar fixed-top p-0">
     <div
-      :class="{ 'user-background': !isStar, 'star-background': isStar }"
+      :class="{
+        'user-background': !isStar,
+        'star-background': isStar,
+        'any-background': !store.isLogin
+      }"
       class="container-fluid"
       style="height: 80px"
     >
@@ -244,6 +248,10 @@ const redirectToNaver = () => {
   background: linear-gradient(to bottom, #ffc7c7, #fff3e2);
 }
 
+.any-background {
+  background: white;
+}
+
 .dropdown-toggle::before {
   display: none !important;
 }
@@ -351,5 +359,4 @@ const redirectToNaver = () => {
   background-color: #eee; /* 선택된 항목의 배경색 */
   /* 추가 스타일링 */
 }
-
 </style>

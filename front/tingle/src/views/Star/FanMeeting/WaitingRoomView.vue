@@ -1,16 +1,20 @@
 <template>
   <div class="row">
     <div class="col-7">
-      <div class="chat-thumbnail p-3">
-        <img src="/image/fan-meeting-img.webp" alt="채팅방 이미지" />
+      <div class="slider p-3">
+        <img v-if="currentImageUrl" :src="currentImageUrl" alt="Image slide" />
+        <p v-else class="center">스타를 기다리는 중입니다...</p>
       </div>
     </div>
-    <div class="col-5">
+    <div class="col-5 mt-4">
       <div>{{ localUser.username }} 님 안녕하세요</div>
       <div id="chat-room">
         <ul id="message-list">
           <li v-for="message in messages" :key="message.sender?.id">
-            <div v-if="message.sender?.username !== localUser.username" class="message-content other-message-content">
+            <div
+              v-if="message.sender?.username !== localUser.username"
+              class="message-content other-message-content"
+            >
               <div class="profile-image">
                 <img :src="message.sender?.picture" alt="프로필 이미지" />
               </div>
@@ -41,7 +45,13 @@ import { useUserStore } from '@/stores/user'
 import InviteCard from '@/components/StarMenu/FanMeeting/InviteCard.vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
-import type { FanMeetingMessage, SocketMessage, SenderState, FanMeetingReservation } from '@/common/types/index'
+import type {
+  FanMeetingMessage,
+  SocketMessage,
+  SenderState,
+  FanMeetingReservation,
+  SnapshotType
+} from '@/common/types/index'
 
 const route = useRoute()
 const store = useUserStore()
@@ -49,18 +59,43 @@ const store = useUserStore()
 const starid = ref(String(route.params.starid))
 const roomType = 'Waiting'
 
-
 const fanMeetingReservation = ref<FanMeetingReservation>()
 const loadReservation = async () => {
-    try {
-        const response = await axios.get(`${store.API_URL}/fanMeeting/reservation/${store.fanState?.id}`)
-        fanMeetingReservation.value = response.data
-        console.log(response)
-    } catch (error) {
-        console.log(error)
-    }
+  try {
+    const response = await axios.get(
+      `${store.API_URL}/fanMeeting/reservation/${store.fanState?.id}`
+    )
+    fanMeetingReservation.value = response.data
+    console.log(response)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
+// 스타 스냅샷 이미지
+const snapshots = ref<SnapshotType[]>([])
+
+const loadSnapshots = async (): Promise<void> => {
+  try {
+    const response = await axios.get(`http://localhost:8080/snapshot/star/${starid.value}/created`)
+    snapshots.value = response.data.AllSnapShot
+    console.log('최신순')
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 현재 슬라이드의 imageUrl을 저장할 ref
+const currentImageUrl = ref<string | null>(null)
+// 현재 슬라이드의 인덱스를 저장할 ref
+let currentIndex = 0
+
+const rotateImages = () => {
+  if (snapshots.value.length > 0) {
+    currentImageUrl.value = snapshots.value[currentIndex % snapshots.value.length].imageUrl
+    currentIndex++
+  }
+}
 
 // 메시지 관련
 const invited = ref(false)
@@ -87,7 +122,7 @@ const sendMessage = () => {
 }
 
 const enterMeetingRoom = () => {
-  console.log("??")
+  console.log('??')
   sendToServer({
     sender: localUser.value,
     signalType: 'Accept',
@@ -165,9 +200,15 @@ const handleErrorMessage = (message: SocketMessage) => {
   console.error('에러발생!: ', message)
 }
 
-onMounted(async() => {
+onMounted(async () => {
   initializeWebSocket()
   loadReservation()
+  loadSnapshots()
+  rotateImages() // 초기 이미지 설정
+  const intervalId = setInterval(rotateImages, 3000) // 3초마다 이미지 변경
+  onUnmounted(() => {
+    clearInterval(intervalId)
+  })
 })
 onUnmounted(() => {
   if (socket) {
@@ -277,9 +318,17 @@ input {
   border-radius: 5px;
   cursor: pointer;
   margin-left: 10px;
+  min-width: 80px;
 }
 
 .send-message-button:hover {
   background-color: #4cae4c;
+}
+
+.slider img {
+  width: 100%;
+  max-width: 600px;
+  display: block;
+  margin: 0 auto;
 }
 </style>
