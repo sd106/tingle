@@ -89,7 +89,7 @@
       </div>
     </div>
 
-    <!-- <div v-if="store.isStar"> -->
+    <div v-if="store.isStar">
     <button
           class="menu-btn"
           type="button"
@@ -99,7 +99,7 @@
         >
           <img src="/image/chat.jpg" alt="" style="height: 30px; width: 30px" />
       </button>
-      <!-- </div> -->
+      </div>
   </main>
   <RouterView />
 </template>
