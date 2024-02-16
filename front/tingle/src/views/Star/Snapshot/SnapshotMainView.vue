@@ -1,7 +1,7 @@
 <template>
   <main class="container">
     <StarMenu :id="id" />
-    <div class="main-layout pt-5">
+    <div class="main-layout pt-5" style="padding-left: 80px; padding-right: 80px; padding-top: 30px;">
       <!-- 상단 메뉴 -->
       <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
       <section v-if="wishStore.selectedSnapshot" class="detail-section cont mb-5">
@@ -37,11 +37,11 @@
         </button>
       </div>
       <div>
-        <RouterLink :to="`/${id}/snapshot/create`" class="btn btn-secondary">글쓰기</RouterLink>
+        <RouterLink :to="`/${id}/snapshot/create`" ><h2 class="hover-text fw-bold ">글쓰기</h2></RouterLink>
       </div>
     </div>
 
-  <div class="main-layout">
+  <div class="main-layout" style="padding-left: 80px; padding-right: 80px; padding-top: 30px;">
     <!-- 스냅샷 목록 섹션 (파란색 부분) -->
     <section class="snapshot-list-section">
       <div class="snapshot-list-container" ref="containerRef" @scroll="handleScroll">
@@ -52,7 +52,7 @@
               @click="wishStore.selectSnapshot(snapshot.id)"
               :src="snapshot.imageUrl"
               alt="Snapshot Image"
-              class="snapshot-image my-1 tw-border-4 tw-border-yellow-300"
+              class="snapshot-image my-1"
             />
           </span>
           <span class="snapshot-item">
@@ -276,4 +276,5 @@ const filteredSnapshot5 = computed(() => {
   transform: translateX(10px); /* 호버 시 글자를 오른쪽으로 10픽셀 이동 */
   cursor: pointer;
 }
+
 </style>

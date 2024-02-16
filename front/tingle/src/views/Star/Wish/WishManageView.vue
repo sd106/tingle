@@ -1,7 +1,7 @@
 <template>
   <main class="container">
-    <StarMenu />
-    <div class="container tw-flex tw-justify-between my-4">
+    <StarMenu /> 
+    <div class="container tw-flex tw-justify-between my-4 " style="padding-left: 80px; padding-right: 80px; padding-top: 30px;">
       <!-- {{ selectedSort }} -->
       <div>
         <button class="btn fs-5 fw-bold tw-text-gray-500 tw-mx-1 menu" :class="{ 'tw-text-gray-900': selectedSort === 0 }"
@@ -13,7 +13,7 @@
       </div>
     </div>
     <!-- DS 리스트 -->
-    <div class="container">
+    <div class="container" style="padding-left: 80px; padding-right: 80px;">
       <span class="title">별빛 아래 이루어진 꿈</span>
       <!-- /////////////////////////////////////////////////////////// -->
       <!-- 뭔가 추가 페이지로 결과 확인할 수 있어야 할 텐데...? 구독자만 볼 수 있다거나 -->
@@ -45,7 +45,7 @@
           </div>
         </li>
       </ul>
-      <div v-else class="tw-text-sm tw-font-semibold tw-text-gray-900 tw-text-center">완료된 위시가 없습니다</div>
+      <div v-else class="tw-text-sm tw-font-semibold tw-text-gray-900 tw-text-center" >완료된 위시가 없습니다</div>
       <!-- 페이지네이션 UI -->
       <nav v-if="wishDS.length > 4" aria-label="..." class="tw-my-1">
         <ul class="pagination tw-flex tw-justify-center">
@@ -66,8 +66,9 @@
       </nav>
     </div>
     <br>
-    <hr>
-    <div class="container">
+    <br>
+    <div class="container" style="padding-left: 80px; padding-right: 80px;">
+      <hr>
       <!-- PS 리스트 -->
       <span class="title">별이 선택한 소원</span>
       <ul v-if="getCurrentPageItemsPS.length > 0" role="list" class="tw-divide-y tw-divide-gray-300">
@@ -131,9 +132,10 @@
       </nav>
     </div>
     <br>
-    <hr>
-    <div class="container">
+    <br>
+    <div class="container" style="padding-left: 80px; padding-right: 80px;">
       <!-- NS 리스트 -->
+      <hr>
       <span class="title">별을 기다리는 소망</span>
       <ul v-if="getCurrentPageItemsNS.length > 0" role="list" class="tw-divide-y tw-divide-gray-300">
         <li v-for="wish in  getCurrentPageItemsNS " :key="wish.id"

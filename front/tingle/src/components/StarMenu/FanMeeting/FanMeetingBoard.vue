@@ -54,7 +54,6 @@
         <button class="send-message-button" @click="sendMessage">보내기</button>
       </div>
     </div>
-
     <div>
       <button class="tw-btn tw-btn-outline tw-btn-error tw-mt-4" @click="finishMeeting">
         팬미팅 종료

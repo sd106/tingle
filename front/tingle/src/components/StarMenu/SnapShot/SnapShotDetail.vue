@@ -634,4 +634,13 @@ function formatDistanceToNowFromLocalDateTime(isoString: string) {
     opacity 0.3s ease,
     fill 0.3s ease;
 }
+
+.hover-text {
+  transition: transform 0.3s ease-in-out; /* transform 속성에 대한 전환 효과 적용 */
+}
+
+.hover-text:hover {
+  transform: translateX(10px); /* 호버 시 글자를 오른쪽으로 10픽셀 이동 */
+  cursor: pointer;
+}
 </style>

@@ -3,25 +3,38 @@
     <div class="tw-bg-white tw-shadow-lg tw-rounded-lg tw-p-6 tw-w-full">
       <div class="d-flex">
         <div class="tw-mb-2 d col-6 d-flex flex-column justify-content-center align-items-center">
-          <div class="mx-0">
-            <h2 class="fw-bold p-0 tw-font-medium">구매자 정보</h2>
-            <p>이름: {{ order.fan.username }}</p>
-            <p>이메일: {{ order.fan.email }}</p>
+          <div class="mx-0 px-0">
+            <p class="fw-bold">이름: {{ order.fan.username }}</p>
+            <p class="fw-bold">이메일: {{ order.fan.email }}</p>
           </div>
           <img :src="order.fan.picture" alt="상품 이미지" class="tw-mt-2 tw-rounded tw-shadow" />
         </div>
         <div class="col-6" style="margin-top: 100px">
           <div class="d-felx flex-column"></div>
-          <div ref="dragArea"
-            class="me-5 tw-border-dashed tw-border-2 tw-border-primary tw-p-4 tw-text-center tw-cursor-pointer tw-mb-4 tw-h-72"
-            @dragover.prevent="handleDragOver" @drop="handleDrop" @click="fileInput!.click()">
-            여기에 파일을 드래그 앤 드롭하거나 클릭하여 선택하세요.
-            <input type="file" multiple ref="fileInput" @change="handleFileUpload" style="display: none" />
+          <div
+            ref="dragArea"
+            class="me-5 tw-border-dashed tw-border-2 tw-border-primary tw-p-4 tw-text-center tw-cursor-pointer tw-mb-4 tw-h-72 d-flex justify-content-center align-items-center"
+            @dragover.prevent="handleDragOver"
+            @drop="handleDrop"
+            @click="fileInput!.click()"
+          >
+            <p>파일을 드래그하거나 클릭하여 선택하세요.</p>
+            <input
+              type="file"
+              multiple
+              ref="fileInput"
+              @change="handleFileUpload"
+              style="display: none"
+            />
           </div>
 
           <div class="text-end me-5">
-            <button class="tw-btn me-3" @click="submitForm">파일 전송</button>
-            <button class="tw-btn" @click="deleteOrder(order.orderId)">주문 삭제</button>
+            <button class="btn btn-outline-secondary btn-sm me-3" @click="submitForm">
+              파일 전송
+            </button>
+            <button class="btn btn-outline-danger btn-sm" @click="deleteOrder(order.orderId)">
+              주문 삭제
+            </button>
           </div>
         </div>
         <!-- 드래그 앤 드롭으로 업로드된 파일의 미리보기 -->
@@ -31,7 +44,10 @@
       <div class="tw-grid tw-grid-cols-3 tw-gap-4 d-flex justify-content-center align-items-center">
         <div v-for="(file, index) in previewFiles" :key="index" class="tw-relative tw-mb-4">
           <img :src="file" height="200px;" width="200px;" class="tw-rounded tw-shadow-md" />
-          <button @click="removeFile(index)" class="tw-btn tw-btn-sm tw-absolute tw-right-1 tw-bottom-1">
+          <button
+            @click="removeFile(index)"
+            class="tw-btn tw-btn-sm tw-absolute tw-right-1 tw-bottom-1"
+          >
             삭제
           </button>
         </div>

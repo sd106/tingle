@@ -1,7 +1,7 @@
 <template>
-  <main>
+  <main class="container">
     <StarMenu :id="starid" class="mb-5" />
-    <div v-if="product" class="d-flex row tw-space-x-4 tw-mt-2">
+    <div v-if="product" class="d-flex row tw-space-x-4 tw-mt-2" style="padding-top: 30px;">
       <div class="col-6">
         <div class="tw-carousel tw-w-full">
           <div v-for="(image, index) in product.imageUrl" :key="image.id" class="tw-carousel-item tw-relative tw-w-full"
