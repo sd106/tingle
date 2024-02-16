@@ -54,6 +54,8 @@ public class FanMeetingService {
             throw new RuntimeException(e);
         }
         StarEntity star = starRepository.findByUsername(request.getStarName());
+        System.out.println("팬미팅 시작 시간!!");
+        System.out.println(request.getFanMeetingStartAt());
 //        LocalDateTime ticketingStartAt = request.getTicketingStartAt().plusHours(9);
 //        LocalDateTime ticketingEndAt = request.getTicketingEndAt().plusHours(9);
 //        LocalDateTime fanMeetingStartAt = request.getFanMeetingStartAt().plusHours(9);
@@ -106,6 +108,7 @@ public class FanMeetingService {
 
         FanMeeting fanMeeting = recentFanMeeting(starId);
 
+        System.out.println(fanMeeting);
         if (fanMeeting == null || fanMeeting.getIsFinished()) {
             return GetFanMeetingInfoResponse.builder()
                     .status("closed")
