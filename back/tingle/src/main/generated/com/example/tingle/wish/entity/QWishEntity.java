@@ -24,9 +24,9 @@ public class QWishEntity extends EntityPathBase<WishEntity> {
 
     public final StringPath contents = createString("contents");
 
-    public final DatePath<java.time.LocalDate> createTime = createDate("createTime", java.time.LocalDate.class);
+    public final DateTimePath<java.time.LocalDateTime> createTime = createDateTime("createTime", java.time.LocalDateTime.class);
 
-    public final DatePath<java.time.LocalDate> deleteTime = createDate("deleteTime", java.time.LocalDate.class);
+    public final DateTimePath<java.time.LocalDateTime> deleteTime = createDateTime("deleteTime", java.time.LocalDateTime.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 

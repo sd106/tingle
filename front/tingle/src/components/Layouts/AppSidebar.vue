@@ -95,7 +95,7 @@ import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import axios from 'axios'
-import ChatModal from '@/components/ChatModal.vue'
+import ChatModal from '@/components/StarMenu/Chat/ChatModal.vue'
 
 const store = useUserStore()
 const isStar = store.isStar

@@ -1,6 +1,5 @@
 <template>
-  <main class="main-background">
-    <!-- 배경색을 두고 다른걸 다 흰색으로 두는 것도 괜찮을듯 -->
+  <main v-bind:class="mainClass">
     <!-- 배너사진 -->
     <div v-if="hotStarsInfo"></div>
     <div class="container-banner full-width-fixed p-0">
@@ -13,7 +12,7 @@
     <img class="star5" src="/image/star1.png" />
     <!-- HOT STAR -->
     <img src="/image/wood.png" class="container-img" style="margin-left: 39%" alt="" />
-    <h1 class="container" style="padding-top: 500px;">HOT STAR들을 만나보세요!</h1>
+    <h1 class="container" style="padding-top: 500px">HOT STAR들을 만나보세요!</h1>
     <div class="container slider-container">
       <div class="justify-content-between slider-track" ref="sliderTrack">
         <div v-for="hotstar in hotStarsInfo" :key="hotstar.id" class="p-2 border star-card-hotstar">
@@ -44,7 +43,7 @@
     <h1 class="container">카테고리별 상위 10명!</h1>
     <div class="container d-flex">
       <!-- 카테고리 버튼 > 누르면 v-for에 들어갈 displaystarinfo 기준이 바뀜 -->
-      <button class="category-btn m-2 " @click="selectCategory(0)">일상/토크</button>
+      <button class="category-btn m-2" @click="selectCategory(0)">일상/토크</button>
       <button class="category-btn m-2" @click="selectCategory(1)">동물</button>
       <button class="category-btn m-2" @click="selectCategory(2)">게임/스포츠</button>
       <button class="category-btn m-2" @click="selectCategory(3)">미술/음악</button>
@@ -60,9 +59,7 @@
           v-for="star in StarsByCategory"
           :key="star.id"
           class="tw-border tw-rounded-lg star-card border p-0"
-          style="
-            /* width: 230px; */
-          "
+          style="/* width: 230px; */"
         >
           <RouterLink
             :to="`/${star.id}/home`"
@@ -91,12 +88,24 @@
         </div>
       </div>
     </div>
+
+    <div v-if="store.isStar">
+    <button
+          class="menu-btn"
+          type="button"
+          data-bs-toggle="modal"
+          data-bs-target="#chatModal"
+          style="height: 50px; width: 50px"
+        >
+          <img src="/image/chat.jpg" alt="" style="height: 30px; width: 30px" />
+      </button>
+      </div>
   </main>
   <RouterView />
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import axios from 'axios'
@@ -115,6 +124,13 @@ const truncateText = (text: string, maxLength: number) => {
     return text
   }
 }
+
+const mainClass = computed(() => {
+  return {
+    'main-background': store.isLogin, // store.isLogin이 true일 때 적용
+    'notlogin-background': !store.isLogin // store.isLogin이 false일 때 적용
+  }
+})
 
 const moveSlider = () => {
   setInterval(() => {
@@ -171,7 +187,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
 h1 {
   color: black;
 }
@@ -180,17 +195,11 @@ h1 {
   position: absolute;
   left: 0;
   right: 0;
+  background-color: #f1eaff;
+}
 
-  /* 어둡게 */
-  /* background-color: #435585; */
-
-  /* 밝게 */
-  /* background-color: #0C356A; */
-
-  /* 원래 색 */
-  background-color: #F1EAFF;
-  /* background-color: rgb(90, 76, 156); */
-
+.notlogin-background {
+  background-color: white;
 }
 
 .long-text {
@@ -198,7 +207,6 @@ h1 {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 
 .full-width-fixed {
   position: absolute;
@@ -216,11 +224,10 @@ h1 {
   z-index: 1000; /* 필요한 경우 z-index 값 설정 */
 }
 
-.container-banner{
+.container-banner {
   overflow: hidden;
   /* background: midnightblue; */
 }
-
 
 .star-card {
   display: flex;
@@ -230,7 +237,7 @@ h1 {
   margin: 10px;
   transition: transform 0.3s ease;
   background: white;
-  
+
   height: 240px;
   width: 200px;
 }
@@ -390,5 +397,9 @@ h1 {
   position: absolute;
   top: -8px;
   animation: star-fall5 1.7s linear infinite;
+}
+
+.container {
+  min-height: 0px !important;
 }
 </style>

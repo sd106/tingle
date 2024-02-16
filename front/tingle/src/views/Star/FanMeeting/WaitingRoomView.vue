@@ -1,11 +1,12 @@
 <template>
   <div class="row">
     <div class="col-7">
-      <div class="chat-thumbnail p-3">
-        <img src="/image/fan-meeting-img.webp" alt="채팅방 이미지" />
+      <div class="slider p-3">
+        <img v-if="currentImageUrl" :src="currentImageUrl" alt="Image slide" />
+        <p v-else class="center">스타를 기다리는 중입니다...</p>
       </div>
     </div>
-    <div class="col-5">
+    <div class="col-5 mt-4">
       <div>{{ localUser.username }} 님 안녕하세요</div>
       <div id="chat-room">
         <ul id="message-list">
@@ -48,7 +49,8 @@ import type {
   FanMeetingMessage,
   SocketMessage,
   SenderState,
-  FanMeetingReservation
+  FanMeetingReservation,
+  SnapshotType
 } from '@/common/types/index'
 
 const route = useRoute()
@@ -67,6 +69,31 @@ const loadReservation = async () => {
     console.log(response)
   } catch (error) {
     console.log(error)
+  }
+}
+
+// 스타 스냅샷 이미지
+const snapshots = ref<SnapshotType[]>([])
+
+const loadSnapshots = async (): Promise<void> => {
+  try {
+    const response = await axios.get(`http://localhost:8080/snapshot/star/${starid.value}/created`)
+    snapshots.value = response.data.AllSnapShot
+    console.log('최신순')
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 현재 슬라이드의 imageUrl을 저장할 ref
+const currentImageUrl = ref<string | null>(null)
+// 현재 슬라이드의 인덱스를 저장할 ref
+let currentIndex = 0
+
+const rotateImages = () => {
+  if (snapshots.value.length > 0) {
+    currentImageUrl.value = snapshots.value[currentIndex % snapshots.value.length].imageUrl
+    currentIndex++
   }
 }
 
@@ -114,7 +141,7 @@ const sendToServer = (msg: SocketMessage) => {
 }
 
 const initializeWebSocket = () => {
-  socket = new WebSocket('wss://i10d106.p.ssafy.io/api/signal')
+  socket = new WebSocket('ws://localhost:8080/signal')
 
   socket.onmessage = (msg) => {
     let message = JSON.parse(msg.data)
@@ -176,6 +203,12 @@ const handleErrorMessage = (message: SocketMessage) => {
 onMounted(async () => {
   initializeWebSocket()
   loadReservation()
+  loadSnapshots()
+  rotateImages() // 초기 이미지 설정
+  const intervalId = setInterval(rotateImages, 3000) // 3초마다 이미지 변경
+  onUnmounted(() => {
+    clearInterval(intervalId)
+  })
 })
 onUnmounted(() => {
   if (socket) {
@@ -285,9 +318,17 @@ input {
   border-radius: 5px;
   cursor: pointer;
   margin-left: 10px;
+  min-width: 80px;
 }
 
 .send-message-button:hover {
   background-color: #4cae4c;
+}
+
+.slider img {
+  width: 100%;
+  max-width: 600px;
+  display: block;
+  margin: 0 auto;
 }
 </style>

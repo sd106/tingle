@@ -1,23 +1,23 @@
 <template>
-  <div class="row m-0 p-0">
-      <div class="col-9">
-          <section v-if="fanMeetingReservation?.fanMeetingType == '자유대화'">
-              <NormalMeeting :localStream="localStream" :remoteStream="remoteStream"/>
-          </section>
-          <section v-else-if="fanMeetingReservation?.fanMeetingType == '인생네컷'">
-              <LifeFourCutMeeting :localStream="localStream" :remoteStream="remoteStream"/>
-          </section>
-          <section v-else-if="fanMeetingReservation?.fanMeetingType== '생일축하'">
-              <BirthdayMeeting :localStream="localStream" :remoteStream="remoteStream"/>
-          </section>
-          <section v-else>
-              <h1>연결중입니다...</h1>
-          </section>
-      </div>
-      <div class="col-3">
-          <FanMeetingBoard :finishedFans="finishedFans" @finish-fan="finishFan" @finish-meeting="finishMeeting"/>
-      </div>
-  </div>
+    <div class="row m-0 p-0">
+        <div class="col-9">
+            <section v-if="fanMeetingReservation?.fanMeetingType == '자유대화'">
+                <NormalMeeting :localStream="localStream" :remoteStream="remoteStream"/>
+            </section>
+            <section v-else-if="fanMeetingReservation?.fanMeetingType == '인생네컷'">
+                <LifeFourCutMeeting :localStream="localStream" :remoteStream="remoteStream"/>
+            </section>
+            <section v-else-if="fanMeetingReservation?.fanMeetingType== '생일축하'">
+                <BirthdayMeeting :localStream="localStream" :remoteStream="remoteStream"/>
+            </section>
+            <section v-else>
+                <h1>연결중입니다...</h1>
+            </section>
+        </div>
+        <div class="col-3">
+            <FanMeetingBoard :finishedFans="finishedFans" @finish-fan="finishFan" @finish-meeting="finishMeeting"/>
+        </div>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -44,29 +44,46 @@ const fanMeetingReservation = ref<FanMeetingReservation>()
 const finishedFans = ref<String[]>([])
 
 const finishFan = () => {
-    console.log("finishFan")
-    console.log(fanMeetingReservation)
-    sendToServer({
-        sender: localUser.value,
-        signalType: 'FinishFan',
-        data: fanMeetingReservation.value?.userName,
-        roomType: 'Waiting'
-    })
-    finishedFans.value.push(fanMeetingReservation.value?.userName ?? '')
-    fanMeetingReservation.value = undefined
+  console.log('finishFan')
+  console.log(fanMeetingReservation)
+  sendToServer({
+    sender: localUser.value,
+    signalType: 'FinishFan',
+    data: fanMeetingReservation.value?.userName,
+    roomType: 'Waiting'
+  })
+  finishedFans.value.push(fanMeetingReservation.value?.userName ?? '')
+  fanMeetingReservation.value = undefined
 }
 
 const finishMeeting = async () => {
   console.log('finishing Meeting..')
   try {
-    const response = axios.delete(
-      `https://i10d106.p.ssafy.io/api/fanMeeting/finish/${store.starState?.id}`
-    )
+    const response = axios.delete(`http://localhost:8080/fanMeeting/finish/${store.starState?.id}`)
     console.log(response)
     router.push({ name: 'starhomemanage' })
   } catch (error) {
     console.log(error)
   }
+}
+
+const fanfare = () => {
+  console.log("팡파레!!")
+  sendToServer({
+      sender: localUser.value,
+      signalType: 'Fanfare',
+      roomType: 'Meeting'
+    })
+}
+
+const congratulation = () => {
+  sendToServer({
+      sender: localUser.value,
+      signalType: 'Congratulation',
+      roomType: 'Meeting'
+    })
+
+    
 }
 // 주소로 연결할 웹소켓
 let socket: WebSocket | undefined
@@ -92,8 +109,7 @@ const mediaConstraints = {
 // WebRTC 에 사용할 변수
 const localStream = ref<MediaStream>()
 const remoteStream = ref<MediaStream>()
-let myPeerConnection: RTCPeerConnection;
-
+let myPeerConnection: RTCPeerConnection
 
 // 서버에게 메시지 전송 메서드
 const sendToServer = (msg: SocketMessage) => {
@@ -105,7 +121,7 @@ const sendToServer = (msg: SocketMessage) => {
 // WebSocket
 const initializeWebSocket = () => {
   // 소켓 초기화
-  socket = new WebSocket('wss://i10d106.p.ssafy.io/api/signal')
+  socket = new WebSocket('ws://localhost:8080/signal')
 
   // 소켓이 message를 받을 때 이벤트 함수
   socket.onmessage = (msg) => {
@@ -133,21 +149,23 @@ const initializeWebSocket = () => {
         handleICEMessage(message)
         break
 
-      case "Join":
-        console.log('Client is starting to ' + (message.data === "true" ? 'negotiate' : 'wait for a peer'))
+      case 'Join':
+        console.log(
+          'Client is starting to ' + (message.data === 'true' ? 'negotiate' : 'wait for a peer')
+        )
         handleJoinMessage(message)
-        break;
-
-      case 'Accept':
-        console.log('Signal ACCEPT received')
-        handleAcceptMessage(message)
         break
 
-      default:
-        console.log('Error: ', message)
-        handleErrorMessage(message)
+            case "Accept":
+                console.log('Signal ACCEPT received')
+                handleAcceptMessage(message)
+                break;
+
+            default:
+                console.log('Error: ', message)
+                handleErrorMessage(message)
+        }
     }
-  }
 
   // 소켓이 열리면 이벤트 함수
   socket.onopen = () => {
@@ -173,15 +191,15 @@ const initializeWebSocket = () => {
 
 // WebRTC
 const initializeWebRTC = async () => {
-    console.log("handling joing message!")
-    // 내 media 출력
-    localStream.value = await navigator.mediaDevices.getUserMedia(mediaConstraints)
-    // if (localVideo.value) {
-    //     const localVideoElement = localVideo.value as HTMLVideoElement;
-    //     localVideoElement.srcObject = localStream.value;
-    //     (localVideo.value as HTMLVideoElement).play();
-    // }
-    console.log("야호")
+  console.log('handling joing message!')
+  // 내 media 출력
+  localStream.value = await navigator.mediaDevices.getUserMedia(mediaConstraints)
+  // if (localVideo.value) {
+  //     const localVideoElement = localVideo.value as HTMLVideoElement;
+  //     localVideoElement.srcObject = localStream.value;
+  //     (localVideo.value as HTMLVideoElement).play();
+  // }
+  console.log('야호')
 
   // 다른 peer들을 위한 RTCPeerConnection을 만듬
   myPeerConnection = new RTCPeerConnection(peerConnectionConfig)
@@ -197,18 +215,18 @@ const initializeWebRTC = async () => {
       })
       console.log('ICE Candidate Event: ICE candidate sent')
     }
-    // 원격 스트림을 받을 때 처리
-    myPeerConnection.ontrack = (event) => {
-        console.log('Track Event: set stream to remote video element')
-        console.log('remoteVideo: ', event.streams[0])
-        // if (remoteVideo.value) {
-        //     const remoteVideoElement = remoteVideo.value as HTMLVideoElement;
-        //     remoteVideoElement.srcObject = event.streams[0];
-            remoteStream.value = event.streams[0];
-        //     (remoteVideo.value as HTMLVideoElement).play();
-            console.log(remoteStream.value)
-        // }
-    }
+  }
+  // 원격 스트림을 받을 때 처리
+  myPeerConnection.ontrack = (event) => {
+    console.log('Track Event: set stream to remote video element')
+    console.log('remoteVideo: ', event.streams[0])
+    // if (remoteVideo.value) {
+    //     const remoteVideoElement = remoteVideo.value as HTMLVideoElement;
+    //     remoteVideoElement.srcObject = event.streams[0];
+    remoteStream.value = event.streams[0]
+    //     (remoteVideo.value as HTMLVideoElement).play();
+    console.log(remoteStream.value)
+    // }
   }
 
   // ICE 연결 상태 변경되면 로깅
@@ -253,40 +271,41 @@ const handleICEMessage = (message: SocketMessage) => {
 }
 
 const handleJoinMessage = async (message: SocketMessage) => {
-        console.log("11")
-        myPeerConnection.onnegotiationneeded = async () => {
-            try {
-                console.log("22")
+  console.log('11')
+  myPeerConnection.onnegotiationneeded = async () => {
+    try {
+      console.log('22')
 
-                const offer = await myPeerConnection.createOffer()
-                await myPeerConnection.setLocalDescription(offer)
-                sendToServer({
-                    sender: localUser.value,
-                    signalType: 'Offer',
-                    sdp: myPeerConnection.localDescription ? myPeerConnection.localDescription : undefined
-                })
-                console.log('Negotiation Needed Event: SDP offer sent')
-            } catch (reason) {
-                // 연결 실패 시 오류 처리
-                console.error('failure to connect error: ', reason)
-            }
-        }
-
-    // 내 media를 RTCPeerConnection에 추가
-    if (localStream.value) {
-        localStream.value.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream.value as MediaStream));
+      const offer = await myPeerConnection.createOffer()
+      await myPeerConnection.setLocalDescription(offer)
+      sendToServer({
+        sender: localUser.value,
+        signalType: 'Offer',
+        sdp: myPeerConnection.localDescription ? myPeerConnection.localDescription : undefined
+      })
+      console.log('Negotiation Needed Event: SDP offer sent')
+    } catch (reason) {
+      // 연결 실패 시 오류 처리
+      console.error('failure to connect error: ', reason)
     }
+  }
 
+  // 내 media를 RTCPeerConnection에 추가
+  if (localStream.value) {
+    localStream.value
+      .getTracks()
+      .forEach((track) => myPeerConnection.addTrack(track, localStream.value as MediaStream))
+  }
 }
 
 const handleAcceptMessage = (message: SocketMessage) => {
-    try {
-        console.log(message.sdp)
-        fanMeetingReservation.value = message.sdp as FanMeetingReservation
-        console.log(fanMeetingReservation.value)
-    } catch (error) {
-        console.log(error)
-    }
+  try {
+    console.log(message.sdp)
+    fanMeetingReservation.value = message.sdp as FanMeetingReservation
+    console.log(fanMeetingReservation.value)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const handleErrorMessage = (message: SocketMessage) => {
@@ -294,8 +313,8 @@ const handleErrorMessage = (message: SocketMessage) => {
 }
 
 onMounted(async () => {
-    await initializeWebRTC()
-    initializeWebSocket()
+  await initializeWebRTC()
+  initializeWebSocket()
 })
 
 onUnmounted(() => {
@@ -304,3 +323,13 @@ onUnmounted(() => {
   }
 })
 </script>
+
+<style>
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh; /* 뷰포트의 전체 높이 */
+  text-align: center;
+}
+</style>

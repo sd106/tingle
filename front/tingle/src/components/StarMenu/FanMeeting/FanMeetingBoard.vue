@@ -1,22 +1,26 @@
 <template>
-    <div>
-      <div class="d-flex justify-content-between px-3">
-        <!-- <div>
-          <button class="btn border btn-secondary" @click="finishFan">팬 내보내기</button>
-        </div> -->
-        <div>
-          <button class="btn border btn-secondary" @click="finishFan">팬 내보내기</button>
-          <button class="btn border btn-secondary" @click="showFanListModal = true">대기방 팬 목록 보기</button>
-          <button class="btn border btn-secondary" @click="finishMeeting">팬미팅 끝내기</button>
-          <div v-if="showFanListModal" class="fan-list-modal" @click.self="showFanListModal = false">
-            <div class="fan-list-modal-content">
-              <div class="fan-list">
-                <div v-for="fan in fans" :key="fan.id" class="fan-item" @click.stop>
-                  <div class="fan-name" @click="selectFan(fan.username)">{{ fan.username }}</div>
-                  <button v-if="selectedFanName === fan.username" class="invite-btn" @click="invite(fan.username)">
-                    초대하기
-                  </button>
-                </div>
+  <div>
+    <div class="d-flex justify-content-between px-3">
+      <div>
+        <button class="btn border btn-secondary" @click="finishFan">팬 내보내기</button>
+      </div>
+      <div>
+        <button class="btn border btn-secondary" @click="showFanListModal = true">
+          대기방 팬 목록 보기
+        </button>
+
+        <div v-if="showFanListModal" class="fan-list-modal" @click.self="showFanListModal = false">
+          <div class="fan-list-modal-content">
+            <div class="fan-list">
+              <div v-for="fan in fans" :key="fan.id" class="fan-item" @click.stop>
+                <div class="fan-name" @click="selectFan(fan.username)">{{ fan.username }}</div>
+                <button
+                  v-if="selectedFanName === fan.username"
+                  class="invite-btn"
+                  @click="invite(fan.username)"
+                >
+                  초대하기
+                </button>
               </div>
             </div>
           </div>
@@ -50,9 +54,12 @@
         <button class="send-message-button" @click="sendMessage">보내기</button>
       </div>
     </div>
-    <!-- <div>
-        <button @click="finishMeeting">팬미팅 끝내기</button>
-    </div> -->
+    <div>
+      <button class="tw-btn tw-btn-outline tw-btn-error tw-mt-4" @click="finishMeeting">
+        팬미팅 종료
+      </button>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -129,7 +136,7 @@ const sendToServer = (msg: SocketMessage) => {
 }
 
 const initializeWebSocket = () => {
-  socket = new WebSocket('wss://i10d106.p.ssafy.io/api/signal')
+  socket = new WebSocket('ws://localhost:8080/signal')
 
   socket.onmessage = (msg) => {
     let message = JSON.parse(msg.data)
@@ -341,8 +348,9 @@ input {
 
 .invite-btn {
   position: absolute;
-  right: 0;
-  top: 0;
+  right: -50px;
+  top: 0px;
+  width: 100px;
   background-color: #4caf50;
   color: white;
   border: none;

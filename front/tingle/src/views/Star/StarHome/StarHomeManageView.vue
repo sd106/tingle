@@ -10,8 +10,9 @@
         <img :src="starProfile?.profileImage" alt="사진" class="w-75 h-75" />
       </div>
       <div>
-        <div>{{ starProfile?.username }}</div>
+        <div>닉네임 : {{ starProfile?.username }}</div>
         <div v-if="!isEdit">
+          카테고리 :
           {{
             starProfile?.category === -1
               ? '카테고리'
@@ -42,7 +43,7 @@
           </select>
         </div>
 
-        <div v-if="!isEdit">{{ starProfile?.snsUrl }}</div>
+        <div v-if="!isEdit">SNS주소 : {{ starProfile?.snsUrl }}</div>
         <div v-else>
           <input v-model="editUsername" />
         </div>
@@ -56,11 +57,16 @@
     <div class="container border" v-show="showInputArticle">
       <input type="file" id="image-upload" multiple />
       <input v-model="homeCreateRequest.content" placeholder="입력해주세요" />
-      <button @click="insertArticle()">완료</button>
+      <button @click="insertPhotos()">완료</button>
     </div>
 
-    {{ article }}
-    <draggable v-if="article.length > 0" v-model="article" class="drag-area" item-key="id">
+    <draggable
+      v-if="article.length > 0"
+      v-model="article"
+      class="drag-area"
+      item-key="ordering"
+      @end="onDragEnd"
+    >
       <template v-slot:item="{ item }">
         <div class="item-container">
           <div v-if="item.content !== ''">{{ item.content }}</div>
@@ -165,6 +171,12 @@ const textContent = ref('')
 const dragArea = ref<HTMLElement | null>(null)
 const fileInput = ref<HTMLInputElement | null>(null)
 
+function onDragEnd(event: Event) {
+  // 드래그 앤 드롭으로 인한 변경사항을 처리합니다.
+  // 예: 서버에 순서 변경을 저장하는 로직
+  console.log('드래그 앤 드롭 작업 완료', event)
+}
+
 const getstarProfile = async () => {
   const response = await axios.get(`${store.API_URL}/home/profile/${starId}`)
   starProfile.value = response.data.data
@@ -189,42 +201,42 @@ const handleFileSelection = (event: any) => {
 
 let homeCreateRequest = {
   starId: starId,
-  ordering: 3,
+  ordering: article.value.length + 1,
   content: '입력해주세요'
 }
 
-const insertArticle = async () => {
-  let formData = new FormData()
-  formData.append('homeCreateRequest', JSON.stringify(homeCreateRequest)) // JSON 문자열로 변환하여 추가
+// const insertArticle = async () => {
+//   let formData = new FormData()
+//   formData.append('homeCreateRequest', JSON.stringify(homeCreateRequest)) // JSON 문자열로 변환하여 추가
 
-  // 파일이 있을 경우에만 추가
-  if (files && files.value.length > 0) {
-    for (let i = 0; i < files.value.length; i++) {
-      formData.append('files', files.value[i])
-    }
-  }
+//   // 파일이 있을 경우에만 추가
+//   if (files && files.value.length > 0) {
+//     for (let i = 0; i < files.value.length; i++) {
+//       formData.append('files', files.value[i])
+//     }
+//   }
 
-  axios
-    .post(`${store.API_URL}/home/post`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    .then((response) => {
-      getArticle()
-      showInputArticle.value = false
-      console.log(response.data)
-    })
-    .catch((error) => {
-      console.error(error)
-    })
-}
+//   axios
+//     .post(`${store.API_URL}/home/post`, formData, {
+//       headers: {
+//         'Content-Type': 'multipart/form-data'
+//       }
+//     })
+//     .then((response) => {
+//       getArticle()
+//       showInputArticle.value = false
+//       console.log(response.data)
+//     })
+//     .catch((error) => {
+//       console.error(error)
+//     })
+// }
 
-let homeUpdateRequest = {
-  homeId: 1,
-  ordering: 3,
-  content: '입력해주세요'
-}
+// let homeUpdateRequest = {
+//   homeId: 1,
+//   ordering: article.value.length + 1,
+//   content: '입력해주세요'
+// }
 
 const deleteArticle = async (homeid: number) => {
   axios
@@ -275,7 +287,7 @@ const insertProfile = async () => {
 
 let photos = {
   starId: starId,
-  ordering: 2,
+  ordering: article.value.length + 1,
   content: ''
 }
 
@@ -307,11 +319,10 @@ const insertPhotos = async () => {
 }
 
 const insertPencil = async () => {
-
   await axios
     .post(`${store.API_URL}/home/post/pencil`, {
       starId: starId,
-      ordering: 1,
+      ordering: article.value.length + 1,
       content: textContent!.value
     })
     .then((response) => {
@@ -322,7 +333,6 @@ const insertPencil = async () => {
     .catch((error) => {
       console.error(error)
     })
-
 }
 
 const previewFiles = ref<string[]>([])
@@ -365,7 +375,7 @@ onMounted(() => {
 })
 </script>
 
-<style>
+<style scoped>
 .item-container {
   border: 1px solid black;
   padding: 10px;
@@ -400,16 +410,65 @@ onMounted(() => {
 }
 
 .item-container {
-  position: relative;
+  border: 1px solid black;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
-.item-header {
-  position: absolute;
-  top: 0;
-  right: 0;
+.container {
+  margin-bottom: 10px;
 }
 
-.item-button {
-  margin: 0 5px;
+.border {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.item-wrapper {
+  width: 90%;
+  margin: 30px auto;
+}
+.item-container {
+  border: 1px solid #ddd; /* 경계선 추가 */
+  border-radius: 8px; /* 모서리 둥글게 */
+  padding: 16px; /* 내부 여백 */
+  margin-bottom: 16px; /* 아래 마진으로 요소 간 간격 추가 */
+  background-color: #fafafa; /* 배경색 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  transition: transform 0.2s; /* 호버 시 효과를 위한 전환 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+.item-container:hover {
+  transform: translateY(-5px); /* 마우스 오버 시 약간 위로 이동 */
+}
+
+.article-image {
+  max-width: 100%; /* 이미지 너비 최대값 제한 */
+  height: auto; /* 이미지 비율 유지 */
+  border-radius: 4px; /* 이미지 모서리 둥글게 */
+  margin-bottom: 12px; /* 이미지 아래 마진 추가 */
+  display: block;
+  margin: auto; /* 이미지 중앙 정렬 */
+}
+
+/* 내용 스타일링 */
+.item-container div {
+  margin-bottom: 8px; /* 내용 요소 간 간격 */
+  color: #333; /* 글자 색상 */
+  font-size: 16px; /* 글자 크기 */
+}
+
+/* 마지막 요소의 마진 제거 */
+.item-container div:last-child {
+  margin-bottom: 0;
+  flex: 1 0 calc(50% - 16px);
+}
+
+.drag-area {
+  display: flex;
+  flex-wrap: wrap; /* 항목들이 컨테이너 너비를 초과하면 다음 줄로 넘어감 */
+  justify-content: center; /* 항목들을 가로축 중앙에 정렬 */
+  gap: 16px; /* 항목 사이의 간격 */
 }
 </style>

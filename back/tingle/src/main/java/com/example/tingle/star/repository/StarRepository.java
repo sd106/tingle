@@ -1,7 +1,9 @@
 package com.example.tingle.star.repository;
 
 import com.example.tingle.star.entity.StarEntity;
+import com.example.tingle.wish.entity.WishEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;

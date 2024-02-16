@@ -1,4 +1,7 @@
 <template>
+  <div ref="fanfareContainer" class="fanfareContainer-container"></div>
+  <audio id="congratulationSound" src="/sound/congratulations.mp3"></audio>
+
   <section v-if="fanMeetingReservation?.fanMeetingType == '자유대화'">
     <NormalMeeting :localStream="localStream" :remoteStream="remoteStream"/>
   </section>
@@ -14,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, h } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useRoute } from 'vue-router'
 import type { SocketMessage, FanMeetingReservation, SenderState } from '@/common/types/index'
@@ -38,7 +41,7 @@ const fanMeetingReservation = ref<FanMeetingReservation>()
 
 const loadReservation = async () => {
   try {
-    const { data } = await axios.get(`https://i10d106.p.ssafy.io/api/fanMeeting/fanMeetingReservation/${localUser.value.id}/${starid.value}`)
+    const { data } = await axios.get(`http://localhost:8080/fanMeeting/fanMeetingReservation/${localUser.value.id}/${starid.value}`)
     fanMeetingReservation.value = data
     console.log(fanMeetingReservation.value)
     console.log(data)
@@ -46,6 +49,8 @@ const loadReservation = async () => {
     console.error(error)
   }
 }
+
+
 // 주소로 연결할 웹소켓
 let socket: WebSocket | undefined
 
@@ -79,10 +84,11 @@ const sendToServer = (msg: SocketMessage) => {
   }
 }
 
+
 // WebSocket
 const initializeWebSocket = () => {
   // 소켓 초기화
-  socket = new WebSocket('wss://i10d106.p.ssafy.io/api/signal')
+  socket = new WebSocket('ws://localhost:8080/signal')
 
   // 소켓이 message를 받을 때 이벤트 함수
   socket.onmessage = (msg) => {
@@ -111,16 +117,24 @@ const initializeWebSocket = () => {
         break
 
       case 'Join':
-        console.log(
-          'Client is starting to ' + (message.data === 'true') ? 'negotiate' : 'wait for a peer'
-        )
-
+        console.log('Client is starting to ' + (message.data === 'true') ? 'negotiate' : 'wait for a peer')
+        
         handleJoinMessage(message)
         break
-
+      
       case 'FinishFan':
         console.log('Fan Meeting is finished')
         handleFinishFanMessage(message)
+        break
+
+      case 'Fanfare':
+        console.log('Fanfare is started')
+        handleFanfareMessage(message)
+        break
+      
+      case 'Congratulation':
+        console.log('Congratulation message is received')
+        handleCongratulationMessage(message)
         break
 
       default:
@@ -273,6 +287,42 @@ const handleFinishFanMessage =async (message: SocketMessage) => {
   }
 }
 
+const fanfareContainer = ref<HTMLElement | null>(null);
+
+const handleFanfareMessage = (message: SocketMessage) => {
+
+  console.log('팬파레가 시작되었습니다!')
+    if (!fanfareContainer.value) return;
+    console.log('111')
+    fanfareContainer.value.innerHTML = '';
+    console.log('111')
+
+    // 풍선 생성
+    for (let i = 0; i < 20; i++) {
+      const balloon = document.createElement('div');
+      balloon.classList.add('balloon');
+      balloon.style.backgroundColor = `hsla(${Math.random() * 360}, 100%, 70%, 0.7)`;
+      balloon.style.left = `${Math.random() * 100}%`;
+      balloon.style.animation = `float ${2 + Math.random() * 3}s ease-in forwards`;
+
+      fanfareContainer.value.appendChild(balloon);
+    }
+    console.log('111')
+
+    setTimeout(() => {
+      if (fanfareContainer.value) {
+        fanfareContainer.value.innerHTML = '';
+      }
+    }, 5000);
+}
+
+const handleCongratulationMessage = (message: SocketMessage) => {
+  const congratulationSound = document.getElementById('congratulationSound') as HTMLAudioElement;
+  if (congratulationSound) {
+    congratulationSound.play().catch(error => console.error("Audio play failed", error));
+  }
+}
+
 const handleErrorMessage = (message: SocketMessage) => {
   console.error('에러발생!: ', message)
 }
@@ -296,8 +346,8 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.container {
 
+.container {
     position: relative;
     width: 100%;
     height: 90vh; 
@@ -308,59 +358,104 @@ onUnmounted(() => {
   position: absolute;
   width: 20%;
   height: auto;
-  right: 10px;
+  right: 10px; 
   bottom: 10px;
   z-index: 2;
 }
 
 #localVideo {
-  width: 100%;
-  height: auto;
-  border: 1px solid black;
+    width: 100%;
+    height: auto;
+    border: 1px solid black;
 }
 
 #remote-video-container {
-  position: absolute;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; 
+    background-color: grey;
+}
+
+#remoteVideo {
+    width: 100%;
+    height: auto;
+}
+
+
+
+.control-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); 
+    display: flex;
+    gap: 10px;
+    visibility: hidden;
+}
+
+
+.control-icon {
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.control-label-container {
+    background-color: rgba(128,128,128,0.5) ;
+    border-radius: 5px;
+}
+.control-label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: black;
+}
+
+
+#local-video-container:hover .control-container {
+    visibility: visible;
+}
+
+.fanfareContainer-container{
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
-  background-color: grey;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 999999999999999999;
 }
 
-#remoteVideo {
-  width: 100%;
-  height: auto;
-}
-
-.control-container {
+.balloon {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  gap: 10px;
-  visibility: hidden;
+  bottom: 0;
+  background-color: pink;
+  width: 50px;
+  height: 70px;
+  border-radius: 25px;
+  opacity: 0.7;
+  z-index: 9999999999999999999;
+  animation: float 5s ease-in forwards;
 }
 
-.control-icon {
-  font-size: 2rem;
-  cursor: pointer;
+.balloon:before {
+  content: '';
+  position: absolute;
+  top: 70px;
+  left: 25px;
+  width: 2px;
+  height: 100px;
+  background-color: black;
 }
 
-.control-label-container {
-  background-color: rgba(128, 128, 128, 0.5);
-  border-radius: 5px;
-}
-.control-label {
-  font-size: 0.8rem;
-  font-weight: bold;
-  cursor: pointer;
-  color: black;
-}
-
-#local-video-container:hover .control-container {
-  visibility: visible;
+/* 간단한 애니메이션 */
+@keyframes float {
+  to {
+    transform: translateX(20px) translateY(-100vh); /* 화면 위로 떠오르는 효과 */
+    opacity: 0;
+  }
 }
 </style>
