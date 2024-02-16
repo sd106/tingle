@@ -1,54 +1,65 @@
 <template>
-  <div class="container">
-  <div id="local-video-container" @mouseenter="showControls" @mouseleave="hideControls">
-      <video id="localVideo" ref="localVideoElement" autoplay></video>
-      <div class="control-container">
-          <div v-if="isVideoOn" class="text-center" @click="toggleVideo">
-              <div class="control-icon">🎥</div>
-              <div class="control-label-container">
-                  <div class="control-label">카메라</div>
-                  <div class="control-label">켜짐</div>
-              </div>
-          </div>
-          <div v-else class="text-center" @click="toggleVideo">
-              <div class="control-icon">🚫</div>
-              <div class="control-label-container">
-                  <div class="control-label">카메라</div>
-                  <div class="control-label">꺼짐</div>
-              </div>
-          </div>
-
-          <div v-if="isAudioOn" class="text-center" @click="toggleAudio">
-              <div class="control-icon">🔊</div>
-              <div class="control-label-container">
-                  <div class="control-label">마이크</div>
-                  <div class="control-label">켜짐</div>                
-              </div>
-          </div>
-          <div v-else class="text-center" @click="toggleAudio">
-              <div class="control-icon">🚫</div>
-              <div class="control-label-container">
-                  <div class="control-label">마이크</div>
-                  <div class="control-label">꺼짐</div>
-              </div>
-          </div>
-
-      </div>
-  </div>
-  <div id="remote-video-container">
+  <audio id="congratulationSound" src="/sound/congratulations.mp3"></audio>
+  <div class="container row">
+    <div class="col-9" id="remote-video-container">
       <video id="remoteVideo" ref="remoteVideoElement" autoplay></video>
+    </div>
+    <div class="col-3 d-flex flex-column justify-content-between py-5 ps-0" id="local-video-container" @mouseenter="showControls" @mouseleave="hideControls">
+        <video id="localVideo" ref="localVideoElement" autoplay></video>
+        <div class="px-5 d-flex justify-content-between">
+            <div v-if="isVideoOn" class="text-center" @click="toggleVideo">
+                <div class="control-icon">🎥</div>
+                <div class="control-label-container">
+                    <div class="control-label">카메라</div>
+                    <div class="control-label">켜짐</div>
+                </div>
+            </div>
+            <div v-else class="text-center" @click="toggleVideo">
+                <div class="control-icon">🚫</div>
+                <div class="control-label-container">
+                    <div class="control-label">카메라</div>
+                    <div class="control-label">꺼짐</div>
+                </div>
+            </div>
+  
+            <div v-if="isAudioOn" class="text-center" @click="toggleAudio">
+                <div class="control-icon">🔊</div>
+                <div class="control-label-container">
+                    <div class="control-label">마이크</div>
+                    <div class="control-label">켜짐</div>                
+                </div>
+            </div>
+            <div v-else class="text-center" @click="toggleAudio">
+                <div class="control-icon">🚫</div>
+                <div class="control-label-container">
+                    <div class="control-label">마이크</div>
+                    <div class="control-label">꺼짐</div>
+                </div>
+            </div>
+            
+          </div>
+          <div v-if="store.isStar">
+            <!-- <button class="btn btn-secondary" @click="congratulation"> 생일 축하 반주 시작</button> -->
+            <button class="btn btn-secondary" @click="fanfare"> 팡파레 </button>
+          </div>
+          <div v-else>
+
+          </div>
+        </div>
   </div>
-</div>
-<button @click="bb">ddd</button>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
+import { useUserStore } from '@/stores/user'
 
+const store = useUserStore()
 const props = defineProps<{
-localStream: MediaStream | undefined
-remoteStream: MediaStream | undefined
+  localStream: MediaStream | undefined
+  remoteStream: MediaStream | undefined
 }>()
+
+const emit = defineEmits(['congratulation', 'fanfare'])
 
 const localVideoElement = ref<HTMLMediaElement>()
 const remoteVideoElement = ref<HTMLMediaElement>()
@@ -56,16 +67,25 @@ const controlsVisible = ref(false)
 const isVideoOn = ref(true)
 const isAudioOn = ref(true)
 
-const bb = () => {
-console.log(props.localStream)
-console.log(props.remoteStream)
-}
 const showControls = () => {
 controlsVisible.value = true
 }
 
 const hideControls = () => {
 controlsVisible.value = false
+}
+
+// const congratulation = () => {
+//   emit('congratulation')
+//   const congratulationSound = document.getElementById('congratulationSound') as HTMLAudioElement;
+//   if (congratulationSound) {
+//     congratulationSound.play().catch(error => console.error("Audio play failed", error));
+//   }
+// }
+
+const fanfare = async () => {
+  console.log("???")
+  emit('fanfare')
 }
 
 const toggleVideo = () => {
@@ -88,21 +108,31 @@ if (props.localStream) {
 }
 }
 
-
-onMounted(() => {
+const loadLocalVideo = async () => {
 if (localVideoElement.value && props.localStream) {
-  localVideoElement.value.srcObject = props.localStream
+  localVideoElement.value.srcObject = props.localStream;
 }
-if (remoteVideoElement.value && props.remoteStream) {
-  remoteVideoElement.value.srcObject = props.remoteStream
+console.log("loadLocalVideo@@@@@@@@@@@@@@@2")
 }
-})
 
-watch(() => props.remoteStream, (newStream, oldStream) => {
-if (remoteVideoElement.value && newStream) {
-  remoteVideoElement.value.srcObject = newStream
+const loadRemoteVideo = async () => {
+if (remoteVideoElement.value && props.remoteStream) {
+  remoteVideoElement.value.srcObject = props.remoteStream;
 }
-}, { immediate: true })
+console.log("loadRemoteVideo@@@@@@@@@@@@@@@2")
+}
+
+
+watchEffect(async() => {
+  await loadLocalVideo()
+  await loadRemoteVideo()
+});
+
+watch(() => props.remoteStream, (newStream) => {
+if (remoteVideoElement.value && newStream) {
+  remoteVideoElement.value.srcObject = newStream;
+}
+}, { immediate: true });
 
 </script>
 
@@ -110,69 +140,26 @@ if (remoteVideoElement.value && newStream) {
 .container {
   position: relative;
   width: 100%;
-  height: 90vh; 
-  border: 1px solid black; 
-}
-
-#local-video-container {
-position: absolute;
-width: 20%;
-height: auto;
-right: 10px; 
-bottom: 10px;
-z-index: 2;
+  height: 100%; 
 }
 
 #localVideo {
+  border: 1px solid #000;
   width: 100%;
-  height: auto;
-  border: 1px solid black;
-}
-
-#remote-video-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1; 
-  background-color: grey;
+  transform: scaleX(-1);
 }
 
 #remoteVideo {
-  width: 100%;
-  height: auto;
+  border: 1px solid #000;
+  left: 0;
+  height: 100%;
+  transform: scaleX(-1);
 }
-
-
-
-.control-container {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%); 
-  display: flex;
-  gap: 10px;
-  visibility: hidden;
-}
-
 
 .control-icon {
-  font-size: 2rem;
-  cursor: pointer;
+    font-size: 2rem;
+    cursor: pointer;
 }
-
-.control-label-container {
-  background-color: rgba(128,128,128,0.5) ;
-  border-radius: 5px;
-}
-.control-label {
-  font-size: 0.8rem;
-  font-weight: bold;
-  cursor: pointer;
-  color: black;
-}
-
 
 #local-video-container:hover .control-container {
   visibility: visible;

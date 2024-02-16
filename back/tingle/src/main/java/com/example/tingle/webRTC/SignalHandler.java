@@ -71,6 +71,9 @@ public class SignalHandler extends TextWebSocketHandler {
         switch (signalData.getSignalType()) {
             case "Offer":
             case "Answer":
+            case "Fanfare":
+            case "Congratulation":
+            case "Pose":
             case "Ice":
                 Object iceCandidate = signalData.getIceCandidate();
                 Object sdp = signalData.getSdp();
@@ -265,6 +268,8 @@ public class SignalHandler extends TextWebSocketHandler {
 
                 sessionIdToRoomMap.remove(finishedClient.getId());
                 break;
+
+
         }
     }
 }
