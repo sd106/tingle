@@ -60,7 +60,6 @@
       <button @click="insertPhotos()">완료</button>
     </div>
 
-    {{ article }}
     <draggable
       v-if="article.length > 0"
       v-model="article"
@@ -376,7 +375,7 @@ onMounted(() => {
 })
 </script>
 
-<style>
+<style scoped>
 .item-container {
   border: 1px solid black;
   padding: 10px;
@@ -411,16 +410,65 @@ onMounted(() => {
 }
 
 .item-container {
-  position: relative;
+  border: 1px solid black;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
-.item-header {
-  position: absolute;
-  top: 0;
-  right: 0;
+.container {
+  margin-bottom: 10px;
 }
 
-.item-button {
-  margin: 0 5px;
+.border {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.item-wrapper {
+  width: 90%;
+  margin: 30px auto;
+}
+.item-container {
+  border: 1px solid #ddd; /* 경계선 추가 */
+  border-radius: 8px; /* 모서리 둥글게 */
+  padding: 16px; /* 내부 여백 */
+  margin-bottom: 16px; /* 아래 마진으로 요소 간 간격 추가 */
+  background-color: #fafafa; /* 배경색 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  transition: transform 0.2s; /* 호버 시 효과를 위한 전환 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+.item-container:hover {
+  transform: translateY(-5px); /* 마우스 오버 시 약간 위로 이동 */
+}
+
+.article-image {
+  max-width: 100%; /* 이미지 너비 최대값 제한 */
+  height: auto; /* 이미지 비율 유지 */
+  border-radius: 4px; /* 이미지 모서리 둥글게 */
+  margin-bottom: 12px; /* 이미지 아래 마진 추가 */
+  display: block;
+  margin: auto; /* 이미지 중앙 정렬 */
+}
+
+/* 내용 스타일링 */
+.item-container div {
+  margin-bottom: 8px; /* 내용 요소 간 간격 */
+  color: #333; /* 글자 색상 */
+  font-size: 16px; /* 글자 크기 */
+}
+
+/* 마지막 요소의 마진 제거 */
+.item-container div:last-child {
+  margin-bottom: 0;
+  flex: 1 0 calc(50% - 16px);
+}
+
+.drag-area {
+  display: flex;
+  flex-wrap: wrap; /* 항목들이 컨테이너 너비를 초과하면 다음 줄로 넘어감 */
+  justify-content: center; /* 항목들을 가로축 중앙에 정렬 */
+  gap: 16px; /* 항목 사이의 간격 */
 }
 </style>

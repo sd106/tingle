@@ -40,29 +40,19 @@
 
       <p>sns 주소 {{ starProfile?.username }}</p>
     </div>
-
-    <draggable v-if="article.length > 0" v-model="article" class="drag-area" item-key="id">
-      <template v-slot:item="{ item }">
-        <div class="item-container">
-          <div>check</div>
-          <div v-if="item.content !== ''">{{ item.content }}</div>
-          <div v-if="item.homePictureDtos.length > 0">
-            <img
-              v-for="picture in item.homePictureDtos"
-              :src="picture.image"
-              :alt="'Image for article ' + item.id"
-              :key="picture.homeId"
-              class="article-image"
-            />
-          </div>
+    <div class="item-wrapper">
+      <div v-for="item in article" :key="item.id" class="item-container">
+        <p>{{ item.content }}</p>
+        <div v-for="picture in item.homePictureDtos" :key="picture.image">
+          <img :src="picture.image" alt="사진" />
         </div>
-      </template>
-    </draggable>
+      </div>
+    </div>
   </main>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import axios from 'axios'
 
@@ -158,25 +148,21 @@ const getstarProfile = async () => {
   console.log(starProfile.value)
 }
 
-const getArticle = async () => {
-  try {
-    const response = await axios.get(`${store.API_URL}/home/${starId.value}`)
-    article.value = response.data.data
-  } catch (error) {
-    console.error('Failed to fetch articles:', error)
-    // 에러 발생 시 기본값 설정 또는 사용자 피드백
-    article.value = []
-  }
+const getArticle = () => {
+  axios
+    .get(`${store.API_URL}/home/${starId.value}`)
+    .then((response) => {
+      article.value = response.data.data
+    })
+    .catch((error) => {
+      console.error(error)
+    })
 }
 
-watch(article, (newVal, oldVal) => {
-  console.log('Article data updated', newVal)
-})
-
 onMounted(() => {
-  getArticle()
   checkFollow()
   getstarProfile()
+  getArticle()
 })
 </script>
 
