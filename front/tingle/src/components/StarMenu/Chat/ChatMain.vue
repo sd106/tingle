@@ -113,47 +113,80 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* 네비바 스타일 */
+.navbar {
+  background-color: #f8f9fa; /* 네비바 배경색 */
+  border-bottom: 1px solid #dee2e6; /* 네비바 하단 테두리 */
+}
+
+.navbar-brand {
+  font-weight: bold; /* 네비바 로고 폰트 굵기 */
+  color: #007bff; /* 로고 색상 */
+}
+
+/* 채팅 목록 스타일 */
+.chat-list-items {
+  margin-top: 20px; /* 채팅 목록과 버튼 사이 여백 */
+}
+
+/* 스크롤 가능한 컨테이너 스타일 */
 .scrollable-container {
-  /* width: 300px; /* 네모의 너비 */
-  height: 800px;
-  /* 네모의 높이 */
-  overflow-y: auto;
-  /* 세로 스크롤이 필요할 때만 표시 */
-  border: 1px solid #ccc;
-  /* 테두리 스타일 */
+  height: 600px; /* 스크롤 가능한 컨테이너 높이 */
+  overflow-y: auto; /* 세로 스크롤만 표시 */
+  border: 1px solid #ccc; /* 테두리 스타일 */
+  border-radius: 5px; /* 컨테이너 테두리 둥글게 */
 }
 
 .scrollable-content {
-  padding: 10px;
-  /* 스크롤 영역의 여백 */
+  padding: 10px; /* 내용과 테두리 사이 여백 */
 }
 
-.scrollable-content p {
-  margin: 0;
-  /* 단락 사이의 여백 제거 */
+/* 채팅방 카드 스타일 */
+.card {
+  margin-bottom: 20px; /* 채팅방 카드 사이 여백 */
+  border: 1px solid #dee2e6; /* 카드 테두리 스타일 */
+  border-radius: 8px; /* 카드 테두리 둥글게 */
 }
 
+.card img {
+  max-width: 100%; /* 이미지 최대 너비 */
+  border-radius: 8px; /* 이미지 테두리 둥글게 */
+}
+
+.card-body {
+  padding: 10px; /* 카드 내용과 테두리 사이 여백 */
+}
+
+/* 채팅 관련 버튼 스타일 */
+.btn {
+  margin-top: 20px; /* 버튼 상단 여백 */
+}
+
+/* 중첩 모달 스타일 */
 .black-bg {
   display: flex;
   align-items: center;
-  width: 500px;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.432);
+  justify-content: center;
   position: fixed;
-  padding: 20px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 배경색과 투명도 조절 */
 }
 
 .white-bg {
-  width: 100%;
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
+  background-color: #fff; /* 모달 배경색 */
+  padding: 20px; /* 내부 여백 */
+  border-radius: 8px; /* 모달 테두리 둥글게 */
 }
 
 .modal-exit-btn {
-  margin-top: 30px;
+  margin-top: 20px; /* 닫기 버튼 상단 여백 */
 }
 
 .modal-exit-btn:hover {
-  cursor: pointer;
-}</style>
+  cursor: pointer; /* 호버 시 커서 변경 */
+}
+
+</style>

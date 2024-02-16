@@ -91,6 +91,18 @@
         </div>
       </div>
     </div>
+
+    <!-- <div v-if="store.isStar"> -->
+    <button
+          class="menu-btn"
+          type="button"
+          data-bs-toggle="modal"
+          data-bs-target="#chatModal"
+          style="height: 50px; width: 50px"
+        >
+          <img src="/image/chat.jpg" alt="" style="height: 30px; width: 30px" />
+      </button>
+      <!-- </div> -->
   </main>
   <RouterView />
 </template>

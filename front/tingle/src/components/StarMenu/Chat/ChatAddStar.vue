@@ -131,18 +131,30 @@ onMounted(() => {
 </script>
 
 <style scoped>
-    .scrollable-container {
-    /* width: 300px; /* 네모의 너비 */
-    height: 100px; /* 네모의 높이 */
-    overflow-y: auto; /* 세로 스크롤이 필요할 때만 표시 */
-    border: 1px solid #ccc; /* 테두리 스타일 */
-    }
+    /* 스크롤 가능한 컨테이너 스타일 */
+.scrollable-container {
+  height: 800px; /* 높이를 이전과 동일하게 조정 */
+}
 
-    .scrollable-content {
-    padding: 10px; /* 스크롤 영역의 여백 */
-    }
+/* 스크롤 가능한 내용 스타일 */
+.scrollable-content {
+  padding: 0; /* 여백을 이전과 다르게 조정 */
+}
 
-    .scrollable-content p {
-    margin: 0; /* 단락 사이의 여백 제거 */
-    }
+/* 스타 카드 스타일 */
+.card {
+  margin: 10px 0; /* 카드 사이 여백을 조정하여 보다 조화로운 레이아웃 생성 */
+}
+
+.card img {
+  max-width: 100%; /* 이미지를 카드 너비에 맞게 조정 */
+}
+
+.card-text {
+  margin: 10px 0; /* 텍스트 사이 여백을 조정 */
+}
+
+.btn-primary {
+  margin-top: 10px; /* 버튼 상단 여백을 추가하여 레이아웃을 보다 균형있게 조정 */
+}
 </style>

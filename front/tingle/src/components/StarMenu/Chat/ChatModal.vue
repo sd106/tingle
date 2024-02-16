@@ -43,4 +43,5 @@ const receiveBack = () => {
 </script>
 
 <style scoped>
+
 </style>

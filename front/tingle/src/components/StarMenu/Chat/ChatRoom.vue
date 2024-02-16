@@ -11,9 +11,6 @@
       <div class="scrollable-content">
         <!-- 채팅방 중간 direction 1 == 스타, direction == 2 팬 -->
         <div v-for="(msg, index) in newSelectedRoom" :key="index">
-          <div>{{ msg.message }}</div>
-          <div>{{ msg.createDate }}</div>
-
 
             <!-- 받은 메시지 -->
             <!-- 스타 x, 스타 (=1) -->
@@ -22,8 +19,7 @@
                 <div class="star-image">
                   <img :src="chatUserInfo[index].picture" class="img-fluid rounded-start" alt="">
                 </div>
-                <div> {{ msg.message }}: </div>
-                <div>{{ msg.message }}</div>
+                <div> {{ msg.message }} </div><br>
                 <div>{{ msg.createDate }}</div>
               </div>
             </span>
@@ -32,10 +28,9 @@
             <span v-if="(store.isStar && msg.direction == 2)">
               <div class="star-card">
                 <div class="star-image">
-                  <img src="/image/yoo.png" class="img-fluid rounded-start" alt="">
+                  <img :src="chatUserInfo[index].picture" class="img-fluid rounded-start" alt="">
                 </div>
-                <div> {{ msg.message }}: </div>
-                <div>{{ msg.message }}</div>
+                <div> {{ msg.message }} </div><br>
                 <div>{{ msg.createDate }}</div>
               </div>
             </span>
@@ -44,15 +39,14 @@
             <!-- 스타 o, 스타 (=1) -->
             <span v-if="(store.isStar && msg.direction == 1)">
               <div class="star-card">
-                <div> 나: </div>
                 <div class="justify-content-end">{{ msg.message }}</div>
+
               </div>
             </span>
 
             <!-- 스타 x, 팬 (=2) -->
             <span v-if="(!store.isStar && msg.direction == 2)">
               <div class="star-card">
-                <div> 나: </div>
                 <div class="justify-content-end">{{ msg.message }}</div>
               </div>
             </span>
@@ -263,5 +257,70 @@
     margin: 0;
     /* 단락 사이의 여백 제거 */
   }
+
+  /* 네비바 스타일 */
+.navbar {
+  background-color: #f8f9fa; /* 네비바 배경색 */
+  border-bottom: 1px solid #dee2e6; /* 네비바 하단 테두리 */
+}
+
+.navbar-brand {
+  font-weight: bold; /* 네비바 로고 폰트 굵기 */
+  color: #007bff; /* 로고 색상 */
+}
+
+/* 버튼 스타일 */
+.btn-outline-secondary {
+  color: #6c757d; /* 버튼 텍스트 색상 */
+  border-color: #6c757d; /* 버튼 테두리 색상 */
+}
+
+.btn-outline-secondary:hover {
+  color: #495057; /* 호버 시 버튼 텍스트 색상 */
+  background-color: #e9ecef; /* 호버 시 버튼 배경색 */
+}
+
+/* 채팅방 하단 입력창 스타일 */
+.input-group {
+  margin-top: 20px; /* 입력창과 이전 내용 사이 여백 */
+}
+
+.form-control {
+  border-color: #6c757d; /* 입력창 테두리 색상 */
+}
+
+/* 스크롤 가능한 컨테이너 스타일 */
+.scrollable-container {
+  height: 500px; /* 스크롤 가능한 컨테이너 높이 */
+  overflow-y: auto; /* 세로 스크롤만 표시 */
+  border: 1px solid #dee2e6; /* 테두리 스타일 */
+  border-radius: 5px; /* 컨테이너 테두리 둥글게 */
+}
+
+.scrollable-content {
+  padding: 10px; /* 내용과 테두리 사이 여백 */
+}
+
+/* 스크롤 가능한 내용 스타일 */
+.scrollable-content div {
+  margin-bottom: 10px; /* 각 아이템 사이 여백 */
+}
+
+/* 스타 카드 스타일 */
+.star-card {
+  background-color: #f8f9fa; /* 스타 카드 배경색 */
+  border: 1px solid #ced4da; /* 스타 카드 테두리 */
+  border-radius: 5px; /* 스타 카드 테두리 둥글게 */
+  padding: 10px; /* 카드 안 여백 */
+}
+
+.star-image img {
+  max-width: 50px; /* 이미지 최대 너비 */
+  border-radius: 50%; /* 이미지를 원형으로 */
+}
+
+.justify-content-end {
+  text-align: right; /* 텍스트를 오른쪽 정렬합니다. */
+}
   </style>
   
