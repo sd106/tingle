@@ -1,8 +1,8 @@
 <template>
   <main class="container">
     <StarMenu :id="id" />
-    <div class="tw-p-8" style="padding-left: 80px; padding-right: 80px; padding-top: 30px;">
-      <h1 class="tw-text-2xl tw-font-bold tw-mb-8">상품 생성</h1>
+    <div class="tw-p-8" style="padding-left: 80px; padding-right: 80px; padding-top: 30px">
+      <h1 class="tw-text-2xl tw-font-bold tw-mb-8">상품 등록</h1>
 
       <!-- 상품 정보 입력 폼 -->
       <div class="tw-grid tw-gap-4 tw-mb-8">
@@ -36,7 +36,7 @@
       <!-- 드래그 앤 드롭을 통한 파일 업로드 영역 -->
       <div
         ref="dragArea"
-        class="tw-border-dashed tw-border-2 tw-border-primary tw-p-4 tw-text-center tw-cursor-pointer tw-mb-4"
+        class="mt-3 tw-border-dashed tw-border-2 tw-border-primary tw-p-4 tw-text-center tw-cursor-pointer tw-mb-4 tw-h-64 d-flex justify-content-center align-items-center"
         @dragover.prevent="handleDragOver"
         @drop="handleDrop"
         @click="fileInput!.click()"
@@ -65,8 +65,9 @@
       </div>
       <!-- 상품 생성 버튼 -->
       <!-- <button @click="submitForm" class="tw-btn tw-btn-primary tw-mt-4">상품 생성</button> -->
-      <h2 @click="submitForm" class="hover-text fw-bold">상품 생성</h2>
-
+      <div style="text-align: right" class="pe-1">
+        <h2 @click="submitForm" class="hover-text fw-bold">등록하기</h2>
+      </div>
     </div>
     <!-- //-----------상품 생성----------------------------// -->
   </main>
@@ -258,5 +259,4 @@ h2 {
   transform: translateX(10px); /* 호버 시 글자를 오른쪽으로 10픽셀 이동 */
   cursor: pointer;
 }
-
 </style>

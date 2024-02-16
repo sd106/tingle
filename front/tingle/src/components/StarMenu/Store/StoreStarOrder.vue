@@ -26,11 +26,11 @@
               <img :src="res.goods.imageUrl[0].url" alt="" style="width: 100px" />
             </div>
             <div class="p-3 col-8 d-flex flex-column">
-              <span class="mb-3">{{ res.goods.name }}</span>
-              <span>{{ res.goods.content }}</span>
+              <p class="mb-3">{{ res.goods.name }}</p>
+              <p>{{ res.goods.content }}</p>
             </div>
             <div class="p-3 col-2">
-              <span>{{ res.goods.price }}</span>
+              <p>{{ res.goods.price }}</p>
               {{ res.fan.id }}
             </div>
           </div>

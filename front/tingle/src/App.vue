@@ -1,8 +1,11 @@
 <template>
-  <main v-if="!store.isStar" class="main-color">
+  <main v-if="!store.isStar && store.isLogin" class="main-color">
     <RouterView />
   </main>
   <main v-if="store.isStar" class="main-color2">
+    <RouterView />
+  </main>
+  <main v-if="!store.isLogin" class="main-color3">
     <RouterView />
   </main>
 </template>
@@ -21,6 +24,14 @@ const store = useUserStore()
 
 .main-color2 {
   background-color: #ffc7c7;
+}
+
+.main-color3 {
+  background-color: white;
+}
+
+main .container:first-of-type {
+  min-height: 90vh;
 }
 
 .star-card {

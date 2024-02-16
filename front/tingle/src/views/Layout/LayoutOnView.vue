@@ -1,5 +1,5 @@
 <template>
-  <mai>
+  <mai :class="{ 'not-login': !store.isLogin }">
     <AppHeader />
     <AppSidebar />
     <div
@@ -31,6 +31,11 @@ onMounted(() => {
 <style>
 .content {
   background-color: #f1eaff;
+  min-height: 100vh;
+}
+
+.not-login {
+  background: white;
 }
 
 main {

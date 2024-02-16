@@ -17,15 +17,15 @@
       <li></li>
       <li></li>
     </ul>
-    <div class="d-flex flex-wrap p-5">
-      <div class="storage-item col-3 mx-2" v-for="storage in userStoreStorages" :key="storage.id">
+    <div class="d-flex flex-wrap ms-3">
+      <div class="storage-item mx-2" v-for="storage in userStoreStorages" :key="storage.id">
         <div class="storage-image-container">
           <img class="storage-image" :src="storage.url" :alt="storage.title" />
         </div>
         <div class="storage-info">
           <!-- <p class="fw-bold">{{ storage.title }}</p> -->
           <!-- <p>{{ storage.content }}</p> -->
-          <p>from {{ storage.starname }}</p>
+          <p>from {{ storage.starname}}</p>
           <!-- <button class="delete-button">삭제하기</button> 삭제 버튼 추가 -->
         </div>
       </div>

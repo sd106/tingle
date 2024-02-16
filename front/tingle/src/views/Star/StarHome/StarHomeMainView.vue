@@ -41,7 +41,7 @@
       <p>sns 주소 {{ starProfile?.username }}</p>
     </div>
 
-    <draggable v-model="article" class="drag-area" item-key="id">
+    <draggable v-if="article.length > 0" v-model="article" class="drag-area" item-key="id">
       <template v-slot:item="{ item }">
         <div class="item-container">
           <div>check</div>

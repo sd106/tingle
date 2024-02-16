@@ -1,14 +1,14 @@
 <template>
   <main class="container">
     <StarMenu :id="id" />
-    <div class="main-layout pt-5">
+    <div class="main-layout pt-5" style="padding-left: 80px; padding-right: 80px; padding-top: 30px;">
       <!-- 상단 메뉴 -->
       <!-- 상세 페이지 섹션 (빨간 네모 부분) -->
-      <section v-if="wishStore.selectedSnapshot" class="detail-section cont mb-5">
+      <section v-if="wishStore.selectedSnapshot" class="detail-section cont mb-5" >
         <SnapShotDetail :selectedSnapshot="wishStore.selectedSnapshot" />
       </section>
     </div>
-    <div class="d-flex justify-content-between align-items-center my-4 mx-3">
+    <div class="d-flex justify-content-between align-items-center my-4 mx-3" style="padding-left: 80px; padding-right: 80px;">
       <div>
         <button class="btn me-2 fs-5 fw-bold text-secondary" @click="loadSnapshots">
           ✧ 최신순
@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div class="main-layout">
+    <div class="main-layout" style="padding-left: 80px; padding-right: 80px; padding-top: 30px;">
       <!-- 스냅샷 목록 섹션 (파란색 부분) -->
       <section class="snapshot-list-section">
         <div class="snapshot-list-container" ref="containerRef" @scroll="handleScroll">

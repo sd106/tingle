@@ -1,62 +1,71 @@
 <template>
-    <div>
-      <div class="d-flex justify-content-between px-3">
-        <!-- <div>
-          <button class="btn border btn-secondary" @click="finishFan">팬 내보내기</button>
-        </div> -->
-        <div>
-          <button class="btn border btn-secondary" @click="finishFan">팬 내보내기</button>
-          <button class="btn border btn-secondary" @click="showFanListModal = true">대기방 팬 목록 보기</button>
-          <button class="btn border btn-secondary" @click="finishMeeting">팬미팅 끝내기</button>
-          <div v-if="showFanListModal" class="fan-list-modal" @click.self="showFanListModal = false">
-            <div class="fan-list-modal-content">
-              <div class="fan-list">
-                <div v-for="fan in fans" :key="fan.id" class="fan-item" @click.stop>
-                  <div class="fan-name" @click="selectFan(fan.username)">{{ fan.username }}</div>
-                  <button v-if="selectedFanName === fan.username" class="invite-btn" @click="invite(fan.username)">
-                    초대하기
-                  </button>
-                </div>
+  <div>
+    <div class="d-flex justify-content-between px-3">
+      <div>
+        <button class="btn border btn-secondary" @click="finishFan">팬 내보내기</button>
+      </div>
+      <div>
+        <button class="btn border btn-secondary" @click="showFanListModal = true">
+          대기방 팬 목록 보기
+        </button>
+
+        <div v-if="showFanListModal" class="fan-list-modal" @click.self="showFanListModal = false">
+          <div class="fan-list-modal-content">
+            <div class="fan-list">
+              <div v-for="fan in fans" :key="fan.id" class="fan-item" @click.stop>
+                <div class="fan-name" @click="selectFan(fan.username)">{{ fan.username }}</div>
+                <button
+                  v-if="selectedFanName === fan.username"
+                  class="invite-btn"
+                  @click="invite(fan.username)"
+                >
+                  초대하기
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-                
-      <div id="chat-room">
-        <ul id="message-list">
-          <li v-for="message in messages" :key="message.sender?.id">
-            <div v-if="message.sender?.username !== localUser.username" class="message-content other-message-content">
-              <div class="profile-image">
-                <img :src="message.sender?.picture" alt="프로필 이미지" />
-              </div>
-              <div class="message other-message">
-                {{ message.text }}
-              </div>
-            </div>
-            <div v-else class="message-content my-message-content">
-              <div class="message my-message">
-                {{ message.text }}
-              </div>
-            </div>
-          </li>
-        </ul>
-        <div class="message-input">
-            <input v-model="newMessage" @keyup.enter="sendMessage" placeholder="메시지 입력" />
-            <button class="send-message-button" @click="sendMessage">보내기</button>
-        </div>
-      </div>
-
-    <!-- <div>
-        <button @click="finishMeeting">팬미팅 끝내기</button>
-    </div> -->
     </div>
+
+    <div id="chat-room">
+      <ul id="message-list">
+        <li v-for="message in messages" :key="message.sender?.id">
+          <div
+            v-if="message.sender?.username !== localUser.username"
+            class="message-content other-message-content"
+          >
+            <div class="profile-image">
+              <img :src="message.sender?.picture" alt="프로필 이미지" />
+            </div>
+            <div class="message other-message">
+              {{ message.text }}
+            </div>
+          </div>
+          <div v-else class="message-content my-message-content">
+            <div class="message my-message">
+              {{ message.text }}
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="message-input">
+        <input v-model="newMessage" @keyup.enter="sendMessage" placeholder="메시지 입력" />
+        <button class="send-message-button" @click="sendMessage">보내기</button>
+      </div>
+    </div>
+    <div>
+      <button class="tw-btn tw-btn-outline tw-btn-error tw-mt-4" @click="finishMeeting">
+        팬미팅 종료
+      </button>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useUserStore } from '@/stores/user'
-import type { FanMeetingMessage, SocketMessage,SenderState } from '@/common/types/index'
+import type { FanMeetingMessage, SocketMessage, SenderState } from '@/common/types/index'
 
 const store = useUserStore()
 const emit = defineEmits(['finish-fan', 'finish-meeting'])
@@ -68,26 +77,24 @@ const localUser = ref<SenderState>({
   picture: store.starState?.picture
 })
 
-
 const finishFan = () => {
-    emit('finish-fan')
+  emit('finish-fan')
 }
 
 const finishMeeting = () => {
-    emit('finish-meeting')
+  emit('finish-meeting')
 }
 
 const selectedFanName = ref('')
 const showFanListModal = ref(false)
 
 const selectFan = (fanName: string | undefined) => {
-    if (fanName === selectedFanName.value) {
-        selectedFanName.value = ''
-    } else {
-        selectedFanName.value = fanName as string;
-    }
+  if (fanName === selectedFanName.value) {
+    selectedFanName.value = ''
+  } else {
+    selectedFanName.value = fanName as string
+  }
 }
-
 
 // 메시지 관련
 const invited = ref(false)
@@ -98,16 +105,16 @@ const newMessage = ref('')
 const fans = ref<SenderState[]>([])
 
 const invite = (fanName: string) => {
-    sendToServer({
-        sender: localUser.value,
-        signalType: 'Invite',
-        data: fanName,
-        roomType: 'Waiting'
-    })
+  sendToServer({
+    sender: localUser.value,
+    signalType: 'Invite',
+    data: fanName,
+    roomType: 'Waiting'
+  })
 }
 
 const sendMessage = () => {
-    if (newMessage.value.trim() !== '') {
+  if (newMessage.value.trim() !== '') {
     sendToServer({
       sender: localUser.value,
       signalType: 'Text',
@@ -131,7 +138,6 @@ const sendToServer = (msg: SocketMessage) => {
 const initializeWebSocket = () => {
   socket = new WebSocket('ws://localhost:8080/signal')
 
-
   socket.onmessage = (msg) => {
     let message = JSON.parse(msg.data)
     console.log('서버로부터 메시지가 도착했습니다!')
@@ -149,8 +155,8 @@ const initializeWebSocket = () => {
 
       case 'Join2': // 다른 사용자가 입장했을 떄 이 메시지를 받고 fan list에 추가
         console.log('Join message received')
-        if (!fans.value.some(fan => fan.username === message.sender?.username)) {
-          fans.value.push(message.sender);
+        if (!fans.value.some((fan) => fan.username === message.sender?.username)) {
+          fans.value.push(message.sender)
         }
         break
       default:
@@ -203,7 +209,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-
 #chat-room {
   margin-top: 20px;
   border: 1px solid #ddd;
@@ -306,53 +311,54 @@ input {
 
 /* 팬 리스트 관련 */
 .fan-list-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .fan-list-modal-content {
-    width: 15rem;
-    min-height: 10rem;
-    background-color: white;
-    border-radius: 10px;
-    border: 1px solid grey;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    padding: 2rem 1rem;
+  width: 15rem;
+  min-height: 10rem;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid grey;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  padding: 2rem 1rem;
 }
 
 .fan-list {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .fan-item {
-    position: relative;
-    margin-bottom: 10px;
+  position: relative;
+  margin-bottom: 10px;
 }
 
 .fan-name {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .invite-btn {
-    position: absolute;
-    right: 0;
-    top: 0;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
+  position: absolute;
+  right: -50px;
+  top: 0px;
+  width: 100px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 .invite-btn:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
 </style>

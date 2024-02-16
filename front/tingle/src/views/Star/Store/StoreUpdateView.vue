@@ -1,7 +1,7 @@
 <template>
   <main class="container">
     <StarMenu :id="starid" />
-    <div class="tw-p-8" v-if="product">
+    <div class="tw-p-8" style="padding-left: 80px; padding-right: 80px;" v-if="product">
       <div class="d-flex align-items-center">
         <h1 class="tw-text-2xl tw-font-bold">상품 수정</h1>
         <div class="tw-p-8 tw-mt-3 d-flex align-items-center justify-content-center">
@@ -34,7 +34,9 @@
         </div>
       </div>
 
-      <button @click="submitForm" class="tw-btn tw-btn-primary tw-mt-4">상품 수정</button>
+      <div style="text-align: right" class="pe-1">
+        <h2 @click="submitForm" class="hover-text fw-bold">수정하기</h2>
+      </div>
     </div>
   </main>
 </template>
@@ -263,5 +265,14 @@ h2 {
     background-color: #e9ecef;
     color: #495057;
   }
+}
+
+.hover-text {
+  transition: transform 0.3s ease-in-out; /* transform 속성에 대한 전환 효과 적용 */
+}
+
+.hover-text:hover {
+  transform: translateX(10px); /* 호버 시 글자를 오른쪽으로 10픽셀 이동 */
+  cursor: pointer;
 }
 </style>
