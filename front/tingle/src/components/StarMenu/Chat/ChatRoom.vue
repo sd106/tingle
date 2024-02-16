@@ -71,7 +71,7 @@
   import axios from "axios";
   import { defineProps } from 'vue';
   import Stomp from 'stompjs';
-  import SockJS from "sockjs-client/dist/sockjs";
+  import SockJS from "sockjs-client";
   
   // NotStatus, ProgressStatus, DoneStatus
   const store = useUserStore();
