@@ -41,11 +41,10 @@
   </div>
   {{ props.localStream }}
   {{ props.remoteStream }}
-  <button @click="bb">ddd</button>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch, watchEffect } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
 
 const props = defineProps<{
   localStream: MediaStream | undefined
@@ -58,10 +57,6 @@ const controlsVisible = ref(false)
 const isVideoOn = ref(true)
 const isAudioOn = ref(true)
 
-const bb = () => {
-  console.log(props.localStream)
-  console.log(props.remoteStream)
-}
 const showControls = () => {
   controlsVisible.value = true
 }

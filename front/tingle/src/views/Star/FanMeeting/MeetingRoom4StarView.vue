@@ -8,7 +8,7 @@
                 <LifeFourCutMeeting :localStream="localStream" :remoteStream="remoteStream"/>
             </section>
             <section v-else-if="fanMeetingReservation?.fanMeetingType== '생일축하'">
-                <BirthdayMeeting :localStream="localStream" :remoteStream="remoteStream"/>
+                <BirthdayMeeting @congratulation="congratulation" @fanfare="fanfare" :localStream="localStream" :remoteStream="remoteStream"/>
             </section>
             <section v-else>
                 <h1>연결중입니다...</h1>
@@ -66,6 +66,25 @@ const finishMeeting = async () => {
     } catch (error) {
         console.log(error)
     }
+}
+
+const fanfare = () => {
+  console.log("팡파레!!")
+  sendToServer({
+      sender: localUser.value,
+      signalType: 'Fanfare',
+      roomType: 'Meeting'
+    })
+}
+
+const congratulation = () => {
+  sendToServer({
+      sender: localUser.value,
+      signalType: 'Congratulation',
+      roomType: 'Meeting'
+    })
+
+    
 }
 // 주소로 연결할 웹소켓
 let socket: WebSocket | undefined;
@@ -141,7 +160,7 @@ const initializeWebSocket = () => {
                 console.log('Signal ACCEPT received')
                 handleAcceptMessage(message)
                 break;
-
+            
             default:
                 console.log('Error: ', message)
                 handleErrorMessage(message)
