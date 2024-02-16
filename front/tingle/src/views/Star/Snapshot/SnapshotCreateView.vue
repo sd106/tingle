@@ -116,7 +116,7 @@ const createSnapshot = async () => {
 
   try {
     console.log('post직전')
-    axios.post('http://localhost:8080/snapshot/new', formData, { withCredentials: true })
+    await axios.post('http://localhost:8080/snapshot/new', formData, { withCredentials: true })
     console.log('post끝')
     
   } catch (error) {
