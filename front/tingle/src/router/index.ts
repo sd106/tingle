@@ -36,6 +36,7 @@ import MeetingRoom4StarView from '@/views/Star/FanMeeting/MeetingRoom4StarView.v
 import NormalMeetingView from '@/views/Star/FanMeeting/NormalMeeting.vue'
 import LifeFourCutMeetingView from '@/views/Star/FanMeeting/LifeFourCutMeeting.vue'
 import BirthdayMeetingView from '@/views/Star/FanMeeting/BirthdayMeeting.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
