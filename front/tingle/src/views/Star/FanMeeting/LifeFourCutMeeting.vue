@@ -4,8 +4,10 @@
     <div>
 
       <div class="d-flex mt-3">
-      <h2 @click="captureVideo" class="fw-bold hover-text m-3">캡처</h2>
-      <h2 @click="mergeAndDownloadImages" class="fw-bold hover-text m-3">다운로드</h2>
+        <h2 class="fw-bold hover-text m-2" @click="captureAndMergeImages">캡처</h2>
+    <h2 class="fw-bold hover-text m-2" @click="downloadAllMergedImages">이미지 다운로드</h2>
+      <!-- <h2 @click="captureVideo" class="fw-bold hover-text m-3">캡처</h2>
+      <h2 @click="mergeAndDownloadImages" class="fw-bold hover-text m-3">다운로드</h2> -->
     </div>
       <div v-if="!isStar" style="width: 750px;">
         <div class="d-flex m-3">
@@ -35,23 +37,17 @@
     </div>
     <div class="d-flex">
 
-    <div v-if="!isStar" class="d-flex m-3" style="width: 715px;">
-      <div  v-if="capturedRemoteImageUrl" class="remote-video-container remoteVideo">
-        <img :src="capturedRemoteImageUrl" alt="Captured Remote Video" />
-        </div>
-      <div v-if="capturedLocalImageUrl" class="local-video-container localVideo">
-        <img :src="capturedLocalImageUrl" alt="Captured Local Video" />
-      </div>
+    <div>
+    <!-- 이미지 캡처 및 합치기 버튼 -->
+
+    <!-- 합쳐진 이미지들을 표시하는 영역 -->
+    <div v-for="(image, index) in mergedImages" :key="index" class="ms-3 remoteVideo merged-image-container" style="width: 720px;">
+      <img :src="image" :alt="'Merged Image ' + index">
     </div>
 
-    <div v-if="isStar" class="d-flex">
-      <div v-if="capturedLocalImageUrl" class="local-video-container localVideo">
-        <img :src="capturedLocalImageUrl" alt="Captured Local Video" />
-      </div>
-      <div  v-if="capturedRemoteImageUrl" class="remote-video-container remoteVideo">
-        <img :src="capturedRemoteImageUrl" alt="Captured Remote Video" />
-        </div>
-    </div>
+    <!-- 모든 합쳐진 이미지를 한 장의 이미지로 다운로드하는 버튼 -->
+  </div>
+
   </div>
   </div>
 
@@ -87,137 +83,138 @@
 <script lang="ts" setup>
 import { ref, watch, watchEffect } from 'vue'
 import { useUserStore } from '@/stores/user'
-import type {Ref} from 'vue'
+
 
 const props = defineProps<{
   localStream: MediaStream | undefined
   remoteStream: MediaStream | undefined
 }>()
 
-const localVideoElement = ref<HTMLVideoElement>()
-const remoteVideoElement = ref<HTMLVideoElement>()
 const controlsVisible = ref(false)
 const isVideoOn = ref(true)
 const isAudioOn = ref(true)
 const store = useUserStore()
 const isStar = store.isStar
 
-const capturedLocalImageUrl = ref<string | null>(null)
-const capturedRemoteImageUrl = ref<string | null>(null)
 
-const captureVideo = () => {
-  capture(localVideoElement.value ?? null, capturedLocalImageUrl)
-  capture(remoteVideoElement.value ?? null, capturedRemoteImageUrl)
+
+
+
+const localVideoElement = ref<HTMLVideoElement | null>(null)
+const remoteVideoElement = ref<HTMLVideoElement | null>(null)
+const mergedImages = ref<string[]>([])
+
+// imgLoadPromise 함수 추가
+const imgLoadPromise = (src: string): Promise<HTMLImageElement> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error(`Failed to load image at ${src}`));
+    img.src = src;
+  });
 }
 
-const capture = (videoElement: HTMLVideoElement | null, imageUrlRef: Ref<string | null>) => {
-  const canvas = document.createElement('canvas')
-  const context = canvas.getContext('2d')
-  if (videoElement && context) {
-    canvas.width = videoElement.videoWidth
-    canvas.height = videoElement.videoHeight
-    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height)
-    const imageDataUrl = canvas.toDataURL('image/png')
-    imageUrlRef.value = imageDataUrl
+const captureAndMergeImages = async () => {
+  const localImage = await captureVideo(localVideoElement.value)
+  const remoteImage = await captureVideo(remoteVideoElement.value)
+  if (localImage && remoteImage) {
+    await mergeTwoImagesAndSave(localImage, remoteImage)
   }
 }
 
-
-
-// 이미지를 로컬에 저장하는 함수
-const downloadImage = (imageUrl: string, fileName: string) => {
-  const a = document.createElement('a')
-  a.href = imageUrl
-  a.download = fileName || 'download'
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
+const captureVideo = (videoElement: HTMLVideoElement | null): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    if (!videoElement) {
+      reject('Video element is null')
+      return
+    }
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('2d')
+    canvas.width = videoElement.videoWidth
+    canvas.height = videoElement.videoHeight
+    context?.drawImage(videoElement, 0, 0, canvas.width, canvas.height)
+    resolve(canvas.toDataURL('image/png'))
+  })
 }
 
+// const mergeTwoImagesAndSave = async (localImage: string, remoteImage: string) => {
+//   const [localImg, remoteImg] = await Promise.all([imgLoadPromise(localImage), imgLoadPromise(remoteImage)])
+//   const canvas = document.createElement('canvas')
+//   const context = canvas.getContext('2d')
+//   canvas.width = localImg.width + remoteImg.width
+//   canvas.height = Math.max(localImg.height, remoteImg.height)
+//   context?.drawImage(localImg, 0, 0)
+//   context?.drawImage(remoteImg, localImg.width, 0)
+//   mergedImages.value.push(canvas.toDataURL('image/png'))
+// }
+const mergeTwoImagesAndSave = async (localImage: string, remoteImage: string) => {
+  const imgLoadPromise = (src: string): Promise<HTMLImageElement> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = src;
+    });
+  };
 
+  const [localImg, remoteImg] = await Promise.all([
+    imgLoadPromise(localImage),
+    imgLoadPromise(remoteImage)
+  ]);
 
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  canvas.width = localImg.width + remoteImg.width;
+  canvas.height = Math.max(localImg.height, remoteImg.height);
 
-const drawImageOnCanvas = (
-  context: CanvasRenderingContext2D,
-  imageUrl: string,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  isLocal: boolean = false // 로컬 이미지인지 여부
-): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    const image: HTMLImageElement = new Image();
-    image.onload = () => {
-      if (isLocal) {
-        // 좌우 반전 처리
-        context.save(); // 현재 상태 저장
-        context.scale(-1, 1); // x 축 방향으로 반전
-        context.drawImage(image, -x-width, y, width, height); // 반전된 위치에 이미지 그리기
-        context.restore(); // 저장된 상태로 복원
-      } else {
-        // 일반 이미지 처리
-        context.drawImage(image, x, y, width, height);
+  context?.drawImage(localImg, 0, 0);
+  context?.drawImage(remoteImg, localImg.width, 0);
+
+  // 배열에서 네 개의 이미지만 유지
+  if (mergedImages.value.length >= 4) {
+    mergedImages.value.shift(); // 배열의 첫 번째 항목 제거
+  }
+  mergedImages.value.push(canvas.toDataURL('image/png')); // 새 이미지 추가
+};
+
+// 모든 합쳐진 이미지를 한 장의 이미지로 다운로드하는 함수
+const downloadAllMergedImages = async () => {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  const imgs = await Promise.all(mergedImages.value.map(src => imgLoadPromise(src)))
+
+  const totalHeight = imgs.reduce((acc, img) => acc + img.height, 0)
+  const maxWidth = Math.max(...imgs.map(img => img.width))
+  canvas.width = maxWidth
+  canvas.height = totalHeight
+
+  let yOffset = 0;
+  mergedImages.value.forEach((url, index) => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => {
+      // 좌우 반전을 위해 x축 방향으로 -1을 곱함
+      context?.save(); // 현재 상태를 저장
+      context?.scale(-1, 1); // x축 방향으로 반전
+      // 이미지를 반전된 상태로 그리기 위해 x 위치 조정
+      context?.drawImage(img, -canvas.width, yOffset, canvas.width, img.height);
+      context?.restore(); // 캔버스 상태를 복원
+
+      if (index === mergedImages.value.length - 1) {
+        // 마지막 이미지를 그린 후 최종 이미지 처리
+        const finalImage = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = finalImage;
+        link.download = 'merged-images-flipped.png';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
       }
-      resolve();
+      yOffset += img.height;
     };
-    image.onerror = reject;
-    image.src = imageUrl;
   });
 };
 
-// 두 이미지를 합치고 다운로드하는 함수
-const mergeAndDownloadImages = async () => {
-  const canvas: HTMLCanvasElement = document.createElement('canvas');
-  const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
-  
-  if (!context) return;
-
-  // 캔버스 크기 설정
-  const imageWidth: number = 640; // 예시값, 실제에 맞게 조정
-  const imageHeight: number = 480; // 예시값, 실제에 맞게 조정
-  canvas.width = imageWidth * 2;
-  canvas.height = imageHeight;
-
-  // 로컬 비디오 이미지 캡처
-  if (!isStar)
-  {
-  if (capturedLocalImageUrl.value) {
-    await drawImageOnCanvas(context, capturedLocalImageUrl.value, 0, 0, imageWidth, imageHeight,true); // isLocal을 true로 설정
-  }
-
-  // 리모트 비디오 이미지 캡처
-  if (capturedRemoteImageUrl.value) {
-    await drawImageOnCanvas(context, capturedRemoteImageUrl.value, imageWidth, 0, imageWidth, imageHeight,true);
-  }
-}
-
-if (isStar)
-  {
-  if (capturedLocalImageUrl.value) {
-    await drawImageOnCanvas(context, capturedLocalImageUrl.value, 0, 0, imageWidth, imageHeight,true); // isLocal을 true로 설정
-  }
-
-  // 리모트 비디오 이미지 캡처
-  if (capturedRemoteImageUrl.value) {
-    await drawImageOnCanvas(context, capturedRemoteImageUrl.value, imageWidth, 0, imageWidth, imageHeight,true);
-  }
-}
-
-  // 합쳐진 이미지 다운로드
-  const finalImageUrl: string = canvas.toDataURL('image/png');
-  downloadImage(finalImageUrl, 'combined-video-capture');
-};
-
-// 이미지 다운로드 함수
-// const downloadImage = (imageUrl: string, filename: string) => {
-//   const downloadLink: HTMLAnchorElement = document.createElement('a');
-//   downloadLink.href = imageUrl;
-//   downloadLink.download = `${filename}.png`;
-//   document.body.appendChild(downloadLink);
-//   downloadLink.click();
-//   document.body.removeChild(downloadLink);
-// };
 
 
 
