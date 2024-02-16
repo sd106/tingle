@@ -1,4 +1,7 @@
 <template>
+  <div ref="fanfareContainer" class="fanfareContainer-container"></div>
+  <audio id="congratulationSound" src="/sound/congratulations.mp3"></audio>
+
   <section v-if="fanMeetingReservation?.fanMeetingType == '자유대화'">
     <NormalMeeting :localStream="localStream" :remoteStream="remoteStream"/>
   </section>
@@ -14,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, h } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useRoute } from 'vue-router'
 import type { SocketMessage, FanMeetingReservation, SenderState } from '@/common/types/index'
@@ -46,6 +49,8 @@ const loadReservation = async () => {
     console.error(error)
   }
 }
+
+
 // 주소로 연결할 웹소켓
 let socket: WebSocket | undefined
 
@@ -120,6 +125,16 @@ const initializeWebSocket = () => {
       case 'FinishFan':
         console.log('Fan Meeting is finished')
         handleFinishFanMessage(message)
+        break
+
+      case 'Fanfare':
+        console.log('Fanfare is started')
+        handleFanfareMessage(message)
+        break
+      
+      case 'Congratulation':
+        console.log('Congratulation message is received')
+        handleCongratulationMessage(message)
         break
 
       default:
@@ -272,6 +287,42 @@ const handleFinishFanMessage =async (message: SocketMessage) => {
   }
 }
 
+const fanfareContainer = ref<HTMLElement | null>(null);
+
+const handleFanfareMessage = (message: SocketMessage) => {
+
+  console.log('팬파레가 시작되었습니다!')
+    if (!fanfareContainer.value) return;
+    console.log('111')
+    fanfareContainer.value.innerHTML = '';
+    console.log('111')
+
+    // 풍선 생성
+    for (let i = 0; i < 20; i++) {
+      const balloon = document.createElement('div');
+      balloon.classList.add('balloon');
+      balloon.style.backgroundColor = `hsla(${Math.random() * 360}, 100%, 70%, 0.7)`;
+      balloon.style.left = `${Math.random() * 100}%`;
+      balloon.style.animation = `float ${2 + Math.random() * 3}s ease-in forwards`;
+
+      fanfareContainer.value.appendChild(balloon);
+    }
+    console.log('111')
+
+    setTimeout(() => {
+      if (fanfareContainer.value) {
+        fanfareContainer.value.innerHTML = '';
+      }
+    }, 5000);
+}
+
+const handleCongratulationMessage = (message: SocketMessage) => {
+  const congratulationSound = document.getElementById('congratulationSound') as HTMLAudioElement;
+  if (congratulationSound) {
+    congratulationSound.play().catch(error => console.error("Audio play failed", error));
+  }
+}
+
 const handleErrorMessage = (message: SocketMessage) => {
   console.error('에러발생!: ', message)
 }
@@ -365,5 +416,46 @@ onUnmounted(() => {
 
 #local-video-container:hover .control-container {
     visibility: visible;
+}
+
+.fanfareContainer-container{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 999999999999999999;
+}
+
+.balloon {
+  position: absolute;
+  bottom: 0;
+  background-color: pink;
+  width: 50px;
+  height: 70px;
+  border-radius: 25px;
+  opacity: 0.7;
+  z-index: 9999999999999999999;
+  animation: float 5s ease-in forwards;
+}
+
+.balloon:before {
+  content: '';
+  position: absolute;
+  top: 70px;
+  left: 25px;
+  width: 2px;
+  height: 100px;
+  background-color: black;
+}
+
+/* 간단한 애니메이션 */
+@keyframes float {
+  to {
+    transform: translateX(20px) translateY(-100vh); /* 화면 위로 떠오르는 효과 */
+    opacity: 0;
+  }
 }
 </style>

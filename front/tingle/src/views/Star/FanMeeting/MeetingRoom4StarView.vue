@@ -1,27 +1,23 @@
 <template>
-  <div class="row m-0 p-0">
-    <div class="col-9">
-      <section v-if="fanMeetingReservation?.fanMeetingType == '자유대화'">
-        <NormalMeeting :localStream="localStream" :remoteStream="remoteStream" />
-      </section>
-      <section v-else-if="fanMeetingReservation?.fanMeetingType == '인생네컷'">
-        <LifeFourCutMeeting :localStream="localStream" :remoteStream="remoteStream" />
-      </section>
-      <section v-else-if="fanMeetingReservation?.fanMeetingType == '생일축하'">
-        <BirthdayMeeting :localStream="localStream" :remoteStream="remoteStream" />
-      </section>
-      <section v-else class="center">
-        <h1>연결중입니다...</h1>
-      </section>
+    <div class="row m-0 p-0">
+        <div class="col-9">
+            <section v-if="fanMeetingReservation?.fanMeetingType == '자유대화'">
+                <NormalMeeting :localStream="localStream" :remoteStream="remoteStream"/>
+            </section>
+            <section v-else-if="fanMeetingReservation?.fanMeetingType == '인생네컷'">
+                <LifeFourCutMeeting :localStream="localStream" :remoteStream="remoteStream"/>
+            </section>
+            <section v-else-if="fanMeetingReservation?.fanMeetingType== '생일축하'">
+                <BirthdayMeeting :localStream="localStream" :remoteStream="remoteStream"/>
+            </section>
+            <section v-else>
+                <h1>연결중입니다...</h1>
+            </section>
+        </div>
+        <div class="col-3">
+            <FanMeetingBoard :finishedFans="finishedFans" @finish-fan="finishFan" @finish-meeting="finishMeeting"/>
+        </div>
     </div>
-    <div class="col-3">
-      <FanMeetingBoard
-        :finishedFans="finishedFans"
-        @finish-fan="finishFan"
-        @finish-meeting="finishMeeting"
-      />
-    </div>
-  </div>
 </template>
 
 <script lang="ts" setup>
@@ -69,6 +65,25 @@ const finishMeeting = async () => {
   } catch (error) {
     console.log(error)
   }
+}
+
+const fanfare = () => {
+  console.log("팡파레!!")
+  sendToServer({
+      sender: localUser.value,
+      signalType: 'Fanfare',
+      roomType: 'Meeting'
+    })
+}
+
+const congratulation = () => {
+  sendToServer({
+      sender: localUser.value,
+      signalType: 'Congratulation',
+      roomType: 'Meeting'
+    })
+
+    
 }
 // 주소로 연결할 웹소켓
 let socket: WebSocket | undefined
@@ -141,16 +156,16 @@ const initializeWebSocket = () => {
         handleJoinMessage(message)
         break
 
-      case 'Accept':
-        console.log('Signal ACCEPT received')
-        handleAcceptMessage(message)
-        break
+            case "Accept":
+                console.log('Signal ACCEPT received')
+                handleAcceptMessage(message)
+                break;
 
-      default:
-        console.log('Error: ', message)
-        handleErrorMessage(message)
+            default:
+                console.log('Error: ', message)
+                handleErrorMessage(message)
+        }
     }
-  }
 
   // 소켓이 열리면 이벤트 함수
   socket.onopen = () => {
